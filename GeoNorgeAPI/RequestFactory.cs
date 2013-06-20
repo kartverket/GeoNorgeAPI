@@ -37,5 +37,16 @@ namespace GeoNorgeAPI
 
             return getRecords;
         }
+
+        public GetRecordByIdType GetRecordById(string uuid)
+        {
+            GetRecordByIdType getRecordbyId = new GetRecordByIdType();
+            getRecordbyId.service = "CSW";
+            getRecordbyId.version = "2.0.2";
+            getRecordbyId.outputSchema = "csw:IsoRecord";
+            getRecordbyId.Id = new[] { uuid };
+            getRecordbyId.ElementSetName = new ElementSetNameType { Value = ElementSetType.full };
+            return getRecordbyId;
+        }
     }
 }

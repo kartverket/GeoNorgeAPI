@@ -1,5 +1,4 @@
-﻿using System;
-using Arkitektum.GIS.Lib.SerializeUtil;
+﻿using Arkitektum.GIS.Lib.SerializeUtil;
 using www.opengis.net;
 
 namespace GeoNorgeAPI
@@ -24,15 +23,28 @@ namespace GeoNorgeAPI
         public GetRecordsResponseType RunGetRecordsRequest(GetRecordsType getRecordsRequest)
         {
             var requestBody = SerializeUtil.SerializeToString(getRecordsRequest);
-          //  Console.WriteLine(requestBody);
-            string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswSearch(), ContentTypeXml, ContentTypeXml, requestBody);
-          //  Console.WriteLine(responseBody);
+            string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
         }
 
-        private string GetUrlForCswSearch()
+        public MD_Metadata_Type GetRecordById(GetRecordByIdType request)
+        {
+            var requestBody = SerializeUtil.SerializeToString(request);
+            string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
+            GetRecordByIdResponseType response =  SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(responseBody);
+
+            MD_Metadata_Type metadataRecord = null;
+            if (response != null && response.Items != null && response.Items.Length > 0)
+            {
+                metadataRecord = response.Items[0] as MD_Metadata_Type;
+            }
+            return metadataRecord;
+        }
+
+        private string GetUrlForCswService()
         {
             return GeoNetworkEndpoint + "srv/eng/csw";
         }
+
     }
 }

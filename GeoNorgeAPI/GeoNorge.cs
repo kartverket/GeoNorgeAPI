@@ -2,6 +2,9 @@
 
 namespace GeoNorgeAPI
 {
+    /// <summary>
+    /// API for communicating with the CSW services available on www.geonorge.no. 
+    /// </summary>
     public class GeoNorge
     {
 
@@ -34,6 +37,16 @@ namespace GeoNorgeAPI
             return response.SearchResults;
         }
 
-
+        /// <summary>
+        /// Return single record in ISO 19139 format.
+        /// </summary>
+        /// <param name="uuid">identifier of the metadata record to return</param>
+        /// <returns>The record or null when not found.</returns>
+        public MD_Metadata_Type GetRecordByUuid(string uuid)
+        {
+            GetRecordByIdType request = _requestFactory.GetRecordById(uuid);
+            MD_Metadata_Type response = _requestRunner.GetRecordById(request);
+            return response;
+        }
     }
 }
