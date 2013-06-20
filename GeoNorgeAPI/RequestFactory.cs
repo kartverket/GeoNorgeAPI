@@ -10,6 +10,7 @@ namespace GeoNorgeAPI
             var getRecords = new GetRecordsType();
             getRecords.resultType = ResultType1.results;
             getRecords.startPosition = startPosition.ToString();
+            getRecords.outputSchema = "csw:Record";
 
             var query = new QueryType();
             query.typeNames = new[] { new XmlQualifiedName("Record", "http://www.opengis.net/cat/csw/2.0.2") };
@@ -30,8 +31,8 @@ namespace GeoNorgeAPI
                         },
                         ItemsElementName = new [] { ItemsChoiceType23.PropertyIsLike }
                 };
-
             query.Constraint = queryConstraint;
+            query.Items = new object[] { new ElementSetNameType { Value = ElementSetType.full } };
             getRecords.Item = query;
 
             return getRecords;
