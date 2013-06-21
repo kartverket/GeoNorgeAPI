@@ -25,5 +25,14 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(record, "Record does not exist.");
         }
 
+        [Test]
+        public void ShouldReturnRecordsWhenSearchingWithOrganisationName()
+        {
+            var geonorge = new GeoNorge();
+            var result = geonorge.SearchWithOrganisationName("%kartverk%");
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%kartverk%' should return lots of records.");
+        }
+
     }
 }

@@ -48,5 +48,19 @@ namespace GeoNorgeAPI
             MD_Metadata_Type response = _requestRunner.GetRecordById(request);
             return response;
         }
+        
+        /// <summary>
+        /// Search and retrieve records by organisation name. 
+        /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <param name="startPosition"></param>
+        /// <returns></returns>
+        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1)
+        {
+            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition);
+            GetRecordsResponseType response = _requestRunner.RunGetRecordsRequest(request);
+            return response.SearchResults;
+        }
     }
 }
