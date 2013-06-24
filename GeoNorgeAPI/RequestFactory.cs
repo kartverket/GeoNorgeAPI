@@ -19,7 +19,12 @@ namespace GeoNorgeAPI
                         }
                 };
 
-            return GetRecordsWithFilter(filters, startPosition);
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.PropertyIsLike, 
+                };
+
+            return GetRecordsWithFilter(filters, filterNames, startPosition);
         }
 
         public GetRecordByIdType GetRecordById(string uuid)
@@ -46,11 +51,15 @@ namespace GeoNorgeAPI
                             Literal = new LiteralType {Text = new[] {searchString}}
                         }
                 };
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.PropertyIsLike, 
+                };
 
-            return GetRecordsWithFilter(filters, startPosition);
+            return GetRecordsWithFilter(filters, filterNames, startPosition);
         }
 
-        private GetRecordsType GetRecordsWithFilter(object[] filters, int startPosition)
+        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition)
         {
             var getRecords = new GetRecordsType();
             getRecords.resultType = ResultType1.results;
@@ -64,7 +73,7 @@ namespace GeoNorgeAPI
             queryConstraint.Item = new FilterType
             {
                 Items = filters,
-                ItemsElementName = new[] { ItemsChoiceType23.PropertyIsLike }
+                ItemsElementName = filterNames
             };
             query.Constraint = queryConstraint;
             query.Items = new object[] { new ElementSetNameType { Value = ElementSetType.full } };

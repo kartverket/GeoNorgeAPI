@@ -6,12 +6,19 @@ namespace GeoNorgeAPI.Tests
     
     public class CswTests
     {
+        GeoNorge _geonorge;
+
+        [SetUp]
+        public void Init()
+        {
+            _geonorge = new GeoNorge();
+        }
 
         [Test]
         public void ShouldReturnRecordsWhenRunningASimpleSearch()
         {
-            var geonorge = new GeoNorge();
-            var result = geonorge.Search("wms");
+            
+            var result = _geonorge.Search("wms");
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on 'wms' should return records.");
         }
@@ -19,8 +26,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnSingleIsoRecord()
         {
-            var geonorge = new GeoNorge();
-            MD_Metadata_Type record = geonorge.GetRecordByUuid("63c672fa-e180-4601-a176-6bf163e0929d"); // Matrikkelen WMS
+            MD_Metadata_Type record = _geonorge.GetRecordByUuid("63c672fa-e180-4601-a176-6bf163e0929d"); // Matrikkelen WMS
             
             Assert.NotNull(record, "Record does not exist.");
         }
@@ -28,10 +34,40 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnRecordsWhenSearchingWithOrganisationName()
         {
-            var geonorge = new GeoNorge();
-            var result = geonorge.SearchWithOrganisationName("%kartverk%");
+            var result = _geonorge.SearchWithOrganisationName("%kartverk%");
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%kartverk%' should return lots of records.");
+        }
+
+        [Test]
+        public void ShouldReturnServicesFromKartverket()
+        {
+            var filters = new object[]
+                {
+                    new PropertyIsLikeType
+                    {
+                        escapeChar = "\\",
+                        singleChar = "_",
+                        wildCard = "%",
+                        PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
+                        Literal = new LiteralType {Text = new[] { "%kartverk%" }}
+                    },
+                    new BinaryLogicOpType(),
+                    new PropertyIsLikeType
+                    {
+                        PropertyName = new PropertyNameType {Text = new[] {"Type"}},
+                        Literal = new LiteralType {Text = new[] { "service" }}
+                    }
+                };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.PropertyIsLike, ItemsChoiceType23.And, ItemsChoiceType23.PropertyIsLike
+                };
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from kartverket.");
         }
 
     }
