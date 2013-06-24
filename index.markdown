@@ -1,6 +1,6 @@
 ---
 title: Dokumentasjon av CSW-grensesnitt for GeoNorge
-layout: default.html
+layout: default
 ---
 
 # This is a H1
