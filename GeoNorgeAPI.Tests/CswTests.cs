@@ -44,25 +44,36 @@ namespace GeoNorgeAPI.Tests
         {
             var filters = new object[]
                 {
-                    new PropertyIsLikeType
-                    {
-                        escapeChar = "\\",
-                        singleChar = "_",
-                        wildCard = "%",
-                        PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
-                        Literal = new LiteralType {Text = new[] { "%kartverk%" }}
-                    },
-                    new BinaryLogicOpType(),
-                    new PropertyIsLikeType
-                    {
-                        PropertyName = new PropertyNameType {Text = new[] {"Type"}},
-                        Literal = new LiteralType {Text = new[] { "service" }}
-                    }
+                    
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
+                                        Literal = new LiteralType {Text = new[] { "%kartverk%" }}
+                                    },
+                                    new PropertyIsLikeType
+                                    {
+                                        PropertyName = new PropertyNameType {Text = new[] {"Type"}},
+                                        Literal = new LiteralType {Text = new[] { "service" }}
+                                    }
+                                },
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike, 
+                                    }
+                        },
+                    
                 };
 
             var filterNames = new ItemsChoiceType23[]
                 {
-                    ItemsChoiceType23.PropertyIsLike, ItemsChoiceType23.And, ItemsChoiceType23.PropertyIsLike
+                    ItemsChoiceType23.And
                 };
 
             var result = _geonorge.SearchWithFilters(filters, filterNames);
