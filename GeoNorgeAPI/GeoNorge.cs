@@ -24,12 +24,11 @@ namespace GeoNorgeAPI
 
         /// <summary>
         /// Free text search for records.
-        /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
         /// </summary>
-        /// <param name="searchString"></param>
-        /// <param name="startPosition"></param>
-        /// <returns></returns>
+        /// <param name="searchString">Search string, use % as wildcard</param>
+        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
         public SearchResultsType Search(string searchString, int startPosition = 1)
         {
             GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition);
@@ -39,7 +38,7 @@ namespace GeoNorgeAPI
         /// <summary>
         /// Return single record in ISO 19139 format.
         /// </summary>
-        /// <param name="uuid">identifier of the metadata record to return</param>
+        /// <param name="uuid">Identifier of the metadata record to return</param>
         /// <returns>The record or null when not found.</returns>
         public MD_Metadata_Type GetRecordByUuid(string uuid)
         {
@@ -51,9 +50,9 @@ namespace GeoNorgeAPI
         /// Search and retrieve records by organisation name. 
         /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
         /// </summary>
-        /// <param name="searchString"></param>
-        /// <param name="startPosition"></param>
-        /// <returns></returns>
+        /// <param name="searchString">Search string, use % as wildcard</param>
+        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
         public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1)
         {
             GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition);
@@ -63,10 +62,10 @@ namespace GeoNorgeAPI
         /// <summary>
         /// Search for records with an arbitrary number of filters.
         /// </summary>
-        /// <param name="filters"></param>
-        /// <param name="filterNames"></param>
-        /// <param name="startPosition"></param>
-        /// <returns></returns>
+        /// <param name="filters">See www.opengis.net.FilterType for the type objects that are accepted</param>
+        /// <param name="filterNames">Array of names corresponding to the index in filters, see www.opengis.net.ItemsChoiceType23 for possible values</param>
+        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
         public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1)
         {
             GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition);
