@@ -59,6 +59,7 @@
     <Compile Include="RequestRunner.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GeoNorgeAPI.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

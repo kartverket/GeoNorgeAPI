@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GeoNorgeAPI")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("Arkitektum AS")]
 [assembly: AssemblyProduct("GeoNorgeAPI")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2013")]
+[assembly: AssemblyCopyright("Copyright © Kartverket 2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

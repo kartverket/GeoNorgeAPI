@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://github.com/kartverket/GeoNorgeAPI</licenseUrl>
+    <projectUrl>https://github.com/kartverket/GeoNorgeAPI</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>API for communicating with the CSW-service running at www.geonorge.no</description>
+    <releaseNotes>First version of package.</releaseNotes>
+    <copyright>Copyright 2013</copyright>
+    <tags>geonorge gis metadata api csw</tags>
+  </metadata>
+</package>
