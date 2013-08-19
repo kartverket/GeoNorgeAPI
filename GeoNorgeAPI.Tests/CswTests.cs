@@ -34,9 +34,9 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnRecordsWhenSearchingWithOrganisationName()
         {
-            var result = _geonorge.SearchWithOrganisationName("%kartverk%");
+            var result = _geonorge.SearchWithOrganisationName("%Kartverket%");
 
-            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%kartverk%' should return lots of records.");
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%Kartverket%' should return lots of records.");
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace GeoNorgeAPI.Tests
                                         singleChar = "_",
                                         wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
-                                        Literal = new LiteralType {Text = new[] { "%kartverk%" }}
+                                        Literal = new LiteralType {Text = new[] { "%Kartverket%" }}
                                     },
                                     new PropertyIsLikeType
                                     {
@@ -78,7 +78,7 @@ namespace GeoNorgeAPI.Tests
 
             var result = _geonorge.SearchWithFilters(filters, filterNames);
 
-            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from kartverket.");
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Kartverket.");
         }
 
     }
