@@ -37,8 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Arkitektum.GIS.Lib.MetadataCSW">
-      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.1.0.0\lib\net45\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
+    <Reference Include="Arkitektum.GIS.Lib.MetadataCSW, Version=1.2.0.17924, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.2.0.17924\lib\net45\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
     </Reference>
     <Reference Include="FluentAssertions">
       <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
@@ -83,6 +84,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="CswTests.cs" />
+    <Compile Include="MetadataExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

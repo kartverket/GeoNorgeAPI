@@ -81,5 +81,47 @@ namespace GeoNorgeAPI
 
             return getRecords;
         }
+
+        public TransactionType MetadataInsert(MD_Metadata_Type metadata)
+        {
+            TransactionType cswTransaction = new TransactionType
+            {
+                service = "CSW",
+                version = "2.0.2",
+                Items = new object[]
+                    {
+                        new InsertType()
+                            {
+                                Items = new object[]
+                                    {
+                                        metadata
+                                    }
+                            }
+                    }
+            };
+
+            return cswTransaction;
+        }
+
+        public TransactionType MetadataUpdate(MD_Metadata_Type metadata)
+        {
+            TransactionType cswTransaction = new TransactionType
+            {
+                service = "CSW",
+                version = "2.0.2",
+                Items = new object[]
+                    {
+                        new UpdateType()
+                            {
+                                Items = new object[]
+                                    {
+                                        metadata
+                                    }
+                            }
+                    }
+            };
+            return cswTransaction;
+
+        }
     }
 }

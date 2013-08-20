@@ -17,9 +17,16 @@ namespace GeoNorgeAPI
             _requestRunner = requestRunner;
         }
 
-        public GeoNorge() : this(new RequestFactory(), new RequestRunner())
+        public GeoNorge(string geonetworkUsername = null, string geonetworkPassword = null)
+            : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword))
         {
             
+        }
+
+        public GeoNorge(string geonetworkUsername, string geonetworkPassword, string geonetworkEndpoint)
+            : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword, geonetworkEndpoint))
+        {
+
         }
 
         /// <summary>
@@ -72,5 +79,27 @@ namespace GeoNorgeAPI
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
+
+        /// <summary>
+        /// Insert metadata record in GeoNorge.
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <returns></returns>
+        public TransactionResponseType MetadataInsert(MD_Metadata_Type metadata)
+        {
+            TransactionType request = _requestFactory.MetadataInsert(metadata);
+            return _requestRunner.RunCswTransaction(request);
+        }
+
+        /// <summary>
+        /// Update metadata record in GeoNorge.
+        /// </summary>
+        /// <param name="metadata"></param>
+        /// <returns></returns>
+        public TransactionResponseType MetadataUpdate(MD_Metadata_Type metadata)
+        {
+            TransactionType request = _requestFactory.MetadataUpdate(metadata);
+            return _requestRunner.RunCswTransaction(request);
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace GeoNorgeAPI
                 if (cookie != null)
                 {
                     Cookie sessionCookie = new Cookie("JSESSIONID", cookie.Value, "/geonetwork", cookie.Domain);
-                    request.CookieContainer.Add(cookie);
+                    request.CookieContainer.Add(sessionCookie);
                 }
 
                 byte[] byteArray = Encoding.UTF8.GetBytes(postData);

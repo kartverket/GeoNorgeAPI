@@ -81,5 +81,26 @@ namespace GeoNorgeAPI.Tests
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Kartverket.");
         }
 
+        /*
+        [Test]
+        public void InsertMetadata()
+        {
+            _geonorge = new GeoNorge("", "", "http://beta.geonorge.no/geonetwork/");
+
+            MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
+
+            _geonorge.MetadataInsert(metadata);
+        }
+
+        [Test]
+        public void UpdateMetadata()
+        {
+            _geonorge = new GeoNorge("", "", "http://beta.geonorge.no/geonetwork/");
+
+            MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
+
+            _geonorge.MetadataUpdate(metadata);
+        }
+        */
     }
 }

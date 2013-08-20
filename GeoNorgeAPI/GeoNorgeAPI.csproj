@@ -32,9 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Arkitektum.GIS.Lib.MetadataCSW, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Arkitektum.GIS.Lib.MetadataCSW, Version=1.2.0.17924, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.1.1.0\lib\net45\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
+      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.2.0.17924\lib\net45\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
     </Reference>
     <Reference Include="Arkitektum.GIS.Lib.SerializeUtil, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
