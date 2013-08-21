@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GeoNorgeAPI</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style type="text/css" media="screen">
+      @import url(http://fonts.googleapis.com/css?family=Ubuntu:400,500);
+      body { 
+        font-family: 'Ubuntu';
+        font-weight: 400;
+
+      }
+      .remark-slide { 
+        background-color: #657383;
+        background-image: url('arkitektum-logo-176x50.png');
+        background-position: top 20px right 20px;
+        background-repeat: no-repeat;
+      }
+      h1 { border-bottom: 1px solid black;}
+      ul li { font-size: 2em; margin: 10px 0;}
+      ul > li > ul > li { font-size: 0.8em; }
+
+      a, a:visited, a:active, a:hover { color: darkblue; }
+
+      .extra-margin { margin-top: 100px; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle
+
+# GeoNorgeAPI
+
+Henning Jensen - Arkitektum AS
+
+[henning@arkitektum.no](mailto:henning@arkitektum.no)
+
+.extra-margin[
+_Ny nasjonal geoportal – møte med systemleverandørene 22. august 2013_
+]
+
+---
+
+# GeoNorge.no
+
+* GeoNetwork - Katalogtjeneste for metadata
+* Støtte for CSW
+* Eksempler på CSW-kall
+ * http://www.geonorge.no/geonetwork/srv/nor/test.csw
+---
+
+# GeoNorge.no - CSW
+
+Spørringer kan f.eks gjøres med bounding box.
+
+```
+<csw:GetRecords xmlns:csw="http://www.opengis.net/cat/csw/2.0.2" service="CSW" 
+  version="2.0.2" resultType="results">
+    <csw:Query typeNames="csw:Record" >
+        <csw:Constraint version="1.0.0">
+            <ogc:Filter xmlns:ogc="http://www.opengis.net/ogc">
+                <ogc:BBOX>
+                    <ogc:PropertyName>iso:BoundingBox</ogc:PropertyName>
+                    <gml:Box xmlns:gml="http://www.opengis.net/gml">
+                      <gml:coordinates decimal="." cs="," ts=" ">
+                        7.30,49.30 10.70,51.70
+                      </gml:coordinates>
+                    </gml:Box>
+                </ogc:BBOX>
+            </ogc:Filter>
+        </csw:Constraint>
+    </csw:Query>
+</csw:GetRecords>
+```
+
+
+
+---
+
+# GeoNorgeAPI
+
+* API for C#
+* Utviklet i forbindelse med kvalitetsheving av metadata
+* Kommunikasjon med GeoNorge.no via CSW-grensesnittet.
+* ISO 19139 metadata eksponert som objekter.
+* Gjør terskelen lavere for å integrere mot GeoNorge.
+
+---
+
+# GeoNorgeAPI
+
+* Tilgjengelige metodekall:
+ * Søk i metadata med filter (Dublin core)
+ * Hent metadata (ISO 19139)
+ * Opprett metadata (ISO 19139)
+ * Oppdater metadata (ISO 19139)
+
+---
+
+# GeoNorgeAPI
+
+* Tilgjengelig som åpen kildekode på GitHub
+ * https://github.com/kartverket/GeoNorgeAPI
+* Tilgjengelig som nuget-pakke
+ * https://www.nuget.org/packages/GeoNorgeAPI/
+
+ ```
+ PM> Install-Package GeoNorgeAPI
+ ```
+---
+
+# Eksempel
+
+```cs
+using www.opengis.net;
+using GeoNorgeAPI;
+
+public class MyClass {
+    public void MyMethod() {
+
+        GeoNorgeAPI.GeoNorge api = new GeoNorgeAPI.GeoNorge();
+
+        // søk
+
+        SearchResultsType result = api.Search("skredfare");
+        Console.WriteLine(result.numberOfRecordsMatched + " entries found");
+
+        // hent ut ISO 19139 metadata
+
+        MD_Metadata_Type metadata = 
+            api.GetRecordByUuid("a9984104-30e3-4b00-8d1e-a86d118b2ee4"); // Matrikkelen WFS
+
+
+        // eier av metadata kan gjøre oppdateringer ved å autentisere seg 
+
+        api = new GeoNorgeAPI.GeoNorge("brukernavn", "passord");
+        
+        api.MetadataUpdate(metadata);
+
+    }
+}
+```
+
+
+---
+class: center, middle
+
+# Demo
+
+---
+class: center, middle
+
+# Spørsmål?
+
+    </textarea>
+    <script src="http://gnab.github.io/remark/downloads/remark-0.5.3.min.js" type="text/javascript">
+    {"highlightStyle": "tomorrow-night"}
+    </script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
