@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using www.opengis.net;
-
+using GeoNorgeAPI;
 namespace GeoNorgeAPI.Tests
 {
     

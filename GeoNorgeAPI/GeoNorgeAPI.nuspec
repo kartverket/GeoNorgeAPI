@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/kartverket/GeoNorgeAPI</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
-    <releaseNotes>Add methods for inserting and updating metadata entries.</releaseNotes>
+    <releaseNotes>Experimental support for dc:URI in search responses.</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>geonorge gis metadata api csw</tags>
   </metadata>
