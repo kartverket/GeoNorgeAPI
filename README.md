@@ -25,3 +25,11 @@ Example code
             Console.WriteLine(result.numberOfRecordsMatched + " metadata found");
         }
     }
+
+
+Security notice
+===============
+
+GeoNorge.no is currently only running on HTTP. This means that your username &amp; password is sent over the wire in _plain text_!
+
+We will fix this as soon as possible.
