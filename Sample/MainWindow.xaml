@@ -1,0 +1,22 @@
+﻿<Window x:Class="Sample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Sample"
+        Title="MainWindow" Height="387" Width="1239">
+
+    <Window.Resources>
+        <local:MetadataViewModel x:Key="MetadataModel" />
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="630*"/>
+            <ColumnDefinition Width="353*"/>
+        </Grid.ColumnDefinitions>
+        <Label Content="GeoNorgeAPI - Sample application" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="20"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="10,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="314"/>
+        <Button Content="Metadata search" HorizontalAlignment="Left" Margin="329,52,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+        <DataGrid HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Height="267" Width="1211"
+                  ItemsSource="{Binding Metadata, Source={StaticResource MetadataModel}}" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblStatus" Content="" HorizontalAlignment="Left" Margin="523,52,0,0" VerticalAlignment="Top" Width="343" Grid.ColumnSpan="2"/>
+    </Grid>
+</Window>
