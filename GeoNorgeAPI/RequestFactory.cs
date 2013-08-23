@@ -123,5 +123,55 @@ namespace GeoNorgeAPI
             return cswTransaction;
 
         }
+
+        public TransactionType MetadataDelete(string uuid)
+        {
+            TransactionType cswTransaction = new TransactionType
+                {
+                    service = "CSW",
+                    version = "2.0.2",
+                    Items = new object[]
+                        {
+                            new DeleteType()
+                                {
+                                    Constraint = new QueryConstraintType()
+                                        {
+                                            version = "1.0.0",
+                                            Item = new FilterType()
+                                                {
+                                                    Items = new object[]
+                                                        {
+                                                            new PropertyIsLikeType()
+                                                            {
+                                                                wildCard = "%",
+                                                                singleChar = "_",
+                                                                escapeChar = "/",
+                                                                PropertyName = new PropertyNameType()
+                                                                    {
+                                                                        Text = new []
+                                                                            {
+                                                                                "apiso:identifier"
+                                                                            }
+                                                                    },
+                                                                Literal = new LiteralType()
+                                                                    {
+                                                                        Text = new []
+                                                                            {
+                                                                                uuid
+                                                                            }
+                                                                    }
+                                                            }   
+                                                        },
+                                                        ItemsElementName = new ItemsChoiceType23[]
+                                                            {
+                                                                ItemsChoiceType23.PropertyIsLike,
+                                                            }
+                                                }
+                                        }
+                                }
+                        }
+                };
+            return cswTransaction;
+        }
     }
 }

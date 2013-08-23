@@ -101,6 +101,13 @@ namespace GeoNorgeAPI.Tests
 
             _geonorge.MetadataUpdate(metadata);
         }
+        
+        [Test]
+        public void DeleteMetadata()
+        {
+            _geonorge = new GeoNorge("", "", "http://beta.geonorge.no/geonetwork/");
+            _geonorge.MetadataDelete("bcffba00-5396-4f81-ad65-d34d8771eab4");
+        }
         */
     }
 }

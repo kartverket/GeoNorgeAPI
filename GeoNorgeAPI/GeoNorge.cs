@@ -101,5 +101,17 @@ namespace GeoNorgeAPI
             TransactionType request = _requestFactory.MetadataUpdate(metadata);
             return _requestRunner.RunCswTransaction(request);
         }
+
+        /// <summary>
+        /// Delete metadata record in GeoNorge.
+        /// </summary>
+        /// <param name="uuid">identifier of the record to delete</param>
+        /// <returns></returns>
+        public TransactionResponseType MetadataDelete(string uuid)
+        {
+            TransactionType request = _requestFactory.MetadataDelete(uuid);
+            return _requestRunner.RunCswTransaction(request);
+        }
+        
     }
 }
