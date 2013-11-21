@@ -16,7 +16,7 @@ namespace GeoNorgeAPI
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseBody = reader.ReadToEnd();
             response.Close();
-
+            Log.Debug("HTTP response body:\n" + responseBody);
             return responseBody;
         }
 
@@ -31,7 +31,8 @@ namespace GeoNorgeAPI
                 request.ContentType = contentType;
                 request.Timeout = 15000;
 
-                Log.Info("HTTP request: [" + request.Method + "] " + url);
+                Log.Debug("HTTP request: [" + request.Method + "] " + url);
+                Log.Debug("HTTP request body:\n" + postData);
 
                 request.CookieContainer = new CookieContainer();
                 if (cookie != null)
@@ -49,7 +50,6 @@ namespace GeoNorgeAPI
                 var response = (HttpWebResponse)request.GetResponse();
                 Log.Debug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
                 return (HttpWebResponse)request.GetResponse();
-
             }
             catch (Exception e)
             {
@@ -65,7 +65,7 @@ namespace GeoNorgeAPI
             request.Accept = accept;
             request.ContentType = contentType;
 
-            Log.Info("HTTP request: [" + request.Method + "] " + url);
+            Log.Debug("HTTP request: [" + request.Method + "] " + url);
 
             return (HttpWebResponse)request.GetResponse();
         }
