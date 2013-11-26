@@ -221,6 +221,8 @@ namespace GeoNorgeAPI.Tests
                         }
                 };
 
+            mdDataIdentificationType.supplementalInformation = CharString("Dette er den utfyllende informasjonen.");
+
             m.identificationInfo = new[] {
                 new MD_Identification_PropertyType
                     {

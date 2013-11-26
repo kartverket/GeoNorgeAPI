@@ -83,6 +83,13 @@ namespace GeoNorgeAPI
             return identification;
         }
 
+        private MD_DataIdentification_Type GetDatasetIdentification()
+        {
+            MD_DataIdentification_Type identification = null;
+            if (HierarchyLevel == "dataset")
+                identification = GetIdentification() as MD_DataIdentification_Type;
+            return identification;
+        }
 
         public string Uuid
         {
@@ -156,6 +163,28 @@ namespace GeoNorgeAPI
             {
                 var identification = GetIdentificationNotNull();
                 identification.purpose = new CharacterString_PropertyType { CharacterString = value };
+            }
+        }
+
+        public string SupplementalDescription
+        {
+            get
+            {
+                string desc = null;
+                var datasetIdentification = GetDatasetIdentification();
+                if (datasetIdentification != null && datasetIdentification.supplementalInformation != null) {
+                    desc = datasetIdentification.supplementalInformation.CharacterString;
+                }
+                return desc;
+            }
+
+            set
+            {
+                var datasetIdentification = GetDatasetIdentification();
+                if (datasetIdentification != null && datasetIdentification.supplementalInformation != null)
+                {
+                    datasetIdentification.supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
+                }
             }
         }
     }

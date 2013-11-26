@@ -139,5 +139,20 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(newPurpose, _md.Purpose);
         }
+       
+        [Test]
+        public void ShouldReturnSupplementalDescription()
+        {
+            Assert.AreEqual("Dette er den utfyllende informasjonen.", _md.SupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateSupplementalDescription()
+        {
+            string newSupplementalDescription = "Dette er nytt.";
+            _md.SupplementalDescription = newSupplementalDescription;
+
+            Assert.AreEqual(newSupplementalDescription, _md.SupplementalDescription);
+        }
     }
 }

@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/kartverket/GeoNorgeAPI</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
-    <releaseNotes>Added method for deleting metadata record.</releaseNotes>
+    <releaseNotes></releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>geonorge gis metadata api csw</tags>
   </metadata>
