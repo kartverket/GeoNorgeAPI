@@ -13,7 +13,7 @@ namespace GeoNorgeAPI.Tests
         public static MD_Metadata_Type CreateMetadataExample()
         {
             MD_Metadata_Type m = new MD_Metadata_Type();
-            m.fileIdentifier = CharString(Guid.NewGuid().ToString());
+            m.fileIdentifier = CharString("12345-67890-aabbcc-ddeeff-ggffhhjj");
             m.language = CharString("nor");
 
             m.hierarchyLevel = new[] { new MD_ScopeCode_PropertyType
@@ -97,6 +97,7 @@ namespace GeoNorgeAPI.Tests
                 }
             };
             mdDataIdentificationType.@abstract = CharString("Dette datasettet inneholder ditt og datt. Kan brukes til dette, men må ikke brukes til andre ting som for eksempel dette.");
+            mdDataIdentificationType.purpose = CharString("Dette er formålet.");
             mdDataIdentificationType.resourceSpecificUsage = new[]
                 {
                     new MD_Usage_PropertyType() { 
