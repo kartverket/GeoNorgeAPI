@@ -10,8 +10,8 @@
     <projectUrl>https://github.com/kartverket/GeoNorgeAPI</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
-    <releaseNotes></releaseNotes>
-    <copyright>Copyright 2013</copyright>
+    <releaseNotes>Whitespace in organisation names is now properly transformed to csw singlechar attribute.</releaseNotes>
+    <copyright>Copyright 2014 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
   </metadata>
 </package>

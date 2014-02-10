@@ -40,6 +40,13 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnRecordsWhenSearchingWithOrganisationNameIncludingWhitespace()
+        {
+            var result = _geonorge.SearchWithOrganisationName("Norges geologiske undersøkelse");
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on 'Norges geologiske undersøkelse' should return lots of records.");
+        }
+        [Test]
         public void ShouldReturnServicesFromKartverket()
         {
             var filters = new object[]

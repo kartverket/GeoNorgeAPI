@@ -40,6 +40,8 @@ namespace GeoNorgeAPI
 
         public GetRecordsType GetRecordsOrganisationNameSearch(string searchString, int startPosition)
         {
+            searchString = searchString.Replace(" ", "_");
+
             var filters = new object[]
                 {
                     new PropertyIsLikeType
@@ -48,7 +50,7 @@ namespace GeoNorgeAPI
                             singleChar = "_",
                             wildCard = "%",
                             PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
-                            Literal = new LiteralType {Text = new[] {searchString}}
+                            Literal = new LiteralType {Text = new[] { searchString }}
                         }
                 };
             var filterNames = new ItemsChoiceType23[]
