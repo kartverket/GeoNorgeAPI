@@ -33,7 +33,7 @@ namespace Sample
 
         private void WorkerOnDoWork(object sender, DoWorkEventArgs args)
         {
-            SearchResultsType results = _geonorgeApi.Search((string)args.Argument);
+            SearchResultsType results = _geonorgeApi.SearchWithOrganisationName((string)args.Argument);
             args.Result = results;
         }
 

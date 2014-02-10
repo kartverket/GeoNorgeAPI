@@ -43,9 +43,6 @@
     <Reference Include="Arkitektum.GIS.Lib.SerializeUtil">
       <HintPath>..\packages\Arkitektum.GIS.Lib.SerializeUtil.1.0.1.0\lib\net45\Arkitektum.GIS.Lib.SerializeUtil.dll</HintPath>
     </Reference>
-    <Reference Include="GeoNorgeAPI">
-      <HintPath>..\packages\GeoNorgeAPI.1.2.4981.18434\lib\net45\GeoNorgeAPI.dll</HintPath>
-    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -108,6 +105,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoNorgeAPI\GeoNorgeAPI.csproj">
+      <Project>{febb51dc-c746-4884-982a-bc76a860a095}</Project>
+      <Name>GeoNorgeAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
