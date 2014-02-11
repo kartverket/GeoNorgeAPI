@@ -88,6 +88,18 @@ namespace GeoNorgeAPI.Tests
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Kartverket.");
         }
 
+        [Test]
+        public void ShouldReturnRecordsSpecifiedNumberOfRecords()
+        {
+            int numberOfRecords = 30;
+            var result = _geonorge.Search("data", 1, numberOfRecords);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on 'data' should return records.");
+            Assert.AreEqual(numberOfRecords, int.Parse(result.numberOfRecordsReturned), "Should have returned 30 records");
+        }
+        
+
+
         /*
         [Test]
         public void InsertMetadata()

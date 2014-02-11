@@ -34,11 +34,12 @@ namespace GeoNorgeAPI
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
         /// </summary>
         /// <param name="searchString">Search string, use % as wildcard</param>
-        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <param name="startPosition">Offset for pagination of results</param>
+        /// <param name="limit">Maximum number of records to return</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType Search(string searchString, int startPosition = 1)
+        public SearchResultsType Search(string searchString, int startPosition = 1, int limit = 20)
         {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition);
+            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
@@ -74,9 +75,9 @@ namespace GeoNorgeAPI
         /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1)
+        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1, int limit = 20)
         {
-            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition);
+            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition, limit);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
@@ -87,9 +88,9 @@ namespace GeoNorgeAPI
         /// <param name="filterNames">Array of names corresponding to the index in filters, see www.opengis.net.ItemsChoiceType23 for possible values</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1)
+        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20)
         {
-            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition);
+            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
