@@ -58,7 +58,7 @@ namespace GeoNorgeAPI
                     ItemsChoiceType23.PropertyIsLike, 
                 };
 
-            return GetRecordsWithFilter(filters, filterNames, startPosition);
+            return GetRecordsWithFilter(filters, filterNames, startPosition, limit);
         }
 
         public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20)
