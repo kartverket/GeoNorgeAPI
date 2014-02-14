@@ -53,20 +53,6 @@ namespace GeoNorgeAPI
             GetRecordByIdType request = _requestFactory.GetRecordById(uuid);
             return _requestRunner.GetRecordById(request);
         }
-
-        /// <summary>
-        /// Return single record in ISO 19139 format wrapped in a SimpleMetadata class. 
-        /// </summary>
-        /// <param name="uuid">Identifier of the metadata record to return</param>
-        /// <returns>The record or null when not found.</returns>
-        public SimpleMetadata GetRecordByUuidSimple(string uuid)
-        {
-            var record = GetRecordByUuid(uuid);
-            if (record == null)
-                return null;
-
-            return new SimpleMetadata(record);            
-        }
         
         /// <summary>
         /// Search and retrieve records by organisation name. 
