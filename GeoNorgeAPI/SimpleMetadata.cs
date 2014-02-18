@@ -352,6 +352,59 @@ namespace GeoNorgeAPI
         {
             return input != null ? input.CharacterString : null;
         }
+
+
+        public List<SimpleKeyword> Keywords
+        {
+            get
+            {
+                var keywords = new List<SimpleKeyword>();
+                var identification = GetIdentification();
+                if (identification != null && identification.descriptiveKeywords != null)
+                {
+                    foreach (var descriptiveKeyword in identification.descriptiveKeywords)
+                    {
+                        if (descriptiveKeyword.MD_Keywords != null && descriptiveKeyword.MD_Keywords.keyword != null)
+                        {
+                            string type = "";
+                            string thesaurus = null;
+                            if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode != null
+                                && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue != null)
+                            {
+                                type = descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue;
+                            }
+
+                            if (descriptiveKeyword.MD_Keywords.thesaurusName != null && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation != null
+                                && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title != null)
+                            {
+                                thesaurus = GetStringOrNull(descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title);
+                            }
+
+                            foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
+                            {
+                                string keywordValue = GetStringOrNull(keywordElement);
+                                if (!string.IsNullOrWhiteSpace(keywordValue))
+                                {
+                                    keywords.Add(new SimpleKeyword
+                                    {
+                                        Keyword = keywordValue,
+                                        Thesaurus = thesaurus,
+                                        Type = type
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+                return keywords;
+            }
+
+            set
+            {
+
+            }
+        }
+
     }
 
     public class SimpleContact
@@ -360,5 +413,12 @@ namespace GeoNorgeAPI
         public string Organization { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+    }
+
+    public class SimpleKeyword
+    {
+        public string Keyword { get; set; }
+        public string Type { get; set; }
+        public string Thesaurus { get; set; }
     }
 }

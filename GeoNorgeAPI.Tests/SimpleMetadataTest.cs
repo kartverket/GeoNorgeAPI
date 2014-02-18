@@ -2,6 +2,7 @@
 using System;
 using www.opengis.net;
 using GeoNorgeAPI;
+using System.Collections.Generic;
 
 namespace GeoNorgeAPI.Tests
 {
@@ -153,6 +154,14 @@ namespace GeoNorgeAPI.Tests
             _md.SupplementalDescription = newSupplementalDescription;
 
             Assert.AreEqual(newSupplementalDescription, _md.SupplementalDescription);
+        }
+
+        [Test]
+        public void ShoulReturnKeywords()
+        {
+            List<SimpleKeyword> keywords = _md.Keywords;
+
+            Assert.AreEqual(1, keywords.Count);
         }
     }
 }
