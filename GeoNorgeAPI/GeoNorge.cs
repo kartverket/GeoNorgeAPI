@@ -42,6 +42,19 @@ namespace GeoNorgeAPI
             GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
+        /// <summary>
+        /// Free text search for records, with ISO 19139 response.
+        /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
+        /// </summary>
+        /// <param name="searchString">Search string, use % as wildcard</param>
+        /// <param name="startPosition">Offset for pagination of results</param>
+        /// <param name="limit">Maximum number of records to return</param>
+        /// <returns>Results returned in ISO 19139 format (www.opengis.net.RecordType objects).</returns>
+        public SearchResultsType SearchIso(string searchString, int startPosition = 1, int limit = 20)
+        {
+            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, "csw:IsoRecord");
+            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
+        }
 
         /// <summary>
         /// Return single record in ISO 19139 format.

@@ -5,7 +5,7 @@ namespace GeoNorgeAPI
 {
     public class RequestFactory
     {
-        public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20)
+        public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20, string outputSchema = "csw:Record")
         {
             var filters = new object[]
                 {
@@ -24,7 +24,7 @@ namespace GeoNorgeAPI
                     ItemsChoiceType23.PropertyIsLike, 
                 };
 
-            return GetRecordsWithFilter(filters, filterNames, startPosition, limit);
+            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, outputSchema);
         }
 
         public GetRecordByIdType GetRecordById(string uuid)
@@ -61,13 +61,13 @@ namespace GeoNorgeAPI
             return GetRecordsWithFilter(filters, filterNames, startPosition, limit);
         }
 
-        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20)
+        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, string outputSchema = "csw:Record")
         {
             var getRecords = new GetRecordsType();
             getRecords.resultType = ResultType1.results;
             getRecords.startPosition = startPosition.ToString();
             getRecords.maxRecords = limit.ToString();
-            getRecords.outputSchema = "csw:Record";
+            getRecords.outputSchema = outputSchema;
 
             var query = new QueryType();
             query.typeNames = new[] { new XmlQualifiedName("Record", "http://www.opengis.net/cat/csw/2.0.2") };

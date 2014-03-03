@@ -97,8 +97,17 @@ namespace GeoNorgeAPI.Tests
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on 'data' should return records.");
             Assert.AreEqual(numberOfRecords, int.Parse(result.numberOfRecordsReturned), "Should have returned 30 records");
         }
-        
 
+        [Test]
+        public void ShouldSearchAndReturnIsoRecords()
+        {
+            var result = _geonorge.SearchIso("data");
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0);
+
+            MD_Metadata_Type md = result.Items[0] as MD_Metadata_Type;
+            Assert.NotNull(md);
+        }
 
         /*
         [Test]
