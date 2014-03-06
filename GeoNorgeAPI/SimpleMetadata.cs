@@ -12,6 +12,12 @@ namespace GeoNorgeAPI
     /// </summary>
     public class SimpleMetadata
     {
+        private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
+        private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
+        private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
+        private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
+        private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
+
         private MD_Metadata_Type _md;
 
         /// <summary>
@@ -405,6 +411,226 @@ namespace GeoNorgeAPI
             }
         }
 
+        // dataset
+        public string TopicCategory
+        {
+            get {
+                string topicCategory = null;
+                var identification = GetDatasetIdentification();
+                if (identification != null && identification.topicCategory != null && identification.topicCategory.Length > 0
+                    && identification.topicCategory[0] != null)
+                {
+                    var topic = identification.topicCategory[0];
+                    if (topic.MD_TopicCategoryCode != null)
+                    {
+                        topicCategory = topic.MD_TopicCategoryCode.ToString();
+                    }
+                }
+
+                return topicCategory;
+            }
+            set {
+                var identification = GetDatasetIdentification();
+                if (identification != null)
+                {
+                    if (identification.topicCategory == null)
+                    {
+                        identification.topicCategory = new MD_TopicCategoryCode_PropertyType [1];
+                    }
+
+                    identification.topicCategory[0] =
+                        new MD_TopicCategoryCode_PropertyType
+                        {
+                            MD_TopicCategoryCode = (MD_TopicCategoryCode_Type)Enum.Parse(typeof(MD_TopicCategoryCode_Type), value, true)
+                        };
+                }
+            }
+        }
+
+        public List<SimpleThumbnail> Thumbnails
+        {
+            get {
+                List<SimpleThumbnail> thumbnails = new List<SimpleThumbnail>();
+                
+                var identification = GetIdentification();
+                if (identification != null && identification.graphicOverview != null && identification.graphicOverview.Length > 0
+                    && identification.graphicOverview[0] != null)
+                {
+
+                    foreach (MD_BrowseGraphic_PropertyType browseGraphic in identification.graphicOverview)
+                    {
+                        thumbnails.Add(new SimpleThumbnail
+                        {
+                            Type = browseGraphic.MD_BrowseGraphic.fileType.CharacterString,
+                            URL = browseGraphic.MD_BrowseGraphic.fileName.CharacterString
+                        });
+                    }
+                    
+                }
+                return thumbnails;
+            }
+            set {
+                if (value != null) {
+                    var identification = GetIdentification();
+                    if (identification != null)
+                    {
+                        List<MD_BrowseGraphic_PropertyType> graphics = new List<MD_BrowseGraphic_PropertyType>();
+                        foreach(SimpleThumbnail thumbnail in value) {
+                            MD_BrowseGraphic_PropertyType graphic = new MD_BrowseGraphic_PropertyType
+                            {
+                                MD_BrowseGraphic = new MD_BrowseGraphic_Type
+                                {
+                                    fileName = new CharacterString_PropertyType { CharacterString = thumbnail.URL },
+                                    fileType = new CharacterString_PropertyType { CharacterString = thumbnail.Type }
+                                }
+                            };
+                            graphics.Add(graphic);
+                        }
+
+                        identification.graphicOverview = graphics.ToArray();
+                    }
+                }
+            }
+        }
+
+        private CI_OnlineResource_Type GetMetadataExtensionInfoWithApplicationProfile(string applicationProfile)
+        {
+            CI_OnlineResource_Type onlineResource = null;
+            if (_md.metadataExtensionInfo != null && _md.metadataExtensionInfo.Length > 0)
+            {
+                foreach (MD_MetadataExtensionInformation_PropertyType ext in _md.metadataExtensionInfo)
+                {
+                    if (ext.MD_MetadataExtensionInformation != null && ext.MD_MetadataExtensionInformation.extensionOnLineResource != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource.applicationProfile != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource.applicationProfile.CharacterString == applicationProfile)
+                    {
+                        onlineResource = ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+                    }
+                }
+            }
+            return onlineResource;
+        }
+
+        private string GetMetadataExtensionInfoURLWithApplicationProfile(string applicationProfile)
+        {
+            string url = null;
+            CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(applicationProfile);
+            if (onlineResource != null && onlineResource.linkage != null)
+            {
+                url = onlineResource.linkage.URL;
+            }
+            return url;
+        }
+
+        public string ProductSpecificationUrl
+        {
+            get {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC);
+            }
+            set {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC };
+                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC };
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+        private void AddOnlineResourceToMetadataExtensionInfo(CI_OnlineResource_Type onlineResource)
+        {
+            MD_MetadataExtensionInformation_PropertyType extensionInfo = new MD_MetadataExtensionInformation_PropertyType();
+            extensionInfo.MD_MetadataExtensionInformation = new MD_MetadataExtensionInformation_Type
+            {
+                extensionOnLineResource = new CI_OnlineResource_PropertyType
+                {
+                    CI_OnlineResource = onlineResource
+                }
+            };
+
+            MD_MetadataExtensionInformation_PropertyType[] newExtensionInfo = new MD_MetadataExtensionInformation_PropertyType[] {
+                    extensionInfo
+                };
+                
+            if (_md.metadataExtensionInfo == null)
+            {
+                _md.metadataExtensionInfo = newExtensionInfo;
+            }
+            else
+            {
+                _md.metadataExtensionInfo = _md.metadataExtensionInfo.Concat(newExtensionInfo).ToArray();
+            }
+        }
+
+
+        public string ProductSheetUrl
+        {
+            get
+            {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSHEET);
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSHEET);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSHEET };
+                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSHEET };
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+        public string LegendDescriptionUrl
+        {
+            get
+            {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_LEGEND);
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_LEGEND);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_LEGEND };
+                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_LEGEND };
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+
+        public string ProductPageUrl
+        {
+            get
+            {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_PRODUCTPAGE);
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTPAGE);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTPAGE };
+                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTPAGE };
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }    
     }
 
     public class SimpleContact
@@ -420,5 +646,11 @@ namespace GeoNorgeAPI
         public string Keyword { get; set; }
         public string Type { get; set; }
         public string Thesaurus { get; set; }
+    }
+
+    public class SimpleThumbnail
+    {
+        public string URL { get; set; }
+        public string Type { get; set; }
     }
 }
