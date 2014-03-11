@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      1.8: More mappings in SimpleMetadata. TopicCategory, Thumbnails, Product specification and more.
       1.7: Add extra search method, which returns ISO 19139 instead of Dublin Core records. 
       1.6: More fields added to the SimpleMetadata model. Removing SimpleMetadata from API-methods to allow more loose coupling and avoid duplicating methods. 
       1.5: Add limit parameter on search methods to control the number of records returned
