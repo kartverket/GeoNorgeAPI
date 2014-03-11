@@ -461,7 +461,7 @@ namespace GeoNorgeAPI
                     {
                         thumbnails.Add(new SimpleThumbnail
                         {
-                            Type = browseGraphic.MD_BrowseGraphic.fileType.CharacterString,
+                            Type = browseGraphic.MD_BrowseGraphic.fileDescription.CharacterString,
                             URL = browseGraphic.MD_BrowseGraphic.fileName.CharacterString
                         });
                     }
