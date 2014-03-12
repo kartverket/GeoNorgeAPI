@@ -630,7 +630,53 @@ namespace GeoNorgeAPI
                 onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTPAGE };
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
-        }    
+        }
+
+        public string SpatialRepresentation
+        {
+            get
+            {
+                string value = null;
+                var datasetIdentification = GetDatasetIdentification();
+                if (datasetIdentification != null && datasetIdentification.spatialRepresentationType != null 
+                    && datasetIdentification.spatialRepresentationType.Length > 0)
+                {
+                    MD_SpatialRepresentationTypeCode_PropertyType spatialRepType = datasetIdentification.spatialRepresentationType[0];
+                    if (spatialRepType != null && spatialRepType.MD_SpatialRepresentationTypeCode != null)
+                    {
+                        value = spatialRepType.MD_SpatialRepresentationTypeCode.codeListValue;
+                    }
+                }
+                return value;
+            }
+
+            set
+            {
+                MD_DataIdentification_Type datasetIdentification = GetDatasetIdentification();
+                if (datasetIdentification != null)
+                {
+                    MD_SpatialRepresentationTypeCode_PropertyType[] newSpatialRepresentationArray = new MD_SpatialRepresentationTypeCode_PropertyType[] {
+                        new MD_SpatialRepresentationTypeCode_PropertyType {
+                            MD_SpatialRepresentationTypeCode = new CodeListValue_Type {
+                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode",
+                                codeListValue = value
+                            }
+                        }
+                    };
+
+                    MD_SpatialRepresentationTypeCode_PropertyType[] spatialRepresentationArray = datasetIdentification.spatialRepresentationType;
+
+                    if (spatialRepresentationArray == null)
+                    {
+                        spatialRepresentationArray = new MD_SpatialRepresentationTypeCode_PropertyType[0];
+                    }
+                    datasetIdentification.spatialRepresentationType = spatialRepresentationArray.Concat(newSpatialRepresentationArray).ToArray();
+                }
+            }
+        }
+
+        
+
     }
 
     public class SimpleContact

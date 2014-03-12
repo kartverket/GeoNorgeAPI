@@ -157,11 +157,45 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
-        public void ShoulReturnKeywords()
+        public void ShouldReturnKeywords()
         {
             List<SimpleKeyword> keywords = _md.Keywords;
 
             Assert.AreEqual(1, keywords.Count);
         }
+
+        [Test]
+        public void ShouldSetSpatialRepresentationWhenSpatialRepresentationIsNull()
+        {
+            _md.SpatialRepresentation = "vector";
+
+            MD_Identification_PropertyType identification = (MD_Identification_PropertyType)_md.GetMetadata().identificationInfo[0];
+            MD_DataIdentification_Type dataIdentification = (MD_DataIdentification_Type)identification.AbstractMD_Identification;
+
+            Assert.AreEqual("vector", dataIdentification.spatialRepresentationType[0].MD_SpatialRepresentationTypeCode.codeListValue);
+        }
+
+        [Test]
+        public void ShouldSetSpatialRepresentationWhenSpatialRepresentationExists()
+        {
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialRepresentationType = new MD_SpatialRepresentationTypeCode_PropertyType[] {
+                new MD_SpatialRepresentationTypeCode_PropertyType {
+                    MD_SpatialRepresentationTypeCode = new CodeListValue_Type {
+                        codeListValue = "annet"
+                    }
+                }
+            };
+
+
+            _md.SpatialRepresentation = "vector";
+
+            MD_Identification_PropertyType identification = (MD_Identification_PropertyType)_md.GetMetadata().identificationInfo[0];
+            MD_DataIdentification_Type dataIdentification = (MD_DataIdentification_Type)identification.AbstractMD_Identification;
+
+            Assert.AreEqual(2, dataIdentification.spatialRepresentationType.Length);
+            Assert.AreEqual("annet", dataIdentification.spatialRepresentationType[0].MD_SpatialRepresentationTypeCode.codeListValue);
+            Assert.AreEqual("vector", dataIdentification.spatialRepresentationType[1].MD_SpatialRepresentationTypeCode.codeListValue);
+        }
+
     }
 }
