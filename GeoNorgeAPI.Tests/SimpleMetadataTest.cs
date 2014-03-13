@@ -197,5 +197,38 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("vector", dataIdentification.spatialRepresentationType[1].MD_SpatialRepresentationTypeCode.codeListValue);
         }
 
+        [Test]
+        public void ShouldReturnDistributionFormatAsNullWhenNull()
+        {
+            Assert.IsNull(_md.DistributionFormat);
+        }
+
+
+        [Test]
+        public void ShouldReturnDistributionFormatWhenPresent()
+        {
+            string expectedName = "navn";
+            string expectedVersion = "versjon";
+
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new MD_Format_PropertyType[] { 
+                        new MD_Format_PropertyType {
+                            MD_Format = new MD_Format_Type {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = new CharacterString_PropertyType { CharacterString = expectedVersion }
+                            }
+                        }
+                    }
+                }
+            };
+
+            var format = _md.DistributionFormat;
+            Assert.NotNull(format);
+            Assert.AreEqual(expectedName, format.Name);
+            Assert.AreEqual(expectedVersion, format.Version);
+        }
     }
 }

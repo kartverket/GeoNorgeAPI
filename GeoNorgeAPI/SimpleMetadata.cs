@@ -675,7 +675,57 @@ namespace GeoNorgeAPI
             }
         }
 
-        
+        // TODO: Handle multiple distribution formats
+        public DistributionFormat DistributionFormat
+        {
+            get
+            {
+                DistributionFormat format = null;
+                if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null 
+                    && _md.distributionInfo.MD_Distribution.distributionFormat != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat.Length > 0
+                    && _md.distributionInfo.MD_Distribution.distributionFormat[0] != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name != null)
+                {
+                    format = new DistributionFormat {
+                        Name = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name.CharacterString,
+                        Version = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.version.CharacterString
+                    };
+                }
+                return format;
+            }
+
+            set
+            {
+                if (_md.distributionInfo == null)
+                {
+                    _md.distributionInfo = new MD_Distribution_PropertyType { MD_Distribution = new MD_Distribution_Type() };
+                }
+                if (_md.distributionInfo.MD_Distribution == null)
+                {
+                    _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
+                }
+
+                _md.distributionInfo.MD_Distribution.distributionFormat = new MD_Format_PropertyType[]
+                {
+                    new MD_Format_PropertyType {
+                        MD_Format = new MD_Format_Type
+                        {
+                            name = toCharString(value.Name),
+                            version = toCharString(value.Version)
+                        }
+                    }
+                };
+
+            }
+        }
+
+        private CharacterString_PropertyType toCharString(string input)
+        {
+            return new CharacterString_PropertyType { CharacterString = input };
+        }
 
     }
 
@@ -699,4 +749,11 @@ namespace GeoNorgeAPI
         public string URL { get; set; }
         public string Type { get; set; }
     }
+
+    public class DistributionFormat
+    {
+        public string Name { get; set; }
+        public string Version { get; set; }
+    }
+
 }
