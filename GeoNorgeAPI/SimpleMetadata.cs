@@ -676,11 +676,11 @@ namespace GeoNorgeAPI
         }
 
         // TODO: Handle multiple distribution formats
-        public DistributionFormat DistributionFormat
+        public SimpleDistributionFormat DistributionFormat
         {
             get
             {
-                DistributionFormat format = null;
+                SimpleDistributionFormat format = null;
                 if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null 
                     && _md.distributionInfo.MD_Distribution.distributionFormat != null
                     && _md.distributionInfo.MD_Distribution.distributionFormat.Length > 0
@@ -689,9 +689,10 @@ namespace GeoNorgeAPI
                     && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name != null
                     && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name != null)
                 {
-                    format = new DistributionFormat {
-                        Name = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name.CharacterString,
-                        Version = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.version.CharacterString
+                    var df = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
+                    format = new SimpleDistributionFormat {
+                        Name = df.name.CharacterString,
+                        Version = df.version != null ? df.version.CharacterString : null
                     };
                 }
                 return format;
@@ -715,6 +716,103 @@ namespace GeoNorgeAPI
                         {
                             name = toCharString(value.Name),
                             version = toCharString(value.Version)
+                        }
+                    }
+                };
+
+            }
+        }
+
+        public SimpleReferenceSystem ReferenceSystem
+        {
+            get
+            {
+                SimpleReferenceSystem value = null;
+
+                if (_md.referenceSystemInfo != null && _md.referenceSystemInfo.Length > 0 && _md.referenceSystemInfo[0] != null
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem != null 
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier != null
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier != null
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null)
+                {
+                    RS_Identifier_Type identifier = _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
+
+                    value = new SimpleReferenceSystem
+                    {
+                        CoordinateSystem = identifier.code.CharacterString,
+                        Namespace = identifier.codeSpace.CharacterString
+                    };
+                }
+                return value;
+            }
+
+            set
+            {
+                _md.referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] {
+                    new MD_ReferenceSystem_PropertyType {
+                        MD_ReferenceSystem = new MD_ReferenceSystem_Type {
+                            referenceSystemIdentifier = new RS_Identifier_PropertyType {
+                                 RS_Identifier = new RS_Identifier_Type { 
+                                     code = toCharString(value.CoordinateSystem),
+                                     codeSpace = toCharString(value.Namespace)
+                                 }
+                            }
+                        }
+                    }
+                };
+            }
+        }
+
+        public SimpleDistributionDetails DistributionDetails
+        {
+            get
+            {
+                SimpleDistributionDetails value = null;
+
+                if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions.Length > 0
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0] != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine.Length > 0
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0] != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage != null)
+                {
+                    var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
+                    value = new SimpleDistributionDetails
+                    {
+                        URL = resource.linkage.URL,
+                        Protocol = resource.protocol != null ? resource.protocol.CharacterString : null
+                    };
+                }
+                return value;
+            }
+
+            set
+            {
+                if (_md.distributionInfo == null)
+                {
+                    _md.distributionInfo = new MD_Distribution_PropertyType();
+                }
+                if (_md.distributionInfo.MD_Distribution == null)
+                {
+                    _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
+                }
+
+                _md.distributionInfo.MD_Distribution.transferOptions = new MD_DigitalTransferOptions_PropertyType[] {
+                    new MD_DigitalTransferOptions_PropertyType {
+                        MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
+                            onLine = new CI_OnlineResource_PropertyType[] {
+                                new CI_OnlineResource_PropertyType {
+                                    CI_OnlineResource = new CI_OnlineResource_Type {
+                                         linkage = new URL_PropertyType { URL = value.URL },
+                                         protocol = new CharacterString_PropertyType { CharacterString = value.Protocol }
+                                    }
+                                }
+                            }
                         }
                     }
                 };
@@ -750,10 +848,22 @@ namespace GeoNorgeAPI
         public string Type { get; set; }
     }
 
-    public class DistributionFormat
+    public class SimpleDistributionFormat
     {
         public string Name { get; set; }
         public string Version { get; set; }
+    }
+
+    public class SimpleReferenceSystem
+    {
+        public string CoordinateSystem { get; set; }
+        public string Namespace { get; set; }
+    }
+
+    public class SimpleDistributionDetails
+    {
+        public string URL { get; set; }
+        public string Protocol { get; set; }
     }
 
 }

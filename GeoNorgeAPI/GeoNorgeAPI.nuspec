@@ -11,6 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.0.1: Fix null reference exception in distribution format version.
+      2.0.0: Mapping of distribution fields
       1.9: Use file description instead of file type when mapping thumbnails in SimpleMetadata.
       1.8: More mappings in SimpleMetadata. TopicCategory, Thumbnails, Product specification and more.
       1.7: Add extra search method, which returns ISO 19139 instead of Dublin Core records. 

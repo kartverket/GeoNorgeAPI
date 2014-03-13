@@ -230,5 +230,137 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedName, format.Name);
             Assert.AreEqual(expectedVersion, format.Version);
         }
+
+        [Test]
+        public void ShouldHandleNullValueInDistributionFormatVersion()
+        {
+            string expectedName = "navn";
+
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new MD_Format_PropertyType[] { 
+                        new MD_Format_PropertyType {
+                            MD_Format = new MD_Format_Type {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = null
+                            }
+                        }
+                    }
+                }
+            };
+
+            var format = _md.DistributionFormat;
+            Assert.NotNull(format);
+            Assert.AreEqual(expectedName, format.Name);
+            Assert.IsNull(format.Version);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenReferenceSystemIsNull()
+        {
+            Assert.IsNull(_md.ReferenceSystem);
+        }
+
+        [Test]
+        public void ShouldReturnReferenceSystemWhenPresent()
+        {
+            string expectedCode = "code";
+            string expectedCodeSpace = "codespace";
+            _md.GetMetadata().referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] {
+                new MD_ReferenceSystem_PropertyType {
+                    MD_ReferenceSystem = new MD_ReferenceSystem_Type {
+                        referenceSystemIdentifier = new RS_Identifier_PropertyType {
+                            RS_Identifier = new RS_Identifier_Type {
+                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
+                            }
+                        }
+                    }
+                }
+                
+            };
+
+            var rs = _md.ReferenceSystem;
+            Assert.NotNull(rs);
+            Assert.AreEqual(expectedCode, rs.CoordinateSystem);
+            Assert.AreEqual(expectedCodeSpace, rs.Namespace);
+        }
+
+        [Test]
+        public void ShouldUpdateReferenceSystem()
+        {
+            string expectedCoordinateSystem = "system";
+            string expectedNamespace = "namespace";
+            _md.ReferenceSystem = new SimpleReferenceSystem
+            {
+                CoordinateSystem = expectedCoordinateSystem,
+                Namespace = expectedNamespace
+            };
+
+            var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
+
+            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenDistributionDetailsIsNull()
+        {
+            _md.GetMetadata().distributionInfo = null;
+
+            Assert.IsNull(_md.DistributionDetails);
+        }
+
+        [Test]
+        public void ShouldReturnDistributionDetails()
+        {
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    transferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                    {
+                        new MD_DigitalTransferOptions_PropertyType {
+                            MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
+                                onLine = new CI_OnlineResource_PropertyType[] 
+                                {
+                                    new CI_OnlineResource_PropertyType 
+                                    {
+                                        CI_OnlineResource = new CI_OnlineResource_Type 
+                                        { 
+                                            linkage = new URL_PropertyType { URL = expectedURL },
+                                            protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol }
+                                        }
+                                    }
+                                }
+                            }    
+                        }
+                    }
+                }
+            };
+
+            var details = _md.DistributionDetails;
+
+            Assert.NotNull(details);
+            Assert.AreEqual(expectedURL, details.URL);
+            Assert.AreEqual(expectedProtocol, details.Protocol);
+
+        }
+
+        [Test]
+        public void ShouldUpdateDistributionDetails()
+        {
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            
+            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL };
+
+            var resource = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
+            Assert.AreEqual(expectedURL, resource.linkage.URL);
+            Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
+        }
     }
 }
