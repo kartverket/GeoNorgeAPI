@@ -869,7 +869,7 @@ namespace GeoNorgeAPI
         }
 
         /// <summary>
-        /// Values from codelist: http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode
+        /// Values from codelist: http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode
         /// </summary>
         public string MaintenanceFrequency
         {
@@ -895,21 +895,54 @@ namespace GeoNorgeAPI
             set
             {
                 var identification = GetIdentificationNotNull();
-                if (identification != null)
-                {
-                    identification.resourceMaintenance = new MD_MaintenanceInformation_PropertyType[] {
-                        new MD_MaintenanceInformation_PropertyType {
-                            MD_MaintenanceInformation = new MD_MaintenanceInformation_Type {
-                                maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
-                                    MD_MaintenanceFrequencyCode = new CodeListValue_Type {
-                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode",
-                                        codeListValue = value
-                                    }
+                identification.resourceMaintenance = new MD_MaintenanceInformation_PropertyType[] {
+                    new MD_MaintenanceInformation_PropertyType {
+                        MD_MaintenanceInformation = new MD_MaintenanceInformation_Type {
+                            maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
+                                MD_MaintenanceFrequencyCode = new CodeListValue_Type {
+                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode",
+                                    codeListValue = value
                                 }
                             }
                         }
-                    };
+                    }
+                };
+            }
+        }
+
+        /// <summary>
+        /// Values from codelist: http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode
+        /// </summary>
+        public string Status
+        {
+            get
+            {
+                string value = null;
+
+                var identification = GetIdentification();
+                if (identification != null
+                    && identification.status != null
+                    && identification.status.Length > 0
+                    && identification.status[0] != null
+                    && identification.status[0].MD_ProgressCode != null)
+                {
+                    value = identification.status[0].MD_ProgressCode.codeListValue;
                 }
+
+                return value;
+            }
+
+            set
+            {
+                var identification = GetIdentificationNotNull();
+                identification.status = new MD_ProgressCode_PropertyType[] { 
+                    new MD_ProgressCode_PropertyType {
+                        MD_ProgressCode = new CodeListValue_Type {
+                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode",
+                            codeListValue = value
+                        }
+                    }
+                };
             }
         }
 

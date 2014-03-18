@@ -427,6 +427,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnMaintenanceFrequency()
         {
+            string expectedFrequency = "daily";
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceMaintenance = new MD_MaintenanceInformation_PropertyType[]
             {
                 new MD_MaintenanceInformation_PropertyType {
@@ -434,7 +435,7 @@ namespace GeoNorgeAPI.Tests
                         maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
                             MD_MaintenanceFrequencyCode = new CodeListValue_Type {
                                 codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode", 
-                                codeListValue = "daily"
+                                codeListValue = expectedFrequency
                             }
                         }
                     }
@@ -443,7 +444,7 @@ namespace GeoNorgeAPI.Tests
 
             string frequency = _md.MaintenanceFrequency;
 
-            Assert.IsNotNull(frequency);
+            Assert.AreEqual(expectedFrequency, frequency);
         }
 
         [Test]
@@ -456,6 +457,36 @@ namespace GeoNorgeAPI.Tests
             string value = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceMaintenance[0].MD_MaintenanceInformation.maintenanceAndUpdateFrequency.MD_MaintenanceFrequencyCode.codeListValue;
 
             Assert.AreEqual(expectedFrequency, value);
+        }
+
+
+
+        [Test]
+        public void ShouldReturnNullWhenStatusIsNull()
+        {
+            Assert.IsNull(_md.Status);
+        }
+
+        [Test]
+        public void ShouldReturnStatus()
+        {
+            string expectedStatus = "completed";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.status = new MD_ProgressCode_PropertyType[] { new MD_ProgressCode_PropertyType { 
+                MD_ProgressCode =  new CodeListValue_Type { codeListValue = expectedStatus }
+            }};
+
+            Assert.AreEqual(expectedStatus, _md.Status);
+        }
+
+        [Test]
+        public void ShouldUpdateStatus()
+        {
+            string expectedStatus = "completed";
+            _md.Status = expectedStatus;
+
+            string value = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.status[0].MD_ProgressCode.codeListValue;
+
+            Assert.AreEqual(expectedStatus, value);
         }
     }
 }
