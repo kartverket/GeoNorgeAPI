@@ -415,5 +415,47 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("5000", item.MD_RepresentativeFraction.denominator.Integer);
         }
 
+        [Test]
+        public void ShouldReturnNullWhenNoMaintenanceFrequencyExists()
+        {
+            string frequency = _md.MaintenanceFrequency;
+
+            Assert.IsNull(frequency);
+        }
+
+        
+        [Test]
+        public void ShouldReturnMaintenanceFrequency()
+        {
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceMaintenance = new MD_MaintenanceInformation_PropertyType[]
+            {
+                new MD_MaintenanceInformation_PropertyType {
+                    MD_MaintenanceInformation = new MD_MaintenanceInformation_Type {
+                        maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
+                            MD_MaintenanceFrequencyCode = new CodeListValue_Type {
+                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode", 
+                                codeListValue = "daily"
+                            }
+                        }
+                    }
+                }
+            };
+
+            string frequency = _md.MaintenanceFrequency;
+
+            Assert.IsNotNull(frequency);
+        }
+
+        [Test]
+        public void ShouldUpdateMaintenanceFrequency()
+        {
+            string expectedFrequency = "weekly";
+
+            _md.MaintenanceFrequency = expectedFrequency;
+
+            string value = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceMaintenance[0].MD_MaintenanceInformation.maintenanceAndUpdateFrequency.MD_MaintenanceFrequencyCode.codeListValue;
+
+            Assert.AreEqual(expectedFrequency, value);
+        }
     }
 }

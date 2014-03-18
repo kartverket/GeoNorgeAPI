@@ -868,6 +868,51 @@ namespace GeoNorgeAPI
             }
         }
 
+        /// <summary>
+        /// Values from codelist: http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode
+        /// </summary>
+        public string MaintenanceFrequency
+        {
+            get 
+            {
+                string value = null;
+                var identification = GetIdentification();
+                if (identification != null
+                    && identification.resourceMaintenance != null
+                    && identification.resourceMaintenance.Length > 0
+                    && identification.resourceMaintenance[0] != null
+                    && identification.resourceMaintenance[0].MD_MaintenanceInformation != null
+                    && identification.resourceMaintenance[0].MD_MaintenanceInformation.maintenanceAndUpdateFrequency != null
+                    && identification.resourceMaintenance[0].MD_MaintenanceInformation.maintenanceAndUpdateFrequency.MD_MaintenanceFrequencyCode != null)
+                {
+                    var codelist = identification.resourceMaintenance[0].MD_MaintenanceInformation.maintenanceAndUpdateFrequency.MD_MaintenanceFrequencyCode;
+                    value = codelist.codeListValue;
+                }
+
+                return value;
+            }
+
+            set
+            {
+                var identification = GetIdentificationNotNull();
+                if (identification != null)
+                {
+                    identification.resourceMaintenance = new MD_MaintenanceInformation_PropertyType[] {
+                        new MD_MaintenanceInformation_PropertyType {
+                            MD_MaintenanceInformation = new MD_MaintenanceInformation_Type {
+                                maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
+                                    MD_MaintenanceFrequencyCode = new CodeListValue_Type {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode",
+                                        codeListValue = value
+                                    }
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
