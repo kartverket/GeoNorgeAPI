@@ -488,5 +488,143 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(expectedStatus, value);
         }
+
+        [Test]
+        public void ShouldReturnNullWhenQualitySpecificationDataIsNull()
+        {
+            _md.GetMetadata().dataQualityInfo = null;
+            Assert.IsNull(_md.QualitySpecification);
+        }
+
+        [Test]
+        public void ShouldReturnQualitySpecificationData()
+        {
+            string expectedTitle = "title";
+            string expectedDate = "2014-01-01";
+            string expectedDateType = "creation";
+            string expectedExplanation = "explained";
+            bool expectedResult = true;
+
+            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] 
+            {
+                new DQ_DataQuality_PropertyType {
+                    DQ_DataQuality = new DQ_DataQuality_Type {
+                        report = new DQ_Element_PropertyType[] {
+                            new DQ_Element_PropertyType {
+                                AbstractDQ_Element = new DQ_DomainConsistency_Type {
+                                    result = new DQ_Result_PropertyType[] {
+                                        new DQ_Result_PropertyType {
+                                            AbstractDQ_Result = new DQ_ConformanceResult_Type {
+                                                specification = new CI_Citation_PropertyType {
+                                                    CI_Citation = new CI_Citation_Type {
+                                                        title = toCharString(expectedTitle),
+                                                        date = new CI_Date_PropertyType[] {
+                                                            new CI_Date_PropertyType {
+                                                                CI_Date = new CI_Date_Type {
+                                                                    date = new Date_PropertyType {
+                                                                        Item = expectedDate  
+                                                                    },
+                                                                    dateType = new CI_DateTypeCode_PropertyType {
+                                                                        CI_DateTypeCode = new CodeListValue_Type {
+                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeListValue = expectedDateType
+                                                                        }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }    
+                                                },
+                                                explanation = toCharString(expectedExplanation),
+                                                pass = new Boolean_PropertyType { Boolean = expectedResult }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            SimpleQualitySpecification spec = _md.QualitySpecification;
+
+            Assert.IsNotNull(spec);
+            Assert.AreEqual(expectedTitle, spec.Title);
+            Assert.AreEqual(expectedDate, spec.Date);
+            Assert.AreEqual(expectedDateType, spec.DateType);
+            Assert.AreEqual(expectedExplanation, spec.Explanation);
+            Assert.AreEqual(expectedResult, spec.Result);
+        }
+
+        [Test]
+        public void ShouldUpdateQualitySpecification()
+        {
+            string expectedTitle = "title";
+            string expectedDate = "2014-01-01";
+            string expectedDateType = "creation";
+            string expectedExplanation = "explained";
+            bool expectedResult = true;
+
+            _md.QualitySpecification = new SimpleQualitySpecification
+            {
+                Title = expectedTitle,
+                Date = expectedDate,
+                DateType = expectedDateType,
+                Explanation = expectedExplanation,
+                Result = expectedResult
+            };
+
+            DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
+            DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
+
+            Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
+            Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
+            Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
+            Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
+        }
+        
+        [Test]
+        public void ShouldReturnNullWhenProcessHistoryIsNull()
+        {
+            _md.GetMetadata().dataQualityInfo = null;
+            Assert.IsNull(_md.ProcessHistory);
+        }
+
+        [Test]
+        public void ShouldReturnProcessHistory()
+        {
+            string expectedProcessHistory = "history";
+
+            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                new DQ_DataQuality_PropertyType {
+                    DQ_DataQuality = new DQ_DataQuality_Type {
+                        lineage = new LI_Lineage_PropertyType {
+                            LI_Lineage = new LI_Lineage_Type {
+                                statement = toCharString(expectedProcessHistory)
+                            }
+                        }
+                    }
+                }
+            };
+
+            Assert.AreEqual(expectedProcessHistory, _md.ProcessHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateProcessHistory()
+        {
+            string expectedProcessHistory = "updated history";
+            _md.ProcessHistory = expectedProcessHistory;
+
+            Assert.AreEqual(expectedProcessHistory, _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement.CharacterString);
+        }
+
+        private CharacterString_PropertyType toCharString(string input)
+        {
+            return new CharacterString_PropertyType { CharacterString = input };
+        }
     }
 }

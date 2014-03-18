@@ -946,6 +946,181 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleQualitySpecification QualitySpecification
+        {
+            get
+            {
+                SimpleQualitySpecification value = null;
+                
+                if (_md.dataQualityInfo != null
+                    && _md.dataQualityInfo.Length > 0
+                    && _md.dataQualityInfo[0] != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.report != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.report.Length > 0
+                    && _md.dataQualityInfo[0].DQ_DataQuality.report[0] != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element != null)
+                {
+
+                    DQ_DomainConsistency_Type domainConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
+                    if (domainConsistency != null
+                        && domainConsistency.result != null
+                        && domainConsistency.result.Length > 0
+                        && domainConsistency.result[0] != null
+                        && domainConsistency.result[0].AbstractDQ_Result != null)
+                    {
+                        DQ_ConformanceResult_Type result = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
+                        if (result != null) {
+                            value = new SimpleQualitySpecification();
+
+                            if (result.specification != null
+                            && result.specification.CI_Citation != null) {
+
+
+                                // title
+                                if (result.specification.CI_Citation.title != null) {
+                                    value.Title = result.specification.CI_Citation.title.CharacterString;
+                                }
+
+
+                                // date and datetype
+                                if (result.specification.CI_Citation.date != null
+                                    && result.specification.CI_Citation.date.Length > 0 
+                                    && result.specification.CI_Citation.date[0] != null
+                                    && result.specification.CI_Citation.date[0].CI_Date != null) {
+
+                                        CI_Date_Type dateType = result.specification.CI_Citation.date[0].CI_Date;
+
+                                        if (dateType.date != null && dateType.date.Item != null)
+                                        {
+                                            string date = dateType.date.Item as string;
+                                            if (date != null)
+                                            {
+                                                value.Date = date;
+                                            }
+                                        }
+
+                                        if (dateType.dateType != null && dateType.dateType.CI_DateTypeCode != null) {
+                                            value.DateType = dateType.dateType.CI_DateTypeCode.codeListValue;
+                                        }
+                                }
+
+                                // explanation
+                                if (result.explanation != null)
+                                {
+                                    value.Explanation = result.explanation.CharacterString;
+                                }
+
+                                // result
+                                if (result.pass != null)
+                                {
+                                    value.Result = result.pass.Boolean;
+                                }
+                            }                         
+                        }
+                    }
+                }
+                return value;
+            }
+
+            set
+            {
+                DQ_Element_PropertyType[] reports = new DQ_Element_PropertyType[] {
+                    new DQ_Element_PropertyType {
+                        AbstractDQ_Element = new DQ_DomainConsistency_Type {
+                            result = new DQ_Result_PropertyType[] {
+                                new DQ_Result_PropertyType {
+                                    AbstractDQ_Result = new DQ_ConformanceResult_Type {
+                                        specification = new CI_Citation_PropertyType {
+                                            CI_Citation = new CI_Citation_Type {
+                                                title = toCharString(value.Title),
+                                                date = new CI_Date_PropertyType[] {
+                                                    new CI_Date_PropertyType {
+                                                        CI_Date = new CI_Date_Type {
+                                                            date = new Date_PropertyType {
+                                                                Item = value.Date  
+                                                            },
+                                                            dateType = new CI_DateTypeCode_PropertyType {
+                                                                CI_DateTypeCode = new CodeListValue_Type {
+                                                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                    codeListValue = value.DateType
+                                                                }    
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }    
+                                        },
+                                        explanation = toCharString(value.Explanation),
+                                        pass = new Boolean_PropertyType { Boolean = value.Result }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+
+                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
+                {
+                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                        new DQ_DataQuality_PropertyType {
+                            DQ_DataQuality = new DQ_DataQuality_Type {
+                                report = reports
+                            }
+                        }
+                    };
+                }
+                else
+                {
+                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
+                }
+            }
+        }
+
+        public string ProcessHistory 
+        {
+            get
+            {
+                string value = null;
+                if (_md.dataQualityInfo != null 
+                    && _md.dataQualityInfo.Length > 0 
+                    && _md.dataQualityInfo[0] != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.lineage != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage != null
+                    && _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement != null)
+                {
+                    value = _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement.CharacterString;
+                }
+
+                return value;
+            }
+
+            set
+            {
+                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
+                {
+                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                        new DQ_DataQuality_PropertyType {
+                            DQ_DataQuality = new DQ_DataQuality_Type {
+                            }
+                        }
+                    };
+                }
+
+                _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                {
+                    LI_Lineage = new LI_Lineage_Type
+                    {
+                        statement = toCharString(value)
+                    }
+                };
+
+            }
+        }
+
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
@@ -990,6 +1165,15 @@ namespace GeoNorgeAPI
     {
         public string URL { get; set; }
         public string Protocol { get; set; }
+    }
+
+    public class SimpleQualitySpecification
+    {
+        public string Title { get; set; }
+        public string Date { get; set; }
+        public string DateType { get; set; }
+        public string Explanation { get; set; }
+        public bool Result { get; set; }
     }
 
 }
