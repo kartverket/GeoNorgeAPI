@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace GeoNorgeAPI.Tests
 {
+    [TestFixture]
     public class SimpleMetadataTest
     {
         SimpleMetadata _md;
@@ -362,5 +363,57 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedURL, resource.linkage.URL);
             Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
         }
+
+        [Test]
+        public void ShouldReturnNullWhenResolutionScaleDoesNotExist()
+        {
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = null;
+
+            Assert.IsNull(_md.ResolutionScale);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenSpatialResolutionContainsOtherItem()
+        {
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = new MD_Resolution_PropertyType[] {
+                new MD_Resolution_PropertyType {
+                    MD_Resolution = new MD_Resolution_Type {
+                        Item = new Distance_PropertyType()
+                    }
+                }
+            };
+            Assert.IsNull(_md.ResolutionScale);
+        }
+
+        [Test]
+        public void ShouldReturnResolutionScale()
+        {
+            string scale = "1000";
+
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = new MD_Resolution_PropertyType[] {
+                new MD_Resolution_PropertyType {
+                    MD_Resolution = new MD_Resolution_Type {
+                        Item = new MD_RepresentativeFraction_PropertyType { 
+                            MD_RepresentativeFraction = new MD_RepresentativeFraction_Type {
+                                denominator = new Integer_PropertyType { Integer = scale }
+                            }
+                        }
+                    }
+                }
+            };
+
+            Assert.IsNotNull(_md.ResolutionScale);
+        }
+
+        [Test]
+        public void ShouldSetResolutionScale()
+        {
+            _md.ResolutionScale = "5000";
+
+            var item = ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution[0].MD_Resolution.Item as MD_RepresentativeFraction_PropertyType;
+
+            Assert.AreEqual("5000", item.MD_RepresentativeFraction.denominator.Integer);
+        }
+
     }
 }

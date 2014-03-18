@@ -820,6 +820,54 @@ namespace GeoNorgeAPI
             }
         }
 
+        public string ResolutionScale
+        {
+            get
+            {
+                string value = null;
+                var dataIdentification = GetDatasetIdentification();
+                if (dataIdentification != null
+                    && dataIdentification.spatialResolution != null
+                    && dataIdentification.spatialResolution.Length > 0
+                    && dataIdentification.spatialResolution[0] != null
+                    && dataIdentification.spatialResolution[0].MD_Resolution != null
+                    && dataIdentification.spatialResolution[0].MD_Resolution.Item != null)
+                {
+                    MD_RepresentativeFraction_PropertyType item = dataIdentification.spatialResolution[0].MD_Resolution.Item as MD_RepresentativeFraction_PropertyType;
+                    if (item != null
+                        && item.MD_RepresentativeFraction != null
+                        && item.MD_RepresentativeFraction.denominator != null)
+                    {
+                        value = item.MD_RepresentativeFraction.denominator.Integer;
+                    }
+                }
+                return value;
+            }
+
+            set
+            {
+                var dataIdentification = GetDatasetIdentification();
+                if (dataIdentification != null)
+                {
+                    MD_Resolution_PropertyType resolution = new MD_Resolution_PropertyType
+                    {
+                        MD_Resolution = new MD_Resolution_Type
+                        {
+                            Item = new MD_RepresentativeFraction_PropertyType
+                            {
+                                MD_RepresentativeFraction = new MD_RepresentativeFraction_Type
+                                {
+                                    denominator = new Integer_PropertyType { Integer = value }
+                                }
+                            }
+                        }
+                    };
+
+                    dataIdentification.spatialResolution = new MD_Resolution_PropertyType[] { resolution };
+                }
+            }
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
