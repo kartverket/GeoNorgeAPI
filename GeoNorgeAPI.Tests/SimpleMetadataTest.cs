@@ -622,6 +622,160 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedProcessHistory, _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement.CharacterString);
         }
 
+        [Test]
+        public void ShouldReturnNullWhenCreationDateIsNull()
+        {
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = null;
+            Assert.IsNull(_md.DateCreated);
+        }
+
+        [Test]
+        public void ShouldReturnCreationDateWhenTypeIsDateTime()
+        {
+            DateTime expectedDate = DateTime.Parse("2014-01-01");
+
+            SetDateOnCitationDateType(expectedDate, "creation");
+
+            Assert.AreEqual(expectedDate, _md.DateCreated);
+        }
+        [Test]
+        public void ShouldReturnCreationDateWhenTypeIsString()
+        {
+            string expectedDateString = "2014-01-01";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            SetDateOnCitationDateType(expectedDateString, "creation");
+
+            Assert.AreEqual(expectedDate, _md.DateCreated);
+        }
+
+        [Test]
+        public void ShouldUpdateCreatedDate()
+        {
+            string expectedDateString = "2014-03-04";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            _md.DateCreated = expectedDate;
+
+            Assert.AreEqual(expectedDate, GetCitationDateWithType("creation"));
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenPublishedDateIsNull()
+        {
+            Assert.IsNull(_md.DatePublished);
+        }
+
+        [Test]
+        public void ShouldReturnPublishedDateWhenTypeIsDateTime()
+        {
+            DateTime expectedDate = DateTime.Parse("2014-04-05");
+
+            SetDateOnCitationDateType(expectedDate, "publication");
+
+            Assert.AreEqual(expectedDate, _md.DatePublished);
+        }
+        [Test]
+        public void ShouldReturnPublishedDateWhenTypeIsString()
+        {
+            string expectedDateString = "2014-03-04";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            SetDateOnCitationDateType(expectedDateString, "publication");
+
+            Assert.AreEqual(expectedDate, _md.DatePublished);
+        }
+
+        [Test]
+        public void ShouldUpdatePublishedDate()
+        {
+            string expectedDateString = "2014-03-04";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            _md.DatePublished = expectedDate;
+
+            Assert.AreEqual(expectedDate, GetCitationDateWithType("publication"));
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenUpdatedDateIsNull()
+        {
+            Assert.IsNull(_md.DateUpdated);
+        }
+
+        [Test]
+        public void ShouldReturnUpdatedDateWhenTypeIsDateTime()
+        {
+            DateTime expectedDate = DateTime.Parse("2014-04-05");
+
+            SetDateOnCitationDateType(expectedDate, "revision");
+
+            Assert.AreEqual(expectedDate, _md.DateUpdated);
+        }
+
+        [Test]
+        public void ShouldReturnUpdatedDateWhenTypeIsString()
+        {
+            string expectedDateString = "2014-03-04";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            SetDateOnCitationDateType(expectedDateString, "revision");
+
+            Assert.AreEqual(expectedDate, _md.DateUpdated);
+        }
+
+        [Test]
+        public void ShouldUpdateUpdatedDate()
+        {
+            string expectedDateString = "2014-03-04";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
+
+            _md.DateUpdated = expectedDate;
+
+            Assert.AreEqual(expectedDate, GetCitationDateWithType("revision"));
+        }
+
+        [Test]
+        public void ShouldReturnMetadataUpdatedDate()
+        {
+            Assert.IsNotNull(_md.DateMetadataUpdated);
+        }
+
+        [Test]
+        public void ShouldUpdateMetadataUpdatedDate()
+        {
+            DateTime expectedDate = DateTime.Parse("2014-01-15");
+            _md.DateMetadataUpdated = expectedDate;
+
+            Assert.AreEqual(expectedDate, (DateTime)_md.GetMetadata().dateStamp.Item);
+        }
+
+        
+        private void SetDateOnCitationDateType(object date, string dateType)
+        {
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
+                new CI_Date_PropertyType {
+                    CI_Date = new CI_Date_Type {
+                        date = new Date_PropertyType { Item = date },
+                        dateType = new CI_DateTypeCode_PropertyType { CI_DateTypeCode = new CodeListValue_Type { codeListValue = dateType }}
+                    }
+                }
+            };
+        }
+
+        private object GetCitationDateWithType(string dateType)
+        {
+            var dates = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date;
+            foreach (var date in dates)
+            {
+                if (date.CI_Date.dateType.CI_DateTypeCode.codeListValue == dateType)
+                {
+                    return date.CI_Date.date.Item;
+                }
+            }
+            return null;
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };

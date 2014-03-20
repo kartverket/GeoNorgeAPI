@@ -1120,6 +1120,178 @@ namespace GeoNorgeAPI
             }
         }
 
+        public DateTime? DateCreated 
+        {
+            get
+            {
+                DateTime? value = null;
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    value = GetDateFromCitationWithType(citation, "creation");
+                }
+                return value;
+            }
+
+            set
+            {
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    UpdateCitationDateForType(citation, "creation", value);
+                }
+            }
+        }
+
+       
+
+        public DateTime? DatePublished
+        {
+            get
+            {
+                DateTime? value = null;
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    value = GetDateFromCitationWithType(citation, "publication");
+                }
+                return value;
+            }
+
+            set
+            {
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    UpdateCitationDateForType(citation, "publication", value);
+                }
+            }
+        }
+
+        public DateTime? DateUpdated
+        {
+            get
+            {
+                DateTime? value = null;
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    value = GetDateFromCitationWithType(citation, "revision");
+                }
+                return value;
+            }
+
+            set
+            {
+                var citation = GetIdentificationCitation();
+                if (citation != null)
+                {
+                    UpdateCitationDateForType(citation, "revision", value);
+                }
+            }
+        }
+
+        public DateTime? DateMetadataUpdated
+        {
+            get
+            {
+                DateTime? value = null;
+                if (_md.dateStamp != null && _md.dateStamp.Item != null)
+                {
+                    value = (DateTime)_md.dateStamp.Item;
+                }
+                return value;
+            }
+
+            set
+            {
+                _md.dateStamp = new Date_PropertyType { Item = value };
+            }
+        }
+
+        private CI_Citation_Type GetIdentificationCitation()
+        {
+            CI_Citation_Type citation = null;
+            var identification = GetIdentification();
+            if (identification != null && identification.citation != null && identification.citation.CI_Citation != null)
+            {
+                citation = identification.citation.CI_Citation;
+            }
+            return citation;
+        }
+
+        private DateTime? GetDateFromCitationWithType(CI_Citation_Type citation, string dateType)
+        {
+            DateTime? date = null;
+            if (citation.date != null)
+            {
+                foreach (var currentDate in citation.date)
+                {
+                    if (currentDate.CI_Date != null
+                        && currentDate.CI_Date.dateType != null
+                        && currentDate.CI_Date.dateType.CI_DateTypeCode != null
+                        && currentDate.CI_Date.dateType.CI_DateTypeCode.codeListValue == dateType
+                        && currentDate.CI_Date.date != null
+                        && currentDate.CI_Date.date.Item != null)
+                    {
+                        date = currentDate.CI_Date.date.Item as DateTime?;
+
+                        if (date == null)
+                        {
+                            string dateString = currentDate.CI_Date.date.Item as string;
+                            if (dateString != null)
+                            {
+                                date = DateTime.Parse(dateString);
+                            }
+                        }
+                    }
+                }
+            }            
+            return date;
+        }
+
+        private void UpdateCitationDateForType(CI_Citation_Type citation, string dateType, DateTime? value)
+        {
+            
+            bool updated = false;
+            if (citation.date != null)
+            {
+                foreach (var currentDate in citation.date)
+                {
+                    if (currentDate.CI_Date != null
+                        && currentDate.CI_Date.dateType != null
+                        && currentDate.CI_Date.dateType.CI_DateTypeCode != null
+                        && currentDate.CI_Date.dateType.CI_DateTypeCode.codeListValue == dateType)
+                    {
+                        currentDate.CI_Date.date.Item = value;
+                        updated = true;
+                    }
+                }
+            } else {
+                citation.date = new CI_Date_PropertyType[0];
+            }
+
+            if (!updated)
+            {
+                CI_Date_PropertyType[] newArray = new CI_Date_PropertyType[] {
+                    new CI_Date_PropertyType {
+                        CI_Date = new CI_Date_Type {
+                            date = new Date_PropertyType {
+                                Item = value
+                            },
+                            dateType = new CI_DateTypeCode_PropertyType {
+                                CI_DateTypeCode = new CodeListValue_Type {
+                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                    codeListValue = dateType
+                                }    
+                            }
+                        }
+                    }
+                };
+                citation.date = citation.date.Concat(newArray).ToArray();
+            }
+            
+        }
 
         private CharacterString_PropertyType toCharString(string input)
         {

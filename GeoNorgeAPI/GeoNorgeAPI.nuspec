@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.0.3: Mappings for various date fields.
       2.0.2: Mappings for data quality.
       2.0.1: Fix null reference exception in distribution format version.
       2.0.0: Mapping of distribution fields.
