@@ -11,13 +11,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.0.2: Mappings for data quality.
       2.0.1: Fix null reference exception in distribution format version.
-      2.0.0: Mapping of distribution fields
+      2.0.0: Mapping of distribution fields.
       1.9: Use file description instead of file type when mapping thumbnails in SimpleMetadata.
       1.8: More mappings in SimpleMetadata. TopicCategory, Thumbnails, Product specification and more.
       1.7: Add extra search method, which returns ISO 19139 instead of Dublin Core records. 
       1.6: More fields added to the SimpleMetadata model. Removing SimpleMetadata from API-methods to allow more loose coupling and avoid duplicating methods. 
-      1.5: Add limit parameter on search methods to control the number of records returned
+      1.5: Add limit parameter on search methods to control the number of records returned.
       1.4.5: Whitespace in organisation names is now properly transformed to csw singlechar attribute.</releaseNotes>
     <copyright>Copyright 2014 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
