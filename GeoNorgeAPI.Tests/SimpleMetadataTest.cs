@@ -750,7 +750,48 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDate, (DateTime)_md.GetMetadata().dateStamp.Item);
         }
 
-        
+        [Test]
+        public void ShouldReturnMetadataLanguage()
+        {
+            Assert.AreEqual("nor", _md.MetadataLanguage);
+        }
+
+        [Test]
+        public void ShouldUpdateMetadataLanguage()
+        {
+            _md.MetadataLanguage = "eng";
+
+            Assert.AreEqual("eng", _md.GetMetadata().language.CharacterString);
+        }
+
+        [Test]
+        public void ShouldReturnMetadataStandardName()
+        {
+            Assert.AreEqual("ISO19139", _md.MetadataStandard);
+        }
+
+        [Test]
+        public void ShouldUpdateMetadataStandard()
+        {
+            _md.MetadataStandard = "iso19115";
+
+            Assert.AreEqual("iso19115", _md.GetMetadata().metadataStandardName.CharacterString);
+        }
+
+        [Test]
+        public void ShouldReturnMetadataStandardVersion()
+        {
+            Assert.AreEqual("1.0", _md.MetadataStandardVersion);
+        }
+
+        [Test]
+        public void ShouldUpdateMetadataStandardVersion()
+        {
+            _md.MetadataStandardVersion = "2.0";
+
+            Assert.AreEqual("2.0", _md.GetMetadata().metadataStandardVersion.CharacterString);
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {

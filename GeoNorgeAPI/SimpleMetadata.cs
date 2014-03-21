@@ -1293,6 +1293,61 @@ namespace GeoNorgeAPI
             
         }
 
+        public string MetadataLanguage
+        {
+            get
+            {
+                string value = null;
+                if (_md.language != null)
+                {
+                    value = _md.language.CharacterString;
+                }
+
+                return value;
+            }
+
+            set
+            {
+                _md.language = toCharString(value);
+            }
+        }
+
+        public string MetadataStandard
+        {
+            get
+            {
+                string value = null;
+                if (_md.metadataStandardName != null)
+                {
+                    value = _md.metadataStandardName.CharacterString;
+                }
+                return value;
+            }
+
+            set
+            {
+                _md.metadataStandardName = toCharString(value);
+            }
+        }
+
+        public string MetadataStandardVersion
+        {
+            get
+            {
+                string value = null;
+                if (_md.metadataStandardVersion != null)
+                {
+                    value = _md.metadataStandardVersion.CharacterString;
+                }
+                return value;
+            }
+
+            set
+            {
+                _md.metadataStandardVersion = toCharString(value);
+            }
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };

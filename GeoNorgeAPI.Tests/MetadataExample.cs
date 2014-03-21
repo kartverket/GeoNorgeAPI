@@ -15,7 +15,8 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type m = new MD_Metadata_Type();
             m.fileIdentifier = CharString("12345-67890-aabbcc-ddeeff-ggffhhjj");
             m.language = CharString("nor");
-
+            m.metadataStandardName = CharString("ISO19139");
+            m.metadataStandardVersion = CharString("1.0");
             m.hierarchyLevel = new[] { new MD_ScopeCode_PropertyType
                 {
                     MD_ScopeCode = new CodeListValue_Type
