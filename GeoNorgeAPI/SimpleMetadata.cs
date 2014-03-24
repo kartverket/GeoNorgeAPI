@@ -92,8 +92,16 @@ namespace GeoNorgeAPI
         private MD_DataIdentification_Type GetDatasetIdentification()
         {
             MD_DataIdentification_Type identification = null;
-            if (HierarchyLevel == "dataset")
+            if (IsDataset())
                 identification = GetIdentification() as MD_DataIdentification_Type;
+            return identification;
+        }
+
+        private SV_ServiceIdentification_Type GetServiceIdentification()
+        {
+            SV_ServiceIdentification_Type identification = null;
+            if (IsService())
+                identification = GetIdentification() as SV_ServiceIdentification_Type;
             return identification;
         }
 
@@ -1348,9 +1356,135 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleBoundingBox BoundingBox
+        {
+            get
+            {
+                SimpleBoundingBox value = null;
+
+                EX_Extent_Type extent = GetIdentificationExtent();
+
+                if (extent != null
+                    && extent.geographicElement != null
+                    && extent.geographicElement.Length > 0
+                    && extent.geographicElement[0] != null
+                    && extent.geographicElement[0].AbstractEX_GeographicExtent != null)
+                {
+                    EX_GeographicBoundingBox_Type exBoundingBox = extent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+                    if (exBoundingBox != null)
+                    {
+                        value = new SimpleBoundingBox {
+                            EastBoundLongitude = exBoundingBox.eastBoundLongitude != null ? exBoundingBox.eastBoundLongitude.Decimal.ToString() : null,
+                            WestBoundLongitude = exBoundingBox.westBoundLongitude != null ? exBoundingBox.westBoundLongitude.Decimal.ToString() : null,
+                            NorthBoundLatitude = exBoundingBox.northBoundLatitude != null ? exBoundingBox.northBoundLatitude.Decimal.ToString() : null,
+                            SouthBoundLatitude = exBoundingBox.southBoundLatitude != null ? exBoundingBox.southBoundLatitude.Decimal.ToString() : null
+                        };
+                    }
+                }
+
+                return value;
+            }
+
+            set
+            {
+                if (IsDataset() || IsService())
+                {
+                    EX_Extent_Type extent = GetIdentificationExtent();
+                    if (extent == null)
+                    {
+                        if (IsDataset())
+                        {
+                            MD_DataIdentification_Type identification = GetDatasetIdentification();
+                            if (identification != null)
+                            {
+                                extent = new EX_Extent_Type();
+                                identification.extent = new EX_Extent_PropertyType[] {
+                                    new EX_Extent_PropertyType {
+                                        EX_Extent = extent
+                                    }
+                                };
+                            }
+                        }
+                        else
+                        {
+                            SV_ServiceIdentification_Type identification = GetServiceIdentification();
+                            if (identification != null)
+                            {
+                                extent = new EX_Extent_Type();
+                                identification.extent = new EX_Extent_PropertyType[] {
+                                    new EX_Extent_PropertyType {
+                                        EX_Extent = extent
+                                    }
+                                };
+                            }
+                        }
+                    }
+
+                    extent.geographicElement = new EX_GeographicExtent_PropertyType[] 
+                    {
+                        new EX_GeographicExtent_PropertyType
+                        {
+                            AbstractEX_GeographicExtent = new EX_GeographicBoundingBox_Type
+                            {
+                                eastBoundLongitude = DecimalFromString(value.EastBoundLongitude),
+                                westBoundLongitude = DecimalFromString(value.WestBoundLongitude),
+                                northBoundLatitude = DecimalFromString(value.NorthBoundLatitude),
+                                southBoundLatitude = DecimalFromString(value.SouthBoundLatitude),
+                            }
+                        }
+                    };
+                }
+            }            
+        }
+
+        private EX_Extent_Type GetIdentificationExtent()
+        {
+            EX_Extent_Type extent = null;
+            if (IsDataset())
+            {
+                var identification = GetDatasetIdentification();
+                if (identification != null
+                    && identification.extent != null
+                    && identification.extent.Length > 0
+                    && identification.extent[0] != null
+                    && identification.extent[0].EX_Extent != null)
+                {
+                    extent = identification.extent[0].EX_Extent;
+                }
+            }
+            else if (IsService())
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null
+                    && identification.extent != null
+                    && identification.extent.Length > 0
+                    && identification.extent[0].EX_Extent != null
+                    )
+                {
+                    extent = identification.extent[0].EX_Extent;
+                }
+            }
+            return extent;
+        }
+
+        public bool IsDataset()
+        {
+            return HierarchyLevel.Equals("dataset", StringComparison.Ordinal);
+        }
+
+        public bool IsService()
+        {
+            return HierarchyLevel.Equals("service", StringComparison.Ordinal);
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
+        }
+
+        private Decimal_PropertyType DecimalFromString(string input)
+        {
+            return new Decimal_PropertyType { Decimal = Decimal.Parse(input) };
         }
 
     }
@@ -1403,4 +1537,11 @@ namespace GeoNorgeAPI
         public bool Result { get; set; }
     }
 
+    public class SimpleBoundingBox
+    {
+        public string EastBoundLongitude { get; set; }
+        public string WestBoundLongitude { get; set; }
+        public string NorthBoundLatitude { get; set; }
+        public string SouthBoundLatitude { get; set; }
+    }
 }

@@ -792,6 +792,121 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("2.0", _md.GetMetadata().metadataStandardVersion.CharacterString);
         }
 
+        [Test]
+        public void ShouldReturnBoundingBoxForDataset()
+        {
+            SimpleBoundingBox boundingBox = _md.BoundingBox;
+
+            Assert.IsNotNull(boundingBox);
+
+            Assert.AreEqual("33", boundingBox.EastBoundLongitude);
+            Assert.AreEqual("2", boundingBox.WestBoundLongitude);
+            Assert.AreEqual("72", boundingBox.NorthBoundLatitude);
+            Assert.AreEqual("57", boundingBox.SouthBoundLatitude);
+        }
+
+        [Test]
+        public void ShouldReturnBoundingBoxForService()
+        {
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+                {
+                    new MD_Identification_PropertyType 
+                    {
+                        AbstractMD_Identification = new SV_ServiceIdentification_Type
+                        {
+                            extent = new[]
+                            {
+                                new EX_Extent_PropertyType
+                                    {
+                                        EX_Extent = new EX_Extent_Type
+                                            {
+                                                geographicElement = new []
+                                                    {
+                                                        new EX_GeographicExtent_PropertyType
+                                                            {
+                                                                AbstractEX_GeographicExtent = new EX_GeographicBoundingBox_Type
+                                                                    {
+                                                                        eastBoundLongitude = new Decimal_PropertyType { Decimal = 44 },
+                                                                        westBoundLongitude = new Decimal_PropertyType { Decimal = 10 },                                                                        
+                                                                        northBoundLatitude = new Decimal_PropertyType { Decimal = 77 },
+                                                                        southBoundLatitude = new Decimal_PropertyType { Decimal = 55 }                                                                        
+                                                                    }
+                                                            }
+                                                    }
+                                            }
+                                    }
+                            }
+                        }
+                    }
+                };
+            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
+
+            SimpleBoundingBox boundingBox = _md.BoundingBox;
+
+            Assert.IsNotNull(boundingBox);
+
+            Assert.AreEqual("44", boundingBox.EastBoundLongitude);
+            Assert.AreEqual("10", boundingBox.WestBoundLongitude);
+            Assert.AreEqual("77", boundingBox.NorthBoundLatitude);
+            Assert.AreEqual("55", boundingBox.SouthBoundLatitude);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenHierarchyLevelIsNotDatasetOrService()
+        {
+            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "application" } } };
+            Assert.IsNull(_md.BoundingBox);
+        }
+
+        [Test]
+        public void ShouldUpdateBoundingBoxForDataset()
+        {
+            _md.BoundingBox = new SimpleBoundingBox 
+            {
+                EastBoundLongitude = "12",
+                WestBoundLongitude = "22",
+                NorthBoundLatitude = "44",
+                SouthBoundLatitude = "33"
+            };
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var bbox = identification.extent[0].EX_Extent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+
+            Assert.AreEqual("12", bbox.eastBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("22", bbox.westBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
+            Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
+        }
+
+        [Test]
+        public void ShouldUpdateBoundingBoxForService()
+        {
+            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+                {
+                    new MD_Identification_PropertyType 
+                    {
+                        AbstractMD_Identification = new SV_ServiceIdentification_Type()
+                    }
+                };
+                        
+            _md.BoundingBox = new SimpleBoundingBox
+            {
+                EastBoundLongitude = "12",
+                WestBoundLongitude = "22",
+                NorthBoundLatitude = "44",
+                SouthBoundLatitude = "33"
+            };
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+            var bbox = identification.extent[0].EX_Extent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+
+            Assert.AreEqual("12", bbox.eastBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("22", bbox.westBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
+            Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
