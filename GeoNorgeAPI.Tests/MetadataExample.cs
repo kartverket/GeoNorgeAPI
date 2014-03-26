@@ -176,6 +176,20 @@ namespace GeoNorgeAPI.Tests
                         {
                             MD_Constraints = new MD_LegalConstraints_Type
                                 {
+                                    accessConstraints = new MD_RestrictionCode_PropertyType[] 
+                                    { 
+                                        new MD_RestrictionCode_PropertyType 
+                                        { 
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "none" }
+                                        }
+                                    },
+                                    useConstraints = new MD_RestrictionCode_PropertyType[] 
+                                    { 
+                                        new MD_RestrictionCode_PropertyType 
+                                        { 
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" }
+                                        }
+                                    },
                                     otherConstraints = new [] { CharString("Ingen begrensninger på bruk.") } 
                                 }
                         },

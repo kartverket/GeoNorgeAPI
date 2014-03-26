@@ -1467,6 +1467,133 @@ namespace GeoNorgeAPI
             return extent;
         }
 
+        public SimpleConstraints Constraints
+        {
+            get
+            {
+                SimpleConstraints value = null;
+                var identification = GetIdentification();
+
+                if (identification != null
+                    && identification.resourceConstraints != null
+                    && identification.resourceConstraints.Length > 0)
+                {
+
+                    value = new SimpleConstraints();
+
+                    foreach (MD_Constraints_PropertyType constraintProperty in identification.resourceConstraints)
+                    {
+                        if (constraintProperty.MD_Constraints != null)
+                        {
+                            MD_SecurityConstraints_Type securityConstraint = constraintProperty.MD_Constraints as MD_SecurityConstraints_Type;
+                            if (securityConstraint != null
+                                && securityConstraint.classification != null
+                                && securityConstraint.classification.MD_ClassificationCode != null)
+                            {
+                                value.SecurityConstraints = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                            }
+                            else
+                            {
+                                MD_LegalConstraints_Type legalConstraint = constraintProperty.MD_Constraints as MD_LegalConstraints_Type;
+                                if (legalConstraint != null) {
+
+                                    if (legalConstraint.accessConstraints != null
+                                    && legalConstraint.accessConstraints.Length > 0
+                                    && legalConstraint.accessConstraints[0] != null
+                                    && legalConstraint.accessConstraints[0].MD_RestrictionCode != null)
+                                    {
+                                        value.AccessConstraints = legalConstraint.accessConstraints[0].MD_RestrictionCode.codeListValue;
+                                    }
+
+                                    if (legalConstraint.otherConstraints != null
+                                        && legalConstraint.otherConstraints.Length > 0
+                                        && legalConstraint.otherConstraints[0] != null)
+                                    {
+                                        value.OtherConstraints = legalConstraint.otherConstraints[0].CharacterString;
+                                    }
+
+                                    if (legalConstraint.useConstraints != null
+                                        && legalConstraint.useConstraints.Length > 0
+                                        && legalConstraint.useConstraints[0] != null
+                                        && legalConstraint.useConstraints[0].MD_RestrictionCode != null)
+                                    {
+                                        value.UseConstraints = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                                    }
+
+                                }
+                                    
+                                else
+                                {
+                                    MD_Constraints_Type regularConstraint = constraintProperty.MD_Constraints as MD_Constraints_Type;
+                                    if (regularConstraint != null 
+                                        && regularConstraint.useLimitation != null
+                                        && regularConstraint.useLimitation.Length > 0
+                                        && regularConstraint.useLimitation[0] != null)
+                                    {
+                                        
+                                        value.UseLimitations = regularConstraint.useLimitation[0].CharacterString;
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+                return value;
+            }
+
+            set
+            {
+
+                MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_Constraints_Type {
+                            useLimitation = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value.UseLimitations }}
+                        }    
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_LegalConstraints_Type {
+                            accessConstraints = new MD_RestrictionCode_PropertyType[] { 
+                                new MD_RestrictionCode_PropertyType {
+                                    MD_RestrictionCode = new CodeListValue_Type {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
+                                        codeListValue = value.AccessConstraints
+                                    }    
+                                }
+                            },
+                            useConstraints = new MD_RestrictionCode_PropertyType[] { 
+                                new MD_RestrictionCode_PropertyType {
+                                    MD_RestrictionCode = new CodeListValue_Type {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
+                                        codeListValue = value.UseConstraints
+                                    }    
+                                }
+                            },
+                            otherConstraints = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value.OtherConstraints }}
+                        }    
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_SecurityConstraints_Type {
+                            classification = new MD_ClassificationCode_PropertyType {
+                                MD_ClassificationCode = new CodeListValue_Type {
+                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ClassificationCode",
+                                    codeListValue = value.SecurityConstraints
+                                }    
+                            }
+                        }    
+                    }
+                };
+
+                var identification = GetIdentification();
+                if (identification != null)
+                {
+                    identification.resourceConstraints = resourceConstraints;                    
+                }                
+            }
+        }
+
+       
         public bool IsDataset()
         {
             return HierarchyLevel.Equals("dataset", StringComparison.Ordinal);
@@ -1543,5 +1670,14 @@ namespace GeoNorgeAPI
         public string WestBoundLongitude { get; set; }
         public string NorthBoundLatitude { get; set; }
         public string SouthBoundLatitude { get; set; }
+    }
+
+    public class SimpleConstraints
+    {
+        public string UseLimitations { get; set; }
+        public string AccessConstraints { get; set; }
+        public string UseConstraints { get; set; }
+        public string OtherConstraints { get; set; }
+        public string SecurityConstraints { get; set; }
     }
 }

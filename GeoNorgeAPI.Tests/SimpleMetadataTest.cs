@@ -907,6 +907,77 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
         }
 
+        [Test]
+        public void ShouldReturnConstraints()
+        {
+            SimpleConstraints constraints = _md.Constraints;
+
+            Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
+            Assert.AreEqual("Ingen begrensninger på bruk.", constraints.OtherConstraints);
+            Assert.AreEqual("unclassified", constraints.SecurityConstraints);
+            Assert.AreEqual("none", constraints.AccessConstraints);
+            Assert.AreEqual("free", constraints.UseConstraints);
+        }
+
+        [Test]
+        public void ShouldUpdateConstraints()
+        {
+            string expectedUseLimitations = "ingen begrensninger";
+            string expectedOtherConstraints = "ingen andre begrensninger";
+            string expectedSecurityConstraints = "classified";
+            string expectedAccessConstraints = "restricted";
+            string expectedUseConstraints = "license";
+
+            SimpleConstraints constraints = new SimpleConstraints
+            {
+                UseLimitations = expectedUseLimitations,
+                OtherConstraints = expectedOtherConstraints,
+                SecurityConstraints = expectedSecurityConstraints,
+                AccessConstraints = expectedAccessConstraints,
+                UseConstraints = expectedUseConstraints,
+
+            };
+            _md.Constraints = constraints;
+
+            string actualUseLimitation = null;
+            string actualSecurityConstraint = null;
+            string actualAccessConstraint = null;
+            string actualOtherConstraint = null;
+            string actualUseConstraint = null;
+            MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            foreach (var constraint in identification.resourceConstraints)
+            {
+                MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                if (securityConstraint != null)
+                {
+                    actualSecurityConstraint = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                }
+                else
+                {
+                    MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
+                    if (legalConstraint != null)
+                    {
+                        actualAccessConstraint = legalConstraint.accessConstraints[0].MD_RestrictionCode.codeListValue;
+                        actualOtherConstraint = legalConstraint.otherConstraints[0].CharacterString;
+                        actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                    }
+                    else
+                    {
+                        MD_Constraints_Type regularConstraint = constraint.MD_Constraints as MD_Constraints_Type;
+                        actualUseLimitation = regularConstraint.useLimitation[0].CharacterString;
+                    }                    
+                }                
+            }
+
+            Assert.AreEqual(expectedUseLimitations, actualUseLimitation);
+            Assert.AreEqual(expectedSecurityConstraints, actualSecurityConstraint);
+            Assert.AreEqual(expectedAccessConstraints, actualAccessConstraint);
+            Assert.AreEqual(expectedOtherConstraints, actualOtherConstraint);
+            Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
+        }
+
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
