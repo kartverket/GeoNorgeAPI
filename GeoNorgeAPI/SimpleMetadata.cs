@@ -1626,6 +1626,12 @@ namespace GeoNorgeAPI
 
     public class SimpleKeyword
     {
+        public const string THESAURUS_GEMET_INSPIRE_V1 = "GEMET - INSPIRE themes, version 1.0";
+        public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
+        public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
+        public const string TYPE_PLACE = "place";
+        public const string TYPE_THEME = "theme";
+
         public string Keyword { get; set; }
         public string Type { get; set; }
         public string Thesaurus { get; set; }
