@@ -1707,6 +1707,37 @@ namespace GeoNorgeAPI
             }
         }
 
+        public List<string> OperatesOn
+        {
+            get { 
+                List<string> values = new List<string>();
+                var identification = GetServiceIdentification();
+
+                if (identification != null && identification.operatesOn != null && identification.operatesOn.Length > 0)
+                {
+                    foreach (var element in identification.operatesOn)
+                    {
+                        if (!string.IsNullOrWhiteSpace(element.uuidref))
+                            values.Add(element.uuidref);
+                    }
+                }
+                return values;
+            }
+            set {
+                var identification = GetServiceIdentification();
+                if (identification != null)
+                {
+                    List<MD_DataIdentification_PropertyType> operatesOn = new List<MD_DataIdentification_PropertyType>();
+                    foreach(string uuid in value) {
+                        operatesOn.Add(new MD_DataIdentification_PropertyType {
+                            uuidref = uuid
+                        });
+                    }
+
+                    identification.operatesOn = operatesOn.ToArray();
+                }
+            }
+        }
        
         public bool IsDataset()
         {

@@ -1115,6 +1115,66 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
         }
 
+        [Test]
+        public void ShouldSetOperatesOn()
+        {
+            string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
+            string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
+            List<string> uuids = new List<string> { uuid1, uuid2 };
+            _md.HierarchyLevel = "service";
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[] { new MD_Identification_PropertyType { AbstractMD_Identification = new SV_ServiceIdentification_Type() } };
+            _md.OperatesOn = uuids;
+
+            bool foundUuid1 = false;
+            bool foundUuid2 = false;
+
+            var serviceIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+            var operatesOnList = serviceIdentification.operatesOn;
+            foreach (MD_DataIdentification_PropertyType element in operatesOnList)
+            {
+                if (element.uuidref.Equals(uuid1))
+                {
+                    foundUuid1 = true;
+                }
+                else if (element.uuidref.Equals(uuid2))
+                {
+                    foundUuid2 = true;
+                }
+            }
+
+            Assert.True(foundUuid1);
+            Assert.True(foundUuid2);
+        }
+
+        [Test]
+        public void ShouldReturnOperatesOn()
+        {
+            string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
+            string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
+            _md.HierarchyLevel = "service";
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[] 
+            { 
+                new MD_Identification_PropertyType 
+                { 
+                    AbstractMD_Identification = new SV_ServiceIdentification_Type 
+                    {
+                        operatesOn = new MD_DataIdentification_PropertyType [] 
+                        {
+                            new MD_DataIdentification_PropertyType {
+                                uuidref = uuid1
+                            },
+                            new MD_DataIdentification_PropertyType {
+                                uuidref = uuid2
+                            }
+                        }
+                    }
+                } 
+            };
+
+            List<string> operatesOn = _md.OperatesOn;
+            Assert.True(operatesOn.Contains(uuid1));
+            Assert.True(operatesOn.Contains(uuid2));
+        }
 
         private void SetDateOnCitationDateType(object date, string dateType)
         {
