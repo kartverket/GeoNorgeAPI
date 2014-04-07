@@ -30,10 +30,36 @@ namespace GeoNorgeAPI
             _md = md;
         }
 
+        public static SimpleMetadata CreateService()
+        {
+            return CreateSimpleMetadata("dataset", new SV_ServiceIdentification_Type());
+        }
+
+        public static SimpleMetadata CreateDataset()
+        {
+            return CreateSimpleMetadata("dataset", new MD_DataIdentification_Type());
+        }
+
+        private static SimpleMetadata CreateSimpleMetadata(string hierarchyLevel, AbstractMD_Identification_Type identification)
+        {
+            MD_Metadata_Type md = new MD_Metadata_Type
+            {
+                identificationInfo = new MD_Identification_PropertyType[]
+                {
+                    new MD_Identification_PropertyType {
+                        AbstractMD_Identification = identification
+                    }                    
+                }
+            };
+            SimpleMetadata simpleMetadata = new SimpleMetadata(md);
+            simpleMetadata.HierarchyLevel = hierarchyLevel;
+            return simpleMetadata;
+        }
+
         public MD_Metadata_Type GetMetadata()
         {
             return _md;
-        }
+        }        
 
         public string Title
         {

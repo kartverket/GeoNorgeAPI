@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.0: Add static factory methods to SimpleMetadata for creating new Dataset or Service Metadata from scratch. 
       2.1.1: Add missing class. Updated default endpoint to use SSL for all communcation with www.geonorge.no
       2.1.0: New signature for CSW transaction methods: insert, update and delete. Identifiers are now properly returned in the response object.
       2.0.8: Mappings for keywords.
