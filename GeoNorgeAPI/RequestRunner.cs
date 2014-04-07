@@ -13,7 +13,7 @@ namespace GeoNorgeAPI
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         
         private const string ContentTypeXml = "application/xml";
-        private const string DefaultGeonetworkEndpoint = "http://www.geonorge.no/geonetwork/";
+        private const string DefaultGeonetworkEndpoint = "https://www.geonorge.no/geonetwork/";
         
         private readonly string _geonetworkEndpoint;
         private readonly string _geonetworkUsername;
