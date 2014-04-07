@@ -109,6 +109,15 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(md);
         }
 
+
+        [Test]
+        public void ShouldParseCswTransactionAfterUpdateWithoutNullReferenceOnMissingIdentifiers()
+        {
+            MetadataTransaction transaction = RequestRunner.ParseCswTransactionResponse("<csw:TransactionResponse xmlns:csw=\"http://www.opengis.net/cat/csw/2.0.2\"><csw:TransactionSummary><csw:totalInserted>0</csw:totalInserted><csw:totalUpdated>1</csw:totalUpdated><csw:totalDeleted>0</csw:totalDeleted></csw:TransactionSummary></csw:TransactionResponse>");
+
+            Assert.AreEqual("1", transaction.TotalUpdated);
+        }
+
         /*
         [Test]
         public void InsertMetadata()

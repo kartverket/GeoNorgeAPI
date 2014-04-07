@@ -73,42 +73,57 @@ namespace GeoNorgeAPI
             Log.Debug(transactionResponse);
 
             Log.Info("CSW transaction complete.");
+            return ParseCswTransactionResponse(transactionResponse);      
+        }
+
+        internal static MetadataTransaction ParseCswTransactionResponse(string transactionResponse)
+        {
 
             XDocument doc = XDocument.Parse(transactionResponse);
-            
+
             XNamespace csw = "http://www.opengis.net/cat/csw/2.0.2";
 
             string totalInserted = "0";
             string totalUpdated = "0";
             string totalDeleted = "0";
-            var summaryElement = doc.Element(csw + "TransactionResponse").Element(csw + "TransactionSummary");
-            if (summaryElement != null)
-            {
-                var insertedElement = summaryElement.Element(csw + "totalInserted");
-                if (insertedElement != null)
-                {
-                    totalInserted = insertedElement.Value;
-                }
-
-                var updatedElement = summaryElement.Element(csw + "totalupdated");
-                if (updatedElement != null)
-                {
-                    totalUpdated = updatedElement.Value;
-                }
-
-                var deletedElement = summaryElement.Element(csw + "totaldeleted");
-                if (deletedElement != null)
-                {
-                    totalDeleted = deletedElement.Value;
-                }
-            }
-
             List<string> identifiers = new List<string>();
-            var identifierElements = doc.Element(csw + "TransactionResponse").Element(csw + "InsertResult").Element(csw + "BriefRecord").Elements("identifier");
-            if (identifierElements != null)
+
+            var responseElement = doc.Element(csw + "TransactionResponse");
+            if (responseElement != null)
             {
-                foreach(var identifierElement in identifierElements) {
-                    identifiers.Add(identifierElement.Value);
+                var summaryElement = responseElement.Element(csw + "TransactionSummary");
+                if (summaryElement != null)
+                {
+                    var insertedElement = summaryElement.Element(csw + "totalInserted");
+                    if (insertedElement != null)
+                    {
+                        totalInserted = insertedElement.Value;
+                    }
+
+                    var updatedElement = summaryElement.Element(csw + "totalUpdated");
+                    if (updatedElement != null)
+                    {
+                        totalUpdated = updatedElement.Value;
+                    }
+
+                    var deletedElement = summaryElement.Element(csw + "totalDeleted");
+                    if (deletedElement != null)
+                    {
+                        totalDeleted = deletedElement.Value;
+                    }
+                }
+
+                var insertResult = responseElement.Element(csw + "InsertResult");
+                if (insertResult != null)
+                {
+                    var identifierElements = insertResult.Element(csw + "BriefRecord").Elements("identifier");
+                    if (identifierElements != null)
+                    {
+                        foreach (var identifierElement in identifierElements)
+                        {
+                            identifiers.Add(identifierElement.Value);
+                        }
+                    }
                 }
             }
 
@@ -118,7 +133,7 @@ namespace GeoNorgeAPI
                 TotalUpdated = totalUpdated,
                 TotalDeleted = totalDeleted,
                 Identifiers = identifiers
-            };            
+            };
         }
 
 
