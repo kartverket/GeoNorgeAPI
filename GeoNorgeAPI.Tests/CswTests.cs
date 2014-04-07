@@ -113,13 +113,17 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void InsertMetadata()
         {
-            _geonorge = new GeoNorge("", "", "http://beta.geonorge.no/geonetwork/");
+            _geonorge = new GeoNorge("", "", "https://www.geonorge.no/geonetworkbeta/");
 
             MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
+            metadata.fileIdentifier = null;
 
-            _geonorge.MetadataInsert(metadata);
+            var transaction = _geonorge.MetadataInsert(metadata);
+
+            Assert.NotNull(transaction);
+            Assert.AreEqual("1", transaction.TotalInserted);
         }
-
+        
         [Test]
         public void UpdateMetadata()
         {

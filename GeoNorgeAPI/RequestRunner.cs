@@ -3,6 +3,8 @@ using System.IO;
 using System.Net;
 using Arkitektum.GIS.Lib.SerializeUtil;
 using www.opengis.net;
+using System.Xml.Linq;
+using System.Collections.Generic;
 
 namespace GeoNorgeAPI
 {
@@ -57,7 +59,7 @@ namespace GeoNorgeAPI
             return metadataRecord;
         }
 
-        public TransactionResponseType RunCswTransaction(TransactionType request)
+        public MetadataTransaction RunCswTransaction(TransactionType request)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
 
@@ -65,13 +67,58 @@ namespace GeoNorgeAPI
 
             Log.Info("Running CSW Transaction.");
 
-            string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/eng/csw-publication",
-                                                 "application/xml", "application/xml", requestBody, _sessionCookie);
+            string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/eng/csw-publication", 
+                "application/xml", "application/xml", requestBody, _sessionCookie);
+
             Log.Debug(transactionResponse);
 
             Log.Info("CSW transaction complete.");
 
-            return SerializeUtil.DeserializeFromString<TransactionResponseType>(transactionResponse);
+            XDocument doc = XDocument.Parse(transactionResponse);
+            
+            XNamespace csw = "http://www.opengis.net/cat/csw/2.0.2";
+
+            string totalInserted = "0";
+            string totalUpdated = "0";
+            string totalDeleted = "0";
+            var summaryElement = doc.Element(csw + "TransactionResponse").Element(csw + "TransactionSummary");
+            if (summaryElement != null)
+            {
+                var insertedElement = summaryElement.Element(csw + "totalInserted");
+                if (insertedElement != null)
+                {
+                    totalInserted = insertedElement.Value;
+                }
+
+                var updatedElement = summaryElement.Element(csw + "totalupdated");
+                if (updatedElement != null)
+                {
+                    totalUpdated = updatedElement.Value;
+                }
+
+                var deletedElement = summaryElement.Element(csw + "totaldeleted");
+                if (deletedElement != null)
+                {
+                    totalDeleted = deletedElement.Value;
+                }
+            }
+
+            List<string> identifiers = new List<string>();
+            var identifierElements = doc.Element(csw + "TransactionResponse").Element(csw + "InsertResult").Element(csw + "BriefRecord").Elements("identifier");
+            if (identifierElements != null)
+            {
+                foreach(var identifierElement in identifierElements) {
+                    identifiers.Add(identifierElement.Value);
+                }
+            }
+
+            return new MetadataTransaction
+            {
+                TotalInserted = totalInserted,
+                TotalUpdated = totalUpdated,
+                TotalDeleted = totalDeleted,
+                Identifiers = identifiers
+            };            
         }
 
 

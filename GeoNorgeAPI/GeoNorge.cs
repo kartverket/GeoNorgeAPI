@@ -99,7 +99,7 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public TransactionResponseType MetadataInsert(MD_Metadata_Type metadata)
+        public MetadataTransaction MetadataInsert(MD_Metadata_Type metadata)
         {
             TransactionType request = _requestFactory.MetadataInsert(metadata);
             return _requestRunner.RunCswTransaction(request);
@@ -110,7 +110,7 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public TransactionResponseType MetadataUpdate(MD_Metadata_Type metadata)
+        public MetadataTransaction MetadataUpdate(MD_Metadata_Type metadata)
         {
             TransactionType request = _requestFactory.MetadataUpdate(metadata);
             return _requestRunner.RunCswTransaction(request);
@@ -121,7 +121,7 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="uuid">identifier of the record to delete</param>
         /// <returns></returns>
-        public TransactionResponseType MetadataDelete(string uuid)
+        public MetadataTransaction MetadataDelete(string uuid)
         {
             TransactionType request = _requestFactory.MetadataDelete(uuid);
             return _requestRunner.RunCswTransaction(request);
