@@ -166,6 +166,144 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateKeywords()
+        {
+            _md.Keywords = new List<SimpleKeyword> {
+                new SimpleKeyword {
+                    Keyword = "Addresses",
+                    Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
+                },
+                new SimpleKeyword {
+                    Keyword = "Oslo",
+                    Type = SimpleKeyword.TYPE_PLACE
+                },
+                new SimpleKeyword {
+                    Keyword = "Akershus",
+                    Type = SimpleKeyword.TYPE_PLACE
+                },
+                new SimpleKeyword {
+                    Keyword = "Bygninger",
+                    Type = SimpleKeyword.TYPE_THEME
+                },
+                new SimpleKeyword {
+                    Keyword = "Buildings",
+                    Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
+                },
+                new SimpleKeyword {
+                    Keyword = "Eksempeldata",
+                },
+                new SimpleKeyword {
+                    Keyword = "testing"
+                },
+                new SimpleKeyword {
+                    Keyword = "Det offentlige kartgrunnlaget",
+                    Thesaurus = SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE
+                },
+            };
+
+            int numberOfInspireKeywords = 0;
+            int numberOfNationalKeywords = 0;
+            int numberOfThemeKeywords = 0;
+            int numberOfPlaceKeywords = 0;
+            int numberOfOtherKeywords = 0;
+            bool inspireAddressesFound = false;
+            bool inspireBuildingsFound = false;
+            bool nationalDOKfound = false;
+            bool placeOsloFound = false;
+            bool placeAkershusFound = false;
+            bool themeBygningFound = false;
+            bool otherEksempeldataFound = false;
+            bool otherTestingFound = false;
+
+            MD_Keywords_PropertyType[] descriptiveKeywords = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords;
+
+            foreach (MD_Keywords_PropertyType descriptiveKeyword in descriptiveKeywords)
+            {
+                int numberOfKeywords = descriptiveKeyword.MD_Keywords.keyword.Length;
+
+                if (descriptiveKeyword.MD_Keywords.thesaurusName != null)
+                {
+                    if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1)) {
+                        numberOfInspireKeywords = numberOfKeywords;
+                        foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
+                        {
+                            if (k.CharacterString.Equals("Addresses"))
+                            {
+                                inspireAddressesFound = true;
+                            }
+                            else if (k.CharacterString.Equals("Buildings"))
+                            {
+                                inspireBuildingsFound = true;
+                            }
+                        }
+                    }
+                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
+                    {
+                        numberOfNationalKeywords = numberOfKeywords;
+                        if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Det offentlige kartgrunnlaget"))
+                        {
+                            nationalDOKfound = true;
+                        }
+                    }
+                }
+                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_PLACE)) 
+                {
+                    numberOfPlaceKeywords = numberOfKeywords;
+                    foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
+                    {
+                        if (k.CharacterString.Equals("Oslo"))
+                        {
+                            placeOsloFound = true;
+                        }
+                        else if (k.CharacterString.Equals("Akershus"))
+                        {
+                            placeAkershusFound = true;
+                        }
+                    }
+                }
+                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_THEME))
+                {
+                    numberOfThemeKeywords = numberOfKeywords;
+                    if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Bygninger"))
+                    {
+                        themeBygningFound = true;
+                    }
+                }
+                else
+                {
+                    numberOfOtherKeywords = numberOfKeywords;
+                    foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
+                    {
+                        if (k.CharacterString.Equals("Eksempeldata"))
+                        {
+                            otherEksempeldataFound = true;
+                        }
+                        else if (k.CharacterString.Equals("testing"))
+                        {
+                            otherTestingFound = true;
+                        }
+                    }
+                }
+            }
+
+            Assert.AreEqual(2, numberOfInspireKeywords, "Expected two inspire keywords in same wrapper element");
+            Assert.AreEqual(1, numberOfNationalKeywords, "Expected one national keyword in same wrapper element");
+            Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
+            Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
+            Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
+
+            Assert.True(inspireAddressesFound);
+            Assert.True(inspireBuildingsFound);
+            Assert.True(nationalDOKfound);
+            Assert.True(placeOsloFound);
+            Assert.True(placeAkershusFound);
+            Assert.True(themeBygningFound);
+            Assert.True(otherEksempeldataFound);
+            Assert.True(otherTestingFound);
+        }
+
+
+        [Test]
         public void ShouldSetSpatialRepresentationWhenSpatialRepresentationIsNull()
         {
             _md.SpatialRepresentation = "vector";

@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.0.8: Mappings for keywords.
       2.0.7: Add keyword constants for thesaurus and type.
       2.0.6: Mappings for resource constraints.
       2.0.5: Mappings for geographical bounding box.

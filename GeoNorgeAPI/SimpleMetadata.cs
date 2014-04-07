@@ -415,6 +415,94 @@ namespace GeoNorgeAPI
 
             set
             {
+                var identification = GetIdentification();
+                if (identification != null && identification.descriptiveKeywords != null)
+                {
+                    List<MD_Keywords_PropertyType> allKeywords = new List<MD_Keywords_PropertyType>();
+
+                    Dictionary<string, bool> processed = new Dictionary<string, bool>();
+                    foreach (var simpleKeyword in value)
+                    {
+                        if (!processed.ContainsKey(simpleKeyword.Keyword))
+                        {
+                            List<string> filteredKeywords = SimpleKeyword.Filter(value, simpleKeyword.Type, simpleKeyword.Thesaurus);
+                            List<CharacterString_PropertyType> keywordsToAdd = new List<CharacterString_PropertyType>();
+                            foreach (var fk in filteredKeywords)
+                            {
+                                processed.Add(fk, true);
+
+                                keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk });
+                            }
+
+
+                            CI_Citation_PropertyType thesaurus = null; 
+                            if (!string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus)) {
+
+                                string date = "";
+                                if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
+                                {
+                                    date = "2014-03-20";
+                                }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SERVICES_TAXONOMY))
+                                {
+                                    date = "2010-01-19";
+                                }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1))
+                                {
+                                    date = "2008-06-01";
+                                }
+
+                                thesaurus = new CI_Citation_PropertyType { 
+                                    CI_Citation = new CI_Citation_Type { 
+                                        title = toCharString(simpleKeyword.Thesaurus),
+                                        date = new CI_Date_PropertyType[] {
+                                            new CI_Date_PropertyType {
+                                                CI_Date = new CI_Date_Type {
+                                                    date = new Date_PropertyType { Item = date },
+                                                    dateType = new CI_DateTypeCode_PropertyType { 
+                                                        CI_DateTypeCode = new CodeListValue_Type {
+                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                            codeListValue = "publication"
+                                                        }
+                                                    }                                
+                                                }
+                                            }
+                                            
+                                        }
+                                    }
+                                };
+                            }
+
+                            MD_KeywordTypeCode_PropertyType keywordType = null;
+                            if (!string.IsNullOrWhiteSpace(simpleKeyword.Type))
+                            {
+                                keywordType = new MD_KeywordTypeCode_PropertyType
+                                {
+                                    MD_KeywordTypeCode = new CodeListValue_Type
+                                    {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode",
+                                        codeListValue = simpleKeyword.Type
+                                    }
+                                };
+                            }
+
+                            allKeywords.Add(new MD_Keywords_PropertyType
+                            {
+                                MD_Keywords = new MD_Keywords_Type
+                                {
+                                    thesaurusName = thesaurus,
+                                    type = keywordType,                                    
+                                    keyword = keywordsToAdd.ToArray()
+                                }
+                            });
+
+                        }
+
+                    }
+
+                    identification.descriptiveKeywords = allKeywords.ToArray();
+
+                }
 
             }
         }
@@ -1635,6 +1723,31 @@ namespace GeoNorgeAPI
         public string Keyword { get; set; }
         public string Type { get; set; }
         public string Thesaurus { get; set; }
+
+        public static List<string> Filter(List<SimpleKeyword> input, string type, string thesaurus)
+        {
+            List<String> filteredList = new List<String>();
+
+            bool filterOnType = !string.IsNullOrWhiteSpace(type);
+            bool filterOnThesaurus = !string.IsNullOrWhiteSpace(thesaurus);
+
+            foreach (SimpleKeyword simpleKeyword in input)
+            {
+                if (filterOnType && !string.IsNullOrWhiteSpace(simpleKeyword.Type) && simpleKeyword.Type.Equals(type))
+                {
+                    filteredList.Add(simpleKeyword.Keyword);
+                }
+                else if (filterOnThesaurus && !string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus) && simpleKeyword.Thesaurus.Equals(thesaurus))
+                {
+                    filteredList.Add(simpleKeyword.Keyword);
+                }
+                else if (!filterOnType && string.IsNullOrWhiteSpace(simpleKeyword.Type) && !filterOnThesaurus && string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus))
+                {
+                    filteredList.Add(simpleKeyword.Keyword);
+                }
+            }
+            return filteredList;
+        }
     }
 
     public class SimpleThumbnail
