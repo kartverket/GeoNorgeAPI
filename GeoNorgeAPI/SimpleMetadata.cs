@@ -907,7 +907,8 @@ namespace GeoNorgeAPI
                     value = new SimpleDistributionDetails
                     {
                         URL = resource.linkage.URL,
-                        Protocol = resource.protocol != null ? resource.protocol.CharacterString : null
+                        Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
+                        Name = resource.name != null ? resource.name.CharacterString : null
                     };
                 }
                 return value;
@@ -924,14 +925,27 @@ namespace GeoNorgeAPI
                     _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
                 }
 
+                URL_PropertyType url = null;
+                if (!string.IsNullOrWhiteSpace(value.URL))
+                    url = new URL_PropertyType { URL = value.URL };
+
+                CharacterString_PropertyType protocol = null;
+                if (!string.IsNullOrWhiteSpace(value.Protocol))
+                    protocol = new CharacterString_PropertyType { CharacterString = value.Protocol };
+
+                CharacterString_PropertyType name = null;
+                if (!string.IsNullOrWhiteSpace(value.Name))
+                    name = new CharacterString_PropertyType { CharacterString = value.Name };
+
                 _md.distributionInfo.MD_Distribution.transferOptions = new MD_DigitalTransferOptions_PropertyType[] {
                     new MD_DigitalTransferOptions_PropertyType {
                         MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
                             onLine = new CI_OnlineResource_PropertyType[] {
                                 new CI_OnlineResource_PropertyType {
                                     CI_OnlineResource = new CI_OnlineResource_Type {
-                                         linkage = new URL_PropertyType { URL = value.URL },
-                                         protocol = new CharacterString_PropertyType { CharacterString = value.Protocol }
+                                        linkage = url,
+                                        protocol = protocol,
+                                        name = name
                                     }
                                 }
                             }
@@ -1829,6 +1843,7 @@ namespace GeoNorgeAPI
     {
         public string URL { get; set; }
         public string Protocol { get; set; }
+        public string Name { get; set; }
     }
 
     public class SimpleQualitySpecification

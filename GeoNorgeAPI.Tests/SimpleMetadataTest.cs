@@ -457,6 +457,7 @@ namespace GeoNorgeAPI.Tests
         {
             string expectedURL = "http://example.com";
             string expectedProtocol = "www";
+            string expectedName = "navn";
             _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType {
                 MD_Distribution = new MD_Distribution_Type
                 {
@@ -471,7 +472,8 @@ namespace GeoNorgeAPI.Tests
                                         CI_OnlineResource = new CI_OnlineResource_Type 
                                         { 
                                             linkage = new URL_PropertyType { URL = expectedURL },
-                                            protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol }
+                                            protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
+                                            name = new CharacterString_PropertyType { CharacterString = expectedName }
                                         }
                                     }
                                 }
@@ -486,6 +488,7 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(details);
             Assert.AreEqual(expectedURL, details.URL);
             Assert.AreEqual(expectedProtocol, details.Protocol);
+            Assert.AreEqual(expectedName, details.Name);
 
         }
 
@@ -494,12 +497,13 @@ namespace GeoNorgeAPI.Tests
         {
             string expectedURL = "http://example.com";
             string expectedProtocol = "www";
-            
-            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL };
+            string expectedName = "navn";
+            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName };
 
             var resource = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
             Assert.AreEqual(expectedURL, resource.linkage.URL);
             Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
+            Assert.AreEqual(expectedName, resource.name.CharacterString);
         }
 
         [Test]

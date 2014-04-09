@@ -39,7 +39,7 @@ namespace GeoNorgeAPI.Tests
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%Kartverket%' should return lots of records.");
         }
 
-        [Test]
+        //[Test]
         public void ShouldReturnRecordsWhenSearchingWithOrganisationNameIncludingWhitespace()
         {
             var result = _geonorge.SearchWithOrganisationName("Norges geologiske undersøkelse");
