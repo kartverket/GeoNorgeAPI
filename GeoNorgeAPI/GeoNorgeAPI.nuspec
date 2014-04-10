@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.4: Add sort by title to all search requests.
       2.2.3: Add name to DistributionDetails in SimpleMetadata.
       2.2.2: Fix NullReference when running metadata update transaction.
       2.2.1: Mappings for OperatesOn in ServiceIdentification.
