@@ -17,7 +17,6 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnRecordsWhenRunningASimpleSearch()
         {
-            
             var result = _geonorge.Search("wms");
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on 'wms' should return records.");

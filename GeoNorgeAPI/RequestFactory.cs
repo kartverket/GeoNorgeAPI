@@ -80,6 +80,15 @@ namespace GeoNorgeAPI
             };
             query.Constraint = queryConstraint;
             query.Items = new object[] { new ElementSetNameType { Value = ElementSetType.full } };
+
+            query.SortBy = new SortPropertyType[]
+            {
+                new SortPropertyType {
+                    PropertyName = new PropertyNameType { Text = new string[] { "Title" } },
+                    SortOrder = SortOrderType.ASC
+                }
+            };
+
             getRecords.Item = query;
 
             return getRecords;
