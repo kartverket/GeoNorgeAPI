@@ -17,7 +17,7 @@ namespace GeoNorgeAPI
         private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
         private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
         private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
-        private const string LOCALE_EN = "en";
+        private const string LOCALE_ENG = "eng";
 
         private MD_Metadata_Type _md;
 
@@ -131,7 +131,7 @@ namespace GeoNorgeAPI
                         {
                             if (localizedStringProperty.LocalisedCharacterString != null
                                 && localizedStringProperty.LocalisedCharacterString.locale != null
-                                && localizedStringProperty.LocalisedCharacterString.locale.ToLower().Equals(LOCALE_EN))
+                                && localizedStringProperty.LocalisedCharacterString.locale.ToLower().Equals(LOCALE_ENG))
                             {
                                 title = localizedStringProperty.LocalisedCharacterString.Value;
                             }
@@ -157,7 +157,7 @@ namespace GeoNorgeAPI
                         textGroup = new LocalisedCharacterString_PropertyType[] { 
                             new LocalisedCharacterString_PropertyType {
                                 LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                     locale = LOCALE_EN,
+                                     locale = LOCALE_ENG,
                                      Value = value
                                 }
                             }
