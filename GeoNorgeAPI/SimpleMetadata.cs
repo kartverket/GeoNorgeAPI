@@ -12,13 +12,14 @@ namespace GeoNorgeAPI
     /// </summary>
     public class SimpleMetadata
     {
+        public const string LOCALE_ENG = "eng";
+
         private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
         private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
         private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
         private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
-        private const string LOCALE_ENG = "eng";
-
+        
         private MD_Metadata_Type _md;
 
         /// <summary>
@@ -1831,6 +1832,34 @@ namespace GeoNorgeAPI
             return HierarchyLevel.Equals("service", StringComparison.Ordinal);
         }
 
+        public void SetLocale(string locale)
+        {
+            _md.locale = new PT_Locale_PropertyType[] {
+                new PT_Locale_PropertyType
+                {
+                    PT_Locale = new PT_Locale_Type
+                    {
+                        languageCode = new LanguageCode_PropertyType
+                        {
+                            LanguageCode = new CodeListValue_Type
+                            {
+                                codeList = "http://www.loc.gov/standards/iso639-2/",
+                                codeListValue = locale
+                            }
+                        },
+                        characterEncoding = new MD_CharacterSetCode_PropertyType
+                        {
+                            MD_CharacterSetCode = new CodeListValue_Type
+                            {
+                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CharacterSetCode",
+                                codeListValue = "utf8"
+                            }
+                        }
+                    }
+                }
+            };
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
@@ -1840,6 +1869,8 @@ namespace GeoNorgeAPI
         {
             return new Decimal_PropertyType { Decimal = Decimal.Parse(input) };
         }
+
+        
 
     }
 
