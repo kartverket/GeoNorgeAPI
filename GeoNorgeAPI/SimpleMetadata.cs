@@ -12,7 +12,7 @@ namespace GeoNorgeAPI
     /// </summary>
     public class SimpleMetadata
     {
-        public const string LOCALE_ENG = "eng";
+        public const string LOCALE_ENG = "ENG";
 
         private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
@@ -132,7 +132,7 @@ namespace GeoNorgeAPI
                         {
                             if (localizedStringProperty.LocalisedCharacterString != null
                                 && localizedStringProperty.LocalisedCharacterString.locale != null
-                                && localizedStringProperty.LocalisedCharacterString.locale.ToLower().Equals(LOCALE_ENG))
+                                && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_ENG))
                             {
                                 title = localizedStringProperty.LocalisedCharacterString.Value;
                             }
@@ -1845,7 +1845,7 @@ namespace GeoNorgeAPI
                             LanguageCode = new CodeListValue_Type
                             {
                                 codeList = "http://www.loc.gov/standards/iso639-2/",
-                                codeListValue = locale
+                                codeListValue = locale.ToUpper()
                             }
                         },
                         characterEncoding = new MD_CharacterSetCode_PropertyType

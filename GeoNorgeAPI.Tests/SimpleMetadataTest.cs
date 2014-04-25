@@ -85,7 +85,7 @@ namespace GeoNorgeAPI.Tests
                     textGroup = new LocalisedCharacterString_PropertyType[] { 
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                locale = "en",
+                                locale = SimpleMetadata.LOCALE_ENG,
                                 Value = expectedEnglishTitle
                             }
                         }
@@ -107,7 +107,7 @@ namespace GeoNorgeAPI.Tests
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Eksempeldatasettet sin tittel.", freeTextElement.CharacterString);
-            Assert.AreEqual("en", freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
             Assert.AreEqual(expectedEnglishTitle, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
@@ -123,7 +123,7 @@ namespace GeoNorgeAPI.Tests
                     textGroup = new LocalisedCharacterString_PropertyType[] { 
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                locale = "en",
+                                locale = SimpleMetadata.LOCALE_ENG,
                                 Value = expectedEnglishTitle
                             }
                         }
@@ -137,7 +137,7 @@ namespace GeoNorgeAPI.Tests
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Oppdatert norsk tittel", freeTextElement.CharacterString);
-            Assert.AreEqual("en", freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
             Assert.AreEqual(expectedEnglishTitle, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
