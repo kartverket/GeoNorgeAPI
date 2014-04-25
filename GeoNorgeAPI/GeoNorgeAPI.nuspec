@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.6: Add mapping for english title.
       2.2.5: Turn off sort by title as default. New parameter in search method to turn it on. 
       2.2.4: Add sort by title to all search requests.
       2.2.3: Add name to DistributionDetails in SimpleMetadata.
