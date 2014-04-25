@@ -36,10 +36,11 @@ namespace GeoNorgeAPI
         /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>
+        /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType Search(string searchString, int startPosition = 1, int limit = 20)
+        public SearchResultsType Search(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit);
+            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, sortByTitle);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
         /// <summary>
@@ -49,10 +50,11 @@ namespace GeoNorgeAPI
         /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>
+        /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in ISO 19139 format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchIso(string searchString, int startPosition = 1, int limit = 20)
+        public SearchResultsType SearchIso(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, "csw:IsoRecord");
+            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, sortByTitle, "csw:IsoRecord");
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
@@ -73,10 +75,11 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1, int limit = 20)
+        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
-            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition, limit);
+            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition, limit, sortByTitle);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
@@ -86,10 +89,11 @@ namespace GeoNorgeAPI
         /// <param name="filters">See www.opengis.net.FilterType for the type objects that are accepted</param>
         /// <param name="filterNames">Array of names corresponding to the index in filters, see www.opengis.net.ItemsChoiceType23 for possible values</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20)
+        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
-            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit);
+            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 

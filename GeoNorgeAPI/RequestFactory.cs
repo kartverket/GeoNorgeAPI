@@ -5,7 +5,7 @@ namespace GeoNorgeAPI
 {
     public class RequestFactory
     {
-        public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20, string outputSchema = "csw:Record")
+        public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
         {
             var filters = new object[]
                 {
@@ -24,7 +24,7 @@ namespace GeoNorgeAPI
                     ItemsChoiceType23.PropertyIsLike, 
                 };
 
-            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, outputSchema);
+            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, outputSchema);
         }
 
         public GetRecordByIdType GetRecordById(string uuid)
@@ -38,7 +38,7 @@ namespace GeoNorgeAPI
             return getRecordbyId;
         }
 
-        public GetRecordsType GetRecordsOrganisationNameSearch(string searchString, int startPosition = 1, int limit = 20)
+        public GetRecordsType GetRecordsOrganisationNameSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
             searchString = searchString.Replace(" ", "_");
 
@@ -58,10 +58,10 @@ namespace GeoNorgeAPI
                     ItemsChoiceType23.PropertyIsLike, 
                 };
 
-            return GetRecordsWithFilter(filters, filterNames, startPosition, limit);
+            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
         }
 
-        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, string outputSchema = "csw:Record")
+        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
         {
             var getRecords = new GetRecordsType();
             getRecords.resultType = ResultType1.results;
@@ -81,14 +81,16 @@ namespace GeoNorgeAPI
             query.Constraint = queryConstraint;
             query.Items = new object[] { new ElementSetNameType { Value = ElementSetType.full } };
 
-            query.SortBy = new SortPropertyType[]
+            if (sortByTitle)
             {
-                new SortPropertyType {
-                    PropertyName = new PropertyNameType { Text = new string[] { "Title" } },
-                    SortOrder = SortOrderType.ASC
-                }
-            };
-
+                query.SortBy = new SortPropertyType[]
+                {
+                    new SortPropertyType {
+                        PropertyName = new PropertyNameType { Text = new string[] { "Title" } },
+                        SortOrder = SortOrderType.ASC
+                    }
+                };
+            }
             getRecords.Item = query;
 
             return getRecords;
