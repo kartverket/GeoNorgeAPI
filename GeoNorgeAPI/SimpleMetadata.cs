@@ -1839,6 +1839,7 @@ namespace GeoNorgeAPI
                 {
                     PT_Locale = new PT_Locale_Type
                     {
+                        id = locale,
                         languageCode = new LanguageCode_PropertyType
                         {
                             LanguageCode = new CodeListValue_Type
