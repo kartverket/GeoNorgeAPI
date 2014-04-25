@@ -66,11 +66,87 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("This is the new title.", _md.Title);
         }
 
+        [Test]
+        public void ShouldReturnNullForEnglishTitleWhenTitleIsRegularCharacterStringObject()
+        {
+            string title = _md.EnglishTitle;
+            Assert.IsNull(title);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishTitleWhenTitleIsLocalized()
+        {
+            string expectedEnglishTitle = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = "en",
+                                Value = expectedEnglishTitle
+                            }
+                        }
+                    }
+                }
+            };
+
+            Assert.AreEqual(expectedEnglishTitle, _md.EnglishTitle);            
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishTitleWithoutDestroyingExistingLocalTitle()
+        {
+            string expectedEnglishTitle = "This is english.";
+
+            _md.EnglishTitle = expectedEnglishTitle;
+
+            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
+            PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual("Eksempeldatasettet sin tittel.", freeTextElement.CharacterString);
+            Assert.AreEqual("en", freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishTitle, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdateTitleWithoutDestroyingEnglishTitle()
+        {
+            string expectedEnglishTitle = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = "en",
+                                Value = expectedEnglishTitle
+                            }
+                        }
+                    }
+                }
+            };
+
+            _md.Title = "Oppdatert norsk tittel";
+
+            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
+            PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual("Oppdatert norsk tittel", freeTextElement.CharacterString);
+            Assert.AreEqual("en", freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishTitle, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+
         private void UpdateTitle()
         {
             _md.Title = "This is the new title.";
         }
-
+        
         [Test]
         public void ShouldReturnUuid()
         {

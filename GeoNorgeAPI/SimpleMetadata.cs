@@ -17,6 +17,7 @@ namespace GeoNorgeAPI
         private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
         private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
         private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
+        private const string LOCALE_EN = "en";
 
         private MD_Metadata_Type _md;
 
@@ -66,36 +67,103 @@ namespace GeoNorgeAPI
             get
             {
                 string title = null;
-                var identification = GetIdentification();
-                if (identification != null && identification.citation != null && identification.citation.CI_Citation != null && identification.citation.CI_Citation.title != null)
+                CharacterString_PropertyType titleElement = GetTitleElement();
+                if (titleElement != null)
                 {
-                    title = identification.citation.CI_Citation.title.CharacterString;
-                }
+                    title = titleElement.CharacterString;
+                } 
                 return title;
             }
             set {
-                var identification = GetIdentification();
-                if (identification == null)
+                PT_FreeText_PropertyType titleElementWithFreeText = GetTitleElement() as PT_FreeText_PropertyType;
+                if (titleElementWithFreeText != null)
                 {
-                    throw new NullReferenceException("Identification element is null.");
+                    titleElementWithFreeText.CharacterString = value;
+                }
+                else
+                {
+                    SetTitleElement(new CharacterString_PropertyType { CharacterString = value });
+                }
+                
+            }
+        }
+
+        private CharacterString_PropertyType GetTitleElement()
+        {
+            CharacterString_PropertyType title = null;
+            var identification = GetIdentification();
+            if (identification != null && identification.citation != null && identification.citation.CI_Citation != null && identification.citation.CI_Citation.title != null)
+            {
+                title = identification.citation.CI_Citation.title;
+            }
+            return title;
+        }
+
+        private void SetTitleElement(CharacterString_PropertyType element)
+        {
+            var identification = GetIdentificationNotNull();
+            
+            if (identification.citation == null)
+            {
+                identification.citation = new CI_Citation_PropertyType();
+            }
+
+            if (identification.citation.CI_Citation == null)
+            {
+                identification.citation.CI_Citation = new CI_Citation_Type();
+            }
+
+            identification.citation.CI_Citation.title = element;
+        }
+
+        public string EnglishTitle 
+        {
+            get
+            {
+                string title = null;
+                CharacterString_PropertyType titleElement = GetTitleElement();
+                if (titleElement != null)
+                {
+                    PT_FreeText_PropertyType titleFreeText = titleElement as PT_FreeText_PropertyType;
+                    if (titleFreeText != null && titleFreeText.PT_FreeText != null && titleFreeText.PT_FreeText.textGroup != null)
+                    {
+                        foreach (var localizedStringProperty in titleFreeText.PT_FreeText.textGroup)
+                        {
+                            if (localizedStringProperty.LocalisedCharacterString != null
+                                && localizedStringProperty.LocalisedCharacterString.locale != null
+                                && localizedStringProperty.LocalisedCharacterString.locale.ToLower().Equals(LOCALE_EN))
+                            {
+                                title = localizedStringProperty.LocalisedCharacterString.Value;
+                            }
+                        }
+                    }
+                }
+                return title;
+            }
+
+            set
+            {
+                String existingLocalTitle = null;
+                CharacterString_PropertyType titleElement = GetTitleElement();
+                if (titleElement != null)
+                {
+                    existingLocalTitle = titleElement.CharacterString;
                 }
 
-                if (identification.citation == null)
-                {
-                    identification.citation = new CI_Citation_PropertyType();
-                }
-
-                if (identification.citation.CI_Citation == null)
-                {
-                    identification.citation.CI_Citation = new CI_Citation_Type();
-                }
-
-                if (identification.citation.CI_Citation.title == null)
-                {
-                    identification.citation.CI_Citation.title = new CharacterString_PropertyType();
-                }
-
-                identification.citation.CI_Citation.title.CharacterString = value;                    
+                SetTitleElement(new PT_FreeText_PropertyType { 
+                    CharacterString = existingLocalTitle,
+                    PT_FreeText = new PT_FreeText_Type
+                    {
+                        textGroup = new LocalisedCharacterString_PropertyType[] { 
+                            new LocalisedCharacterString_PropertyType {
+                                LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                     locale = LOCALE_EN,
+                                     Value = value
+                                }
+                            }
+                        }
+                    }
+                });
             }
         }
 
