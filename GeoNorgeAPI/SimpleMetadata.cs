@@ -117,29 +117,34 @@ namespace GeoNorgeAPI
             identification.citation.CI_Citation.title = element;
         }
 
+        private string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
+        {
+            string value = null;
+            if (input != null)
+            {
+                PT_FreeText_PropertyType freeText = input as PT_FreeText_PropertyType;
+                if (freeText != null && freeText.PT_FreeText != null && freeText.PT_FreeText.textGroup != null)
+                {
+                    foreach (var localizedStringProperty in freeText.PT_FreeText.textGroup)
+                    {
+                        if (localizedStringProperty.LocalisedCharacterString != null
+                            && localizedStringProperty.LocalisedCharacterString.locale != null
+                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_ENG))
+                        {
+                            value = localizedStringProperty.LocalisedCharacterString.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
         public string EnglishTitle 
         {
             get
             {
-                string title = null;
-                CharacterString_PropertyType titleElement = GetTitleElement();
-                if (titleElement != null)
-                {
-                    PT_FreeText_PropertyType titleFreeText = titleElement as PT_FreeText_PropertyType;
-                    if (titleFreeText != null && titleFreeText.PT_FreeText != null && titleFreeText.PT_FreeText.textGroup != null)
-                    {
-                        foreach (var localizedStringProperty in titleFreeText.PT_FreeText.textGroup)
-                        {
-                            if (localizedStringProperty.LocalisedCharacterString != null
-                                && localizedStringProperty.LocalisedCharacterString.locale != null
-                                && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_ENG))
-                            {
-                                title = localizedStringProperty.LocalisedCharacterString.Value;
-                            }
-                        }
-                    }
-                }
-                return title;
+                return GetEnglishValueFromFreeText(GetTitleElement());                
             }
 
             set
@@ -151,21 +156,25 @@ namespace GeoNorgeAPI
                     existingLocalTitle = titleElement.CharacterString;
                 }
 
-                SetTitleElement(new PT_FreeText_PropertyType { 
-                    CharacterString = existingLocalTitle,
+                SetTitleElement(CreateFreeTextElement(existingLocalTitle, value));
+            }
+        }
+
+        private PT_FreeText_PropertyType CreateFreeTextElement(string characterString, string englishLocalizedValue) {
+            return new PT_FreeText_PropertyType { 
+                    CharacterString = characterString,
                     PT_FreeText = new PT_FreeText_Type
                     {
                         textGroup = new LocalisedCharacterString_PropertyType[] { 
                             new LocalisedCharacterString_PropertyType {
                                 LocalisedCharacterString = new LocalisedCharacterString_Type {
                                      locale = LOCALE_ENG,
-                                     Value = value
+                                     Value = englishLocalizedValue
                                 }
                             }
                         }
                     }
-                });
-            }
+                };
         }
 
         private AbstractMD_Identification_Type GetIdentification()
@@ -246,17 +255,54 @@ namespace GeoNorgeAPI
             get 
             {
                 string @abstract = null;
-                var identification = GetIdentification();
-                if (identification != null && identification.@abstract != null)
-                    @abstract = identification.@abstract.CharacterString;
+                CharacterString_PropertyType abstractElement = GetAbstractElement();
+                if (abstractElement != null)
+                {
+                    @abstract = abstractElement.CharacterString;
+                }
                 return @abstract;
             }
 
             set
             {
-                var identification = GetIdentificationNotNull();
-                identification.@abstract = new CharacterString_PropertyType { CharacterString = value };                
+                PT_FreeText_PropertyType abstractElementWithFreeText = GetAbstractElement() as PT_FreeText_PropertyType;
+                if (abstractElementWithFreeText != null)
+                {
+                    abstractElementWithFreeText.CharacterString = value;
+                }
+                else
+                {
+                    GetIdentificationNotNull().@abstract = new CharacterString_PropertyType { CharacterString = value };
+                }
             }
+        }
+
+        public string EnglishAbstract
+        {
+            get
+            {
+                return GetEnglishValueFromFreeText(GetAbstractElement());
+            }
+
+            set
+            {
+                String existingLocalAbstract = null;
+                CharacterString_PropertyType abstractElement = GetAbstractElement();
+                if (abstractElement != null)
+                {
+                    existingLocalAbstract = abstractElement.CharacterString;
+                }
+                GetIdentificationNotNull().@abstract = CreateFreeTextElement(existingLocalAbstract, value);
+            }
+        }
+
+        private CharacterString_PropertyType GetAbstractElement()
+        {
+            CharacterString_PropertyType @abstract = null;
+            var identification = GetIdentification();
+            if (identification != null && identification.@abstract != null)
+                @abstract = identification.@abstract;
+            return @abstract;
         }
 
         public string Purpose {

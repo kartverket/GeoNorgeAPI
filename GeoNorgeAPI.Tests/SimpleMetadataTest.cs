@@ -204,6 +204,87 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullForEnglishAbstractWhenAbstractIsRegularCharacterStringObject()
+        {
+            string @abstract = _md.EnglishAbstract;
+            Assert.IsNull(@abstract);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishAbstractWhenAbstractIsLocalized()
+        {
+            string expectedEnglishAbstract = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.@abstract = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = SimpleMetadata.LOCALE_ENG,
+                                Value = expectedEnglishAbstract
+                            }
+                        }
+                    }
+                }
+            };
+
+            Assert.AreEqual(expectedEnglishAbstract, _md.EnglishAbstract);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishAbstractWithoutDestroyingExistingLocalAbstract()
+        {
+            string expectedNorwegianAbstract = "Dette er sammendraget.";
+            string expectedEnglishAbstract = "This is english.";
+
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.@abstract = new CharacterString_PropertyType { CharacterString = expectedNorwegianAbstract };
+
+            _md.EnglishAbstract = expectedEnglishAbstract;
+
+            CharacterString_PropertyType abstractElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.@abstract;
+            PT_FreeText_PropertyType freeTextElement = abstractElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianAbstract, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishAbstract, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdateAbstractWithoutDestroyingEnglishAbstract()
+        {
+            string expectedNorwegianAbstract = "Oppdatert norsk sammendrag";
+            string expectedEnglishAbstract = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.@abstract = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = SimpleMetadata.LOCALE_ENG,
+                                Value = expectedEnglishAbstract
+                            }
+                        }
+                    }
+                }
+            };
+
+            _md.Abstract = expectedNorwegianAbstract;
+
+            CharacterString_PropertyType abstractElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.@abstract;
+            PT_FreeText_PropertyType freeTextElement = abstractElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianAbstract, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishAbstract, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
         public void ShouldReturnPurpose()
         {
             Assert.AreEqual("Dette er formålet.", _md.Purpose);
