@@ -85,7 +85,7 @@ namespace GeoNorgeAPI.Tests
                     textGroup = new LocalisedCharacterString_PropertyType[] { 
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                locale = SimpleMetadata.LOCALE_ENG,
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
                                 Value = expectedEnglishTitle
                             }
                         }
@@ -107,7 +107,7 @@ namespace GeoNorgeAPI.Tests
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Eksempeldatasettet sin tittel.", freeTextElement.CharacterString);
-            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
             Assert.AreEqual(expectedEnglishTitle, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
@@ -222,7 +222,7 @@ namespace GeoNorgeAPI.Tests
                     textGroup = new LocalisedCharacterString_PropertyType[] { 
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                locale = SimpleMetadata.LOCALE_ENG,
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
                                 Value = expectedEnglishAbstract
                             }
                         }
@@ -248,7 +248,7 @@ namespace GeoNorgeAPI.Tests
 
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual(expectedNorwegianAbstract, freeTextElement.CharacterString);
-            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
             Assert.AreEqual(expectedEnglishAbstract, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
@@ -265,7 +265,7 @@ namespace GeoNorgeAPI.Tests
                     textGroup = new LocalisedCharacterString_PropertyType[] { 
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                locale = SimpleMetadata.LOCALE_ENG,
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
                                 Value = expectedEnglishAbstract
                             }
                         }
@@ -280,7 +280,7 @@ namespace GeoNorgeAPI.Tests
 
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual(expectedNorwegianAbstract, freeTextElement.CharacterString);
-            Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
             Assert.AreEqual(expectedEnglishAbstract, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 

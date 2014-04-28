@@ -13,6 +13,7 @@ namespace GeoNorgeAPI
     public class SimpleMetadata
     {
         public const string LOCALE_ENG = "ENG";
+        public const string LOCALE_LINK_ENG = "#" + LOCALE_ENG;
 
         private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
@@ -129,7 +130,7 @@ namespace GeoNorgeAPI
                     {
                         if (localizedStringProperty.LocalisedCharacterString != null
                             && localizedStringProperty.LocalisedCharacterString.locale != null
-                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_ENG))
+                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_LINK_ENG))
                         {
                             value = localizedStringProperty.LocalisedCharacterString.Value;
                             break;
@@ -168,7 +169,7 @@ namespace GeoNorgeAPI
                         textGroup = new LocalisedCharacterString_PropertyType[] { 
                             new LocalisedCharacterString_PropertyType {
                                 LocalisedCharacterString = new LocalisedCharacterString_Type {
-                                     locale = LOCALE_ENG,
+                                     locale = LOCALE_LINK_ENG,
                                      Value = englishLocalizedValue
                                 }
                             }
@@ -1891,7 +1892,7 @@ namespace GeoNorgeAPI
                             LanguageCode = new CodeListValue_Type
                             {
                                 codeList = "http://www.loc.gov/standards/iso639-2/",
-                                codeListValue = locale.ToUpper()
+                                codeListValue = locale.ToLower()
                             }
                         },
                         characterEncoding = new MD_CharacterSetCode_PropertyType
