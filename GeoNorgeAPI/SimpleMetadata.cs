@@ -344,22 +344,44 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleContact ContactMetadata
+        {
+            get
+            {
+                SimpleContact contact = null;
+                if (_md.contact != null && _md.contact.Length > 0 && _md.contact[0] != null && _md.contact[0].CI_ResponsibleParty != null)
+                {
+                    contact = ParseResponsiblePartyToSimpleContact(_md.contact[0].CI_ResponsibleParty);
+                }
+                return contact;
+            }
+            set
+            {
+                CI_ResponsibleParty_Type responsibleParty = CreateResponsiblePartyFromSimpleContact(value);
+                _md.contact = new CI_ResponsibleParty_PropertyType[]
+                {
+                    new CI_ResponsibleParty_PropertyType {
+                        CI_ResponsibleParty = responsibleParty    
+                    }
+                };
+            }
+        }
+
         public SimpleContact ContactPublisher
         {
             get { return GetContactWithRole("publisher"); }
-            set { CreatOrUpdateContactWithRole("publisher", value); }
+            set { CreateOrUpdateContactWithRole("publisher", value); }
         }
 
-        public SimpleContact ContactPointOfContact
+        public SimpleContact ContactOwner
         {
-            get { return GetContactWithRole("pointOfContact"); }
-            set { CreatOrUpdateContactWithRole("pointOfContact", value); }
+            get { return GetContactWithRole("owner"); }
+            set { CreateOrUpdateContactWithRole("owner", value); }
         }
 
-        private void CreatOrUpdateContactWithRole(string roleCodeValue, SimpleContact contact)
+        private void CreateOrUpdateContactWithRole(string roleCodeValue, SimpleContact contact)
         {
             CI_ResponsibleParty_Type responsibleParty = GetContactInformationResponsiblePartyWithRole(roleCodeValue);
-
             if (responsibleParty == null)
             {
                 responsibleParty = new CI_ResponsibleParty_Type();
@@ -381,56 +403,7 @@ namespace GeoNorgeAPI
                 }
             }
 
-            responsibleParty.individualName = new CharacterString_PropertyType { CharacterString = contact.Name };
-            responsibleParty.organisationName = new CharacterString_PropertyType { CharacterString = contact.Organization };
-            if (responsibleParty.contactInfo == null)
-            {
-                responsibleParty.contactInfo = new CI_Contact_PropertyType
-                {
-                    CI_Contact = new CI_Contact_Type
-                    {
-                        address = new CI_Address_PropertyType
-                        {
-                            CI_Address = new CI_Address_Type()
-                        }
-                    }
-                };
-            }
-            if (responsibleParty.contactInfo.CI_Contact == null)
-            {
-                responsibleParty.contactInfo.CI_Contact = new CI_Contact_Type
-                    {
-                        address = new CI_Address_PropertyType
-                        {
-                            CI_Address = new CI_Address_Type()
-                        }
-                    };
-            }
-            if (responsibleParty.contactInfo.CI_Contact.address == null)
-            {
-                responsibleParty.contactInfo.CI_Contact.address = new CI_Address_PropertyType
-                {
-                    CI_Address = new CI_Address_Type()
-                };
-            }
-            if (responsibleParty.contactInfo.CI_Contact.address.CI_Address == null)
-            {
-                responsibleParty.contactInfo.CI_Contact.address.CI_Address = new CI_Address_Type();
-            }
-
-
-            responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress = new CharacterString_PropertyType[] { 
-                    new CharacterString_PropertyType { CharacterString = contact.Email }
-                };
-
-            responsibleParty.role = new CI_RoleCode_PropertyType
-            {
-                CI_RoleCode = new CodeListValue_Type
-                {
-                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
-                    codeListValue = contact.Role
-                }
-            };
+            PopuplateResponsiblePartyFromSimpleContact(responsibleParty, contact);
         }
 
         private CI_ResponsibleParty_Type GetContactInformationResponsiblePartyWithRole(string roleCodeValue) 
@@ -471,37 +444,101 @@ namespace GeoNorgeAPI
                             && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue != null
                             && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue.ToLower() == roleCodeValue.ToLower())
                         {
-                            var p = responsibleParty.CI_ResponsibleParty;
-
-                            string email = null;
-                            if (p.contactInfo != null && p.contactInfo.CI_Contact != null && p.contactInfo.CI_Contact.address != null 
-                                && p.contactInfo.CI_Contact.address.CI_Address != null
-                                && p.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress != null
-                                && p.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0] != null
-                                && p.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0].CharacterString != null)
-                            {
-                                email = p.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0].CharacterString;
-                            }
-
-                            string role = null;
-                            if (p.role != null && p.role.CI_RoleCode != null)
-                            {
-                                role = p.role.CI_RoleCode.codeListValue;
-                            }
-
-                            contact = new SimpleContact
-                            {
-                                Name = GetStringOrNull(p.individualName),
-                                Organization = GetStringOrNull(p.organisationName),
-                                Email = email,
-                                Role = role
-                            };
+                            contact = ParseResponsiblePartyToSimpleContact(responsibleParty.CI_ResponsibleParty);
                             break;
                         }
                     }
                 }
             }
             return contact;
+        }
+
+        private CI_ResponsibleParty_Type CreateResponsiblePartyFromSimpleContact(SimpleContact contact)
+        {
+            CI_ResponsibleParty_Type responsibleParty = new CI_ResponsibleParty_Type();
+            PopuplateResponsiblePartyFromSimpleContact(responsibleParty, contact);
+            return responsibleParty;
+        }
+
+        private CI_ResponsibleParty_Type PopuplateResponsiblePartyFromSimpleContact(CI_ResponsibleParty_Type responsibleParty, SimpleContact contact)
+        {
+            responsibleParty.individualName = new CharacterString_PropertyType { CharacterString = contact.Name };
+            responsibleParty.organisationName = new CharacterString_PropertyType { CharacterString = contact.Organization };
+            if (responsibleParty.contactInfo == null)
+            {
+                responsibleParty.contactInfo = new CI_Contact_PropertyType
+                {
+                    CI_Contact = new CI_Contact_Type
+                    {
+                        address = new CI_Address_PropertyType
+                        {
+                            CI_Address = new CI_Address_Type()
+                        }
+                    }
+                };
+            }
+            if (responsibleParty.contactInfo.CI_Contact == null)
+            {
+                responsibleParty.contactInfo.CI_Contact = new CI_Contact_Type
+                {
+                    address = new CI_Address_PropertyType
+                    {
+                        CI_Address = new CI_Address_Type()
+                    }
+                };
+            }
+            if (responsibleParty.contactInfo.CI_Contact.address == null)
+            {
+                responsibleParty.contactInfo.CI_Contact.address = new CI_Address_PropertyType
+                {
+                    CI_Address = new CI_Address_Type()
+                };
+            }
+            if (responsibleParty.contactInfo.CI_Contact.address.CI_Address == null)
+            {
+                responsibleParty.contactInfo.CI_Contact.address.CI_Address = new CI_Address_Type();
+            }
+
+            responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress = new CharacterString_PropertyType[] { 
+                    new CharacterString_PropertyType { CharacterString = contact.Email }
+                };
+
+            responsibleParty.role = new CI_RoleCode_PropertyType
+            {
+                CI_RoleCode = new CodeListValue_Type
+                {
+                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
+                    codeListValue = contact.Role
+                }
+            };
+            return responsibleParty;
+        }
+
+        private SimpleContact ParseResponsiblePartyToSimpleContact(CI_ResponsibleParty_Type responsibleParty)
+        {
+            string email = null;
+            if (responsibleParty.contactInfo != null && responsibleParty.contactInfo.CI_Contact != null && responsibleParty.contactInfo.CI_Contact.address != null 
+                && responsibleParty.contactInfo.CI_Contact.address.CI_Address != null
+                && responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress != null
+                && responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0] != null
+                && responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0].CharacterString != null)
+            {
+                email = responsibleParty.contactInfo.CI_Contact.address.CI_Address.electronicMailAddress[0].CharacterString;
+            }
+
+            string role = null;
+            if (responsibleParty.role != null && responsibleParty.role.CI_RoleCode != null)
+            {
+                role = responsibleParty.role.CI_RoleCode.codeListValue;
+            }
+
+            return new SimpleContact
+            {
+                Name = GetStringOrNull(responsibleParty.individualName),
+                Organization = GetStringOrNull(responsibleParty.organisationName),
+                Email = email,
+                Role = role
+            };
         }
 
         private string GetStringOrNull(CharacterString_PropertyType input)
@@ -1917,8 +1954,6 @@ namespace GeoNorgeAPI
         {
             return new Decimal_PropertyType { Decimal = Decimal.Parse(input) };
         }
-
-        
 
     }
 
