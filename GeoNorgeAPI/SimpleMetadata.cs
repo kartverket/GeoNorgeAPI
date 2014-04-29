@@ -432,23 +432,10 @@ namespace GeoNorgeAPI
         private SimpleContact GetContactWithRole(string roleCodeValue)
         {
             SimpleContact contact = null;
-
-            var identification = GetIdentification();
-            if (identification != null && identification.pointOfContact != null)
+            CI_ResponsibleParty_Type responsibleParty = GetContactInformationResponsiblePartyWithRole(roleCodeValue);
+            if (responsibleParty != null)
             {
-                foreach (var responsibleParty in identification.pointOfContact)
-                {
-                    if (responsibleParty.CI_ResponsibleParty != null)
-                    {
-                        if (responsibleParty.CI_ResponsibleParty.role != null && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode != null
-                            && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue != null
-                            && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue.ToLower() == roleCodeValue.ToLower())
-                        {
-                            contact = ParseResponsiblePartyToSimpleContact(responsibleParty.CI_ResponsibleParty);
-                            break;
-                        }
-                    }
-                }
+                contact = ParseResponsiblePartyToSimpleContact(responsibleParty);
             }
             return contact;
         }
@@ -463,7 +450,16 @@ namespace GeoNorgeAPI
         private CI_ResponsibleParty_Type PopuplateResponsiblePartyFromSimpleContact(CI_ResponsibleParty_Type responsibleParty, SimpleContact contact)
         {
             responsibleParty.individualName = new CharacterString_PropertyType { CharacterString = contact.Name };
-            responsibleParty.organisationName = new CharacterString_PropertyType { CharacterString = contact.Organization };
+
+            if (!string.IsNullOrWhiteSpace(contact.OrganizationEnglish))
+            {
+                responsibleParty.organisationName = CreateFreeTextElement(contact.Organization, contact.OrganizationEnglish);
+            }
+            else
+            {
+                responsibleParty.organisationName = new CharacterString_PropertyType { CharacterString = contact.Organization };
+            }
+            
             if (responsibleParty.contactInfo == null)
             {
                 responsibleParty.contactInfo = new CI_Contact_PropertyType
@@ -536,6 +532,7 @@ namespace GeoNorgeAPI
             {
                 Name = GetStringOrNull(responsibleParty.individualName),
                 Organization = GetStringOrNull(responsibleParty.organisationName),
+                OrganizationEnglish = GetEnglishValueFromFreeText(responsibleParty.organisationName),
                 Email = email,
                 Role = role
             };
@@ -1961,6 +1958,7 @@ namespace GeoNorgeAPI
     {
         public string Name { get; set; }
         public string Organization { get; set; }
+        public string OrganizationEnglish { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
     }
