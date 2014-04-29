@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.10: Add metadata contact.
       2.2.9: Add mapping for english abstract.
       2.2.8: Fix duplicate package issue.
       2.2.7: Add method for setting additional locale.
