@@ -1494,7 +1494,7 @@ namespace GeoNorgeAPI
             {
                 if (value.HasValue)
                 {
-                    _md.dateStamp = new Date_PropertyType { Item = value.Value.ToString("yyyy-MM-dd'T'HH:mm:ss") };
+                    _md.dateStamp = new Date_PropertyType { Item = value.Value.ToString("yyyy-MM-dd") };
                 }
                 
             }
@@ -1548,7 +1548,7 @@ namespace GeoNorgeAPI
             string updatedValue = null;
             if (incomingDateTime.HasValue)
             {
-                updatedValue = incomingDateTime.Value.ToString("yyyy-MM-dd'T'HH:mm:ss");
+                updatedValue = incomingDateTime.Value.ToString("yyyy-MM-dd");
             }
 
             if (citation.date != null)

@@ -951,7 +951,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateCreatedDate()
         {
-            string expectedDateString = "2014-03-04T13:00:00";
+            string expectedDateString = "2014-03-04";
             DateTime expectedDate = DateTime.Parse(expectedDateString);
 
             _md.DateCreated = expectedDate;
@@ -993,7 +993,7 @@ namespace GeoNorgeAPI.Tests
 
             _md.DatePublished = expectedDate;
 
-            Assert.AreEqual(expectedDate, GetCitationDateWithType("publication"));
+            Assert.AreEqual(expectedDateString, (string) GetCitationDateWithType("publication"));
         }
 
         [Test]
@@ -1031,7 +1031,7 @@ namespace GeoNorgeAPI.Tests
 
             _md.DateUpdated = expectedDate;
 
-            Assert.AreEqual(expectedDate, GetCitationDateWithType("revision"));
+            Assert.AreEqual(expectedDateString, (string)GetCitationDateWithType("revision"));
         }
 
         [Test]
@@ -1043,10 +1043,11 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateMetadataUpdatedDate()
         {
-            DateTime expectedDate = DateTime.Parse("2014-01-15");
+            string expectedDateString = "2014-01-15";
+            DateTime expectedDate = DateTime.Parse(expectedDateString);
             _md.DateMetadataUpdated = expectedDate;
 
-            Assert.AreEqual(expectedDate, (DateTime)_md.GetMetadata().dateStamp.Item);
+            Assert.AreEqual(expectedDateString, (string)_md.GetMetadata().dateStamp.Item);
         }
 
         [Test]
