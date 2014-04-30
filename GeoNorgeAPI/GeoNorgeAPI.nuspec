@@ -11,7 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      2.2.11: Add english organization name to SimpleContact
+      2.2.12: Generate UUID when creating metadata.
+      2.2.11: Add english organization name to SimpleContact.
       2.2.10: Add metadata contact.
       2.2.9: Add mapping for english abstract.
       2.2.8: Fix duplicate package issue.
