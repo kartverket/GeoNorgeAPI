@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.15: Add mandatory fields when creating empty service.
       2.2.14: Use only date part when serializing dates.
       2.2.13: Adjust date serialization.
       2.2.12: Generate UUID when creating metadata.
