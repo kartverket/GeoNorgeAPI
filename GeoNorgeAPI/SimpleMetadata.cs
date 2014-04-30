@@ -47,6 +47,7 @@ namespace GeoNorgeAPI
         {
             MD_Metadata_Type md = new MD_Metadata_Type
             {
+                fileIdentifier = new CharacterString_PropertyType { CharacterString = Guid.NewGuid().ToString() },
                 identificationInfo = new MD_Identification_PropertyType[]
                 {
                     new MD_Identification_PropertyType {
