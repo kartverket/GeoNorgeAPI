@@ -35,7 +35,7 @@ namespace GeoNorgeAPI
 
         public static SimpleMetadata CreateService()
         {
-            SimpleMetadata metadata = CreateSimpleMetadata("dataset", new SV_ServiceIdentification_Type());
+            SimpleMetadata metadata = CreateSimpleMetadata("service", new SV_ServiceIdentification_Type());
             metadata.GetServiceIdentification().couplingType = new SV_CouplingType_PropertyType 
             { 
                 SV_CouplingType = new CodeListValue_Type 

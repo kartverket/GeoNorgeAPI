@@ -1338,6 +1338,14 @@ namespace GeoNorgeAPI.Tests
             Assert.True(operatesOn.Contains(uuid2));
         }
 
+        [Test]
+        public void CreateService()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Assert.NotNull(metadata);
+        }
+
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
