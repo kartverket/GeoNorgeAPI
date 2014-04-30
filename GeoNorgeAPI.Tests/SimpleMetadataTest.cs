@@ -931,7 +931,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnCreationDateWhenTypeIsDateTime()
         {
-            DateTime expectedDate = DateTime.Parse("2014-01-01");
+            DateTime expectedDate = DateTime.Parse("2014-01-01T12:00:00");
 
             SetDateOnCitationDateType(expectedDate, "creation");
 
@@ -951,12 +951,12 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateCreatedDate()
         {
-            string expectedDateString = "2014-03-04";
+            string expectedDateString = "2014-03-04T13:00:00";
             DateTime expectedDate = DateTime.Parse(expectedDateString);
 
             _md.DateCreated = expectedDate;
 
-            Assert.AreEqual(expectedDate, GetCitationDateWithType("creation"));
+            Assert.AreEqual(expectedDateString, (string)GetCitationDateWithType("creation"));
         }
 
         [Test]

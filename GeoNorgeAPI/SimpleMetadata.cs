@@ -1492,7 +1492,11 @@ namespace GeoNorgeAPI
 
             set
             {
-                _md.dateStamp = new Date_PropertyType { Item = value };
+                if (value.HasValue)
+                {
+                    _md.dateStamp = new Date_PropertyType { Item = value.Value.ToString("yyyy-MM-dd'T'HH:mm:ss") };
+                }
+                
             }
         }
 
@@ -1537,10 +1541,16 @@ namespace GeoNorgeAPI
             return date;
         }
 
-        private void UpdateCitationDateForType(CI_Citation_Type citation, string dateType, DateTime? value)
+        private void UpdateCitationDateForType(CI_Citation_Type citation, string dateType, DateTime? incomingDateTime)
         {
             
             bool updated = false;
+            string updatedValue = null;
+            if (incomingDateTime.HasValue)
+            {
+                updatedValue = incomingDateTime.Value.ToString("yyyy-MM-dd'T'HH:mm:ss");
+            }
+
             if (citation.date != null)
             {
                 foreach (var currentDate in citation.date)
@@ -1550,7 +1560,7 @@ namespace GeoNorgeAPI
                         && currentDate.CI_Date.dateType.CI_DateTypeCode != null
                         && currentDate.CI_Date.dateType.CI_DateTypeCode.codeListValue == dateType)
                     {
-                        currentDate.CI_Date.date.Item = value;
+                        currentDate.CI_Date.date.Item = updatedValue;
                         updated = true;
                     }
                 }
@@ -1564,7 +1574,7 @@ namespace GeoNorgeAPI
                     new CI_Date_PropertyType {
                         CI_Date = new CI_Date_Type {
                             date = new Date_PropertyType {
-                                Item = value
+                                Item = updatedValue
                             },
                             dateType = new CI_DateTypeCode_PropertyType {
                                 CI_DateTypeCode = new CodeListValue_Type {
