@@ -40,8 +40,6 @@ namespace GeoNorgeAPI
 
         public GetRecordsType GetRecordsOrganisationNameSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
-            searchString = searchString.Replace(" ", "_");
-
             var filters = new object[]
                 {
                     new PropertyIsLikeType
