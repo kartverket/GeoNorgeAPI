@@ -13,10 +13,13 @@
             <ColumnDefinition Width="353*"/>
         </Grid.ColumnDefinitions>
         <Label Content="GeoNorgeAPI - Sample application" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="20"/>
-        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="10,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="314"/>
-        <Button Content="Metadata search" HorizontalAlignment="Left" Margin="329,52,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
+        <TextBox x:Name="txtSearch" HorizontalAlignment="Left" Height="23" Margin="108,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="216"/>
+        <Button Content="Metadata search" HorizontalAlignment="Left" Margin="595,51,0,0" VerticalAlignment="Top" Width="120" Click="Button_Click"/>
         <DataGrid HorizontalAlignment="Left" Margin="10,80,0,0" VerticalAlignment="Top" Height="267" Width="1211"
                   ItemsSource="{Binding Metadata, Source={StaticResource MetadataModel}}" Grid.ColumnSpan="2"/>
-        <Label x:Name="lblStatus" Content="" HorizontalAlignment="Left" Margin="523,52,0,0" VerticalAlignment="Top" Width="343" Grid.ColumnSpan="2"/>
+        <Label x:Name="lblStatus" Content="" HorizontalAlignment="Left" Margin="734,49,0,0" VerticalAlignment="Top" Width="343" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="txtOrganisation" HorizontalAlignment="Left" Height="23" Margin="455,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Organisation name" HorizontalAlignment="Left" Margin="344,49,0,0" VerticalAlignment="Top"/>
+        <Label Content="Free text search" HorizontalAlignment="Left" Margin="10,47,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

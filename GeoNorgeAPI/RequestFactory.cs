@@ -59,6 +59,41 @@ namespace GeoNorgeAPI
             return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
         }
 
+        internal GetRecordsType GetRecordsFreeTextOrganisationNameSearch(string searchString, string organisationName, int startPosition, int limit, bool sortByTitle)
+        {
+            var filters = new object[]
+                {
+                    new BinaryLogicOpType {
+                        ItemsElementName = new ItemsChoiceType22[] { ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike },
+                        Items = new object[] {
+                            new PropertyIsLikeType
+                            {
+                                escapeChar = "\\",
+                                singleChar = "_",
+                                wildCard = "%",
+                                PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
+                                Literal = new LiteralType {Text = new[] {searchString}}
+                            },
+                            new PropertyIsLikeType
+                            {
+                                escapeChar = "\\",
+                                singleChar = "_",
+                                wildCard = "%",
+                                PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
+                                Literal = new LiteralType {Text = new[] { organisationName }}
+                            }
+                        }
+                    }                    
+                };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
+        }
+
         public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
         {
             var getRecords = new GetRecordsType();
@@ -185,5 +220,6 @@ namespace GeoNorgeAPI
                 };
             return cswTransaction;
         }
+
     }
 }

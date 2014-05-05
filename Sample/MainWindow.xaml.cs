@@ -28,12 +28,24 @@ namespace Sample
             BackgroundWorker worker = new BackgroundWorker();
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.DoWork += WorkerOnDoWork;
-            worker.RunWorkerAsync(txtSearch.Text);
+            worker.RunWorkerAsync(new string[] {txtSearch.Text, txtOrganisation.Text });
         }
 
         private void WorkerOnDoWork(object sender, DoWorkEventArgs args)
         {
-            SearchResultsType results = _geonorgeApi.SearchWithOrganisationName((string)args.Argument);
+            string[] arguments = (string[])args.Argument;
+            string freeText = arguments[0];
+            string organisation = arguments[1];
+
+            SearchResultsType results = null;
+            if (!string.IsNullOrWhiteSpace(organisation))
+            {
+                results = _geonorgeApi.SearchFreeTextWithOrganisationName(freeText, organisation);
+            }
+            else
+            {
+                results = _geonorgeApi.Search(freeText);
+            }            
             args.Result = results;
         }
 
