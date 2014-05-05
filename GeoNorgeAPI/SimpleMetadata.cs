@@ -1496,7 +1496,7 @@ namespace GeoNorgeAPI
                 DateTime? value = null;
                 if (_md.dateStamp != null && _md.dateStamp.Item != null)
                 {
-                    value = (DateTime)_md.dateStamp.Item;
+                    value = ParseDateProperty(_md.dateStamp);
                 }
                 return value;
             }
@@ -1507,7 +1507,6 @@ namespace GeoNorgeAPI
                 {
                     _md.dateStamp = new Date_PropertyType { Item = value.Value.ToString("yyyy-MM-dd") };
                 }
-                
             }
         }
 
@@ -1536,19 +1535,28 @@ namespace GeoNorgeAPI
                         && currentDate.CI_Date.date != null
                         && currentDate.CI_Date.date.Item != null)
                     {
-                        date = currentDate.CI_Date.date.Item as DateTime?;
-
-                        if (date == null)
-                        {
-                            string dateString = currentDate.CI_Date.date.Item as string;
-                            if (dateString != null)
-                            {
-                                date = DateTime.Parse(dateString);
-                            }
-                        }
+                        date = ParseDateProperty(currentDate.CI_Date.date);
+                        break;
                     }
                 }
             }            
+            return date;
+        }
+
+
+        private DateTime? ParseDateProperty(Date_PropertyType dateProperty)
+        {
+            DateTime? date = dateProperty.Item as DateTime?;
+
+            if (date == null)
+            {
+                string dateString = dateProperty.Item as string;
+                if (dateString != null)
+                {
+                    date = DateTime.Parse(dateString);
+                }
+            }
+
             return date;
         }
 
