@@ -45,7 +45,7 @@ namespace GeoNorgeAPI
                 } 
             };
             metadata.GetServiceIdentification().serviceType = new GenericName_PropertyType { Item = new CodeType { Value = "view" } };
-
+            metadata.GetServiceIdentification().containsOperations = new SV_OperationMetadata_PropertyType[] { };
             return metadata;
         }
 
