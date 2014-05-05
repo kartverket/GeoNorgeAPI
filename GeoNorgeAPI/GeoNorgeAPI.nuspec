@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.2.19: Fix issue with containsOperations.
       2.2.18: Add containsOperations when creating new service metadata.
       2.2.17: Fix error when parsing metadata updated date.
       2.2.16: Fix null reference when creating service.
