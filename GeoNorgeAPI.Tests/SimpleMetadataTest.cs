@@ -1343,6 +1343,9 @@ namespace GeoNorgeAPI.Tests
         {
             SimpleMetadata metadata = SimpleMetadata.CreateService();
             Assert.NotNull(metadata);
+
+            Console.WriteLine(Arkitektum.GIS.Lib.SerializeUtil.SerializeUtil.SerializeToString(metadata.GetMetadata()));
+
         }
 
 
