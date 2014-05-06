@@ -65,7 +65,7 @@ namespace GeoNorgeAPI
 
             Log.Info("Running CSW Transaction.");
 
-            string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/eng/csw-publication", 
+            string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/nor/csw-publication", 
                 "application/xml", "application/xml", requestBody, _geonetworkUsername, _geonetworkPassword);
 
             Log.Debug(transactionResponse);
@@ -137,60 +137,8 @@ namespace GeoNorgeAPI
 
         private string GetUrlForCswService()
         {
-            return _geonetworkEndpoint + "srv/eng/csw";
+            return _geonetworkEndpoint + "srv/nor/csw";
         }
 
-        private void GeoNetworkAuthenticate()
-        {
-            HttpWebResponse logoutResponse = null;
-            HttpWebResponse loginResponse = null;
-            try
-            {
-                if (_sessionCookie == null)
-                {
-                    logoutResponse =
-                        _httpRequestExecutor.FullGetRequest(_geonetworkEndpoint + "srv/eng/xml.user.logout",
-                                                            "application/xml", "text/plain");
-                    logoutResponse.Close();
-
-                    loginResponse =
-                        _httpRequestExecutor.FullPostRequest(_geonetworkEndpoint + "srv/eng/xml.user.login",
-                                                             "application/xml", "application/x-www-form-urlencoded",
-                                                             "username=" + _geonetworkUsername + "&password=" +
-                                                             _geonetworkPassword);
-
-                    Cookie sessionCookie = loginResponse.Cookies["JSESSIONID"];
-                    if (sessionCookie == null)
-                    {
-                        var stream = loginResponse.GetResponseStream();
-                        if (stream != null)
-                        {
-                            StreamReader reader = new StreamReader(stream);
-                            string responseBody = reader.ReadToEnd();
-                            loginResponse.Close();
-                            Log.Error("Response:" + responseBody);
-                        }
-                        throw new Exception("Authentication failed - no session cookie available!");
-                    }
-
-                    _sessionCookie = sessionCookie;
-
-                    loginResponse.Close();
-                    Log.Debug("Authenticated, session cookie: " + _sessionCookie);
-                }
-                else
-                {
-                    Log.Info("Already authenticated, using existing session cookie: " + _sessionCookie);
-                }
-            }
-            finally
-            {
-                if (logoutResponse != null)
-                    logoutResponse.Close();
-
-                if (loginResponse != null)
-                    loginResponse.Close();
-            }
-        }
     }
 }
