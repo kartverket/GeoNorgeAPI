@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.4.0: Use HTTP Basic authentication on CSW transactions with GeoNetwork 2.10.3.
       2.3.0: Add new search method
       2.2.20: Remove string replacement in search method.
       2.2.19: Fix issue with containsOperations.
