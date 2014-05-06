@@ -9,9 +9,9 @@ namespace GeoNorgeAPI
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public string PostRequest(string url, string accept, string contentType, string postData, Cookie cookie = null)
+        public string PostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null)
         {
-            HttpWebResponse response = FullPostRequest(url, accept, contentType, postData, cookie);
+            HttpWebResponse response = FullPostRequest(url, accept, contentType, postData, username, password, cookie);
 
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseBody = reader.ReadToEnd();
@@ -20,7 +20,7 @@ namespace GeoNorgeAPI
             return responseBody;
         }
 
-        public HttpWebResponse FullPostRequest(string url, string accept, string contentType, string postData, Cookie cookie = null)
+        public HttpWebResponse FullPostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null)
         {
             try
             {
@@ -30,6 +30,11 @@ namespace GeoNorgeAPI
                     request.Accept = accept;
                 request.ContentType = contentType;
                 request.Timeout = 15000;
+
+                if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+                {
+                    SetBasicAuthHeader(request, username, password);
+                }
 
                 Log.Debug("HTTP request: [" + request.Method + "] " + url);
                 Log.Debug("HTTP request body:\n" + postData);
@@ -57,6 +62,14 @@ namespace GeoNorgeAPI
                 throw e;
             }
         }
+
+        public void SetBasicAuthHeader(WebRequest req, String userName, String userPassword)
+        {
+            string authInfo = userName + ":" + userPassword;
+            authInfo = Convert.ToBase64String(Encoding.Default.GetBytes(authInfo));
+            req.Headers["Authorization"] = "Basic " + authInfo;
+        }
+
 
         public HttpWebResponse FullGetRequest(string url, string accept, string contentType)
         {

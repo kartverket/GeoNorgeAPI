@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using www.opengis.net;
 using GeoNorgeAPI;
+using System;
 namespace GeoNorgeAPI.Tests
 {
     
@@ -121,15 +122,17 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void InsertMetadata()
         {
-            _geonorge = new GeoNorge("", "", "https://www.geonorge.no/geonetworkbeta/");
+            _geonorge = new GeoNorge("","","https://www.geonorge.no/geonetwork210/");
 
             MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
-            metadata.fileIdentifier = null;
-
+            metadata.fileIdentifier = new CharacterString_PropertyType { CharacterString = Guid.NewGuid().ToString() };
+            
             var transaction = _geonorge.MetadataInsert(metadata);
 
             Assert.NotNull(transaction);
             Assert.AreEqual("1", transaction.TotalInserted);
+
+            Console.WriteLine(transaction.Identifiers);
         }
         
         [Test]

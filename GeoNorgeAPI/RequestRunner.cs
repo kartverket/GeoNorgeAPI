@@ -63,12 +63,10 @@ namespace GeoNorgeAPI
         {
             var requestBody = SerializeUtil.SerializeToString(request);
 
-            GeoNetworkAuthenticate();
-
             Log.Info("Running CSW Transaction.");
 
             string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/eng/csw-publication", 
-                "application/xml", "application/xml", requestBody, _sessionCookie);
+                "application/xml", "application/xml", requestBody, _geonetworkUsername, _geonetworkPassword);
 
             Log.Debug(transactionResponse);
 
