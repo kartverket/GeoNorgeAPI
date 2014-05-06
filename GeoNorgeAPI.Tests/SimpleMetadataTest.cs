@@ -1345,7 +1345,15 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(metadata);
 
             Console.WriteLine(Arkitektum.GIS.Lib.SerializeUtil.SerializeUtil.SerializeToString(metadata.GetMetadata()));
+        }
 
+        [Test]
+        public void ShouldAddKeywordToMetadataWithNoExistingKeywords()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.Keywords = new List<SimpleKeyword> { new SimpleKeyword { Keyword = "testkeyword", Type = "theme" } };
+
+            Assert.AreEqual(1, metadata.Keywords.Count);
         }
 
 

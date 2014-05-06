@@ -607,7 +607,7 @@ namespace GeoNorgeAPI
             set
             {
                 var identification = GetIdentification();
-                if (identification != null && identification.descriptiveKeywords != null)
+                if (identification != null)
                 {
                     List<MD_Keywords_PropertyType> allKeywords = new List<MD_Keywords_PropertyType>();
 
