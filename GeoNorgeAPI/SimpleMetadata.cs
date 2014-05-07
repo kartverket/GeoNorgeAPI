@@ -743,16 +743,17 @@ namespace GeoNorgeAPI
                 if (identification != null && identification.graphicOverview != null && identification.graphicOverview.Length > 0
                     && identification.graphicOverview[0] != null)
                 {
-
                     foreach (MD_BrowseGraphic_PropertyType browseGraphic in identification.graphicOverview)
                     {
+                        string type = browseGraphic.MD_BrowseGraphic.fileDescription != null ? browseGraphic.MD_BrowseGraphic.fileDescription.CharacterString : null;
+                        string url = browseGraphic.MD_BrowseGraphic.fileName != null ? browseGraphic.MD_BrowseGraphic.fileName.CharacterString : null;
+
                         thumbnails.Add(new SimpleThumbnail
                         {
-                            Type = browseGraphic.MD_BrowseGraphic.fileDescription.CharacterString,
-                            URL = browseGraphic.MD_BrowseGraphic.fileName.CharacterString
+                            Type = type,
+                            URL = url
                         });
                     }
-                    
                 }
                 return thumbnails;
             }
@@ -768,7 +769,7 @@ namespace GeoNorgeAPI
                                 MD_BrowseGraphic = new MD_BrowseGraphic_Type
                                 {
                                     fileName = new CharacterString_PropertyType { CharacterString = thumbnail.URL },
-                                    fileType = new CharacterString_PropertyType { CharacterString = thumbnail.Type }
+                                    fileDescription = new CharacterString_PropertyType { CharacterString = thumbnail.Type }
                                 }
                             };
                             graphics.Add(graphic);

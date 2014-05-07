@@ -1356,7 +1356,15 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, metadata.Keywords.Count);
         }
 
+        [Test]
+        public void ShouldAddThumbnailToMetadataWithNoExistingThumbnails()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.Thumbnails = new List<SimpleThumbnail> { new SimpleThumbnail { Type = "thumbnail", URL = "http://www.geonorge.no/image.png" } };
 
+            Assert.AreEqual(1, metadata.Thumbnails.Count);
+        }
+        
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
