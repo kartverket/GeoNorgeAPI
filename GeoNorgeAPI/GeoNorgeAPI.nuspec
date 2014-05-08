@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.4.4: Fix exception when adding duplicate keywords.
       2.4.3: Fix null reference in thumbnail mapping.
       2.4.2: Fix problem saving keywords on newly created metadata.
       2.4.1: Use norwegian CSW endpoint.
