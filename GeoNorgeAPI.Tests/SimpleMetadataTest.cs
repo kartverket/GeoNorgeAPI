@@ -1365,6 +1365,19 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, metadata.Thumbnails.Count);
         }
         
+        [Test]
+        public void ShouldIgnoreDuplicateKeywords()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.Keywords = new List<SimpleKeyword> { new SimpleKeyword { Keyword = "hello" } };
+
+            List<SimpleKeyword> existingKeywords = metadata.Keywords;
+
+            existingKeywords.Add(new SimpleKeyword { Keyword = "hello" });
+            metadata.Keywords = existingKeywords;
+
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {

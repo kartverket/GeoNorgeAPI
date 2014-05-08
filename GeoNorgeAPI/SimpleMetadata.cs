@@ -614,15 +614,20 @@ namespace GeoNorgeAPI
                     Dictionary<string, bool> processed = new Dictionary<string, bool>();
                     foreach (var simpleKeyword in value)
                     {
-                        if (!processed.ContainsKey(simpleKeyword.Keyword))
+
+                        if (!processed.ContainsKey(createKeywordKey(simpleKeyword.Keyword, simpleKeyword)))
                         {
                             List<string> filteredKeywords = SimpleKeyword.Filter(value, simpleKeyword.Type, simpleKeyword.Thesaurus);
                             List<CharacterString_PropertyType> keywordsToAdd = new List<CharacterString_PropertyType>();
                             foreach (var fk in filteredKeywords)
                             {
-                                processed.Add(fk, true);
+                                string key = createKeywordKey(fk, simpleKeyword);
+                                if (!processed.ContainsKey(key))
+                                {
+                                    processed.Add(key, true);
 
-                                keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk });
+                                    keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk });
+                                }
                             }
 
 
@@ -696,6 +701,11 @@ namespace GeoNorgeAPI
                 }
 
             }
+        }
+
+        private string createKeywordKey(string keyword, SimpleKeyword simpleKeyword)
+        {
+            return keyword +"_" + simpleKeyword.Type + "_" + simpleKeyword.Thesaurus;
         }
 
         // dataset
