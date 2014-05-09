@@ -1378,6 +1378,28 @@ namespace GeoNorgeAPI.Tests
 
         }
 
+        [Test]
+        public void ShouldParseDecimalStringWithCommaAsSeparator()
+        {
+            string input = "23,45";
+
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Decimal_PropertyType output = metadata.DecimalFromString(input);
+
+            Assert.AreEqual(23.45m, output.Decimal);
+        }
+
+        [Test]
+        public void ShouldParseDecimalStringWithDotAsSeparator()
+        {
+            string input = "23.45";
+
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Decimal_PropertyType output = metadata.DecimalFromString(input);
+
+            Assert.AreEqual(23.45m, output.Decimal);
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {

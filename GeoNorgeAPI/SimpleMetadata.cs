@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -1991,9 +1992,15 @@ namespace GeoNorgeAPI
             return new CharacterString_PropertyType { CharacterString = input };
         }
 
-        private Decimal_PropertyType DecimalFromString(string input)
+        internal Decimal_PropertyType DecimalFromString(string input)
         {
-            return new Decimal_PropertyType { Decimal = Decimal.Parse(input) };
+            CultureInfo cultureInfo = new CultureInfo("en-US");
+            if (input.Contains(","))
+            {
+                cultureInfo = new CultureInfo("no");
+            }
+
+            return new Decimal_PropertyType { Decimal = Decimal.Parse(input, cultureInfo) };
         }
 
     }
