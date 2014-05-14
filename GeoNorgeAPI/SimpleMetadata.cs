@@ -950,7 +950,7 @@ namespace GeoNorgeAPI
                 MD_DataIdentification_Type datasetIdentification = GetDatasetIdentification();
                 if (datasetIdentification != null)
                 {
-                    MD_SpatialRepresentationTypeCode_PropertyType[] newSpatialRepresentationArray = new MD_SpatialRepresentationTypeCode_PropertyType[] {
+                    datasetIdentification.spatialRepresentationType = new MD_SpatialRepresentationTypeCode_PropertyType[] {
                         new MD_SpatialRepresentationTypeCode_PropertyType {
                             MD_SpatialRepresentationTypeCode = new CodeListValue_Type {
                                 codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode",
@@ -958,14 +958,6 @@ namespace GeoNorgeAPI
                             }
                         }
                     };
-
-                    MD_SpatialRepresentationTypeCode_PropertyType[] spatialRepresentationArray = datasetIdentification.spatialRepresentationType;
-
-                    if (spatialRepresentationArray == null)
-                    {
-                        spatialRepresentationArray = new MD_SpatialRepresentationTypeCode_PropertyType[0];
-                    }
-                    datasetIdentification.spatialRepresentationType = spatialRepresentationArray.Concat(newSpatialRepresentationArray).ToArray();
                 }
             }
         }
