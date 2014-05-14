@@ -353,7 +353,7 @@ namespace GeoNorgeAPI
             set
             {
                 var datasetIdentification = GetDatasetIdentification();
-                if (datasetIdentification != null && datasetIdentification.supplementalInformation != null)
+                if (datasetIdentification != null)
                 {
                     datasetIdentification.supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
                 }
@@ -731,16 +731,12 @@ namespace GeoNorgeAPI
                 var identification = GetDatasetIdentification();
                 if (identification != null)
                 {
-                    if (identification.topicCategory == null)
-                    {
-                        identification.topicCategory = new MD_TopicCategoryCode_PropertyType [1];
-                    }
-
-                    identification.topicCategory[0] =
+                    identification.topicCategory = new MD_TopicCategoryCode_PropertyType[] {
                         new MD_TopicCategoryCode_PropertyType
                         {
                             MD_TopicCategoryCode = (MD_TopicCategoryCode_Type)Enum.Parse(typeof(MD_TopicCategoryCode_Type), value, true)
-                        };
+                        }
+                    };                        
                 }
             }
         }

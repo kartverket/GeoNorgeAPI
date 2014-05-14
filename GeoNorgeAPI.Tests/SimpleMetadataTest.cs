@@ -1400,6 +1400,26 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(23.45m, output.Decimal);
         }
 
+        [Test]
+        public void ShouldAddTopicCategoryToMetadataWhenNewlyCreated()
+        {
+            string expectedTopicCategory = "elevation";
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.TopicCategory = expectedTopicCategory;
+
+            Assert.AreEqual(expectedTopicCategory, metadata.TopicCategory);
+        }
+
+        [Test]
+        public void ShouldAddSupplementalDescriptionToMetadataWhenNewlyCreated()
+        {
+            string expectedDescription = "hello world";
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.SupplementalDescription = expectedDescription;
+
+            Assert.AreEqual(expectedDescription, metadata.SupplementalDescription);
+        }
+               
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
