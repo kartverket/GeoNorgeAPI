@@ -1065,13 +1065,12 @@ namespace GeoNorgeAPI
                     && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine != null
                     && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine.Length > 0
                     && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0] != null
-                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null
-                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage != null)
+                    && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null)
                 {
                     var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
                     value = new SimpleDistributionDetails
                     {
-                        URL = resource.linkage.URL,
+                        URL = resource.linkage != null ? resource.linkage.URL : null,
                         Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
                         Name = resource.name != null ? resource.name.CharacterString : null
                     };
