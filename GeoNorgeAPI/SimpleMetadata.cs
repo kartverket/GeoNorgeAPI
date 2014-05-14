@@ -1974,6 +1974,39 @@ namespace GeoNorgeAPI
             };
         }
 
+        public string SpecificUsage 
+        {
+            get
+            {
+                string value = null;
+                var identification = GetIdentification();
+                if (identification != null && identification.resourceSpecificUsage != null && identification.resourceSpecificUsage.Length > 0
+                    && identification.resourceSpecificUsage[0] != null && identification.resourceSpecificUsage[0].MD_Usage != null
+                    && identification.resourceSpecificUsage[0].MD_Usage.specificUsage != null)
+                {
+                    value = identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+                }
+                return value;
+            }
+
+            set
+            {
+                var identification = GetIdentification();
+                if (identification != null)
+                {
+                    identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
+                    {
+                        new MD_Usage_PropertyType {
+                            MD_Usage = new MD_Usage_Type
+                            {
+                                specificUsage = new CharacterString_PropertyType { CharacterString = value }
+                            }
+                        }                        
+                    };
+                }
+            }
+        }
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
@@ -1990,6 +2023,8 @@ namespace GeoNorgeAPI
             return new Decimal_PropertyType { Decimal = Decimal.Parse(input, cultureInfo) };
         }
 
+
+        
     }
 
     public class SimpleContact

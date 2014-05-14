@@ -472,28 +472,6 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
-        public void ShouldSetSpatialRepresentationWhenSpatialRepresentationExists()
-        {
-            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialRepresentationType = new MD_SpatialRepresentationTypeCode_PropertyType[] {
-                new MD_SpatialRepresentationTypeCode_PropertyType {
-                    MD_SpatialRepresentationTypeCode = new CodeListValue_Type {
-                        codeListValue = "annet"
-                    }
-                }
-            };
-
-
-            _md.SpatialRepresentation = "vector";
-
-            MD_Identification_PropertyType identification = (MD_Identification_PropertyType)_md.GetMetadata().identificationInfo[0];
-            MD_DataIdentification_Type dataIdentification = (MD_DataIdentification_Type)identification.AbstractMD_Identification;
-
-            Assert.AreEqual(2, dataIdentification.spatialRepresentationType.Length);
-            Assert.AreEqual("annet", dataIdentification.spatialRepresentationType[0].MD_SpatialRepresentationTypeCode.codeListValue);
-            Assert.AreEqual("vector", dataIdentification.spatialRepresentationType[1].MD_SpatialRepresentationTypeCode.codeListValue);
-        }
-
-        [Test]
         public void ShouldReturnDistributionFormatAsNullWhenNull()
         {
             Assert.IsNull(_md.DistributionFormat);
@@ -1418,6 +1396,42 @@ namespace GeoNorgeAPI.Tests
             metadata.SupplementalDescription = expectedDescription;
 
             Assert.AreEqual(expectedDescription, metadata.SupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateSpecificUsage()
+        {
+            string expected = "THis is the specific usage details.";
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.SpecificUsage = expected;
+
+            string actual = metadata.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ShouldReturnSpecificUsageWhenNotNull()
+        {
+            string expected = "hello";
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceSpecificUsage = new MD_Usage_PropertyType[] {
+                new MD_Usage_PropertyType {
+                    MD_Usage = new MD_Usage_Type {
+                        specificUsage = toCharString(expected)
+                    }
+                }
+            };
+
+            Assert.AreEqual(expected, metadata.SpecificUsage);
+
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenSpecificUsageIsNotDefined()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            Assert.IsNull(metadata.SpecificUsage);
         }
                
         private void SetDateOnCitationDateType(object date, string dateType)
