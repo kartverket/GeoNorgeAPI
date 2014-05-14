@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.4.8: Add mapping for SpecificUsage.
       2.4.7: Fix wrong mapping of distribution info and spatial representation.
       2.4.6: Fix problem saving TopicCategory and Supplemental Description.
       2.4.5: Fix decimal parsing in various cultures.
