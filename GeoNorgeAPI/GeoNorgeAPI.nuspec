@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.5.0: Add ability to send additional http headers in csw transactions.
       2.4.9: Allow parsing of decimal numbers with exponential components.
       2.4.8: Add mapping for SpecificUsage.
       2.4.7: Fix wrong mapping of distribution info and spatial representation.
