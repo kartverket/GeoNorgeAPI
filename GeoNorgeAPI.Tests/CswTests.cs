@@ -2,6 +2,7 @@
 using www.opengis.net;
 using GeoNorgeAPI;
 using System;
+using System.Collections.Generic;
 namespace GeoNorgeAPI.Tests
 {
     
@@ -122,12 +123,12 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void InsertMetadata()
         {
-            _geonorge = new GeoNorge("","","https://www.geonorge.no/geonetwork210/");
+            _geonorge = new GeoNorge("","","https://www.geonorge.no/geonetworkbeta/");
 
             MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
             metadata.fileIdentifier = new CharacterString_PropertyType { CharacterString = Guid.NewGuid().ToString() };
-            
-            var transaction = _geonorge.MetadataInsert(metadata);
+
+            var transaction = _geonorge.MetadataInsert(metadata, new Dictionary<string, string> { {"GeonorgeUsername", "blabla"} });
 
             Assert.NotNull(transaction);
             Assert.AreEqual("1", transaction.TotalInserted);

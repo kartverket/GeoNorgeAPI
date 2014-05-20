@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -9,9 +10,9 @@ namespace GeoNorgeAPI
     {
         private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        public string PostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null)
+        public string PostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null, Dictionary<string, string> additionalRequestHeaders = null)
         {
-            HttpWebResponse response = FullPostRequest(url, accept, contentType, postData, username, password, cookie);
+            HttpWebResponse response = FullPostRequest(url, accept, contentType, postData, username, password, cookie, additionalRequestHeaders);
 
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseBody = reader.ReadToEnd();
@@ -20,7 +21,7 @@ namespace GeoNorgeAPI
             return responseBody;
         }
 
-        public HttpWebResponse FullPostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null)
+        public HttpWebResponse FullPostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null, Dictionary<string, string> additionalRequestHeaders = null)
         {
             try
             {
@@ -34,6 +35,14 @@ namespace GeoNorgeAPI
                 if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
                 {
                     SetBasicAuthHeader(request, username, password);
+                }
+
+                if (additionalRequestHeaders != null && additionalRequestHeaders.Count > 0)
+                {
+                    foreach (KeyValuePair<string,string> element in additionalRequestHeaders)
+                    {
+                        request.Headers[element.Key] = element.Value;
+                    }
                 }
 
                 Log.Debug("HTTP request: [" + request.Method + "] " + url);

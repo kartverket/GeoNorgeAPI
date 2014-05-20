@@ -59,14 +59,14 @@ namespace GeoNorgeAPI
             return metadataRecord;
         }
 
-        public MetadataTransaction RunCswTransaction(TransactionType request)
+        public MetadataTransaction RunCswTransaction(TransactionType request, Dictionary<string, string> additionalRequestHeaders)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
 
             Log.Info("Running CSW Transaction.");
 
             string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/nor/csw-publication", 
-                "application/xml", "application/xml", requestBody, _geonetworkUsername, _geonetworkPassword);
+                "application/xml", "application/xml", requestBody, _geonetworkUsername, _geonetworkPassword, null, additionalRequestHeaders);
 
             Log.Debug(transactionResponse);
 

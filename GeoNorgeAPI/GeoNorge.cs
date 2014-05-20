@@ -1,4 +1,5 @@
-﻿using www.opengis.net;
+﻿using System.Collections.Generic;
+using www.opengis.net;
 
 namespace GeoNorgeAPI
 {
@@ -121,10 +122,10 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public MetadataTransaction MetadataInsert(MD_Metadata_Type metadata)
+        public MetadataTransaction MetadataInsert(MD_Metadata_Type metadata, Dictionary<string,string> additionalRequestHeaders = null)
         {
             TransactionType request = _requestFactory.MetadataInsert(metadata);
-            return _requestRunner.RunCswTransaction(request);
+            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
 
         /// <summary>
@@ -132,10 +133,10 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public MetadataTransaction MetadataUpdate(MD_Metadata_Type metadata)
+        public MetadataTransaction MetadataUpdate(MD_Metadata_Type metadata, Dictionary<string, string> additionalRequestHeaders = null)
         {
             TransactionType request = _requestFactory.MetadataUpdate(metadata);
-            return _requestRunner.RunCswTransaction(request);
+            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
 
         /// <summary>
@@ -143,10 +144,10 @@ namespace GeoNorgeAPI
         /// </summary>
         /// <param name="uuid">identifier of the record to delete</param>
         /// <returns></returns>
-        public MetadataTransaction MetadataDelete(string uuid)
+        public MetadataTransaction MetadataDelete(string uuid, Dictionary<string, string> additionalRequestHeaders = null)
         {
             TransactionType request = _requestFactory.MetadataDelete(uuid);
-            return _requestRunner.RunCswTransaction(request);
+            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
         
     }
