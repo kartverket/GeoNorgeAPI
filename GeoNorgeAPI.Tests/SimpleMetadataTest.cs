@@ -1379,6 +1379,17 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldParseDecimalStringWithExponentialComponent()
+        {
+            string input = "1.41125505E-8";
+
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Decimal_PropertyType output = metadata.DecimalFromString(input);
+
+            Assert.AreEqual(1.41125505E-8m, output.Decimal);
+        }
+
+        [Test]
         public void ShouldAddTopicCategoryToMetadataWhenNewlyCreated()
         {
             string expectedTopicCategory = "elevation";

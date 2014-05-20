@@ -2020,7 +2020,7 @@ namespace GeoNorgeAPI
                 cultureInfo = new CultureInfo("no");
             }
 
-            return new Decimal_PropertyType { Decimal = Decimal.Parse(input, cultureInfo) };
+            return new Decimal_PropertyType { Decimal = Decimal.Parse(input, NumberStyles.Any, cultureInfo) };
         }
 
 
