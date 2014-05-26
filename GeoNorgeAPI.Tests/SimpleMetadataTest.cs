@@ -323,12 +323,22 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnKeywordsWithEnglishTranslation()
+        {
+            List<SimpleKeyword> keywords = _md.Keywords;
+            
+            Assert.NotNull(keywords[0].EnglishKeyword, "Engelsk oversetting av nøkkelord mangler.");
+            Assert.AreEqual("Addresses", keywords[0].EnglishKeyword);
+        }
+
+        [Test]
         public void ShouldUpdateKeywords()
         {
             _md.Keywords = new List<SimpleKeyword> {
                 new SimpleKeyword {
-                    Keyword = "Addresses",
-                    Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
+                    Keyword = "Adresser",
+                    Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1,
+                    EnglishKeyword = "Addresses"
                 },
                 new SimpleKeyword {
                     Keyword = "Oslo",
@@ -371,6 +381,7 @@ namespace GeoNorgeAPI.Tests
             bool themeBygningFound = false;
             bool otherEksempeldataFound = false;
             bool otherTestingFound = false;
+            bool englishKeywordFound = false;
 
             MD_Keywords_PropertyType[] descriptiveKeywords = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords;
 
@@ -384,9 +395,15 @@ namespace GeoNorgeAPI.Tests
                         numberOfInspireKeywords = numberOfKeywords;
                         foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                         {
-                            if (k.CharacterString.Equals("Addresses"))
+                            if (k.CharacterString.Equals("Adresser"))
                             {
                                 inspireAddressesFound = true;
+
+                                var freeText = k as PT_FreeText_PropertyType;
+                                if (freeText != null && freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value.Equals("Addresses"))
+                                {
+                                    englishKeywordFound = true;
+                                }
                             }
                             else if (k.CharacterString.Equals("Buildings"))
                             {
@@ -457,6 +474,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(themeBygningFound);
             Assert.True(otherEksempeldataFound);
             Assert.True(otherTestingFound);
+            Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
         }
 
 

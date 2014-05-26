@@ -585,17 +585,19 @@ namespace GeoNorgeAPI
                             {
                                 thesaurus = GetStringOrNull(descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title);
                             }
-
+                            
                             foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
                             {
                                 string keywordValue = GetStringOrNull(keywordElement);
+                                string keywordEnglishValue = GetEnglishValueFromFreeText(keywordElement);
                                 if (!string.IsNullOrWhiteSpace(keywordValue))
                                 {
                                     keywords.Add(new SimpleKeyword
                                     {
                                         Keyword = keywordValue,
                                         Thesaurus = thesaurus,
-                                        Type = type
+                                        Type = type,
+                                        EnglishKeyword = keywordEnglishValue,
                                     });
                                 }
                             }
@@ -611,26 +613,31 @@ namespace GeoNorgeAPI
                 if (identification != null)
                 {
                     List<MD_Keywords_PropertyType> allKeywords = new List<MD_Keywords_PropertyType>();
-
+                    
                     Dictionary<string, bool> processed = new Dictionary<string, bool>();
                     foreach (var simpleKeyword in value)
                     {
-
                         if (!processed.ContainsKey(createKeywordKey(simpleKeyword.Keyword, simpleKeyword)))
                         {
-                            List<string> filteredKeywords = SimpleKeyword.Filter(value, simpleKeyword.Type, simpleKeyword.Thesaurus);
+                            List<SimpleKeyword> filteredKeywords = SimpleKeyword.Filter(value, simpleKeyword.Type, simpleKeyword.Thesaurus);
                             List<CharacterString_PropertyType> keywordsToAdd = new List<CharacterString_PropertyType>();
                             foreach (var fk in filteredKeywords)
                             {
-                                string key = createKeywordKey(fk, simpleKeyword);
+                                string key = createKeywordKey(fk.Keyword, simpleKeyword);
                                 if (!processed.ContainsKey(key))
                                 {
                                     processed.Add(key, true);
 
-                                    keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk });
+                                    if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
+                                    {
+                                        keywordsToAdd.Add(CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword));
+                                    }
+                                    else
+                                    {
+                                        keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk.Keyword });
+                                    }                                    
                                 }
                             }
-
 
                             CI_Citation_PropertyType thesaurus = null; 
                             if (!string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus)) {
@@ -706,7 +713,7 @@ namespace GeoNorgeAPI
 
         private string createKeywordKey(string keyword, SimpleKeyword simpleKeyword)
         {
-            return keyword +"_" + simpleKeyword.Type + "_" + simpleKeyword.Thesaurus;
+            return keyword + "_" + simpleKeyword.Type + "_" + simpleKeyword.Thesaurus;
         }
 
         // dataset
@@ -2047,10 +2054,11 @@ namespace GeoNorgeAPI
         public string Keyword { get; set; }
         public string Type { get; set; }
         public string Thesaurus { get; set; }
+        public string EnglishKeyword { get; set; }
 
-        public static List<string> Filter(List<SimpleKeyword> input, string type, string thesaurus)
+        public static List<SimpleKeyword> Filter(List<SimpleKeyword> input, string type, string thesaurus)
         {
-            List<String> filteredList = new List<String>();
+            List<SimpleKeyword> filteredList = new List<SimpleKeyword>();
 
             bool filterOnType = !string.IsNullOrWhiteSpace(type);
             bool filterOnThesaurus = !string.IsNullOrWhiteSpace(thesaurus);
@@ -2059,15 +2067,15 @@ namespace GeoNorgeAPI
             {
                 if (filterOnType && !string.IsNullOrWhiteSpace(simpleKeyword.Type) && simpleKeyword.Type.Equals(type))
                 {
-                    filteredList.Add(simpleKeyword.Keyword);
+                    filteredList.Add(simpleKeyword);
                 }
                 else if (filterOnThesaurus && !string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus) && simpleKeyword.Thesaurus.Equals(thesaurus))
                 {
-                    filteredList.Add(simpleKeyword.Keyword);
+                    filteredList.Add(simpleKeyword);
                 }
                 else if (!filterOnType && string.IsNullOrWhiteSpace(simpleKeyword.Type) && !filterOnThesaurus && string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus))
                 {
-                    filteredList.Add(simpleKeyword.Keyword);
+                    filteredList.Add(simpleKeyword);
                 }
             }
             return filteredList;

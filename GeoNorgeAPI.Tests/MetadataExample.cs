@@ -135,12 +135,32 @@ namespace GeoNorgeAPI.Tests
             mdDataIdentificationType.descriptiveKeywords = new[] { 
                 new MD_Keywords_PropertyType {
                     MD_Keywords = new MD_Keywords_Type {
-                        keyword = new [] { CharString("Addresses") },
+                        keyword = new CharacterString_PropertyType[] 
+                        { 
+                            new PT_FreeText_PropertyType 
+                            { 
+                                    CharacterString = "Adresser",
+                                    PT_FreeText = new PT_FreeText_Type {
+                                            id = "ENG",
+                                            textGroup = new LocalisedCharacterString_PropertyType[] 
+                                            { 
+                                                new LocalisedCharacterString_PropertyType {
+                                                    LocalisedCharacterString = new LocalisedCharacterString_Type 
+                                                    { 
+                                                    locale = "#ENG",
+                                                    Value = "Addresses"
+                                                    }
+                                                }                                                         
+                                            }
+                                    }
+                            }                            
+                        },
                         thesaurusName = new CI_Citation_PropertyType
                             {
                                 CI_Citation = new CI_Citation_Type
                                     {
                                         title = CharString("GEMET - INSPIRE themes, version 1.0"),
+
                                         date = new [] { new CI_Date_PropertyType
                                             {
                                                 CI_Date = new CI_Date_Type
