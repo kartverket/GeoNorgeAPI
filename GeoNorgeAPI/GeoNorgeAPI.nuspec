@@ -11,6 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.5.3: Fix various problems mapping extent element.
       2.5.2: Add prefix method to SimpleKeyword.
       2.5.1: Add mapping for english translation of keywords.
       2.5.0: Add ability to send additional http headers in csw transactions.
