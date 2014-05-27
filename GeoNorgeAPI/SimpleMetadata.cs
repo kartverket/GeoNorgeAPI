@@ -1679,26 +1679,32 @@ namespace GeoNorgeAPI
             {
                 SimpleBoundingBox value = null;
 
-                EX_Extent_Type extent = GetIdentificationExtent();
 
-                if (extent != null
-                    && extent.geographicElement != null
-                    && extent.geographicElement.Length > 0
-                    && extent.geographicElement[0] != null
-                    && extent.geographicElement[0].AbstractEX_GeographicExtent != null)
+                EX_Extent_PropertyType[] extents = GetIdentificationExtents();
+                if (extents != null)
                 {
-                    EX_GeographicBoundingBox_Type exBoundingBox = extent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
-                    if (exBoundingBox != null)
+                    foreach (EX_Extent_PropertyType extent in extents)
                     {
-                        value = new SimpleBoundingBox {
-                            EastBoundLongitude = exBoundingBox.eastBoundLongitude != null ? exBoundingBox.eastBoundLongitude.Decimal.ToString() : null,
-                            WestBoundLongitude = exBoundingBox.westBoundLongitude != null ? exBoundingBox.westBoundLongitude.Decimal.ToString() : null,
-                            NorthBoundLatitude = exBoundingBox.northBoundLatitude != null ? exBoundingBox.northBoundLatitude.Decimal.ToString() : null,
-                            SouthBoundLatitude = exBoundingBox.southBoundLatitude != null ? exBoundingBox.southBoundLatitude.Decimal.ToString() : null
-                        };
+                        if (extent.EX_Extent != null 
+                            && extent.EX_Extent.geographicElement != null
+                            && extent.EX_Extent.geographicElement[0] != null
+                            && extent.EX_Extent.geographicElement[0].AbstractEX_GeographicExtent != null)
+                        {
+                            EX_GeographicBoundingBox_Type exBoundingBox = extent.EX_Extent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+                            if (exBoundingBox != null)
+                            {
+                                value = new SimpleBoundingBox
+                                {
+                                    EastBoundLongitude = exBoundingBox.eastBoundLongitude != null ? exBoundingBox.eastBoundLongitude.Decimal.ToString() : null,
+                                    WestBoundLongitude = exBoundingBox.westBoundLongitude != null ? exBoundingBox.westBoundLongitude.Decimal.ToString() : null,
+                                    NorthBoundLatitude = exBoundingBox.northBoundLatitude != null ? exBoundingBox.northBoundLatitude.Decimal.ToString() : null,
+                                    SouthBoundLatitude = exBoundingBox.southBoundLatitude != null ? exBoundingBox.southBoundLatitude.Decimal.ToString() : null
+                                };
+                                break;
+                            }
+                        }
                     }
                 }
-
                 return value;
             }
 
@@ -1706,38 +1712,7 @@ namespace GeoNorgeAPI
             {
                 if (IsDataset() || IsService())
                 {
-                    EX_Extent_Type extent = GetIdentificationExtent();
-                    if (extent == null)
-                    {
-                        if (IsDataset())
-                        {
-                            MD_DataIdentification_Type identification = GetDatasetIdentification();
-                            if (identification != null)
-                            {
-                                extent = new EX_Extent_Type();
-                                identification.extent = new EX_Extent_PropertyType[] {
-                                    new EX_Extent_PropertyType {
-                                        EX_Extent = extent
-                                    }
-                                };
-                            }
-                        }
-                        else
-                        {
-                            SV_ServiceIdentification_Type identification = GetServiceIdentification();
-                            if (identification != null)
-                            {
-                                extent = new EX_Extent_Type();
-                                identification.extent = new EX_Extent_PropertyType[] {
-                                    new EX_Extent_PropertyType {
-                                        EX_Extent = extent
-                                    }
-                                };
-                            }
-                        }
-                    }
-
-                    extent.geographicElement = new EX_GeographicExtent_PropertyType[] 
+                    EX_GeographicExtent_PropertyType[] geographicElement = new EX_GeographicExtent_PropertyType[] 
                     {
                         new EX_GeographicExtent_PropertyType
                         {
@@ -1750,9 +1725,110 @@ namespace GeoNorgeAPI
                             }
                         }
                     };
+                    CharacterString_PropertyType description = null;
+                    EX_TemporalExtent_PropertyType[] temporalElement = null;
+                    EX_VerticalExtent_PropertyType[] verticalElement = null;
+
+                    bool foundDescription = false;
+                    bool foundTemporalExtent = false;
+                    bool foundVerticalExtent = false;
+
+                    EX_Extent_PropertyType[] extents = GetIdentificationExtents();
+                    if (extents != null)
+                    {
+                        foreach (var extent in extents)
+                        {
+                            if (extent.EX_Extent != null)
+                            {
+                                if (!foundDescription && extent.EX_Extent.description != null && !string.IsNullOrWhiteSpace(extent.EX_Extent.description.CharacterString))
+                                {
+                                    description = extent.EX_Extent.description;
+                                    foundDescription = true;
+                                }
+                                if (!foundTemporalExtent && extent.EX_Extent.temporalElement != null)
+                                {
+                                    temporalElement = extent.EX_Extent.temporalElement;
+                                    foundTemporalExtent = true;
+                                }
+                                if (!foundVerticalExtent && extent.EX_Extent.verticalElement != null)
+                                {
+                                    verticalElement = extent.EX_Extent.verticalElement;
+                                    foundVerticalExtent = true;
+                                }
+                            }
+                        }
+                    }
+
+                    EX_Extent_Type newExtent = CreateExtent();
+
+                    newExtent.geographicElement = geographicElement;
+                    newExtent.description = description;
+                    newExtent.temporalElement = temporalElement;
+                    newExtent.verticalElement = verticalElement;
                 }
             }            
         }
+
+        private EX_Extent_Type CreateExtent()
+        {
+            EX_Extent_Type currentExtent = null;
+            if (IsDataset())
+            {
+                MD_DataIdentification_Type identification = GetDatasetIdentification();
+                if (identification != null)
+                {
+                    currentExtent = new EX_Extent_Type();
+                    identification.extent = new EX_Extent_PropertyType[] {
+                                new EX_Extent_PropertyType {
+                                    EX_Extent = currentExtent
+                                }
+                            };
+                }
+            }
+            else
+            {
+                SV_ServiceIdentification_Type identification = GetServiceIdentification();
+                if (identification != null)
+                {
+                    currentExtent = new EX_Extent_Type();
+                    identification.extent = new EX_Extent_PropertyType[] {
+                                new EX_Extent_PropertyType {
+                                    EX_Extent = currentExtent
+                                }
+                            };
+                }
+            }
+            return currentExtent;
+        }
+
+
+        private EX_Extent_PropertyType[] GetIdentificationExtents()
+        {
+            EX_Extent_PropertyType[] extent = null;
+            if (IsDataset())
+            {
+                var identification = GetDatasetIdentification();
+                if (identification != null
+                    && identification.extent != null
+                    && identification.extent.Length > 0)
+                {
+                    extent = identification.extent;
+                }
+            }
+            else if (IsService())
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null
+                    && identification.extent != null
+                    && identification.extent.Length > 0
+                    )
+                {
+                    extent = identification.extent;
+                }
+            }
+            return extent;
+        }
+
 
         private EX_Extent_Type GetIdentificationExtent()
         {

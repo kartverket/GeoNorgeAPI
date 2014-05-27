@@ -1102,6 +1102,32 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnBoundingBoxWhenTwoExtentElementExistsAndOnlyTheSecondOneHasGeographicElement()
+        {
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            EX_Extent_PropertyType extentWithGeographicElement = dataIdentification.extent[0];
+
+            dataIdentification.extent = new EX_Extent_PropertyType[] {
+                new EX_Extent_PropertyType
+                {
+                    EX_Extent = new EX_Extent_Type { description = toCharString("hello World!") }
+                },
+                extentWithGeographicElement
+            };
+            
+            SimpleBoundingBox boundingBox = _md.BoundingBox;
+
+            Assert.IsNotNull(boundingBox);
+
+            Assert.AreEqual("33", boundingBox.EastBoundLongitude);
+            Assert.AreEqual("2", boundingBox.WestBoundLongitude);
+            Assert.AreEqual("72", boundingBox.NorthBoundLatitude);
+            Assert.AreEqual("57", boundingBox.SouthBoundLatitude);
+        }
+
+
+        [Test]
         public void ShouldReturnBoundingBoxForService()
         {
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
@@ -1202,6 +1228,86 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
             Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
         }
+
+        [Test]
+        public void ShouldUpdateBoundingBoxWithoutDestroyingOtherInformationInExtentElement()
+        {
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            EX_Extent_Type extent = dataIdentification.extent[0].EX_Extent;
+            extent.description = toCharString("Hello World");
+            extent.temporalElement = new EX_TemporalExtent_PropertyType[] { };
+            extent.verticalElement = new EX_VerticalExtent_PropertyType[] { };
+
+             _md.BoundingBox = new SimpleBoundingBox 
+            {
+                EastBoundLongitude = "12",
+                WestBoundLongitude = "22",
+                NorthBoundLatitude = "44",
+                SouthBoundLatitude = "33"
+            };
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var actualExtent = identification.extent[0].EX_Extent;
+            var bbox = actualExtent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+
+            Assert.AreEqual("12", bbox.eastBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("22", bbox.westBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
+            Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
+            
+            Assert.NotNull(actualExtent.description);
+            Assert.NotNull(actualExtent.temporalElement);
+            Assert.NotNull(actualExtent.verticalElement);            
+        }
+
+        [Test]
+        public void ShouldMoveExtentInformationIntoOneElement()
+        {
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            dataIdentification.extent = new EX_Extent_PropertyType[] {
+                new EX_Extent_PropertyType {
+                    EX_Extent = new EX_Extent_Type {
+                        description = new CharacterString_PropertyType { CharacterString = "Hello world" },
+                        temporalElement = new EX_TemporalExtent_PropertyType[] { }
+                    }
+                },
+                new EX_Extent_PropertyType {
+                    EX_Extent = new EX_Extent_Type {
+                        geographicElement = new EX_GeographicExtent_PropertyType[] { },
+                        verticalElement = new EX_VerticalExtent_PropertyType[] { }
+                    }
+                }
+            };
+
+            _md.BoundingBox = new SimpleBoundingBox
+            {
+                EastBoundLongitude = "12",
+                WestBoundLongitude = "22",
+                NorthBoundLatitude = "44",
+                SouthBoundLatitude = "33"
+            };
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            Assert.AreEqual(1, identification.extent.Length, "More than one extent!");
+            var actualExtent = identification.extent[0].EX_Extent;
+
+            Assert.NotNull(actualExtent.description);
+            Assert.NotNull(actualExtent.geographicElement);
+
+            var bbox = actualExtent.geographicElement[0].AbstractEX_GeographicExtent as EX_GeographicBoundingBox_Type;
+
+            Assert.AreEqual("12", bbox.eastBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("22", bbox.westBoundLongitude.Decimal.ToString());
+            Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
+            Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
+
+            Assert.NotNull(actualExtent.temporalElement);
+            Assert.NotNull(actualExtent.verticalElement);
+        }
+
 
         [Test]
         public void ShouldReturnConstraints()
