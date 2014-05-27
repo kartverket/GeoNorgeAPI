@@ -2080,6 +2080,37 @@ namespace GeoNorgeAPI
             }
             return filteredList;
         }
+
+        public string GetPrefix()
+        {
+            if (!string.IsNullOrWhiteSpace(Type))
+            {
+                if (Type.Equals(TYPE_PLACE))
+                {
+                    return "Place";
+                }
+                else if (Type.Equals(TYPE_THEME))
+                {
+                    return "Theme";
+                }
+            }
+            else if (!string.IsNullOrWhiteSpace(Thesaurus))
+            {
+                if (Thesaurus.Equals(THESAURUS_GEMET_INSPIRE_V1))
+                {
+                    return "Inspire";
+                }
+                else if (Thesaurus.Equals(THESAURUS_NATIONAL_INITIATIVE))
+                {
+                    return "NationalInitiative";
+                }
+                else if (Thesaurus.Equals(THESAURUS_SERVICES_TAXONOMY))
+                {
+                    return "Service";
+                }
+            }
+            return "";
+        }
     }
 
     public class SimpleThumbnail
