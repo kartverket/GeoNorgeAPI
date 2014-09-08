@@ -358,6 +358,7 @@ namespace GeoNorgeAPI.Tests
                 },
                 new SimpleKeyword {
                     Keyword = "Eksempeldata",
+                    EnglishKeyword = "Example data"
                 },
                 new SimpleKeyword {
                     Keyword = "testing"
@@ -382,6 +383,7 @@ namespace GeoNorgeAPI.Tests
             bool otherEksempeldataFound = false;
             bool otherTestingFound = false;
             bool englishKeywordFound = false;
+            bool englishKeywordFoundInOtherGroup = false;
 
             MD_Keywords_PropertyType[] descriptiveKeywords = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords;
 
@@ -451,6 +453,11 @@ namespace GeoNorgeAPI.Tests
                         if (k.CharacterString.Equals("Eksempeldata"))
                         {
                             otherEksempeldataFound = true;
+                            var freeText = k as PT_FreeText_PropertyType;
+                            if (freeText != null && freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value.Equals("Example data"))
+                            {
+                                englishKeywordFoundInOtherGroup = true;
+                            }
                         }
                         else if (k.CharacterString.Equals("testing"))
                         {
@@ -475,6 +482,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(otherEksempeldataFound);
             Assert.True(otherTestingFound);
             Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
+            Assert.True(englishKeywordFoundInOtherGroup, "Engelsk nøkkelord mangler for ikke-gruppert nøkkelord");
         }
 
 

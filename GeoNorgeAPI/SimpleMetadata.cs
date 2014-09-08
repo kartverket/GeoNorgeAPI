@@ -2185,7 +2185,7 @@ namespace GeoNorgeAPI
                     return "Service";
                 }
             }
-            return "";
+            return "Other";
         }
     }
 
