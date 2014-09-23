@@ -212,10 +212,7 @@ namespace GeoNorgeAPI
 
         private MD_DataIdentification_Type GetDatasetIdentification()
         {
-            MD_DataIdentification_Type identification = null;
-            if (IsDataset())
-                identification = GetIdentification() as MD_DataIdentification_Type;
-            return identification;
+            return GetIdentification() as MD_DataIdentification_Type;
         }
 
         private SV_ServiceIdentification_Type GetServiceIdentification()
