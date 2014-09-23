@@ -1796,11 +1796,21 @@ namespace GeoNorgeAPI
             return currentExtent;
         }
 
-
         private EX_Extent_PropertyType[] GetIdentificationExtents()
         {
             EX_Extent_PropertyType[] extent = null;
-            if (IsDataset())
+            if (IsService())
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null
+                    && identification.extent != null
+                    && identification.extent.Length > 0
+                    )
+                {
+                    extent = identification.extent;
+                }
+            }
+            else
             {
                 var identification = GetDatasetIdentification();
                 if (identification != null
@@ -1808,48 +1818,6 @@ namespace GeoNorgeAPI
                     && identification.extent.Length > 0)
                 {
                     extent = identification.extent;
-                }
-            }
-            else if (IsService())
-            {
-                var identification = GetServiceIdentification();
-                if (identification != null
-                    && identification.extent != null
-                    && identification.extent.Length > 0
-                    )
-                {
-                    extent = identification.extent;
-                }
-            }
-            return extent;
-        }
-
-
-        private EX_Extent_Type GetIdentificationExtent()
-        {
-            EX_Extent_Type extent = null;
-            if (IsDataset())
-            {
-                var identification = GetDatasetIdentification();
-                if (identification != null
-                    && identification.extent != null
-                    && identification.extent.Length > 0
-                    && identification.extent[0] != null
-                    && identification.extent[0].EX_Extent != null)
-                {
-                    extent = identification.extent[0].EX_Extent;
-                }
-            }
-            else if (IsService())
-            {
-                var identification = GetServiceIdentification();
-                if (identification != null
-                    && identification.extent != null
-                    && identification.extent.Length > 0
-                    && identification.extent[0].EX_Extent != null
-                    )
-                {
-                    extent = identification.extent[0].EX_Extent;
                 }
             }
             return extent;
