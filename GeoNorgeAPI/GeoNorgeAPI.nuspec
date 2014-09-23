@@ -11,6 +11,8 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
+      2.5.5: Save bounding box regardless of hierarchyLevel.
+      2.5.4: Fix bug in Keyword GetPrefix-method.
       2.5.3: Fix various problems mapping extent element.
       2.5.2: Add prefix method to SimpleKeyword.
       2.5.1: Add mapping for english translation of keywords.
