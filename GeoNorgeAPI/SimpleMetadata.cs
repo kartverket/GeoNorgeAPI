@@ -1710,71 +1710,68 @@ namespace GeoNorgeAPI
 
             set
             {
-                if (IsDataset() || IsService())
+                EX_GeographicExtent_PropertyType[] geographicElement = new EX_GeographicExtent_PropertyType[] 
                 {
-                    EX_GeographicExtent_PropertyType[] geographicElement = new EX_GeographicExtent_PropertyType[] 
+                    new EX_GeographicExtent_PropertyType
                     {
-                        new EX_GeographicExtent_PropertyType
+                        AbstractEX_GeographicExtent = new EX_GeographicBoundingBox_Type
                         {
-                            AbstractEX_GeographicExtent = new EX_GeographicBoundingBox_Type
-                            {
-                                eastBoundLongitude = DecimalFromString(value.EastBoundLongitude),
-                                westBoundLongitude = DecimalFromString(value.WestBoundLongitude),
-                                northBoundLatitude = DecimalFromString(value.NorthBoundLatitude),
-                                southBoundLatitude = DecimalFromString(value.SouthBoundLatitude),
-                            }
+                            eastBoundLongitude = DecimalFromString(value.EastBoundLongitude),
+                            westBoundLongitude = DecimalFromString(value.WestBoundLongitude),
+                            northBoundLatitude = DecimalFromString(value.NorthBoundLatitude),
+                            southBoundLatitude = DecimalFromString(value.SouthBoundLatitude),
                         }
-                    };
-                    CharacterString_PropertyType description = null;
-                    EX_TemporalExtent_PropertyType[] temporalElement = null;
-                    EX_VerticalExtent_PropertyType[] verticalElement = null;
+                    }
+                };
+                CharacterString_PropertyType description = null;
+                EX_TemporalExtent_PropertyType[] temporalElement = null;
+                EX_VerticalExtent_PropertyType[] verticalElement = null;
 
-                    bool foundDescription = false;
-                    bool foundTemporalExtent = false;
-                    bool foundVerticalExtent = false;
+                bool foundDescription = false;
+                bool foundTemporalExtent = false;
+                bool foundVerticalExtent = false;
 
-                    EX_Extent_PropertyType[] extents = GetIdentificationExtents();
-                    if (extents != null)
+                EX_Extent_PropertyType[] extents = GetIdentificationExtents();
+                if (extents != null)
+                {
+                    foreach (var extent in extents)
                     {
-                        foreach (var extent in extents)
+                        if (extent.EX_Extent != null)
                         {
-                            if (extent.EX_Extent != null)
+                            if (!foundDescription && extent.EX_Extent.description != null && !string.IsNullOrWhiteSpace(extent.EX_Extent.description.CharacterString))
                             {
-                                if (!foundDescription && extent.EX_Extent.description != null && !string.IsNullOrWhiteSpace(extent.EX_Extent.description.CharacterString))
-                                {
-                                    description = extent.EX_Extent.description;
-                                    foundDescription = true;
-                                }
-                                if (!foundTemporalExtent && extent.EX_Extent.temporalElement != null)
-                                {
-                                    temporalElement = extent.EX_Extent.temporalElement;
-                                    foundTemporalExtent = true;
-                                }
-                                if (!foundVerticalExtent && extent.EX_Extent.verticalElement != null)
-                                {
-                                    verticalElement = extent.EX_Extent.verticalElement;
-                                    foundVerticalExtent = true;
-                                }
+                                description = extent.EX_Extent.description;
+                                foundDescription = true;
+                            }
+                            if (!foundTemporalExtent && extent.EX_Extent.temporalElement != null)
+                            {
+                                temporalElement = extent.EX_Extent.temporalElement;
+                                foundTemporalExtent = true;
+                            }
+                            if (!foundVerticalExtent && extent.EX_Extent.verticalElement != null)
+                            {
+                                verticalElement = extent.EX_Extent.verticalElement;
+                                foundVerticalExtent = true;
                             }
                         }
                     }
-
-                    EX_Extent_Type newExtent = CreateExtent();
-
-                    newExtent.geographicElement = geographicElement;
-                    newExtent.description = description;
-                    newExtent.temporalElement = temporalElement;
-                    newExtent.verticalElement = verticalElement;
                 }
-            }            
+
+                EX_Extent_Type newExtent = CreateExtent();
+
+                newExtent.geographicElement = geographicElement;
+                newExtent.description = description;
+                newExtent.temporalElement = temporalElement;
+                newExtent.verticalElement = verticalElement;
+            }
         }
 
         private EX_Extent_Type CreateExtent()
         {
             EX_Extent_Type currentExtent = null;
-            if (IsDataset())
+            if (IsService())
             {
-                MD_DataIdentification_Type identification = GetDatasetIdentification();
+                SV_ServiceIdentification_Type identification = GetServiceIdentification();
                 if (identification != null)
                 {
                     currentExtent = new EX_Extent_Type();
@@ -1784,10 +1781,11 @@ namespace GeoNorgeAPI
                                 }
                             };
                 }
+                
             }
             else
             {
-                SV_ServiceIdentification_Type identification = GetServiceIdentification();
+                MD_DataIdentification_Type identification = GetDatasetIdentification();
                 if (identification != null)
                 {
                     currentExtent = new EX_Extent_Type();
