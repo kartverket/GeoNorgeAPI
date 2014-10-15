@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="GeoNorge.cs" />
     <Compile Include="HttpRequestExecutor.cs" />
+    <Compile Include="IGeoNorge.cs" />
     <Compile Include="MetadataTransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RequestFactory.cs" />

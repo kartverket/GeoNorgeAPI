@@ -1,35 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using www.opengis.net;
 
 namespace GeoNorgeAPI
 {
-    /// <summary>
-    /// API for communicating with the CSW services available on www.geonorge.no. 
-    /// </summary>
-    public class GeoNorge : IGeoNorge
+    public interface IGeoNorge
     {
-
-        private readonly RequestFactory _requestFactory;
-        private readonly RequestRunner _requestRunner;
-
-        private GeoNorge(RequestFactory requestFactory, RequestRunner requestRunner)
-        {
-            _requestFactory = requestFactory;
-            _requestRunner = requestRunner;
-        }
-
-        public GeoNorge(string geonetworkUsername = null, string geonetworkPassword = null)
-            : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword))
-        {
-            
-        }
-
-        public GeoNorge(string geonetworkUsername, string geonetworkPassword, string geonetworkEndpoint)
-            : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword, geonetworkEndpoint))
-        {
-
-        }
-
         /// <summary>
         /// Free text search for records.
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
@@ -39,11 +14,8 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType Search(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
-        {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, sortByTitle);
-            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
-        }
+        SearchResultsType Search(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false);
+
         /// <summary>
         /// Free text search for records, with ISO 19139 response.
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
@@ -53,23 +25,15 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in ISO 19139 format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchIso(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
-        {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextSearch(searchString, startPosition, limit, sortByTitle, "csw:IsoRecord");
-            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
-        }
+        SearchResultsType SearchIso(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false);
 
         /// <summary>
         /// Return single record in ISO 19139 format.
         /// </summary>
         /// <param name="uuid">Identifier of the metadata record to return</param>
         /// <returns>The record or null when not found.</returns>
-        public MD_Metadata_Type GetRecordByUuid(string uuid)
-        {
-            GetRecordByIdType request = _requestFactory.GetRecordById(uuid);
-            return _requestRunner.GetRecordById(request);
-        }
-        
+        MD_Metadata_Type GetRecordByUuid(string uuid);
+
         /// <summary>
         /// Search and retrieve records by organisation name. 
         /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
@@ -79,11 +43,7 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
-        {
-            GetRecordsType request = _requestFactory.GetRecordsOrganisationNameSearch(searchString, startPosition, limit, sortByTitle);
-            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
-        }
+        SearchResultsType SearchWithOrganisationName(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false);
 
         /// <summary>
         /// Search and retrieve records by free text together with organisation name.
@@ -94,12 +54,7 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is true</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchFreeTextWithOrganisationName(string searchString, string organisationName, int startPosition = 1, int limit = 20, bool sortByTitle = true)
-        {
-            GetRecordsType request = _requestFactory.GetRecordsFreeTextOrganisationNameSearch(searchString, organisationName, startPosition, limit, sortByTitle);
-            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
-        }
-
+        SearchResultsType SearchFreeTextWithOrganisationName(string searchString, string organisationName, int startPosition = 1, int limit = 20, bool sortByTitle = true);
 
         /// <summary>
         /// Search for records with an arbitrary number of filters.
@@ -110,45 +65,27 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false)
-        {
-            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
-            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
-        }
-
+        SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false);
 
         /// <summary>
         /// Insert metadata record in GeoNorge.
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public MetadataTransaction MetadataInsert(MD_Metadata_Type metadata, Dictionary<string,string> additionalRequestHeaders = null)
-        {
-            TransactionType request = _requestFactory.MetadataInsert(metadata);
-            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
-        }
+        MetadataTransaction MetadataInsert(MD_Metadata_Type metadata, Dictionary<string,string> additionalRequestHeaders = null);
 
         /// <summary>
         /// Update metadata record in GeoNorge.
         /// </summary>
         /// <param name="metadata"></param>
         /// <returns></returns>
-        public MetadataTransaction MetadataUpdate(MD_Metadata_Type metadata, Dictionary<string, string> additionalRequestHeaders = null)
-        {
-            TransactionType request = _requestFactory.MetadataUpdate(metadata);
-            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
-        }
+        MetadataTransaction MetadataUpdate(MD_Metadata_Type metadata, Dictionary<string, string> additionalRequestHeaders = null);
 
         /// <summary>
         /// Delete metadata record in GeoNorge.
         /// </summary>
         /// <param name="uuid">identifier of the record to delete</param>
         /// <returns></returns>
-        public MetadataTransaction MetadataDelete(string uuid, Dictionary<string, string> additionalRequestHeaders = null)
-        {
-            TransactionType request = _requestFactory.MetadataDelete(uuid);
-            return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
-        }
-        
+        MetadataTransaction MetadataDelete(string uuid, Dictionary<string, string> additionalRequestHeaders = null);
     }
 }
