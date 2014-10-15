@@ -723,7 +723,7 @@ namespace GeoNorgeAPI
                     && identification.topicCategory[0] != null)
                 {
                     var topic = identification.topicCategory[0];
-                    if (topic.MD_TopicCategoryCode != null)
+                    if (topic != null)
                     {
                         topicCategory = topic.MD_TopicCategoryCode.ToString();
                     }

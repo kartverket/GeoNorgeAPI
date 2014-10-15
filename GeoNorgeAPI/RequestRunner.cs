@@ -21,8 +21,6 @@ namespace GeoNorgeAPI
         
         private readonly HttpRequestExecutor _httpRequestExecutor;
 
-        private Cookie _sessionCookie;
-
         private RequestRunner(string geonetworkUsername, string geonetworkPassword, string geonetworkEndpoint, HttpRequestExecutor httpRequestExecutor)
         {
             _geonetworkUsername = geonetworkUsername;
