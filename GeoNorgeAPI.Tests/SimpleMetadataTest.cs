@@ -1182,13 +1182,6 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
-        public void ShouldReturnNullWhenHierarchyLevelIsNotDatasetOrService()
-        {
-            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "application" } } };
-            Assert.IsNull(_md.BoundingBox);
-        }
-
-        [Test]
         public void ShouldUpdateBoundingBoxForDataset()
         {
             _md.BoundingBox = new SimpleBoundingBox 
