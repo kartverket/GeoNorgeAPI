@@ -38,8 +38,15 @@ namespace GeoNorgeAPI
             var requestBody = SerializeUtil.SerializeToString(getRecordsRequest);
             Console.WriteLine(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
-            responseBody = FixInvalidDateTimeElementInXml(responseBody);
+            responseBody = FixInvalidXml(responseBody);
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
+        }
+
+        private string FixInvalidXml(string input)
+        {
+            string fixedInput = FixInvalidDateTimeElementInXml(input);
+            fixedInput = FixInvalidRealElement(fixedInput);
+            return fixedInput;
         }
 
         private string FixInvalidDateTimeElementInXml(string input)
@@ -47,11 +54,16 @@ namespace GeoNorgeAPI
             return input.Replace(@"<gco:DateTime xmlns:gco=""http://www.isotc211.org/2005/gco"" />", "");
         }
 
+        private string FixInvalidRealElement(string input)
+        {
+            return input.Replace(@"<gco:Real />", "");
+        }
+
         public MD_Metadata_Type GetRecordById(GetRecordByIdType request)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
-            responseBody = FixInvalidDateTimeElementInXml(responseBody);
+            responseBody = FixInvalidXml(responseBody);
             GetRecordByIdResponseType response =  SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(responseBody);
 
             MD_Metadata_Type metadataRecord = null;
