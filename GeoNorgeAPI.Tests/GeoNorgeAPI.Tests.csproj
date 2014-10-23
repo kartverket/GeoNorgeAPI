@@ -93,6 +93,7 @@
     <Compile Include="CswTests.cs" />
     <Compile Include="MetadataExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerializeTest.cs" />
     <Compile Include="SimpleMetadataTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +104,11 @@
       <Project>{febb51dc-c746-4884-982a-bc76a860a095}</Project>
       <Name>GeoNorgeAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="xml\datetime-error.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
