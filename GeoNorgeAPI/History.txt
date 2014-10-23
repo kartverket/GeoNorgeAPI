@@ -1,0 +1,64 @@
+﻿Version History
+---------------
+2.6.4: Fix more problems with invalid xml
+2.6.3: Fix problem with invalid datetime element in xml response from GeoNetwork.
+2.6.2: Improve testability with an interface on top of the GeoNorge class.
+2.6.1: Change log4net dependency to use .NET Framework 4.0 - This library should be fully compatible with .NET Framework 4.0 now.
+2.6.0: Change target framework to .NET Framework 4.0
+2.5.7: Fix bug causing bounding box for series and software not being read and saved correct.
+2.5.6: Always return dataset identification element, regardless of hierarchyLevel.
+2.5.5: Save bounding box regardless of hierarchyLevel.
+2.5.4: Fix bug in Keyword GetPrefix-method.
+2.5.3: Fix various problems mapping extent element.
+2.5.2: Add prefix method to SimpleKeyword.
+2.5.1: Add mapping for english translation of keywords.
+2.5.0: Add ability to send additional http headers in csw transactions.
+2.4.9: Allow parsing of decimal numbers with exponential components.
+2.4.8: Add mapping for SpecificUsage.
+2.4.7: Fix wrong mapping of distribution info and spatial representation.
+2.4.6: Fix problem saving TopicCategory and Supplemental Description.
+2.4.5: Fix decimal parsing in various cultures.
+2.4.4: Fix exception when adding duplicate keywords.
+2.4.3: Fix null reference in thumbnail mapping.
+2.4.2: Fix problem saving keywords on newly created metadata.
+2.4.1: Use norwegian CSW endpoint.
+2.4.0: Use HTTP Basic authentication on CSW transactions with GeoNetwork 2.10.3.
+2.3.0: Add new search method
+2.2.20: Remove string replacement in search method.
+2.2.19: Fix issue with containsOperations.
+2.2.18: Add containsOperations when creating new service metadata.
+2.2.17: Fix error when parsing metadata updated date.
+2.2.16: Fix null reference when creating service.
+2.2.15: Add mandatory fields when creating empty service.
+2.2.14: Use only date part when serializing dates.
+2.2.13: Adjust date serialization.
+2.2.12: Generate UUID when creating metadata.
+2.2.11: Add english organization name to SimpleContact.
+2.2.10: Add metadata contact.
+2.2.9: Add mapping for english abstract.
+2.2.8: Fix duplicate package issue.
+2.2.7: Add method for setting additional locale.
+2.2.6: Add mapping for english title.
+2.2.5: Turn off sort by title as default. New parameter in search method to turn it on. 
+2.2.4: Add sort by title to all search requests.
+2.2.3: Add name to DistributionDetails in SimpleMetadata.
+2.2.2: Fix NullReference when running metadata update transaction.
+2.2.1: Mappings for OperatesOn in ServiceIdentification.
+2.2.0: Add static factory methods to SimpleMetadata for creating new Dataset or Service Metadata from scratch. 
+2.1.1: Add missing class. Updated default endpoint to use SSL for all communcation with www.geonorge.no
+2.1.0: New signature for CSW transaction methods: insert, update and delete. Identifiers are now properly returned in the response object.
+2.0.8: Mappings for keywords.
+2.0.7: Add keyword constants for thesaurus and type.
+2.0.6: Mappings for resource constraints.
+2.0.5: Mappings for geographical bounding box.
+2.0.4: Mappings for metadata language, standard and version
+2.0.3: Mappings for various date fields.
+2.0.2: Mappings for data quality.
+2.0.1: Fix null reference exception in distribution format version.
+2.0.0: Mapping of distribution fields.
+1.9: Use file description instead of file type when mapping thumbnails in SimpleMetadata.
+1.8: More mappings in SimpleMetadata. TopicCategory, Thumbnails, Product specification and more.
+1.7: Add extra search method, which returns ISO 19139 instead of Dublin Core records. 
+1.6: More fields added to the SimpleMetadata model. Removing SimpleMetadata from API-methods to allow more loose coupling and avoid duplicating methods. 
+1.5: Add limit parameter on search methods to control the number of records returned.
+1.4.5: Whitespace in organisation names is now properly transformed to csw singlechar attribute.
