@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.6.5: Remove History.txt
 2.6.4: Fix more problems with invalid xml
 2.6.3: Fix problem with invalid datetime element in xml response from GeoNetwork.
 2.6.2: Improve testability with an interface on top of the GeoNorge class.
