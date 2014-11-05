@@ -1569,6 +1569,27 @@ namespace GeoNorgeAPI.Tests
             SimpleMetadata metadata = SimpleMetadata.CreateDataset();
             Assert.IsNull(metadata.SpecificUsage);
         }
+
+        [Test]
+        public void ShouldUpdateParentIdentifier()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            string identifier = "testIdentifier";
+            metadata.ParentIdentifier = identifier;
+            Assert.AreEqual(identifier, metadata.GetMetadata().parentIdentifier.CharacterString);
+        }
+
+        [Test]
+        public void ShouldReturnParentIdentifier()
+        {
+            string identifier = "testIdentifier";
+            MD_Metadata_Type metadata = new MD_Metadata_Type();
+            metadata.parentIdentifier = new CharacterString_PropertyType{ CharacterString = identifier};
+
+            SimpleMetadata simpleMetadata = new SimpleMetadata(metadata);
+
+            Assert.AreEqual(identifier, simpleMetadata.ParentIdentifier);
+        }
                
         private void SetDateOnCitationDateType(object date, string dateType)
         {

@@ -238,6 +238,21 @@ namespace GeoNorgeAPI
                 _md.fileIdentifier = new CharacterString_PropertyType { CharacterString = value };
             }
         }
+        public string ParentIdentifier
+        {
+            get
+            {
+                string parentIdentifier = null;
+                if (_md.parentIdentifier != null)
+                    parentIdentifier = _md.parentIdentifier.CharacterString;
+                return parentIdentifier;
+            }
+
+            set
+            {
+                _md.parentIdentifier = new CharacterString_PropertyType { CharacterString = value };
+            }
+        }
         /// <summary>
         /// Note: Only supporting one hierarchyLevel element. Array is overwritten with an array of one element when value is updated.
         /// </summary>
