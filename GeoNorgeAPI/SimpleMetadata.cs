@@ -1535,6 +1535,124 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleValidTimePeriod ValidTimePeriod
+        {
+
+            get 
+            {
+                SimpleValidTimePeriod value = new SimpleValidTimePeriod();
+                EX_Extent_PropertyType[] extents = GetIdentificationExtents();
+                if (extents != null && extents.Length > 0)
+                {
+                    foreach (EX_Extent_PropertyType extent in extents)
+                    {
+                        if (extent.EX_Extent != null && extent.EX_Extent.temporalElement != null && extent.EX_Extent.temporalElement.Length > 0)
+                        {
+                            var temporalElement = extent.EX_Extent.temporalElement[0];
+                            if (temporalElement.EX_TemporalExtent != null && temporalElement.EX_TemporalExtent.extent != null && temporalElement.EX_TemporalExtent.extent.AbstractTimePrimitive != null)
+                            {
+                                TimePeriodType timePeriodType = temporalElement.EX_TemporalExtent.extent.AbstractTimePrimitive as TimePeriodType;
+                                if (timePeriodType != null)
+                                {
+                                    TimePositionType validFrom = null;
+                                    TimePositionType validTo = null;
+
+                                    if (timePeriodType.Item != null)
+                                        validFrom = timePeriodType.Item as TimePositionType;
+                                    if (timePeriodType.Item1 != null)
+                                        validTo = timePeriodType.Item1 as TimePositionType;
+
+                                    if (validFrom != null && validTo != null)
+                                    {
+                                        value = new SimpleValidTimePeriod
+                                        {
+                                            ValidFrom = validFrom.Value,
+                                            ValidTo = validTo.Value
+                                        };
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return value;
+            }
+
+            set 
+            {
+                EX_TemporalExtent_PropertyType[]  temporalElement= new EX_TemporalExtent_PropertyType[]
+                    {
+                        new EX_TemporalExtent_PropertyType()
+                        {
+                            EX_TemporalExtent= new EX_TemporalExtent_Type()
+                            {
+                                extent = new TM_Primitive_PropertyType()
+                                {
+                                    AbstractTimePrimitive = new TimePeriodType()
+                                    {
+                                        Item = new TimePositionType()
+                                        {
+                                            Value = value.ValidFrom 
+                                        },
+                                        Item1 = new TimePositionType()
+                                        {
+                                            Value = value.ValidTo
+                                        }
+                                    }
+                                } 
+                            }
+                        }
+                    };
+
+
+                CharacterString_PropertyType description = null;
+                EX_GeographicExtent_PropertyType[] geographichElement = null;
+                EX_VerticalExtent_PropertyType[] verticalElement = null;
+
+                bool foundDescription = false;
+                bool foundGeoGraphicExtent = false;
+                bool foundVerticalExtent = false;
+
+                EX_Extent_PropertyType[] extents = GetIdentificationExtents();
+                if (extents != null)
+                {
+                    foreach (var extent in extents)
+                    {
+                        if (extent.EX_Extent != null)
+                        {
+                            if (!foundDescription && extent.EX_Extent.description != null && !string.IsNullOrWhiteSpace(extent.EX_Extent.description.CharacterString))
+                            {
+                                description = extent.EX_Extent.description;
+                                foundDescription = true;
+                            }
+                            if (!foundGeoGraphicExtent && extent.EX_Extent.geographicElement != null)
+                            {
+                                geographichElement = extent.EX_Extent.geographicElement;
+                                foundGeoGraphicExtent = true;
+                            }
+                            if (!foundVerticalExtent && extent.EX_Extent.verticalElement != null)
+                            {
+                                verticalElement = extent.EX_Extent.verticalElement;
+                                foundVerticalExtent = true;
+                            }
+                        }
+                    }
+                }
+
+                EX_Extent_Type newExtent = CreateExtent();
+
+                newExtent.geographicElement = geographichElement;
+                newExtent.description = description;
+                newExtent.temporalElement = temporalElement;
+                newExtent.verticalElement = verticalElement;
+  
+            }
+        }
+
+
         private CI_Citation_Type GetIdentificationCitation()
         {
             CI_Citation_Type citation = null;
@@ -2225,5 +2343,12 @@ namespace GeoNorgeAPI
         public string UseConstraints { get; set; }
         public string OtherConstraints { get; set; }
         public string SecurityConstraints { get; set; }
+    }
+
+    public class SimpleValidTimePeriod 
+    {
+        public string ValidFrom { get; set; }
+        public string ValidTo { get; set; }
+    
     }
 }

@@ -1590,6 +1590,155 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(identifier, simpleMetadata.ParentIdentifier);
         }
+
+        [Test]
+        public void ShouldReturnValidTimePeriod()
+        {
+            MD_Metadata_Type metadata = new MD_Metadata_Type();
+            metadata.hierarchyLevel = new MD_ScopeCode_PropertyType[]
+            { 
+                new MD_ScopeCode_PropertyType()
+                { 
+                    MD_ScopeCode = new CodeListValue_Type()
+                    { 
+                        codeListValue = "service"
+                    }
+                } 
+
+            };
+
+            metadata.identificationInfo = new MD_Identification_PropertyType[] 
+            { 
+             new MD_Identification_PropertyType{
+              AbstractMD_Identification =  new SV_ServiceIdentification_Type()
+              {
+                extent = new EX_Extent_PropertyType[]
+                {
+                    new EX_Extent_PropertyType
+                    {
+                        EX_Extent = new EX_Extent_Type()
+                        {
+                         temporalElement= new EX_TemporalExtent_PropertyType[]
+                         {
+                            new EX_TemporalExtent_PropertyType()
+                            {
+                                EX_TemporalExtent = new EX_TemporalExtent_Type()
+                                {
+                                   extent = new TM_Primitive_PropertyType()
+                                   {
+                                       AbstractTimePrimitive =  new TimePeriodType()
+                                       {
+                                           Item= new TimePositionType()
+                                           {
+                                               Value = "2010-01-01T12:00:00"
+                                           },
+                                          Item1= new TimePositionType()
+                                          {
+                                              Value = "2018-01-01T12:00:00"
+                                          }
+                                        }
+                                    }
+                                }
+                            }
+                         }
+                        }
+                    }
+                }
+              }
+             }
+            };
+
+            SimpleMetadata simpleMetadata = new SimpleMetadata(metadata);
+            Assert.NotNull(simpleMetadata.ValidTimePeriod);
+            Assert.AreEqual("2010-01-01T12:00:00", simpleMetadata.ValidTimePeriod.ValidFrom);
+            Assert.AreEqual("2018-01-01T12:00:00", simpleMetadata.ValidTimePeriod.ValidTo);
+
+
+        }
+
+        [Test]
+        public void ShouldUpdateValidTimePeriodWhenExtentNotSet()
+        {
+            string expectedValidFrom = "2010-01-01T12:00:00";
+            string expectedValidTo = "2018-01-01T12:00:00";
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateService();
+            simpleMetadata.ValidTimePeriod = new SimpleValidTimePeriod
+            {
+                ValidFrom = expectedValidFrom,
+                ValidTo = expectedValidTo
+            };
+
+            SV_ServiceIdentification_Type serviceIdentificationType = simpleMetadata.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+            TimePeriodType timePeriodType = serviceIdentificationType.extent[0].EX_Extent.temporalElement[0].EX_TemporalExtent.extent.AbstractTimePrimitive as TimePeriodType;
+            TimePositionType actualTimePositionType = timePeriodType.Item as TimePositionType;
+            TimePositionType actualTimePositionType1 = timePeriodType.Item1 as TimePositionType;
+            string actualValidFrom = actualTimePositionType.Value;
+            string actualValidTo = actualTimePositionType1.Value;
+
+            Assert.AreEqual(expectedValidFrom, actualValidFrom);
+            Assert.AreEqual(expectedValidTo, actualValidTo);
+            
+        }
+
+        [Test]
+        public void ShouldUpdateValidTimePeriodWithoutDestroyingOtherInformationInExtentElement()
+        {
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateService(); 
+            
+            SV_ServiceIdentification_Type serviceIdentificationType = simpleMetadata.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+
+            serviceIdentificationType.extent = new EX_Extent_PropertyType[]
+            {
+                new EX_Extent_PropertyType()
+                {
+                    EX_Extent = new EX_Extent_Type()
+                    {
+                        description = new CharacterString_PropertyType()
+                        {
+                            CharacterString = "Testing"
+                        }                                      
+                    }
+                }
+            };
+
+            EX_Extent_Type extent = serviceIdentificationType.extent[0].EX_Extent;
+
+            extent.geographicElement = new EX_GeographicExtent_PropertyType[] { };
+            extent.verticalElement = new EX_VerticalExtent_PropertyType[] { };
+
+            simpleMetadata.ValidTimePeriod = new SimpleValidTimePeriod
+            {
+                ValidFrom = "2010-01-01T12:00:00",
+                ValidTo = "2018-01-01T12:00:00"
+            };
+
+            var identification = simpleMetadata.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+            var actualExtent = identification.extent[0].EX_Extent;
+            TimePeriodType timePeriodType = actualExtent.temporalElement[0].EX_TemporalExtent.extent.AbstractTimePrimitive as TimePeriodType;
+
+            TimePositionType actualTimePositionType = timePeriodType.Item as TimePositionType;
+            TimePositionType actualTimePositionType1 = timePeriodType.Item1 as TimePositionType;
+            string actualValidFrom = actualTimePositionType.Value;
+            string actualValidTo = actualTimePositionType1.Value;
+
+            Assert.AreEqual("2010-01-01T12:00:00", actualValidFrom);
+            Assert.AreEqual("2018-01-01T12:00:00", actualValidTo);
+            
+            Assert.NotNull(actualExtent.description);
+            Assert.NotNull(actualExtent.geographicElement);
+            Assert.NotNull(actualExtent.verticalElement);            
+
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenValidTimePeriodNotSet() 
+        {
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateService();
+
+            Assert.Null(simpleMetadata.ValidTimePeriod.ValidFrom);
+            Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
+        }
+
                
         private void SetDateOnCitationDateType(object date, string dateType)
         {
