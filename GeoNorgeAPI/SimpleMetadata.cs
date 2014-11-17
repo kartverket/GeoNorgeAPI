@@ -667,6 +667,10 @@ namespace GeoNorgeAPI
                                 {
                                     date = "2008-06-01";
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
+                                {
+                                    date = "2014-10-28";
+                                }
 
                                 thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
@@ -2102,6 +2106,7 @@ namespace GeoNorgeAPI
         public const string THESAURUS_GEMET_INSPIRE_V1 = "GEMET - INSPIRE themes, version 1.0";
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
+        public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
 
@@ -2157,6 +2162,10 @@ namespace GeoNorgeAPI
                 else if (Thesaurus.Equals(THESAURUS_NATIONAL_INITIATIVE))
                 {
                     return "NationalInitiative";
+                }
+                else if (Thesaurus.Equals(THESAURUS_NATIONAL_THEME))
+                {
+                    return "NationalTheme";
                 }
                 else if (Thesaurus.Equals(THESAURUS_SERVICES_TAXONOMY))
                 {
