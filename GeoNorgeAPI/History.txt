@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.6.6: Added property ParentIdentifier to SimpleMetadata
 2.6.5: Remove History.txt
 2.6.4: Fix more problems with invalid xml
 2.6.3: Fix problem with invalid datetime element in xml response from GeoNetwork.
