@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      2.6.7: Add new keyword thesaurus for national theme (DOK - det offentlige kartgrunnlaget).
+      2.6.8: Added ValidTimePeriod.
     </releaseNotes>
     <copyright>Copyright 2014 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>

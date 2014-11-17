@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.6.7: Add new keyword therasus for national theme
 2.6.6: Added property ParentIdentifier to SimpleMetadata
 2.6.5: Remove History.txt
 2.6.4: Fix more problems with invalid xml
