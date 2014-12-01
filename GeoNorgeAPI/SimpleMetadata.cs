@@ -985,7 +985,6 @@ namespace GeoNorgeAPI
             }
         }
 
-        // TODO: Handle multiple distribution formats
         public SimpleDistributionFormat DistributionFormat
         {
             get
@@ -1032,6 +1031,76 @@ namespace GeoNorgeAPI
 
             }
         }
+
+
+        // Multiple distribution formats
+        public List<SimpleDistributionFormat> DistributionFormats
+        {
+            get
+            {
+                List<SimpleDistributionFormat> formats = null;
+                
+                if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat.Length > 0 )
+                {
+                    formats = new List<SimpleDistributionFormat>();
+
+                    foreach (var mdFormat in _md.distributionInfo.MD_Distribution.distributionFormat) 
+                    {
+                        SimpleDistributionFormat format = null;
+
+                        if (mdFormat.MD_Format != null && mdFormat.MD_Format.name != null) 
+                        {
+                            var df = mdFormat.MD_Format;
+                            format = new SimpleDistributionFormat
+                            {
+                                Name = df.name.CharacterString,
+                                Version = df.version != null ? df.version.CharacterString : null
+                            };
+
+                            formats.Add(format);
+                        }
+                    }
+                }
+                
+                return formats;
+            }
+
+            set
+            {
+
+                if (_md.distributionInfo == null)
+                {
+                    _md.distributionInfo = new MD_Distribution_PropertyType { MD_Distribution = new MD_Distribution_Type() };
+                }
+                if (_md.distributionInfo.MD_Distribution == null)
+                {
+                    _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
+                }
+
+                List<MD_Format_PropertyType> dsFormats = new List<MD_Format_PropertyType>();
+                
+                
+                foreach (var dsFormat in value)
+                    {
+                     MD_Format_PropertyType mdFormatPropertyType = new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = toCharString(dsFormat.Name),
+                                version = toCharString(dsFormat.Version)
+                            }
+                        };
+                     dsFormats.Add(mdFormatPropertyType);
+                    }
+                
+            _md.distributionInfo.MD_Distribution.distributionFormat = dsFormats.ToArray();
+                
+            }
+        }
+
+
 
         public SimpleReferenceSystem ReferenceSystem
         {

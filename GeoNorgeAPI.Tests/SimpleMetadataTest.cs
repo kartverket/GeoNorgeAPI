@@ -558,6 +558,67 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnDistributionFormatsAsNullWhenNull()
+        {
+            Assert.IsNull(_md.DistributionFormats);
+        }
+
+
+        [Test]
+        public void ShouldReturnDistributionFormatsWhenPresent()
+        {
+            string expectedName = "navn";
+            string expectedVersion = "versjon";
+
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new MD_Format_PropertyType[] { 
+                        new MD_Format_PropertyType {
+                            MD_Format = new MD_Format_Type {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = new CharacterString_PropertyType { CharacterString = expectedVersion }
+                            }
+                        }
+                    }
+                }
+            };
+
+            var format = _md.DistributionFormats;
+            Assert.NotNull(format);
+            Assert.AreEqual(expectedName, format[0].Name);
+            Assert.AreEqual(expectedVersion, format[0].Version);
+        }
+
+        [Test]
+        public void ShouldHandleNullValueInDistributionFormatsVersion()
+        {
+            string expectedName = "navn";
+
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new MD_Format_PropertyType[] { 
+                        new MD_Format_PropertyType {
+                            MD_Format = new MD_Format_Type {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = null
+                            }
+                        }
+                    }
+                }
+            };
+
+            var format = _md.DistributionFormats;
+            Assert.NotNull(format);
+            Assert.AreEqual(expectedName, format[0].Name);
+            Assert.IsNull(format[0].Version);
+        }
+
+
+        [Test]
         public void ShouldReturnNullWhenReferenceSystemIsNull()
         {
             Assert.IsNull(_md.ReferenceSystem);
