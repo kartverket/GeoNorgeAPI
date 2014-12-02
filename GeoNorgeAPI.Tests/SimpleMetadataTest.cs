@@ -680,6 +680,7 @@ namespace GeoNorgeAPI.Tests
             string expectedURL = "http://example.com";
             string expectedProtocol = "www";
             string expectedName = "navn";
+            string expectedUnitsOfDistribution = "unit1";
             _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType {
                 MD_Distribution = new MD_Distribution_Type
                 {
@@ -687,6 +688,7 @@ namespace GeoNorgeAPI.Tests
                     {
                         new MD_DigitalTransferOptions_PropertyType {
                             MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
+                                unitsOfDistribution = new CharacterString_PropertyType { CharacterString = expectedUnitsOfDistribution},
                                 onLine = new CI_OnlineResource_PropertyType[] 
                                 {
                                     new CI_OnlineResource_PropertyType 
@@ -705,12 +707,14 @@ namespace GeoNorgeAPI.Tests
                 }
             };
 
+
             var details = _md.DistributionDetails;
 
             Assert.NotNull(details);
             Assert.AreEqual(expectedURL, details.URL);
             Assert.AreEqual(expectedProtocol, details.Protocol);
             Assert.AreEqual(expectedName, details.Name);
+            Assert.AreEqual(expectedUnitsOfDistribution, details.UnitsOfDistribution);
 
         }
 
@@ -720,12 +724,15 @@ namespace GeoNorgeAPI.Tests
             string expectedURL = "http://example.com";
             string expectedProtocol = "www";
             string expectedName = "navn";
-            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName };
+            string expectedUnitsOfDistribution = "unit1";
+            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName, UnitsOfDistribution = expectedUnitsOfDistribution };
 
             var resource = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
+            var tranferOptions = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
             Assert.AreEqual(expectedURL, resource.linkage.URL);
             Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
             Assert.AreEqual(expectedName, resource.name.CharacterString);
+            Assert.AreEqual(expectedUnitsOfDistribution, tranferOptions.unitsOfDistribution.CharacterString);
         }
 
         [Test]

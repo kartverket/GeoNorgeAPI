@@ -1160,11 +1160,13 @@ namespace GeoNorgeAPI
                     && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null)
                 {
                     var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
+                    var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
                     value = new SimpleDistributionDetails
                     {
                         URL = resource.linkage != null ? resource.linkage.URL : null,
                         Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
-                        Name = resource.name != null ? resource.name.CharacterString : null
+                        Name = resource.name != null ? resource.name.CharacterString : null,
+                        UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null
                     };
                 }
                 return value;
@@ -1193,9 +1195,14 @@ namespace GeoNorgeAPI
                 if (!string.IsNullOrWhiteSpace(value.Name))
                     name = new CharacterString_PropertyType { CharacterString = value.Name };
 
+                CharacterString_PropertyType UnitsOfDistribution = null;
+                if (!string.IsNullOrWhiteSpace(value.UnitsOfDistribution))
+                    UnitsOfDistribution = new CharacterString_PropertyType { CharacterString = value.UnitsOfDistribution };
+
                 _md.distributionInfo.MD_Distribution.transferOptions = new MD_DigitalTransferOptions_PropertyType[] {
                     new MD_DigitalTransferOptions_PropertyType {
-                        MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
+                        MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type { 
+                            unitsOfDistribution = UnitsOfDistribution ,
                             onLine = new CI_OnlineResource_PropertyType[] {
                                 new CI_OnlineResource_PropertyType {
                                     CI_OnlineResource = new CI_OnlineResource_Type {
@@ -1208,7 +1215,6 @@ namespace GeoNorgeAPI
                         }
                     }
                 };
-
             }
         }
 
@@ -2386,6 +2392,7 @@ namespace GeoNorgeAPI
         public string URL { get; set; }
         public string Protocol { get; set; }
         public string Name { get; set; }
+        public string UnitsOfDistribution { get; set; }
     }
 
     public class SimpleQualitySpecification
