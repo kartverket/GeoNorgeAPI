@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      2.6.9: Added DistributionFormats.
+      2.7.0: Added UnitsOfDistribution.
     </releaseNotes>
     <copyright>Copyright 2014 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
