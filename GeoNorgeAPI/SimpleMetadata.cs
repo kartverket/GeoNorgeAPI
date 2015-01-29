@@ -1143,6 +1143,68 @@ namespace GeoNorgeAPI
             }
         }
 
+        //Multiple
+        public List<SimpleReferenceSystem> ReferenceSystems
+        {
+            get
+            {
+                List<SimpleReferenceSystem> referenceSystems = null;
+
+                if (_md.referenceSystemInfo != null && _md.referenceSystemInfo.Length > 0)
+                {
+                    referenceSystems = new List<SimpleReferenceSystem>();
+
+                    for (int r = 0; r < _md.referenceSystemInfo.Length; r++ )
+                    {
+                        if( _md.referenceSystemInfo[r].MD_ReferenceSystem != null 
+                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier != null
+                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier != null
+                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null
+                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null) 
+                            {
+                                RS_Identifier_Type identifier = _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
+                                SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
+                                {
+                                    CoordinateSystem = identifier.code.CharacterString,
+                                    Namespace = identifier.codeSpace.CharacterString
+                                };
+
+                                referenceSystems.Add(referenceSystem);
+                            }         
+                    }
+
+                }
+                return referenceSystems;
+            }
+
+            set
+            {
+                List<MD_ReferenceSystem_PropertyType> refSystems = new List<MD_ReferenceSystem_PropertyType>();
+
+                foreach (var refSystem in value)
+                {
+                   MD_ReferenceSystem_PropertyType refSystemProperty = new MD_ReferenceSystem_PropertyType 
+                    {
+                        MD_ReferenceSystem = new MD_ReferenceSystem_Type 
+                        {
+                            referenceSystemIdentifier = new RS_Identifier_PropertyType 
+                            {
+                                RS_Identifier = new RS_Identifier_Type 
+                                { 
+                                    code = toCharString(refSystem.CoordinateSystem),
+                                    codeSpace = toCharString(refSystem.Namespace)
+                                }
+                            }
+                        }
+                    };
+
+                  refSystems.Add(refSystemProperty);
+                }
+                _md.referenceSystemInfo = refSystems.ToArray();
+            }
+        }
+
+
         public SimpleDistributionDetails DistributionDetails
         {
             get

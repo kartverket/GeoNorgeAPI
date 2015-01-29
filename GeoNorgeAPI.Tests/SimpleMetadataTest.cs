@@ -667,6 +667,58 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullWhenReferenceSystemsIsNull()
+        {
+            Assert.IsNull(_md.ReferenceSystems);
+        }
+
+        [Test]
+        public void ShouldReturnReferenceSystemsWhenPresent()
+        {
+            string expectedCode = "code";
+            string expectedCodeSpace = "codespace";
+            _md.GetMetadata().referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] {
+                new MD_ReferenceSystem_PropertyType {
+                    MD_ReferenceSystem = new MD_ReferenceSystem_Type {
+                        referenceSystemIdentifier = new RS_Identifier_PropertyType {
+                            RS_Identifier = new RS_Identifier_Type {
+                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
+                            }
+                        }
+                    }
+                }
+                
+            };
+
+            var rs = _md.ReferenceSystems;
+            Assert.NotNull(rs);
+            Assert.AreEqual(expectedCode, rs[0].CoordinateSystem);
+            Assert.AreEqual(expectedCodeSpace, rs[0].Namespace);
+        }
+
+        [Test]
+        public void ShouldUpdateReferenceSystems()
+        {
+            string expectedCoordinateSystem = "system";
+            string expectedNamespace = "namespace";
+            _md.ReferenceSystems = new List<SimpleReferenceSystem>
+            {                
+                new SimpleReferenceSystem
+                {
+                    CoordinateSystem = expectedCoordinateSystem,
+                    Namespace = expectedNamespace
+                }
+               
+            };
+
+            var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
+
+            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+        }
+
+        [Test]
         public void ShouldReturnNullWhenDistributionDetailsIsNull()
         {
             _md.GetMetadata().distributionInfo = null;
