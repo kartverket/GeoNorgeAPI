@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.7.1: Added ReferenceSystems
 2.7.0: Added UnitsOfDistribution
 2.6.9: Added DistributionFormats
 2.6.8: Added ValidTimePeriod

@@ -11,9 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      2.7.1: Added ReferenceSystems.
+      2.7.2: Added ResourceReference.
     </releaseNotes>
-    <copyright>Copyright 2014 Kartverket</copyright>
+    <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
   </metadata>
 </package>
