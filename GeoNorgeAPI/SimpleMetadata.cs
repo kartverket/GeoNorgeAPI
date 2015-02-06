@@ -1205,6 +1205,68 @@ namespace GeoNorgeAPI
         }
 
 
+        public SimpleResourceReference ResourceReference
+        {
+            get
+            {
+                SimpleResourceReference value = null;
+
+                if (_md.identificationInfo != null && _md.identificationInfo.Length > 0 && _md.identificationInfo[0] != null
+                    && _md.identificationInfo[0].AbstractMD_Identification != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] != null)
+                {
+                    RS_Identifier_Type identifier = _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
+
+                    if (identifier != null) 
+                    {
+                        value = new SimpleResourceReference
+                        {
+                            Code = identifier.code.CharacterString,
+                            Codespace = identifier.codeSpace.CharacterString
+                        };
+                    }
+
+
+                }
+                return value;
+            }
+
+            set
+            {
+                if (_md.identificationInfo != null && _md.identificationInfo.Length > 0 && _md.identificationInfo[0] != null
+                    && _md.identificationInfo[0].AbstractMD_Identification != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation != null)
+                {
+                    if (_md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier == null)
+                    {
+                        _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier = new MD_Identifier_PropertyType[]
+                            {
+                                new MD_Identifier_PropertyType()
+                               
+                            };
+                    }
+
+                    if (_md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] == null)
+                    {
+                        _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] = new MD_Identifier_PropertyType();
+                    }
+
+                    _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new RS_Identifier_Type
+                                    {
+                                        code = toCharString(value.Code),
+                                        codeSpace = toCharString(value.Codespace)
+                                    };
+
+                }
+            }
+        }
+
+
+
         public SimpleDistributionDetails DistributionDetails
         {
             get
@@ -2488,5 +2550,11 @@ namespace GeoNorgeAPI
         public string ValidFrom { get; set; }
         public string ValidTo { get; set; }
     
+    }
+
+    public class SimpleResourceReference
+    {
+        public string Code { get; set; }
+        public string Codespace { get; set; }
     }
 }

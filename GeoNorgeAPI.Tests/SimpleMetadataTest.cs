@@ -719,6 +719,70 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullWhenResourceReferenceIsNull()
+        {
+            Assert.IsNull(_md.ResourceReference);
+        }
+
+        [Test]
+        public void ShouldReturnResourceReferenceWhenPresent()
+        {
+            string expectedCode = "code";
+            string expectedCodeSpace = "codespace";
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+            {
+               new MD_Identification_PropertyType
+               {
+                   AbstractMD_Identification = new SV_ServiceIdentification_Type
+                   {
+                       citation = new CI_Citation_PropertyType
+                       {
+                           CI_Citation = new CI_Citation_Type
+                           {
+                               identifier = new MD_Identifier_PropertyType[]
+                               {
+                                   new MD_Identifier_PropertyType
+                                   {
+                                    MD_Identifier = new RS_Identifier_Type
+                                        {
+                                        code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                        codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
+                                        }
+                                   }
+                               }
+                           }
+                       }
+                   }
+                     
+               }
+            };
+                       
+
+            var rs = _md.ResourceReference;
+            Assert.NotNull(rs);
+            Assert.AreEqual(expectedCode, rs.Code);
+            Assert.AreEqual(expectedCodeSpace, rs.Codespace);
+        }
+
+        [Test]
+        public void ShouldUpdateResourceReference()
+        {
+            string expectedResourceReference = "system";
+            string expectedNamespace = "namespace";
+            _md.ResourceReference = new SimpleResourceReference
+            {
+                Code = expectedResourceReference,
+                Codespace = expectedNamespace
+            };
+
+            var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
+
+            Assert.AreEqual(expectedResourceReference, identifier.code.CharacterString);
+            Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+        }
+
+
+        [Test]
         public void ShouldReturnNullWhenDistributionDetailsIsNull()
         {
             _md.GetMetadata().distributionInfo = null;
