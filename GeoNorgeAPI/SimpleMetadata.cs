@@ -1224,8 +1224,8 @@ namespace GeoNorgeAPI
                     {
                         value = new SimpleResourceReference
                         {
-                            Code = identifier.code.CharacterString,
-                            Codespace = identifier.codeSpace.CharacterString
+                            Code = identifier.code != null ? identifier.code.CharacterString : null,
+                            Codespace = identifier.codeSpace != null ? identifier.codeSpace.CharacterString : null
                         };
                     }
 
@@ -1257,8 +1257,8 @@ namespace GeoNorgeAPI
 
                     _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new RS_Identifier_Type
                                     {
-                                        code = toCharString(value.Code),
-                                        codeSpace = toCharString(value.Codespace)
+                                        code = value.Code != null ? toCharString(value.Code) : null,
+                                        codeSpace = value.Codespace != null ? toCharString(value.Codespace) : null
                                     };
 
                 }
