@@ -1501,6 +1501,8 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
             Assert.AreEqual("Ingen begrensninger på bruk.", constraints.OtherConstraints);
+            Assert.AreEqual("http://test.no", constraints.OtherConstraintsLink);
+            Assert.AreEqual("Link", constraints.OtherConstraintsLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
             Assert.AreEqual("none", constraints.AccessConstraints);
             Assert.AreEqual("free", constraints.UseConstraints);
@@ -1511,6 +1513,8 @@ namespace GeoNorgeAPI.Tests
         {
             string expectedUseLimitations = "ingen begrensninger";
             string expectedOtherConstraints = "ingen andre begrensninger";
+            string expectedOtherConstraintsLink = "http://test.no";
+            string expectedOtherConstraintsLinkText = "Link";
             string expectedSecurityConstraints = "classified";
             string expectedAccessConstraints = "restricted";
             string expectedUseConstraints = "license";
@@ -1519,6 +1523,8 @@ namespace GeoNorgeAPI.Tests
             {
                 UseLimitations = expectedUseLimitations,
                 OtherConstraints = expectedOtherConstraints,
+                OtherConstraintsLink = expectedOtherConstraintsLink,
+                OtherConstraintsLinkText = expectedOtherConstraintsLinkText,
                 SecurityConstraints = expectedSecurityConstraints,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
@@ -1530,6 +1536,8 @@ namespace GeoNorgeAPI.Tests
             string actualSecurityConstraint = null;
             string actualAccessConstraint = null;
             string actualOtherConstraint = null;
+            string actualOtherConstraintLink = null;
+            string actualOtherConstraintLinkText = null;
             string actualUseConstraint = null;
             MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
 
@@ -1546,21 +1554,34 @@ namespace GeoNorgeAPI.Tests
                     if (legalConstraint != null)
                     {
                         actualAccessConstraint = legalConstraint.accessConstraints[0].MD_RestrictionCode.codeListValue;
-                        actualOtherConstraint = legalConstraint.otherConstraints[0].CharacterString;
+
+                        var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                        if (otherConstraintString != null)
+                            actualOtherConstraint = otherConstraintString.CharacterString;
+
+                        var otherConstraintAnchor = legalConstraint.otherConstraints[1].MD_RestrictionOther as Anchor_Type;
+                        if (otherConstraintAnchor != null)
+                        {
+                            actualOtherConstraintLink = otherConstraintAnchor.href;
+                            actualOtherConstraintLinkText = otherConstraintAnchor.Value;
+                        }
+
                         actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
                     }
                     else
                     {
                         MD_Constraints_Type regularConstraint = constraint.MD_Constraints as MD_Constraints_Type;
                         actualUseLimitation = regularConstraint.useLimitation[0].CharacterString;
-                    }                    
-                }                
+                    }
+                }
             }
 
             Assert.AreEqual(expectedUseLimitations, actualUseLimitation);
             Assert.AreEqual(expectedSecurityConstraints, actualSecurityConstraint);
             Assert.AreEqual(expectedAccessConstraints, actualAccessConstraint);
             Assert.AreEqual(expectedOtherConstraints, actualOtherConstraint);
+            Assert.AreEqual(expectedOtherConstraintsLink, actualOtherConstraintLink);
+            Assert.AreEqual(expectedOtherConstraintsLinkText, actualOtherConstraintLinkText);
             Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
         }
 

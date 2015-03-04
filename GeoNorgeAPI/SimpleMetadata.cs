@@ -2187,7 +2187,8 @@ namespace GeoNorgeAPI
                             else
                             {
                                 MD_LegalConstraints_Type legalConstraint = constraintProperty.MD_Constraints as MD_LegalConstraints_Type;
-                                if (legalConstraint != null) {
+                                if (legalConstraint != null)
+                                {
 
                                     if (legalConstraint.accessConstraints != null
                                     && legalConstraint.accessConstraints.Length > 0
@@ -2201,7 +2202,34 @@ namespace GeoNorgeAPI
                                         && legalConstraint.otherConstraints.Length > 0
                                         && legalConstraint.otherConstraints[0] != null)
                                     {
-                                        value.OtherConstraints = legalConstraint.otherConstraints[0].CharacterString;
+
+                                        var otherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                                        if (otherConstraint != null)
+                                            value.OtherConstraints = otherConstraint.CharacterString;
+
+
+                                        if (otherConstraint == null)
+                                        {
+                                            var otherConstrainAnchor = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                                            if (otherConstrainAnchor != null)
+                                            {
+                                                value.OtherConstraintsLink = otherConstrainAnchor.href;
+                                                value.OtherConstraintsLinkText = otherConstrainAnchor.Value;
+                                            }
+                                        }
+
+                                        if (legalConstraint.otherConstraints.Length > 1 && legalConstraint.otherConstraints[1] != null)
+                                        {
+
+                                            var otherConstrainAnchor2 = legalConstraint.otherConstraints[1].MD_RestrictionOther as Anchor_Type;
+                                            if (otherConstrainAnchor2 != null)
+                                            {
+                                                value.OtherConstraintsLink = otherConstrainAnchor2.href;
+                                                value.OtherConstraintsLinkText = otherConstrainAnchor2.Value;
+                                            }
+                                        }
+
+
                                     }
 
                                     if (legalConstraint.useConstraints != null
@@ -2213,16 +2241,16 @@ namespace GeoNorgeAPI
                                     }
 
                                 }
-                                    
+
                                 else
                                 {
                                     MD_Constraints_Type regularConstraint = constraintProperty.MD_Constraints as MD_Constraints_Type;
-                                    if (regularConstraint != null 
+                                    if (regularConstraint != null
                                         && regularConstraint.useLimitation != null
                                         && regularConstraint.useLimitation.Length > 0
                                         && regularConstraint.useLimitation[0] != null)
                                     {
-                                        
+
                                         value.UseLimitations = regularConstraint.useLimitation[0].CharacterString;
                                     }
                                 }
@@ -2237,6 +2265,23 @@ namespace GeoNorgeAPI
 
             set
             {
+
+                MD_RestrictionOther_PropertyType[] otherCons;
+                MD_RestrictionOther_PropertyType otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
+                MD_RestrictionOther_PropertyType otherConsStringAnchor;
+                if (!string.IsNullOrEmpty(value.OtherConstraintsLinkText) && !string.IsNullOrEmpty(value.OtherConstraintsLink))
+                {
+                    otherConsStringAnchor = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new Anchor_Type { Value = value.OtherConstraintsLinkText, href = value.OtherConstraintsLink } };
+                    otherCons = new MD_RestrictionOther_PropertyType[2];
+                    otherCons[0] = otherConsString;
+                    otherCons[1] = otherConsStringAnchor;
+                }
+                else
+                {
+                    otherCons = new MD_RestrictionOther_PropertyType[1];
+                    otherCons[0] = otherConsString;
+                }
+
 
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
@@ -2262,7 +2307,8 @@ namespace GeoNorgeAPI
                                     }    
                                 }
                             },
-                            otherConstraints = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value.OtherConstraints }}
+                            otherConstraints = otherCons
+                            //otherConstraints = new MD_RestrictionOther_PropertyType[]{ new MD_RestrictionOther_PropertyType{MD_RestrictionOther = new CharacterString_PropertyType{ CharacterString =value.OtherConstraints}}, new MD_RestrictionOther_PropertyType{MD_RestrictionOther = new Anchor_Type{ Value =value.OtherConstraintsLinkText, href=value.OtherConstraintsLink}}}
                         }    
                     },
                     new MD_Constraints_PropertyType {
@@ -2280,8 +2326,8 @@ namespace GeoNorgeAPI
                 var identification = GetIdentification();
                 if (identification != null)
                 {
-                    identification.resourceConstraints = resourceConstraints;                    
-                }                
+                    identification.resourceConstraints = resourceConstraints;
+                }
             }
         }
 
@@ -2542,8 +2588,11 @@ namespace GeoNorgeAPI
         public string AccessConstraints { get; set; }
         public string UseConstraints { get; set; }
         public string OtherConstraints { get; set; }
+        public string OtherConstraintsLink { get; set; }
+        public string OtherConstraintsLinkText { get; set; }
         public string SecurityConstraints { get; set; }
     }
+
 
     public class SimpleValidTimePeriod 
     {
