@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.7.3: ResourceReference bugfix
 2.7.2: Added ResourceReference
 2.7.1: Added ReferenceSystems
 2.7.0: Added UnitsOfDistribution
