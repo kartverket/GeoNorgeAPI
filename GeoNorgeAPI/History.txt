@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.7.4: Anchor datatype support otherConstraints
 2.7.3: ResourceReference bugfix
 2.7.2: Added ResourceReference
 2.7.1: Added ReferenceSystems
