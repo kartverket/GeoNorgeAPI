@@ -1915,7 +1915,7 @@ namespace GeoNorgeAPI
             if (date == null)
             {
                 string dateString = dateProperty.Item as string;
-                if (dateString != null)
+                if (!string.IsNullOrEmpty(dateString))
                 {
                     date = DateTime.Parse(dateString);
                 }
