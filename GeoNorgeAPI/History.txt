@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.7.6: Replace log4net with events
 2.7.5: Added CoverageUrl
 2.7.4: Anchor datatype support otherConstraints
 2.7.3: ResourceReference bugfix
