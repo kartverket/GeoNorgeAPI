@@ -8,8 +8,14 @@ namespace GeoNorgeAPI
 {
     public class RequestRunner
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        
+        //private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public event LogEventHandlerInfo OnLogEventInfo = delegate { };
+        public event LogEventHandlerDebug OnLogEventDebug = delegate { };
+        public event LogEventHandlerError OnLogEventError = delegate { };
+
+        private readonly RequestFactory _requestFactory;
+        private readonly RequestRunner _requestRunner;
+  
         private const string ContentTypeXml = "application/xml";
         private const string DefaultGeonetworkEndpoint = "https://www.geonorge.no/geonetwork/";
         
@@ -25,7 +31,12 @@ namespace GeoNorgeAPI
             _geonetworkPassword = geonetworkPassword;
             _geonetworkEndpoint = geonetworkEndpoint;
             _httpRequestExecutor = httpRequestExecutor;
+
+            _httpRequestExecutor.OnLogEventInfo += new GeoNorgeAPI.LogEventHandlerInfo(LogEventsInfo);
+            _httpRequestExecutor.OnLogEventDebug += new GeoNorgeAPI.LogEventHandlerDebug(LogEventsDebug);
+            _httpRequestExecutor.OnLogEventError += new GeoNorgeAPI.LogEventHandlerError(LogEventsError);
         }
+
 
         public RequestRunner(string geonetworkUsername = null, string geonetworkPassword = null, string geonetworkEndpoint = DefaultGeonetworkEndpoint)
             : this(geonetworkUsername, geonetworkPassword, geonetworkEndpoint, new HttpRequestExecutor())
@@ -71,6 +82,8 @@ namespace GeoNorgeAPI
             {
                 metadataRecord = response.Items[0] as MD_Metadata_Type;
             }
+
+
             return metadataRecord;
         }
 
@@ -78,14 +91,17 @@ namespace GeoNorgeAPI
         {
             var requestBody = SerializeUtil.SerializeToString(request);
 
-            Log.Info("Running CSW Transaction.");
+            //Log.Info("Running CSW Transaction.");
+            OnLogEventInfo("Running CSW Transaction.");
 
             string transactionResponse = _httpRequestExecutor.PostRequest(_geonetworkEndpoint + "srv/nor/csw-publication", 
                 "application/xml", "application/xml", requestBody, _geonetworkUsername, _geonetworkPassword, null, additionalRequestHeaders);
 
-            Log.Debug(transactionResponse);
+            //Log.Debug(transactionResponse);
+            OnLogEventDebug(transactionResponse);
 
-            Log.Info("CSW transaction complete.");
+            //Log.Info("CSW transaction complete.");
+            OnLogEventInfo("CSW transaction complete.");
             return ParseCswTransactionResponse(transactionResponse);      
         }
 
@@ -153,6 +169,28 @@ namespace GeoNorgeAPI
         private string GetUrlForCswService()
         {
             return _geonetworkEndpoint + "srv/nor/csw";
+        }
+
+        private void LogEventsInfo(string log)
+        {
+            System.Diagnostics.Debug.WriteLine(log);
+            if (OnLogEventInfo != null)
+                OnLogEventInfo(log);
+
+        }
+
+        private void LogEventsDebug(string log)
+        {
+            System.Diagnostics.Debug.WriteLine(log);
+            if (OnLogEventDebug != null)
+                OnLogEventDebug(log);
+        }
+
+        private void LogEventsError(string log, Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(log);
+            if (OnLogEventError != null)
+                OnLogEventError(log, ex);
         }
 
     }

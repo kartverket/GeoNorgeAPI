@@ -6,9 +6,17 @@ using System.Text;
 
 namespace GeoNorgeAPI
 {
+
+
     public class HttpRequestExecutor
     {
-        private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog Log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        public event LogEventHandlerInfo OnLogEventInfo = delegate { };
+        public event LogEventHandlerDebug OnLogEventDebug = delegate { };
+        public event LogEventHandlerError OnLogEventError = delegate { };
+
+        private readonly RequestFactory _requestFactory;
+        private readonly RequestRunner _requestRunner;
 
         public string PostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null, Dictionary<string, string> additionalRequestHeaders = null)
         {
@@ -17,7 +25,8 @@ namespace GeoNorgeAPI
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string responseBody = reader.ReadToEnd();
             response.Close();
-            Log.Debug("HTTP response body:\n" + responseBody);
+            //Log.Debug("HTTP response body:\n" + responseBody);
+            OnLogEventDebug("HTTP response body:\n" + responseBody);
             return responseBody;
         }
 
@@ -45,9 +54,10 @@ namespace GeoNorgeAPI
                     }
                 }
 
-                Log.Debug("HTTP request: [" + request.Method + "] " + url);
-                Log.Debug("HTTP request body:\n" + postData);
-
+                //Log.Debug("HTTP request: [" + request.Method + "] " + url);
+                OnLogEventDebug("HTTP request: [" + request.Method + "] " + url);
+                //Log.Debug("HTTP request body:\n" + postData);
+                OnLogEventDebug("HTTP request body:\n" + postData);
                 request.CookieContainer = new CookieContainer();
                 if (cookie != null)
                 {
@@ -62,12 +72,14 @@ namespace GeoNorgeAPI
                 dataStream.Close();
 
                 var response = (HttpWebResponse)request.GetResponse();
-                Log.Debug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
+                //Log.Debug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
+                OnLogEventDebug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
                 return (HttpWebResponse)request.GetResponse();
             }
             catch (Exception e)
             {
-                Log.Error("Exception while running HTTP request.", e);
+                //Log.Error("Exception while running HTTP request.", e);
+                OnLogEventError("Exception while running HTTP request.", e);
                 throw e;
             }
         }
@@ -87,7 +99,8 @@ namespace GeoNorgeAPI
             request.Accept = accept;
             request.ContentType = contentType;
 
-            Log.Debug("HTTP request: [" + request.Method + "] " + url);
+            //Log.Debug("HTTP request: [" + request.Method + "] " + url);
+            OnLogEventDebug("HTTP request: [" + request.Method + "] " + url);
 
             return (HttpWebResponse)request.GetResponse();
         }

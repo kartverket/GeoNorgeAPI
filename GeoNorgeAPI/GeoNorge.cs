@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using www.opengis.net;
 
 namespace GeoNorgeAPI
@@ -6,17 +7,32 @@ namespace GeoNorgeAPI
     /// <summary>
     /// API for communicating with the CSW services available on www.geonorge.no. 
     /// </summary>
+    /// 
+
+    public delegate void LogEventHandlerInfo(string msg);
+    public delegate void LogEventHandlerDebug(string msg);
+    public delegate void LogEventHandlerError(string msg, Exception ex);
+
     public class GeoNorge : IGeoNorge
     {
 
         private readonly RequestFactory _requestFactory;
         private readonly RequestRunner _requestRunner;
 
+        public event LogEventHandlerInfo OnLogEventInfo = delegate { };
+        public event LogEventHandlerDebug OnLogEventDebug = delegate { };
+        public event LogEventHandlerError OnLogEventError = delegate { };
+
         private GeoNorge(RequestFactory requestFactory, RequestRunner requestRunner)
         {
             _requestFactory = requestFactory;
             _requestRunner = requestRunner;
+
+            _requestRunner.OnLogEventInfo += new GeoNorgeAPI.LogEventHandlerInfo(LogEventsInfo);
+            _requestRunner.OnLogEventDebug += new GeoNorgeAPI.LogEventHandlerDebug(LogEventsDebug);
+            _requestRunner.OnLogEventError += new GeoNorgeAPI.LogEventHandlerError(LogEventsError);
         }
+
 
         public GeoNorge(string geonetworkUsername = null, string geonetworkPassword = null)
             : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword))
@@ -27,7 +43,7 @@ namespace GeoNorgeAPI
         public GeoNorge(string geonetworkUsername, string geonetworkPassword, string geonetworkEndpoint)
             : this(new RequestFactory(), new RequestRunner(geonetworkUsername, geonetworkPassword, geonetworkEndpoint))
         {
-
+       
         }
 
         /// <summary>
@@ -149,6 +165,25 @@ namespace GeoNorgeAPI
             TransactionType request = _requestFactory.MetadataDelete(uuid);
             return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
+
+        private void LogEventsInfo(string log)
+        {
+            if (OnLogEventInfo != null)
+                OnLogEventInfo(log);
+        }
+
+        private void LogEventsDebug(string log)
+        {
+            if (OnLogEventDebug != null)
+                OnLogEventDebug(log);
+        }
+
+        private void LogEventsError(string log, Exception ex)
+        {
+            if (OnLogEventError != null)
+                OnLogEventError(log, ex);
+        }
+
         
     }
 }
