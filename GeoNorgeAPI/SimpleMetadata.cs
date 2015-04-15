@@ -2449,7 +2449,23 @@ namespace GeoNorgeAPI
                         new MD_Usage_PropertyType {
                             MD_Usage = new MD_Usage_Type
                             {
-                                specificUsage = new CharacterString_PropertyType { CharacterString = value }
+                                specificUsage = new CharacterString_PropertyType { CharacterString = value },
+                                userContactInfo = new CI_ResponsibleParty_PropertyType[] { 
+                                    new CI_ResponsibleParty_PropertyType
+                                    { 
+                                        CI_ResponsibleParty = new CI_ResponsibleParty_Type 
+                                        { 
+                                            role = new CI_RoleCode_PropertyType
+                                            { 
+                                                CI_RoleCode = new CodeListValue_Type
+                                                { 
+                                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
+                                                    codeListValue = "owner"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }                        
                     };
