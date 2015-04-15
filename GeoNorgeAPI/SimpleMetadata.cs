@@ -1610,6 +1610,20 @@ namespace GeoNorgeAPI
                     _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
                         new DQ_DataQuality_PropertyType {
                             DQ_DataQuality = new DQ_DataQuality_Type {
+                                scope = new DQ_Scope_PropertyType
+                                { 
+                                    DQ_Scope = new DQ_Scope_Type
+                                    { 
+                                        level = new MD_ScopeCode_PropertyType
+                                        { 
+                                            MD_ScopeCode = new CodeListValue_Type
+                                            {
+                                                codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
+                                                codeListValue="service"
+                                            }
+                                        }
+                                    }
+                                },
                                 report = reports
                             }
                         }
