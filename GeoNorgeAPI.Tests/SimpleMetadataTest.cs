@@ -626,11 +626,11 @@ namespace GeoNorgeAPI.Tests
         }
 
 
-        [Test]
-        public void ShouldReturnNullWhenReferenceSystemIsNull()
-        {
-            Assert.IsNull(_md.ReferenceSystem);
-        }
+        //[Test]
+        //public void ShouldReturnNullWhenReferenceSystemIsNull()
+        //{
+        //    Assert.IsNull(_md.ReferenceSystem);
+        //}
 
         [Test]
         public void ShouldReturnReferenceSystemWhenPresent()
@@ -674,11 +674,11 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
-        [Test]
-        public void ShouldReturnNullWhenReferenceSystemsIsNull()
-        {
-            Assert.IsNull(_md.ReferenceSystems);
-        }
+        //[Test]
+        //public void ShouldReturnNullWhenReferenceSystemsIsNull()
+        //{
+        //    Assert.IsNull(_md.ReferenceSystems);
+        //}
 
         [Test]
         public void ShouldReturnReferenceSystemsWhenPresent()
