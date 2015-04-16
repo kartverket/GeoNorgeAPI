@@ -3,6 +3,8 @@ using System;
 using www.opengis.net;
 using GeoNorgeAPI;
 using System.Collections.Generic;
+using System.Diagnostics;
+using Arkitektum.GIS.Lib.SerializeUtil;
 
 namespace GeoNorgeAPI.Tests
 {
@@ -15,6 +17,12 @@ namespace GeoNorgeAPI.Tests
         public void Init()
         {
             _md = new SimpleMetadata(MetadataExample.CreateMetadataExample());
+        }
+
+        [Test]
+        public void TestSample()
+        {
+            Trace.WriteLine(SerializeUtil.SerializeToString(MetadataExample.CreateMetadataExample()));
         }
 
         [Test]

@@ -1828,6 +1828,8 @@ namespace GeoNorgeAPI
                                 {
                                     AbstractTimePrimitive = new TimePeriodType()
                                     {
+                                        id = "id_1",
+
                                         Item = new TimePositionType()
                                         {
                                             Value = value.ValidFrom 

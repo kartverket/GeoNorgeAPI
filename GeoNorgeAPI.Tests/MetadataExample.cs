@@ -200,14 +200,14 @@ namespace GeoNorgeAPI.Tests
                                     { 
                                         new MD_RestrictionCode_PropertyType 
                                         { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "none" }
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "none" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
                                         }
                                     },
                                     useConstraints = new MD_RestrictionCode_PropertyType[] 
                                     { 
                                         new MD_RestrictionCode_PropertyType 
                                         { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" }
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
                                         }
                                     },
                                     otherConstraints = new MD_RestrictionOther_PropertyType [] { new MD_RestrictionOther_PropertyType{ MD_RestrictionOther = CharString("Ingen begrensninger på bruk.")}, new MD_RestrictionOther_PropertyType{ MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}}}  
@@ -251,7 +251,33 @@ namespace GeoNorgeAPI.Tests
                                                             northBoundLatitude = new Decimal_PropertyType { Decimal = 72 }
                                                         }
                                                 }
+                                        },
+                                    temporalElement = new EX_TemporalExtent_PropertyType[]
+                                    {
+                                        new EX_TemporalExtent_PropertyType
+                                        {
+                                            EX_TemporalExtent = new EX_TemporalExtent_Type
+                                            {
+                                                extent = new TM_Primitive_PropertyType
+                                                {
+                                                      AbstractTimePrimitive = new TimePeriodType()
+                                                      {
+                                                         id="id_1",
+
+                                                            Item = new TimePositionType()
+                                                            {
+                                                                Value = "2014-01-01" 
+                                                            },
+                                                            Item1 = new TimePositionType()
+                                                            {
+                                                                Value = "2020-01-01"
+                                                            }
+                                                      }        
+                                                }
+                                            }
                                         }
+                                    }
+
                                 }
                         }
                 };
@@ -366,6 +392,30 @@ namespace GeoNorgeAPI.Tests
                 };
 
             m.dataQualityInfo = new[] { new DQ_DataQuality_PropertyType { DQ_DataQuality = dqDataQualityType } };
+
+            m.referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] 
+            {
+                new MD_ReferenceSystem_PropertyType 
+                { 
+                    MD_ReferenceSystem = new MD_ReferenceSystem_Type 
+                    { 
+                        referenceSystemIdentifier = new RS_Identifier_PropertyType 
+                        { 
+                            RS_Identifier = new RS_Identifier_Type 
+                            { 
+                                code = new CharacterString_PropertyType 
+                                { 
+                                    CharacterString = "http://www.opengis.net/def/crs/EPSG/0/25831"
+                                }, 
+                                codeSpace = new CharacterString_PropertyType 
+                                { 
+                                    CharacterString = "EPSG" 
+                                } 
+                            } 
+                        } 
+                    } 
+                } 
+            };
 
             return m;
         }
