@@ -1512,6 +1512,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("http://test.no", constraints.OtherConstraintsLink);
             Assert.AreEqual("Link", constraints.OtherConstraintsLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
+            Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("none", constraints.AccessConstraints);
             Assert.AreEqual("free", constraints.UseConstraints);
         }
@@ -1524,6 +1525,7 @@ namespace GeoNorgeAPI.Tests
             string expectedOtherConstraintsLink = "http://test.no";
             string expectedOtherConstraintsLinkText = "Link";
             string expectedSecurityConstraints = "classified";
+            string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
             string expectedAccessConstraints = "restricted";
             string expectedUseConstraints = "license";
 
@@ -1534,6 +1536,7 @@ namespace GeoNorgeAPI.Tests
                 OtherConstraintsLink = expectedOtherConstraintsLink,
                 OtherConstraintsLinkText = expectedOtherConstraintsLinkText,
                 SecurityConstraints = expectedSecurityConstraints,
+                SecurityConstraintsNote = expectedSecurityConstraintsNote,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
 
@@ -1542,6 +1545,7 @@ namespace GeoNorgeAPI.Tests
 
             string actualUseLimitation = null;
             string actualSecurityConstraint = null;
+            string actualSecurityConstraintNote = null;
             string actualAccessConstraint = null;
             string actualOtherConstraint = null;
             string actualOtherConstraintLink = null;
@@ -1555,6 +1559,7 @@ namespace GeoNorgeAPI.Tests
                 if (securityConstraint != null)
                 {
                     actualSecurityConstraint = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                    actualSecurityConstraintNote = securityConstraint.userNote.CharacterString;
                 }
                 else
                 {
@@ -1586,6 +1591,7 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(expectedUseLimitations, actualUseLimitation);
             Assert.AreEqual(expectedSecurityConstraints, actualSecurityConstraint);
+            Assert.AreEqual(expectedSecurityConstraintsNote, actualSecurityConstraintNote);
             Assert.AreEqual(expectedAccessConstraints, actualAccessConstraint);
             Assert.AreEqual(expectedOtherConstraints, actualOtherConstraint);
             Assert.AreEqual(expectedOtherConstraintsLink, actualOtherConstraintLink);

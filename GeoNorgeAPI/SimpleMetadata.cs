@@ -2221,6 +2221,10 @@ namespace GeoNorgeAPI
                                 && securityConstraint.classification.MD_ClassificationCode != null)
                             {
                                 value.SecurityConstraints = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                                if (securityConstraint.userNote != null) 
+                                {
+                                    value.SecurityConstraintsNote = securityConstraint.userNote.CharacterString;
+                                }
                             }
                             else
                             {
@@ -2351,6 +2355,9 @@ namespace GeoNorgeAPI
                     },
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_SecurityConstraints_Type {
+                            userNote = new CharacterString_PropertyType {
+                                CharacterString = value.SecurityConstraintsNote
+                            },
                             classification = new MD_ClassificationCode_PropertyType {
                                 MD_ClassificationCode = new CodeListValue_Type {
                                     codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ClassificationCode",
@@ -2645,6 +2652,7 @@ namespace GeoNorgeAPI
         public string OtherConstraintsLink { get; set; }
         public string OtherConstraintsLinkText { get; set; }
         public string SecurityConstraints { get; set; }
+        public string SecurityConstraintsNote { get; set; }
     }
 
 

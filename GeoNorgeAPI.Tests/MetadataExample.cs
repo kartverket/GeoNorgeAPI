@@ -217,11 +217,15 @@ namespace GeoNorgeAPI.Tests
                         {
                             MD_Constraints = new MD_SecurityConstraints_Type
                                 {
+                                    userNote = new CharacterString_PropertyType 
+                                    {
+                                        CharacterString = "Text that describes why it is not freely open"
+                                    },
                                     classification = new MD_ClassificationCode_PropertyType
                                         {
                                             MD_ClassificationCode = new CodeListValue_Type
                                                 {
-                                                    codeList = "http://www.isotc211.org/2005/resources/codeList.xml#MD_ClassificationCode",
+                                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ClassificationCode",
                                                     codeListValue = "unclassified"
                                                 }
                                         }
