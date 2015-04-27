@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      2.9.0: Updated packages for MetadataCSW and Serializeutil
+      3.0.0: Added userNote for MD_SecurityConstraints_Type
     </releaseNotes>
     <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>

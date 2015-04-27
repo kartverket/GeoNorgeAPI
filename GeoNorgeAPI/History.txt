@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+2.9.0: Updated packages for MetadataCSW and Serializeutil
 2.8.0: Added TimePeriod id
 2.7.9: DQ_DataQuality added scope
 2.7.8: MD_Usage added userContactInfo
