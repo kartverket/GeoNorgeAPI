@@ -67,7 +67,9 @@ namespace GeoNorgeAPI
 
         private string FixInvalidRealElement(string input)
         {
-            return input.Replace(@"<gco:Real />", "");
+            input = input.Replace(@"<gco:Real />", "");
+            input = input.Replace(@"<gco:Real xmlns:gco=""http://www.isotc211.org/2005/gco"" />", "");
+            return input;
         }
 
         public MD_Metadata_Type GetRecordById(GetRecordByIdType request)

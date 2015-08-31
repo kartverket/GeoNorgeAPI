@@ -16,5 +16,15 @@ namespace GeoNorgeAPI.Tests
             var getRecordsResponseType = SerializeUtil.DeserializeFromString<GetRecordsResponseType>(xml);
             Trace.WriteLine(SerializeUtil.SerializeToString(getRecordsResponseType));
         }
+
+        [Test]
+        public void ShouldSerializeWithRealElementError()
+        {
+            string xml = File.ReadAllText("xml/real-error.xml");
+            xml = xml.Replace(@"<gco:Real xmlns:gco=""http://www.isotc211.org/2005/gco"" />", "");
+            GetRecordByIdResponseType getRecordsByIdResponseType = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            Trace.WriteLine(SerializeUtil.SerializeToString(getRecordsByIdResponseType));
+        }
+
     }
 }
