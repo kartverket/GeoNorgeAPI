@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.1: Fix invalid real element
 3.0.0: Added userNote for MD_SecurityConstraints_Type
 2.9.0: Updated packages for MetadataCSW and Serializeutil
 2.8.0: Added TimePeriod id
