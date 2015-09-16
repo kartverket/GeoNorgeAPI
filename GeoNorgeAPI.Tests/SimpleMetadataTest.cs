@@ -1080,6 +1080,173 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
             Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
         }
+
+
+        [Test]
+        public void ShouldReturnNullWhenQualitySpecificationsDataIsNull()
+        {
+            _md.GetMetadata().dataQualityInfo = null;
+            Assert.IsNull(_md.QualitySpecifications);
+        }
+
+        [Test]
+        public void ShouldReturnQualitySpecificationsData()
+        {
+            string expectedTitle = "title";
+            string expectedDate = "2014-01-01";
+            string expectedDateType = "creation";
+            string expectedExplanation = "explained";
+            bool expectedResult = true;
+
+            string expectedTitle2 = "title2";
+            string expectedDate2 = "2014-01-01";
+            string expectedDateType2 = "creation";
+            string expectedExplanation2 = "explained";
+            bool expectedResult2 = false;
+
+            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] 
+            {
+                new DQ_DataQuality_PropertyType {
+                    DQ_DataQuality = new DQ_DataQuality_Type {
+                        report = new DQ_Element_PropertyType[] {
+                            new DQ_Element_PropertyType {
+                                AbstractDQ_Element = new DQ_DomainConsistency_Type {
+                                    result = new DQ_Result_PropertyType[] {
+                                        new DQ_Result_PropertyType {
+                                            AbstractDQ_Result = new DQ_ConformanceResult_Type {
+                                                specification = new CI_Citation_PropertyType {
+                                                    CI_Citation = new CI_Citation_Type {
+                                                        title = toCharString(expectedTitle),
+                                                        date = new CI_Date_PropertyType[] {
+                                                            new CI_Date_PropertyType {
+                                                                CI_Date = new CI_Date_Type {
+                                                                    date = new Date_PropertyType {
+                                                                        Item = expectedDate  
+                                                                    },
+                                                                    dateType = new CI_DateTypeCode_PropertyType {
+                                                                        CI_DateTypeCode = new CodeListValue_Type {
+                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeListValue = expectedDateType
+                                                                        }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }    
+                                                },
+                                                explanation = toCharString(expectedExplanation),
+                                                pass = new Boolean_PropertyType { Boolean = expectedResult }
+                                            }
+                                        },
+                                        new DQ_Result_PropertyType {
+                                            AbstractDQ_Result = new DQ_ConformanceResult_Type {
+                                                specification = new CI_Citation_PropertyType {
+                                                    CI_Citation = new CI_Citation_Type {
+                                                        title = toCharString(expectedTitle2),
+                                                        date = new CI_Date_PropertyType[] {
+                                                            new CI_Date_PropertyType {
+                                                                CI_Date = new CI_Date_Type {
+                                                                    date = new Date_PropertyType {
+                                                                        Item = expectedDate2  
+                                                                    },
+                                                                    dateType = new CI_DateTypeCode_PropertyType {
+                                                                        CI_DateTypeCode = new CodeListValue_Type {
+                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeListValue = expectedDateType2
+                                                                        }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }    
+                                                },
+                                                explanation = toCharString(expectedExplanation2),
+                                                pass = new Boolean_PropertyType { Boolean = expectedResult2 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            List<SimpleQualitySpecification> spec = _md.QualitySpecifications;
+
+            Assert.IsNotNull(spec);
+            Assert.AreEqual(expectedTitle, spec[0].Title);
+            Assert.AreEqual(expectedDate, spec[0].Date);
+            Assert.AreEqual(expectedDateType, spec[0].DateType);
+            Assert.AreEqual(expectedExplanation, spec[0].Explanation);
+            Assert.AreEqual(expectedResult, spec[0].Result);
+
+            Assert.AreEqual(expectedTitle2, spec[1].Title);
+            Assert.AreEqual(expectedDate2, spec[1].Date);
+            Assert.AreEqual(expectedDateType2, spec[1].DateType);
+            Assert.AreEqual(expectedExplanation2, spec[1].Explanation);
+            Assert.AreEqual(expectedResult2, spec[1].Result);
+
+        }
+
+
+        [Test]
+        public void ShouldUpdateQualitySpecifications()
+        {
+            string expectedTitle = "title";
+            string expectedDate = "2014-01-01";
+            string expectedDateType = "creation";
+            string expectedExplanation = "explained";
+            bool expectedResult = true;
+
+            string expectedTitle2 = "title2";
+            string expectedDate2 = "2014-01-01";
+            string expectedDateType2 = "creation";
+            string expectedExplanation2 = "explained";
+            bool expectedResult2 = false;
+
+            List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
+
+            QualityList.Add( new SimpleQualitySpecification
+            {
+                Title = expectedTitle,
+                Date = expectedDate,
+                DateType = expectedDateType,
+                Explanation = expectedExplanation,
+                Result = expectedResult
+            });
+
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Title = expectedTitle2,
+                Date = expectedDate2,
+                DateType = expectedDateType2,
+                Explanation = expectedExplanation2,
+                Result = expectedResult2
+            });
+            
+
+            _md.QualitySpecifications = QualityList;
+
+            DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
+            DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
+            DQ_ConformanceResult_Type conformanceResult2 = domainConsistency.result[1].AbstractDQ_Result as DQ_ConformanceResult_Type;
+
+            Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
+            Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
+            Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
+            Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
+
+            Assert.AreEqual(expectedTitle2, conformanceResult2.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedDate2, (string)conformanceResult2.specification.CI_Citation.date[0].CI_Date.date.Item);
+            Assert.AreEqual(expectedDateType2, conformanceResult2.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
+            Assert.AreEqual(expectedExplanation2, conformanceResult2.explanation.CharacterString);
+            Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
+
+        }
+
         
         [Test]
         public void ShouldReturnNullWhenProcessHistoryIsNull()
