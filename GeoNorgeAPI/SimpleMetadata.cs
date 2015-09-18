@@ -17,6 +17,7 @@ namespace GeoNorgeAPI
         public const string LOCALE_LINK_ENG = "#" + LOCALE_ENG;
 
         private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
+        private const string APPLICATION_PROFILE_PRODUCTSPEC_OTHER = "annen produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
         private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
         private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
@@ -859,6 +860,41 @@ namespace GeoNorgeAPI
                 onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC };
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
+        }
+
+        public SimpleOnlineResource ProductSpecificationOther
+        {
+            get
+            {
+                SimpleOnlineResource spec = new SimpleOnlineResource();
+                spec.URL = GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC_OTHER);
+                spec.Name = GetMetadataExtensionInfoNameWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC_OTHER);
+                return spec;
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC_OTHER);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value.URL };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC_OTHER };
+                onlineResource.name = new CharacterString_PropertyType { CharacterString = value.Name };
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+        private string GetMetadataExtensionInfoNameWithApplicationProfile(string applicationProfile)
+        {
+            string name = null;
+            CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(applicationProfile);
+            if (onlineResource != null && onlineResource.name != null)
+            {
+                name = onlineResource.name.CharacterString;
+            }
+            return name;
         }
 
         private void AddOnlineResourceToMetadataExtensionInfo(CI_OnlineResource_Type onlineResource)
@@ -2877,4 +2913,11 @@ namespace GeoNorgeAPI
         public string Code { get; set; }
         public string Codespace { get; set; }
     }
+
+    public class SimpleOnlineResource
+    {
+        public string URL { get; set; }
+        public string Name { get; set; }
+    }
+    
 }

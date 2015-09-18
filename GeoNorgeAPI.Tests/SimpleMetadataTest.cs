@@ -2157,6 +2157,64 @@ namespace GeoNorgeAPI.Tests
             Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
         }
 
+        [Test]
+        public void ShouldReturnNullWhenProductSpecificationOtherNotSet()
+        {
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
+
+            Assert.Null(simpleMetadata.ProductSpecificationOther.Name);
+            Assert.Null(simpleMetadata.ProductSpecificationOther.URL);
+        }
+
+        [Test]
+        public void ShouldReturnProductSpecificationOther()
+        {
+            string expectedURL = "http://example.com";
+            string expectedName = "navn";
+            _md.GetMetadata().metadataExtensionInfo = new MD_MetadataExtensionInformation_PropertyType[] {
+                new MD_MetadataExtensionInformation_PropertyType {
+                MD_MetadataExtensionInformation = new MD_MetadataExtensionInformation_Type{
+                    extensionOnLineResource = new CI_OnlineResource_PropertyType{ 
+                        CI_OnlineResource = new CI_OnlineResource_Type{ 
+                            name = new CharacterString_PropertyType{ CharacterString = expectedName},
+                            linkage = new URL_PropertyType{ URL = expectedURL},
+                            applicationProfile = new CharacterString_PropertyType{ CharacterString = "annen produktspesifikasjon"}
+                        }
+                    }
+                }
+              }
+            };
+
+            var specsOther = _md.ProductSpecificationOther;
+
+            Assert.NotNull(specsOther);
+            Assert.AreEqual(expectedURL, specsOther.URL);
+            Assert.AreEqual(expectedName, specsOther.Name);
+
+        }
+
+        [Test]
+        public void ShouldUpdateProductSpecificationOther()
+        {
+            string expectedURL = "http://example.com";
+            string expectedName = "navn";
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateService();
+            simpleMetadata.ProductSpecificationOther = new SimpleOnlineResource
+            {
+                Name = expectedName,
+                URL = expectedURL
+            };
+
+            var mdExt = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+
+            string actualURL = mdExt.linkage.URL;
+            string actualName = mdExt.name.CharacterString;
+
+            Assert.AreEqual(expectedURL, actualURL);
+            Assert.AreEqual(expectedName, actualName);
+
+        }
+
                
         private void SetDateOnCitationDateType(object date, string dateType)
         {
