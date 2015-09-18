@@ -1636,7 +1636,7 @@ namespace GeoNorgeAPI
             }
         }
 
-        //Testing multiple QualitySpecification
+        //Multiple QualitySpecification
         public List<SimpleQualitySpecification> QualitySpecifications
         {
             get
@@ -1705,6 +1705,20 @@ namespace GeoNorgeAPI
                                         }
                                     }
 
+                                    // authority
+                                    if (result.specification.CI_Citation.identifier != null
+                                        && result.specification.CI_Citation.identifier.Length > 0
+                                        && result.specification.CI_Citation.identifier[0] != null
+                                        && result.specification.CI_Citation.identifier[0].MD_Identifier != null
+                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority != null
+                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation != null
+                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title != null
+                                        ) 
+                                    {
+                                        resultItem.Responsible = result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString;
+                                    }
+
+
                                     // explanation
                                     if (result.explanation != null)
                                     {
@@ -1743,10 +1757,14 @@ namespace GeoNorgeAPI
                     foreach (var mdResult in value)
                     {
 
-                     DQ_Result_PropertyType DQResult =  new DQ_Result_PropertyType {
-                            AbstractDQ_Result = new DQ_ConformanceResult_Type {
-                                specification = new CI_Citation_PropertyType {
-                                    CI_Citation = new CI_Citation_Type {
+                        DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
+                        {
+                            AbstractDQ_Result = new DQ_ConformanceResult_Type
+                            {
+                                specification = new CI_Citation_PropertyType
+                                {
+                                    CI_Citation = new CI_Citation_Type
+                                    {
                                         title = toCharString(mdResult.Title),
                                         date = new CI_Date_PropertyType[] {
                                             new CI_Date_PropertyType {
@@ -1762,8 +1780,24 @@ namespace GeoNorgeAPI
                                                     }
                                                 }
                                             }
+                                        },
+                                        identifier = new MD_Identifier_PropertyType[]
+                                        {
+                                         new MD_Identifier_PropertyType
+                                         {
+                                            MD_Identifier = new MD_Identifier_Type
+                                            {
+                                                authority = new CI_Citation_PropertyType
+                                                {
+                                                    CI_Citation = new CI_Citation_Type
+                                                    {
+                                                        title = new CharacterString_PropertyType { CharacterString = mdResult.Responsible }
+                                                    }
+                                                }
+                                            }
+                                          }
                                         }
-                                    }    
+                                    }
                                 },
                                 explanation = toCharString(mdResult.Explanation),
                                 pass = new Boolean_PropertyType { Boolean = mdResult.Result }
@@ -2807,6 +2841,7 @@ namespace GeoNorgeAPI
         public string DateType { get; set; }
         public string Explanation { get; set; }
         public bool Result { get; set; }
+        public string Responsible { get; set; }
     }
 
     public class SimpleBoundingBox

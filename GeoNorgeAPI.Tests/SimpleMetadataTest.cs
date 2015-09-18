@@ -1097,12 +1097,14 @@ namespace GeoNorgeAPI.Tests
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
             bool expectedResult = true;
+            string expectedResponsible = "SOSI";
 
             string expectedTitle2 = "title2";
             string expectedDate2 = "2014-01-01";
             string expectedDateType2 = "creation";
             string expectedExplanation2 = "explained";
             bool expectedResult2 = false;
+            string expectedResponsible2 = "Inspire";
 
             _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] 
             {
@@ -1128,6 +1130,17 @@ namespace GeoNorgeAPI.Tests
                                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType
                                                                         }    
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        identifier = new MD_Identifier_PropertyType[]{ 
+                                                            new MD_Identifier_PropertyType{ 
+                                                                MD_Identifier = new MD_Identifier_Type{ 
+                                                                    authority = new CI_Citation_PropertyType{ 
+                                                                        CI_Citation = new CI_Citation_Type{ 
+                                                                            title = new CharacterString_PropertyType{ CharacterString = expectedResponsible }
+                                                                        }
                                                                     }
                                                                 }
                                                             }
@@ -1157,6 +1170,17 @@ namespace GeoNorgeAPI.Tests
                                                                     }
                                                                 }
                                                             }
+                                                        },
+                                                         identifier = new MD_Identifier_PropertyType[]{ 
+                                                            new MD_Identifier_PropertyType{ 
+                                                                MD_Identifier = new MD_Identifier_Type{ 
+                                                                    authority = new CI_Citation_PropertyType{ 
+                                                                        CI_Citation = new CI_Citation_Type{ 
+                                                                            title = new CharacterString_PropertyType{ CharacterString = expectedResponsible2 }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
                                                         }
                                                     }    
                                                 },
@@ -1181,12 +1205,14 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDateType, spec[0].DateType);
             Assert.AreEqual(expectedExplanation, spec[0].Explanation);
             Assert.AreEqual(expectedResult, spec[0].Result);
+            Assert.AreEqual(expectedResponsible, spec[0].Responsible);
 
             Assert.AreEqual(expectedTitle2, spec[1].Title);
             Assert.AreEqual(expectedDate2, spec[1].Date);
             Assert.AreEqual(expectedDateType2, spec[1].DateType);
             Assert.AreEqual(expectedExplanation2, spec[1].Explanation);
             Assert.AreEqual(expectedResult2, spec[1].Result);
+            Assert.AreEqual(expectedResponsible2, spec[1].Responsible);
 
         }
 
@@ -1199,12 +1225,14 @@ namespace GeoNorgeAPI.Tests
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
             bool expectedResult = true;
+            string expectedResponsible = "SOSI";
 
             string expectedTitle2 = "title2";
             string expectedDate2 = "2014-01-01";
             string expectedDateType2 = "creation";
             string expectedExplanation2 = "explained";
             bool expectedResult2 = false;
+            string expectedResponsible2 = "Inspire";
 
             List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
 
@@ -1214,7 +1242,8 @@ namespace GeoNorgeAPI.Tests
                 Date = expectedDate,
                 DateType = expectedDateType,
                 Explanation = expectedExplanation,
-                Result = expectedResult
+                Result = expectedResult,
+                Responsible = expectedResponsible
             });
 
             QualityList.Add(new SimpleQualitySpecification
@@ -1223,7 +1252,8 @@ namespace GeoNorgeAPI.Tests
                 Date = expectedDate2,
                 DateType = expectedDateType2,
                 Explanation = expectedExplanation2,
-                Result = expectedResult2
+                Result = expectedResult2,
+                Responsible = expectedResponsible2
             });
             
 
@@ -1238,12 +1268,14 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
             Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
+            Assert.AreEqual(expectedResponsible, conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
 
             Assert.AreEqual(expectedTitle2, conformanceResult2.specification.CI_Citation.title.CharacterString);
             Assert.AreEqual(expectedDate2, (string)conformanceResult2.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType2, conformanceResult2.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation2, conformanceResult2.explanation.CharacterString);
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
+            Assert.AreEqual(expectedResponsible2, conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
 
         }
 
