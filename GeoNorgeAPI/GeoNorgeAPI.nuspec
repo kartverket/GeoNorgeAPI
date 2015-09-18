@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      3.0.2: Added QualitySpecifications
+      3.0.3: Added SimpleQualitySpecification.Responsible
     </releaseNotes>
     <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
