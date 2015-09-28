@@ -874,15 +874,29 @@ namespace GeoNorgeAPI
             set
             {
                 CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC_OTHER);
-                if (onlineResource == null)
+
+                if (string.IsNullOrEmpty(value.Name) || string.IsNullOrEmpty(value.URL))
                 {
-                    onlineResource = new CI_OnlineResource_Type();
-                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                    if (onlineResource != null) 
+                    {
+                        RemoveOnlineResourceMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_PRODUCTSPEC_OTHER);
+                    }
                 }
-                onlineResource.linkage = new URL_PropertyType { URL = value.URL };
-                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC_OTHER };
-                onlineResource.name = new CharacterString_PropertyType { CharacterString = value.Name };
-                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+
+                else 
+                {
+
+                    if (onlineResource == null)
+                    {
+                        onlineResource = new CI_OnlineResource_Type();
+                        AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                    }
+                    onlineResource.linkage = new URL_PropertyType { URL = value.URL };
+                    onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSPEC_OTHER };
+                    onlineResource.name = new CharacterString_PropertyType { CharacterString = value.Name };
+                    onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+                
+                }
             }
         }
 
@@ -920,6 +934,30 @@ namespace GeoNorgeAPI
             {
                 _md.metadataExtensionInfo = _md.metadataExtensionInfo.Concat(newExtensionInfo).ToArray();
             }
+        }
+
+        private void RemoveOnlineResourceMetadataExtensionInfoWithApplicationProfile(string applicationProfile)
+        {
+
+            if (_md.metadataExtensionInfo != null && _md.metadataExtensionInfo.Length > 0)
+            {
+                int counter = 0;
+
+                foreach (MD_MetadataExtensionInformation_PropertyType ext in _md.metadataExtensionInfo)
+                {
+                    if (ext.MD_MetadataExtensionInformation != null && ext.MD_MetadataExtensionInformation.extensionOnLineResource != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource.applicationProfile != null
+                        && ext.MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource.applicationProfile.CharacterString == applicationProfile)
+                    {
+                        int indexToRemove = counter;
+                        _md.metadataExtensionInfo = _md.metadataExtensionInfo.Where((source, index) => index != indexToRemove).ToArray();
+                        break;
+                    }
+
+                    counter++;
+                }
+            }          
         }
 
 

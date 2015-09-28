@@ -2215,6 +2215,42 @@ namespace GeoNorgeAPI.Tests
 
         }
 
+
+        [Test]
+        public void ShouldDeleteProductSpecificationOtherWhenSetNullAndPreserveOtherResources()
+        {
+            string url = "http://example.com";
+            string name = "navn";
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateService();
+
+            simpleMetadata.ProductSpecificationUrl = url;
+
+            simpleMetadata.ProductSpecificationOther = new SimpleOnlineResource
+            {
+                Name = name,
+                URL = url
+            };
+
+            Assert.IsNotNull(simpleMetadata.ProductSpecificationOther.Name);
+            Assert.IsNotNull(simpleMetadata.ProductSpecificationOther.URL);
+
+            simpleMetadata.ProductPageUrl = url;
+
+            simpleMetadata.ProductSpecificationOther = new SimpleOnlineResource
+            {
+                Name = null,
+                URL = null
+            };
+
+            Assert.IsNull(simpleMetadata.ProductSpecificationOther.Name);
+            Assert.IsNull(simpleMetadata.ProductSpecificationOther.URL);
+
+            Assert.IsNotNull(simpleMetadata.ProductSpecificationUrl);
+            Assert.IsNotNull(simpleMetadata.ProductPageUrl);
+
+        }
+
+
                
         private void SetDateOnCitationDateType(object date, string dateType)
         {
