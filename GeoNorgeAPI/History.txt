@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.4: Added ProductSpecificationOther
 3.0.3: Added SimpleQualitySpecification.Responsible
 3.0.2: Added QualitySpecifications
 3.0.1: Fix invalid real element
