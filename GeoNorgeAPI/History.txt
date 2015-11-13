@@ -1,5 +1,7 @@
 ﻿Version History
 ---------------
+3.0.6: Add support for getting URI.protocol from dublin core reponse.
+3.0.5: ProductSpecificationOther delete
 3.0.4: Added ProductSpecificationOther
 3.0.3: Added SimpleQualitySpecification.Responsible
 3.0.2: Added QualitySpecifications
