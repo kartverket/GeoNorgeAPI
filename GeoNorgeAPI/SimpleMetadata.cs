@@ -220,7 +220,7 @@ namespace GeoNorgeAPI
         private SV_ServiceIdentification_Type GetServiceIdentification()
         {
             SV_ServiceIdentification_Type identification = null;
-            if (IsService())
+            if (IsService() || IsDimensionGroup())
                 identification = GetIdentification() as SV_ServiceIdentification_Type;
             return identification;
         }
@@ -2698,6 +2698,11 @@ namespace GeoNorgeAPI
         public bool IsService()
         {
             return HierarchyLevel.Equals("service", StringComparison.Ordinal);
+        }
+
+        public bool IsDimensionGroup()
+        {
+            return HierarchyLevel.Equals("dimensionGroup", StringComparison.Ordinal);
         }
 
         public void SetLocale(string locale)
