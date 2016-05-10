@@ -43,7 +43,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnRecordsWhenSearchingWithOrganisationNameIncludingWhitespace()
         {
-            var result = _geonorge.SearchWithOrganisationName("Norsk institutt for skog og landskap");
+            var result = _geonorge.SearchWithOrganisationName("Norsk institutt for bioøkonomi");
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on 'Norsk institutt for skog og landskap' should return lots of records.");
         }
