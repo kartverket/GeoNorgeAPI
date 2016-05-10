@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      3.0.7: Added dimensionGroup
+      3.0.8: Add support for getting URI.name from dublin core reponse.
     </releaseNotes>
     <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
