@@ -2783,6 +2783,42 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleAccessProperties AccessProperties
+        {
+            get
+            {
+                SimpleAccessProperties values = null;
+                var identification = GetServiceIdentification();
+
+                if (identification != null && identification.accessProperties != null && identification.accessProperties.MD_StandardOrderProcess != null
+                    && identification.accessProperties.MD_StandardOrderProcess.orderingInstructions != null 
+                    && !string.IsNullOrEmpty(identification.accessProperties.MD_StandardOrderProcess.orderingInstructions.CharacterString) )
+                    {
+                        values = new SimpleAccessProperties();
+                        values.OrderingInstructions = identification.accessProperties.MD_StandardOrderProcess.orderingInstructions.CharacterString;
+                    }   
+                return values;
+            }
+            set
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null)
+                {
+                    identification.accessProperties = new MD_StandardOrderProcess_PropertyType
+                    {
+                        MD_StandardOrderProcess = new MD_StandardOrderProcess_Type
+                        {
+                            orderingInstructions = new CharacterString_PropertyType
+                            {
+                                CharacterString = value.OrderingInstructions
+                            }
+                        }
+                    };
+                }
+            }
+        }
+
+
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
@@ -2962,5 +2998,10 @@ namespace GeoNorgeAPI
         public string URL { get; set; }
         public string Name { get; set; }
     }
-    
+
+    public class SimpleAccessProperties
+    {
+        public string OrderingInstructions { get; set; }
+    }
+
 }

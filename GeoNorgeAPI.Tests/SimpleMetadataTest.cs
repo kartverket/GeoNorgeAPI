@@ -2251,7 +2251,22 @@ namespace GeoNorgeAPI.Tests
         }
 
 
-               
+        [Test]
+        public void ShouldReturnNullWhenAccessPropertiesIsNotDefined()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Assert.IsNull(metadata.AccessProperties);
+        }
+
+        [Test]
+        public void ShouldUpdateAccessProperties()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            string orderingInstructions = "Norge digitalt tjenesteerklæring A";
+            metadata.AccessProperties = new SimpleAccessProperties { OrderingInstructions = orderingInstructions } ;
+            Assert.AreEqual(orderingInstructions, metadata.AccessProperties.OrderingInstructions);
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
