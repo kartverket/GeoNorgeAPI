@@ -210,7 +210,21 @@ namespace GeoNorgeAPI.Tests
                                             MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
                                         }
                                     },
-                                    otherConstraints = new MD_RestrictionOther_PropertyType [] { new MD_RestrictionOther_PropertyType{ MD_RestrictionOther = CharString("Ingen begrensninger på bruk.")}, new MD_RestrictionOther_PropertyType{ MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}}}  
+                                    otherConstraints = new MD_RestrictionOther_PropertyType [] 
+                                    {
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther = CharString("Ingen begrensninger på bruk.")
+                                        }
+                                        , new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}
+                                        },
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther = CharString("Norway Digital restricted")
+                                        }
+                                    }  
                                 }
                         },
                     new MD_Constraints_PropertyType

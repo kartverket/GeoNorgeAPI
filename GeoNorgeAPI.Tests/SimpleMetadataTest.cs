@@ -1714,6 +1714,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("none", constraints.AccessConstraints);
             Assert.AreEqual("free", constraints.UseConstraints);
+            Assert.AreEqual("Norway Digital restricted", constraints.OtherConstraintsAccess);
         }
 
         [Test]
@@ -1727,6 +1728,7 @@ namespace GeoNorgeAPI.Tests
             string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
             string expectedAccessConstraints = "restricted";
             string expectedUseConstraints = "license";
+            string expectedOtherConstraintsAccess = "Norway Digital restricted";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
@@ -1738,6 +1740,7 @@ namespace GeoNorgeAPI.Tests
                 SecurityConstraintsNote = expectedSecurityConstraintsNote,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
+                OtherConstraintsAccess = expectedOtherConstraintsAccess
 
             };
             _md.Constraints = constraints;
@@ -1750,6 +1753,7 @@ namespace GeoNorgeAPI.Tests
             string actualOtherConstraintLink = null;
             string actualOtherConstraintLinkText = null;
             string actualUseConstraint = null;
+            string actualOtherConstraintsAccess = null;
             MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
 
             foreach (var constraint in identification.resourceConstraints)
@@ -1779,12 +1783,27 @@ namespace GeoNorgeAPI.Tests
                         }
 
                         actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+
+                        for (int a = 0; a < legalConstraint.otherConstraints.Length; a++)
+                        {
+                            var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
+                            if (access != null)
+                            {
+                                if (access.CharacterString == "No restrictions" || access.CharacterString == "Norway Digital restricted")
+                                {
+                                    actualOtherConstraintsAccess = access.CharacterString;
+                                    break;
+                                }
+                            }
+                        }
+
                     }
                     else
                     {
                         MD_Constraints_Type regularConstraint = constraint.MD_Constraints as MD_Constraints_Type;
                         actualUseLimitation = regularConstraint.useLimitation[0].CharacterString;
                     }
+
                 }
             }
 
@@ -1796,6 +1815,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedOtherConstraintsLink, actualOtherConstraintLink);
             Assert.AreEqual(expectedOtherConstraintsLinkText, actualOtherConstraintLinkText);
             Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
+            Assert.AreEqual(expectedOtherConstraintsAccess, actualOtherConstraintsAccess);
         }
 
         [Test]

@@ -2553,6 +2553,19 @@ namespace GeoNorgeAPI
                                             }
                                         }
 
+                                        for (int a = 0; a < legalConstraint.otherConstraints.Length; a++)
+                                        {
+                                            var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
+                                            if(access != null)
+                                            { 
+                                                if (access.CharacterString == "No restrictions" || access.CharacterString == "Norway Digital restricted")
+                                                { 
+                                                    value.OtherConstraintsAccess = access.CharacterString;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
 
                                     }
 
@@ -2604,6 +2617,13 @@ namespace GeoNorgeAPI
                 {
                     otherCons = new MD_RestrictionOther_PropertyType[1];
                     otherCons[0] = otherConsString;
+                }
+
+                if (!string.IsNullOrEmpty(value.OtherConstraintsAccess))
+                {
+                    Array.Resize(ref otherCons, otherCons.Length + 1);
+                    MD_RestrictionOther_PropertyType otherConsAccessString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraintsAccess } };
+                    otherCons[otherCons.Length - 1] = otherConsAccessString;
                 }
 
 
@@ -2975,6 +2995,7 @@ namespace GeoNorgeAPI
         public string OtherConstraints { get; set; }
         public string OtherConstraintsLink { get; set; }
         public string OtherConstraintsLinkText { get; set; }
+        public string OtherConstraintsAccess { get; set; }
         public string SecurityConstraints { get; set; }
         public string SecurityConstraintsNote { get; set; }
     }
