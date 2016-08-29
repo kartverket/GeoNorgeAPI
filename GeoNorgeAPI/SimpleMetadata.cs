@@ -2558,7 +2558,7 @@ namespace GeoNorgeAPI
                                             var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
                                             if(access != null)
                                             { 
-                                                if (access.CharacterString == "No restrictions" || access.CharacterString == "Norway Digital restricted")
+                                                if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
                                                 { 
                                                     value.OtherConstraintsAccess = access.CharacterString;
                                                     break;

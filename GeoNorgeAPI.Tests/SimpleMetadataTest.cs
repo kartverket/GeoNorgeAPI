@@ -1714,7 +1714,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("none", constraints.AccessConstraints);
             Assert.AreEqual("free", constraints.UseConstraints);
-            Assert.AreEqual("Norway Digital restricted", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("norway digital restricted", constraints.OtherConstraintsAccess);
         }
 
         [Test]
@@ -1728,7 +1728,7 @@ namespace GeoNorgeAPI.Tests
             string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
             string expectedAccessConstraints = "restricted";
             string expectedUseConstraints = "license";
-            string expectedOtherConstraintsAccess = "Norway Digital restricted";
+            string expectedOtherConstraintsAccess = "norway digital restricted";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
@@ -1789,7 +1789,7 @@ namespace GeoNorgeAPI.Tests
                             var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
                             if (access != null)
                             {
-                                if (access.CharacterString == "No restrictions" || access.CharacterString == "Norway Digital restricted")
+                                if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
                                 {
                                     actualOtherConstraintsAccess = access.CharacterString;
                                     break;

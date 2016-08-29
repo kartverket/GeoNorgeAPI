@@ -222,7 +222,7 @@ namespace GeoNorgeAPI.Tests
                                         },
                                         new MD_RestrictionOther_PropertyType
                                         {
-                                            MD_RestrictionOther = CharString("Norway Digital restricted")
+                                            MD_RestrictionOther = CharString("norway digital restricted")
                                         }
                                     }  
                                 }
