@@ -2701,8 +2701,9 @@ namespace GeoNorgeAPI
                     List<MD_DataIdentification_PropertyType> operatesOn = new List<MD_DataIdentification_PropertyType>();
                     foreach(string uuid in value) {
                         operatesOn.Add(new MD_DataIdentification_PropertyType {
-                            uuidref = uuid
-                        });
+                            uuidref = uuid,
+                            href = "https://www.geonorge.no/geonetwork/srv/nor/xml_iso19139?uuid=" + uuid
+                    });
                     }
 
                     identification.operatesOn = operatesOn.ToArray();
