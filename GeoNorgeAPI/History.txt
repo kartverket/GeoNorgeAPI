@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.11: OtherConstraintsAccess changed values.
 3.0.10: Added support for OtherConstraintsAccess.
 3.0.9: Add support for SimpleAccessProperties.
 3.0.8: Add support for getting URI.name from dublin core reponse.
