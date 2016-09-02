@@ -306,7 +306,88 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(newPurpose, _md.Purpose);
         }
-       
+
+        [Test]
+        public void ShouldReturnNullForEnglishPurposeWhenPurposeIsRegularCharacterStringObject()
+        {
+            string purpose = _md.EnglishPurpose;
+            Assert.IsNull(purpose);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishPurposeWhenPurposeIsLocalized()
+        {
+            string expectedEnglishPurpose = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.purpose = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                Value = expectedEnglishPurpose
+                            }
+                        }
+                    }
+                }
+            };
+
+            Assert.AreEqual(expectedEnglishPurpose, _md.EnglishPurpose);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishPurposeWithoutDestroyingExistingLocalPurpose()
+        {
+            string expectedNorwegianPurpose = "Dette er formålet.";
+            string expectedEnglishPurpose = "This is english.";
+
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.purpose = new CharacterString_PropertyType { CharacterString = expectedNorwegianPurpose };
+
+            _md.EnglishPurpose = expectedEnglishPurpose;
+
+            CharacterString_PropertyType purposeElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.purpose;
+            PT_FreeText_PropertyType freeTextElement = purposeElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianPurpose, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishPurpose, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdatePurposeWithoutDestroyingEnglishPurpose()
+        {
+            string expectedNorwegianPurpose = "Oppdatert norsk formål";
+            string expectedEnglishPurpose = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.purpose = new PT_FreeText_PropertyType
+            {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                Value = expectedEnglishPurpose
+                            }
+                        }
+                    }
+                }
+            };
+
+            _md.Purpose = expectedNorwegianPurpose;
+
+            CharacterString_PropertyType purposeElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.purpose;
+            PT_FreeText_PropertyType freeTextElement = purposeElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianPurpose, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishPurpose, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
         [Test]
         public void ShouldReturnSupplementalDescription()
         {

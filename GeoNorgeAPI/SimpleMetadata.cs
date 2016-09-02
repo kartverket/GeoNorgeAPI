@@ -347,9 +347,44 @@ namespace GeoNorgeAPI
             }
             set
             {
-                var identification = GetIdentificationNotNull();
-                identification.purpose = new CharacterString_PropertyType { CharacterString = value };
+                PT_FreeText_PropertyType purposeElementWithFreeText = GetPurposeElement() as PT_FreeText_PropertyType;
+                if (purposeElementWithFreeText != null)
+                {
+                    purposeElementWithFreeText.CharacterString = value;
+                }
+                else
+                {
+                    GetIdentificationNotNull().purpose = new CharacterString_PropertyType { CharacterString = value };
+                }
             }
+        }
+
+        public string EnglishPurpose
+        {
+            get
+            {
+                return GetEnglishValueFromFreeText(GetPurposeElement());
+            }
+
+            set
+            {
+                String existingLocalPurpose = null;
+                CharacterString_PropertyType purposeElement = GetPurposeElement();
+                if (purposeElement != null)
+                {
+                    existingLocalPurpose = purposeElement.CharacterString;
+                }
+                GetIdentificationNotNull().purpose = CreateFreeTextElement(existingLocalPurpose, value);
+            }
+        }
+
+        private CharacterString_PropertyType GetPurposeElement()
+        {
+            CharacterString_PropertyType purpose = null;
+            var identification = GetIdentification();
+            if (identification != null && identification.purpose != null)
+                purpose = identification.purpose;
+            return purpose;
         }
 
         public string SupplementalDescription
