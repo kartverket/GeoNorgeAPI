@@ -401,12 +401,44 @@ namespace GeoNorgeAPI
 
             set
             {
-                var datasetIdentification = GetDatasetIdentification();
-                if (datasetIdentification != null)
+                PT_FreeText_PropertyType supplementalDescriptionElementWithFreeText = GetSupplementalDescriptionElement() as PT_FreeText_PropertyType;
+                if (supplementalDescriptionElementWithFreeText != null)
                 {
-                    datasetIdentification.supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
+                    supplementalDescriptionElementWithFreeText.CharacterString = value;
+                }
+                else
+                {
+                    GetDatasetIdentification().supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
                 }
             }
+        }
+
+        public string EnglishSupplementalDescription
+        {
+            get
+            {
+                return GetEnglishValueFromFreeText(GetSupplementalDescriptionElement());
+            }
+
+            set
+            {
+                String existingLocalSupplementalDescription = null;
+                CharacterString_PropertyType supplementalDescriptionElement = GetSupplementalDescriptionElement();
+                if (supplementalDescriptionElement != null)
+                {
+                    existingLocalSupplementalDescription = supplementalDescriptionElement.CharacterString;
+                }
+                GetDatasetIdentification().supplementalInformation = CreateFreeTextElement(existingLocalSupplementalDescription, value);
+            }
+        }
+
+        private CharacterString_PropertyType GetSupplementalDescriptionElement()
+        {
+            CharacterString_PropertyType supplementalDescription = null;
+            var datasetIdentification = GetDatasetIdentification();
+            if (datasetIdentification != null && datasetIdentification.supplementalInformation != null)
+                supplementalDescription = datasetIdentification.supplementalInformation;
+            return supplementalDescription;
         }
 
         public SimpleContact ContactMetadata

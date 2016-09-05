@@ -404,6 +404,96 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullForEnglishSupplementalDescriptionWhenSupplementalDescriptionIsRegularCharacterStringObject()
+        {
+            string supplementalDescription = _md.EnglishSupplementalDescription;
+            Assert.IsNull(supplementalDescription);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSupplementalDescriptionWhenSupplementalDescriptionIsLocalized()
+        {
+            string expectedEnglishSupplementalDescription = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type
+            {
+                supplementalInformation =  new PT_FreeText_PropertyType
+                {
+                CharacterString = "Dette er norsk",
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                        new LocalisedCharacterString_PropertyType {
+                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                Value = expectedEnglishSupplementalDescription
+                            }
+                        }
+                    }
+                }
+              }
+            };
+
+            Assert.AreEqual(expectedEnglishSupplementalDescription, _md.EnglishSupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishSupplementalDescriptionWithoutDestroyingExistingLocalSupplementalDescription()
+        {
+            string expectedNorwegianSupplementalDescription = "Dette er utfyllende informasjonen.";
+            string expectedEnglishSupplementalDescription = "This is english.";
+
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type { supplementalInformation = new CharacterString_PropertyType { CharacterString = expectedNorwegianSupplementalDescription } };
+
+            _md.EnglishSupplementalDescription = expectedEnglishSupplementalDescription;
+
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var supplementalDescriptionElement = dataIdentification.supplementalInformation;
+            PT_FreeText_PropertyType freeTextElement = supplementalDescriptionElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianSupplementalDescription, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishSupplementalDescription, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdateSupplementalDescriptionWithoutDestroyingEnglishSupplementalDescription()
+        {
+            string expectedNorwegianSupplementalDescription = "Oppdatert norsk utfyllende informasjon";
+            string expectedEnglishSupplementalDescription = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type
+            {
+                supplementalInformation = new PT_FreeText_PropertyType
+                {
+                    CharacterString = "Dette er norsk",
+                    PT_FreeText = new PT_FreeText_Type
+                    {
+                        textGroup = new LocalisedCharacterString_PropertyType[] {
+                            new LocalisedCharacterString_PropertyType {
+                                LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                    locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                    Value = expectedEnglishSupplementalDescription
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            _md.SupplementalDescription = expectedNorwegianSupplementalDescription;
+
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var supplementalDescriptionElement = dataIdentification.supplementalInformation;
+
+            PT_FreeText_PropertyType freeTextElement = supplementalDescriptionElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianSupplementalDescription, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishSupplementalDescription, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
         public void ShouldReturnKeywords()
         {
             List<SimpleKeyword> keywords = _md.Keywords;
