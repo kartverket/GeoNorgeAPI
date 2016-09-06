@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.14: Added EnglishSupplementalDescription
 3.0.13: Added EnglishPurpose
 3.0.12: Added support for setting operatesOn href
 3.0.11: OtherConstraintsAccess changed values.
