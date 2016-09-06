@@ -187,10 +187,29 @@ namespace GeoNorgeAPI.Tests
                     new MD_Constraints_PropertyType
                         {
                             MD_Constraints = new MD_Constraints_Type
-                                {
-                                    useLimitation = new [] { CharString("Gratis å benytte til alle formål.") }
+                            {
+
+                                 useLimitation = new [] { new PT_FreeText_PropertyType
+                                 {
+                                    CharacterString = "Gratis å benytte til alle formål.",
+                                    PT_FreeText = new PT_FreeText_Type
+                                    {
+                                            id = "ENG",
+                                            textGroup = new LocalisedCharacterString_PropertyType[]
+                                            {
+                                                new LocalisedCharacterString_PropertyType {
+                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                    {
+                                                    locale = "#ENG",
+                                                    Value = "Free of charge"
+                                                    }
+                                                }
+                                            }
+                                    }
+                                  }
                                     
                                 }
+                            }
                         }, 
                     new MD_Constraints_PropertyType
                         {

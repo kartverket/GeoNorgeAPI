@@ -136,7 +136,7 @@ namespace GeoNorgeAPI
             identification.citation.CI_Citation.title = element;
         }
 
-        private string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
+        public string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
         {
             string value = null;
             if (input != null)
@@ -2715,6 +2715,9 @@ namespace GeoNorgeAPI
                                         && regularConstraint.useLimitation.Length > 0
                                         && regularConstraint.useLimitation[0] != null)
                                     {
+                                        var useLimit = regularConstraint.useLimitation[0] as PT_FreeText_PropertyType;
+                                        if (useLimit != null)
+                                            value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
 
                                         value.UseLimitations = regularConstraint.useLimitation[0].CharacterString;
                                     }
@@ -2758,7 +2761,7 @@ namespace GeoNorgeAPI
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_Constraints_Type {
-                            useLimitation = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value.UseLimitations }}
+                            useLimitation = new CharacterString_PropertyType[] { CreateFreeTextElement(value.UseLimitations, value.EnglishUseLimitations) }
                         }    
                     },
                     new MD_Constraints_PropertyType {
@@ -2780,7 +2783,6 @@ namespace GeoNorgeAPI
                                 }
                             },
                             otherConstraints = otherCons
-                            //otherConstraints = new MD_RestrictionOther_PropertyType[]{ new MD_RestrictionOther_PropertyType{MD_RestrictionOther = new CharacterString_PropertyType{ CharacterString =value.OtherConstraints}}, new MD_RestrictionOther_PropertyType{MD_RestrictionOther = new Anchor_Type{ Value =value.OtherConstraintsLinkText, href=value.OtherConstraintsLink}}}
                         }    
                     },
                     new MD_Constraints_PropertyType {
@@ -3185,6 +3187,7 @@ namespace GeoNorgeAPI
     public class SimpleConstraints
     {
         public string UseLimitations { get; set; }
+        public string EnglishUseLimitations { get; set; }
         public string AccessConstraints { get; set; }
         public string UseConstraints { get; set; }
         public string OtherConstraints { get; set; }

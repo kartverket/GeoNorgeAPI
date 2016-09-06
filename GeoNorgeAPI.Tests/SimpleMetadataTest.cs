@@ -1989,6 +1989,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("none", constraints.AccessConstraints);
             Assert.AreEqual("free", constraints.UseConstraints);
             Assert.AreEqual("norway digital restricted", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
         }
 
         [Test]
@@ -2003,6 +2004,7 @@ namespace GeoNorgeAPI.Tests
             string expectedAccessConstraints = "restricted";
             string expectedUseConstraints = "license";
             string expectedOtherConstraintsAccess = "norway digital restricted";
+            string expectedEnglishUseLimitations = "no limitations";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
@@ -2014,7 +2016,8 @@ namespace GeoNorgeAPI.Tests
                 SecurityConstraintsNote = expectedSecurityConstraintsNote,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
-                OtherConstraintsAccess = expectedOtherConstraintsAccess
+                OtherConstraintsAccess = expectedOtherConstraintsAccess,
+                EnglishUseLimitations = expectedEnglishUseLimitations
 
             };
             _md.Constraints = constraints;
@@ -2028,6 +2031,7 @@ namespace GeoNorgeAPI.Tests
             string actualOtherConstraintLinkText = null;
             string actualUseConstraint = null;
             string actualOtherConstraintsAccess = null;
+            string actualEnglishUseLimitation = null;
             MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
 
             foreach (var constraint in identification.resourceConstraints)
@@ -2074,8 +2078,9 @@ namespace GeoNorgeAPI.Tests
                     }
                     else
                     {
-                        MD_Constraints_Type regularConstraint = constraint.MD_Constraints as MD_Constraints_Type;
-                        actualUseLimitation = regularConstraint.useLimitation[0].CharacterString;
+                        var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
+                        actualUseLimitation = useLimit.CharacterString;
+                        actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
                     }
 
                 }
@@ -2090,6 +2095,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedOtherConstraintsLinkText, actualOtherConstraintLinkText);
             Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
             Assert.AreEqual(expectedOtherConstraintsAccess, actualOtherConstraintsAccess);
+            Assert.AreEqual(expectedEnglishUseLimitations, actualEnglishUseLimitation);
         }
 
         [Test]
