@@ -2838,37 +2838,103 @@ namespace GeoNorgeAPI
             }
 
             set
-            {
+            { 
                 var identification = GetIdentification();
+
                 if (identification != null)
                 {
-                    identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
+                    PT_FreeText_PropertyType specificUsageElementWithFreeText = GetSpecificUsageElement() as PT_FreeText_PropertyType;
+
+                    if (specificUsageElementWithFreeText != null)
                     {
-                        new MD_Usage_PropertyType {
-                            MD_Usage = new MD_Usage_Type
-                            {
-                                specificUsage = new CharacterString_PropertyType { CharacterString = value },
-                                userContactInfo = new CI_ResponsibleParty_PropertyType[] { 
-                                    new CI_ResponsibleParty_PropertyType
-                                    { 
-                                        CI_ResponsibleParty = new CI_ResponsibleParty_Type 
-                                        { 
-                                            role = new CI_RoleCode_PropertyType
-                                            { 
-                                                CI_RoleCode = new CodeListValue_Type
-                                                { 
-                                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
-                                                    codeListValue = "owner"
+                        specificUsageElementWithFreeText.CharacterString = value;
+
+                        identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
+                        {
+                            new MD_Usage_PropertyType {
+                                MD_Usage = new MD_Usage_Type
+                                {
+                                    specificUsage = specificUsageElementWithFreeText,
+                                    userContactInfo = new CI_ResponsibleParty_PropertyType[] {
+                                        new CI_ResponsibleParty_PropertyType
+                                        {
+                                            CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                            {
+                                                role = new CI_RoleCode_PropertyType
+                                                {
+                                                    CI_RoleCode = new CodeListValue_Type
+                                                    {
+                                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
+                                                        codeListValue = "owner"
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }                        
-                    };
+                        };
+                    }
+                    else
+                    {
+                        identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
+                        {
+                            new MD_Usage_PropertyType {
+                                MD_Usage = new MD_Usage_Type
+                                {
+                                    specificUsage = new CharacterString_PropertyType { CharacterString = value },
+                                    userContactInfo = new CI_ResponsibleParty_PropertyType[] {
+                                        new CI_ResponsibleParty_PropertyType
+                                        {
+                                            CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                            {
+                                                role = new CI_RoleCode_PropertyType
+                                                {
+                                                    CI_RoleCode = new CodeListValue_Type
+                                                    {
+                                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode",
+                                                        codeListValue = "owner"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                    }
                 }
             }
+        }
+
+        public string EnglishSpecificUsage
+        {
+            get
+            {
+                return GetEnglishValueFromFreeText(GetSpecificUsageElement());
+            }
+
+            set
+            {
+                String existingLocalSpecificUsage = null;
+                CharacterString_PropertyType specificUsageElement = GetSpecificUsageElement();
+                if (specificUsageElement != null)
+                {
+                    existingLocalSpecificUsage = specificUsageElement.CharacterString;
+                }
+                GetIdentificationNotNull().resourceSpecificUsage[0].MD_Usage.specificUsage = CreateFreeTextElement(existingLocalSpecificUsage, value);
+            }
+        }
+
+        private CharacterString_PropertyType GetSpecificUsageElement()
+        {
+            CharacterString_PropertyType specificUsage = null;
+            var datasetIdentification = GetDatasetIdentification();
+            if (datasetIdentification != null && datasetIdentification.resourceSpecificUsage != null && datasetIdentification.resourceSpecificUsage.Count() > 0
+                && datasetIdentification.resourceSpecificUsage[0].MD_Usage != null && datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage != null
+                &&  !string.IsNullOrEmpty(datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString))
+                specificUsage = datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage;
+            return specificUsage;
         }
 
         public SimpleAccessProperties AccessProperties

@@ -41,8 +41,8 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldThrowExceptionWhenSettingTitleOnMetadataWithEmptyIdentificationInfoArrayElement()
         {
-            _md = new SimpleMetadata(new MD_Metadata_Type() { 
-                identificationInfo = new MD_Identification_PropertyType[] { } 
+            _md = new SimpleMetadata(new MD_Metadata_Type() {
+                identificationInfo = new MD_Identification_PropertyType[] { }
             });
             Assert.Throws(typeof(NullReferenceException), new TestDelegate(UpdateTitle));
         }
@@ -50,10 +50,10 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldThrowExceptionWhenSettingTitleOnMetadataWithEmptyAbstractIdentificationElement()
         {
-            _md = new SimpleMetadata(new MD_Metadata_Type() { 
-                identificationInfo = new MD_Identification_PropertyType[] { 
-                    new MD_Identification_PropertyType() 
-                } 
+            _md = new SimpleMetadata(new MD_Metadata_Type() {
+                identificationInfo = new MD_Identification_PropertyType[] {
+                    new MD_Identification_PropertyType()
+                }
             });
             Assert.Throws(typeof(NullReferenceException), new TestDelegate(UpdateTitle));
         }
@@ -61,12 +61,12 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldSetTitleWhenMissingCitation()
         {
-            _md = new SimpleMetadata(new MD_Metadata_Type() { 
-                identificationInfo = new MD_Identification_PropertyType[] { 
-                    new MD_Identification_PropertyType() { 
-                        AbstractMD_Identification = new MD_DataIdentification_Type() 
-                    } 
-                } 
+            _md = new SimpleMetadata(new MD_Metadata_Type() {
+                identificationInfo = new MD_Identification_PropertyType[] {
+                    new MD_Identification_PropertyType() {
+                        AbstractMD_Identification = new MD_DataIdentification_Type()
+                    }
+                }
             });
 
             UpdateTitle();
@@ -90,7 +90,7 @@ namespace GeoNorgeAPI.Tests
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
                 {
-                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_LINK_ENG,
@@ -101,7 +101,7 @@ namespace GeoNorgeAPI.Tests
                 }
             };
 
-            Assert.AreEqual(expectedEnglishTitle, _md.EnglishTitle);            
+            Assert.AreEqual(expectedEnglishTitle, _md.EnglishTitle);
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace GeoNorgeAPI.Tests
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
                 {
-                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_ENG,
@@ -154,7 +154,7 @@ namespace GeoNorgeAPI.Tests
         {
             _md.Title = "This is the new title.";
         }
-        
+
         [Test]
         public void ShouldReturnUuid()
         {
@@ -183,7 +183,7 @@ namespace GeoNorgeAPI.Tests
 
             string newHierarchyLevel = "service";
             _md.HierarchyLevel = newHierarchyLevel;
-            
+
             Assert.AreEqual(newHierarchyLevel, _md.HierarchyLevel);
         }
 
@@ -227,7 +227,7 @@ namespace GeoNorgeAPI.Tests
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
                 {
-                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_LINK_ENG,
@@ -270,7 +270,7 @@ namespace GeoNorgeAPI.Tests
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
                 {
-                    textGroup = new LocalisedCharacterString_PropertyType[] { 
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_LINK_ENG,
@@ -416,12 +416,12 @@ namespace GeoNorgeAPI.Tests
             string expectedEnglishSupplementalDescription = "This is english.";
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type
             {
-                supplementalInformation =  new PT_FreeText_PropertyType
+                supplementalInformation = new PT_FreeText_PropertyType
                 {
-                CharacterString = "Dette er norsk",
-                PT_FreeText = new PT_FreeText_Type
-                {
-                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                    CharacterString = "Dette er norsk",
+                    PT_FreeText = new PT_FreeText_Type
+                    {
+                        textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_LINK_ENG,
@@ -429,8 +429,8 @@ namespace GeoNorgeAPI.Tests
                             }
                         }
                     }
+                    }
                 }
-              }
             };
 
             Assert.AreEqual(expectedEnglishSupplementalDescription, _md.EnglishSupplementalDescription);
@@ -505,7 +505,7 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnKeywordsWithEnglishTranslation()
         {
             List<SimpleKeyword> keywords = _md.Keywords;
-            
+
             Assert.NotNull(keywords[0].EnglishKeyword, "Engelsk oversetting av nøkkelord mangler.");
             Assert.AreEqual("Addresses", keywords[0].EnglishKeyword);
         }
@@ -601,7 +601,7 @@ namespace GeoNorgeAPI.Tests
                         }
                     }
                 }
-                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_PLACE)) 
+                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_PLACE))
                 {
                     numberOfPlaceKeywords = numberOfKeywords;
                     foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
@@ -693,7 +693,7 @@ namespace GeoNorgeAPI.Tests
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new MD_Format_PropertyType[] { 
+                    distributionFormat = new MD_Format_PropertyType[] {
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
@@ -719,7 +719,7 @@ namespace GeoNorgeAPI.Tests
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new MD_Format_PropertyType[] { 
+                    distributionFormat = new MD_Format_PropertyType[] {
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
@@ -753,7 +753,7 @@ namespace GeoNorgeAPI.Tests
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new MD_Format_PropertyType[] { 
+                    distributionFormat = new MD_Format_PropertyType[] {
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
@@ -779,7 +779,7 @@ namespace GeoNorgeAPI.Tests
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new MD_Format_PropertyType[] { 
+                    distributionFormat = new MD_Format_PropertyType[] {
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
@@ -819,7 +819,7 @@ namespace GeoNorgeAPI.Tests
                         }
                     }
                 }
-                
+
             };
 
             var rs = _md.ReferenceSystem;
@@ -867,7 +867,7 @@ namespace GeoNorgeAPI.Tests
                         }
                     }
                 }
-                
+
             };
 
             var rs = _md.ReferenceSystems;
@@ -882,13 +882,13 @@ namespace GeoNorgeAPI.Tests
             string expectedCoordinateSystem = "system";
             string expectedNamespace = "namespace";
             _md.ReferenceSystems = new List<SimpleReferenceSystem>
-            {                
+            {
                 new SimpleReferenceSystem
                 {
                     CoordinateSystem = expectedCoordinateSystem,
                     Namespace = expectedNamespace
                 }
-               
+
             };
 
             var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
@@ -932,10 +932,10 @@ namespace GeoNorgeAPI.Tests
                            }
                        }
                    }
-                     
+
                }
             };
-                       
+
 
             var rs = _md.ResourceReference;
             Assert.NotNull(rs);
@@ -984,19 +984,19 @@ namespace GeoNorgeAPI.Tests
                         new MD_DigitalTransferOptions_PropertyType {
                             MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
                                 unitsOfDistribution = new CharacterString_PropertyType { CharacterString = expectedUnitsOfDistribution},
-                                onLine = new CI_OnlineResource_PropertyType[] 
+                                onLine = new CI_OnlineResource_PropertyType[]
                                 {
-                                    new CI_OnlineResource_PropertyType 
+                                    new CI_OnlineResource_PropertyType
                                     {
-                                        CI_OnlineResource = new CI_OnlineResource_Type 
-                                        { 
+                                        CI_OnlineResource = new CI_OnlineResource_Type
+                                        {
                                             linkage = new URL_PropertyType { URL = expectedURL },
                                             protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
                                             name = new CharacterString_PropertyType { CharacterString = expectedName }
                                         }
                                     }
                                 }
-                            }    
+                            }
                         }
                     }
                 }
@@ -1059,7 +1059,7 @@ namespace GeoNorgeAPI.Tests
             ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = new MD_Resolution_PropertyType[] {
                 new MD_Resolution_PropertyType {
                     MD_Resolution = new MD_Resolution_Type {
-                        Item = new MD_RepresentativeFraction_PropertyType { 
+                        Item = new MD_RepresentativeFraction_PropertyType {
                             MD_RepresentativeFraction = new MD_RepresentativeFraction_Type {
                                 denominator = new Integer_PropertyType { Integer = scale }
                             }
@@ -1089,7 +1089,7 @@ namespace GeoNorgeAPI.Tests
             Assert.IsNull(frequency);
         }
 
-        
+
         [Test]
         public void ShouldReturnMaintenanceFrequency()
         {
@@ -1100,7 +1100,7 @@ namespace GeoNorgeAPI.Tests
                     MD_MaintenanceInformation = new MD_MaintenanceInformation_Type {
                         maintenanceAndUpdateFrequency = new MD_MaintenanceFrequencyCode_PropertyType {
                             MD_MaintenanceFrequencyCode = new CodeListValue_Type {
-                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode", 
+                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode",
                                 codeListValue = expectedFrequency
                             }
                         }
@@ -1137,7 +1137,7 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnStatus()
         {
             string expectedStatus = "completed";
-            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.status = new MD_ProgressCode_PropertyType[] { new MD_ProgressCode_PropertyType { 
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.status = new MD_ProgressCode_PropertyType[] { new MD_ProgressCode_PropertyType {
                 MD_ProgressCode =  new CodeListValue_Type { codeListValue = expectedStatus }
             }};
 
@@ -1171,7 +1171,7 @@ namespace GeoNorgeAPI.Tests
             string expectedExplanation = "explained";
             bool expectedResult = true;
 
-            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] 
+            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
             {
                 new DQ_DataQuality_PropertyType {
                     DQ_DataQuality = new DQ_DataQuality_Type {
@@ -1188,18 +1188,18 @@ namespace GeoNorgeAPI.Tests
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
                                                                     date = new Date_PropertyType {
-                                                                        Item = expectedDate  
+                                                                        Item = expectedDate
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
                                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType
-                                                                        }    
+                                                                        }
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                    }    
+                                                    }
                                                 },
                                                 explanation = toCharString(expectedExplanation),
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult }
@@ -1277,7 +1277,7 @@ namespace GeoNorgeAPI.Tests
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
-            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[] 
+            _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
             {
                 new DQ_DataQuality_PropertyType {
                     DQ_DataQuality = new DQ_DataQuality_Type {
@@ -1294,29 +1294,29 @@ namespace GeoNorgeAPI.Tests
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
                                                                     date = new Date_PropertyType {
-                                                                        Item = expectedDate  
+                                                                        Item = expectedDate
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
                                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType
-                                                                        }    
+                                                                        }
                                                                     }
                                                                 }
                                                             }
                                                         },
-                                                        identifier = new MD_Identifier_PropertyType[]{ 
-                                                            new MD_Identifier_PropertyType{ 
-                                                                MD_Identifier = new MD_Identifier_Type{ 
-                                                                    authority = new CI_Citation_PropertyType{ 
-                                                                        CI_Citation = new CI_Citation_Type{ 
+                                                        identifier = new MD_Identifier_PropertyType[]{
+                                                            new MD_Identifier_PropertyType{
+                                                                MD_Identifier = new MD_Identifier_Type{
+                                                                    authority = new CI_Citation_PropertyType{
+                                                                        CI_Citation = new CI_Citation_Type{
                                                                             title = new CharacterString_PropertyType{ CharacterString = expectedResponsible }
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                    }    
+                                                    }
                                                 },
                                                 explanation = toCharString(expectedExplanation),
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult }
@@ -1331,29 +1331,29 @@ namespace GeoNorgeAPI.Tests
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
                                                                     date = new Date_PropertyType {
-                                                                        Item = expectedDate2  
+                                                                        Item = expectedDate2
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
                                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType2
-                                                                        }    
+                                                                        }
                                                                     }
                                                                 }
                                                             }
                                                         },
-                                                         identifier = new MD_Identifier_PropertyType[]{ 
-                                                            new MD_Identifier_PropertyType{ 
-                                                                MD_Identifier = new MD_Identifier_Type{ 
-                                                                    authority = new CI_Citation_PropertyType{ 
-                                                                        CI_Citation = new CI_Citation_Type{ 
+                                                         identifier = new MD_Identifier_PropertyType[]{
+                                                            new MD_Identifier_PropertyType{
+                                                                MD_Identifier = new MD_Identifier_Type{
+                                                                    authority = new CI_Citation_PropertyType{
+                                                                        CI_Citation = new CI_Citation_Type{
                                                                             title = new CharacterString_PropertyType{ CharacterString = expectedResponsible2 }
                                                                         }
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                    }    
+                                                    }
                                                 },
                                                 explanation = toCharString(expectedExplanation2),
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult2 }
@@ -1407,7 +1407,7 @@ namespace GeoNorgeAPI.Tests
 
             List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
 
-            QualityList.Add( new SimpleQualitySpecification
+            QualityList.Add(new SimpleQualitySpecification
             {
                 Title = expectedTitle,
                 Date = expectedDate,
@@ -1426,7 +1426,7 @@ namespace GeoNorgeAPI.Tests
                 Result = expectedResult2,
                 Responsible = expectedResponsible2
             });
-            
+
 
             _md.QualitySpecifications = QualityList;
 
@@ -1450,7 +1450,7 @@ namespace GeoNorgeAPI.Tests
 
         }
 
-        
+
         [Test]
         public void ShouldReturnNullWhenProcessHistoryIsNull()
         {
@@ -1559,7 +1559,7 @@ namespace GeoNorgeAPI.Tests
 
             _md.DatePublished = expectedDate;
 
-            Assert.AreEqual(expectedDateString, (string) GetCitationDateWithType("publication"));
+            Assert.AreEqual(expectedDateString, (string)GetCitationDateWithType("publication"));
         }
 
         [Test]
@@ -1685,7 +1685,7 @@ namespace GeoNorgeAPI.Tests
                 },
                 extentWithGeographicElement
             };
-            
+
             SimpleBoundingBox boundingBox = _md.BoundingBox;
 
             Assert.IsNotNull(boundingBox);
@@ -1702,7 +1702,7 @@ namespace GeoNorgeAPI.Tests
         {
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
                 {
-                    new MD_Identification_PropertyType 
+                    new MD_Identification_PropertyType
                     {
                         AbstractMD_Identification = new SV_ServiceIdentification_Type
                         {
@@ -1719,9 +1719,9 @@ namespace GeoNorgeAPI.Tests
                                                                 AbstractEX_GeographicExtent = new EX_GeographicBoundingBox_Type
                                                                     {
                                                                         eastBoundLongitude = new Decimal_PropertyType { Decimal = 44 },
-                                                                        westBoundLongitude = new Decimal_PropertyType { Decimal = 10 },                                                                        
+                                                                        westBoundLongitude = new Decimal_PropertyType { Decimal = 10 },
                                                                         northBoundLatitude = new Decimal_PropertyType { Decimal = 77 },
-                                                                        southBoundLatitude = new Decimal_PropertyType { Decimal = 55 }                                                                        
+                                                                        southBoundLatitude = new Decimal_PropertyType { Decimal = 55 }
                                                                     }
                                                             }
                                                     }
@@ -1746,7 +1746,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateBoundingBoxForDataset()
         {
-            _md.BoundingBox = new SimpleBoundingBox 
+            _md.BoundingBox = new SimpleBoundingBox
             {
                 EastBoundLongitude = "12",
                 WestBoundLongitude = "22",
@@ -1769,12 +1769,12 @@ namespace GeoNorgeAPI.Tests
             _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
                 {
-                    new MD_Identification_PropertyType 
+                    new MD_Identification_PropertyType
                     {
                         AbstractMD_Identification = new SV_ServiceIdentification_Type()
                     }
                 };
-                        
+
             _md.BoundingBox = new SimpleBoundingBox
             {
                 EastBoundLongitude = "12",
@@ -1802,7 +1802,7 @@ namespace GeoNorgeAPI.Tests
             extent.temporalElement = new EX_TemporalExtent_PropertyType[] { };
             extent.verticalElement = new EX_VerticalExtent_PropertyType[] { };
 
-             _md.BoundingBox = new SimpleBoundingBox 
+            _md.BoundingBox = new SimpleBoundingBox
             {
                 EastBoundLongitude = "12",
                 WestBoundLongitude = "22",
@@ -1818,10 +1818,10 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("22", bbox.westBoundLongitude.Decimal.ToString());
             Assert.AreEqual("44", bbox.northBoundLatitude.Decimal.ToString());
             Assert.AreEqual("33", bbox.southBoundLatitude.Decimal.ToString());
-            
+
             Assert.NotNull(actualExtent.description);
             Assert.NotNull(actualExtent.temporalElement);
-            Assert.NotNull(actualExtent.verticalElement);            
+            Assert.NotNull(actualExtent.verticalElement);
         }
 
         [Test]
@@ -2026,13 +2026,13 @@ namespace GeoNorgeAPI.Tests
             string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
             string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
             _md.HierarchyLevel = "service";
-            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[] 
-            { 
-                new MD_Identification_PropertyType 
-                { 
-                    AbstractMD_Identification = new SV_ServiceIdentification_Type 
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+            {
+                new MD_Identification_PropertyType
+                {
+                    AbstractMD_Identification = new SV_ServiceIdentification_Type
                     {
-                        operatesOn = new MD_DataIdentification_PropertyType [] 
+                        operatesOn = new MD_DataIdentification_PropertyType []
                         {
                             new MD_DataIdentification_PropertyType {
                                 uuidref = uuid1
@@ -2042,7 +2042,7 @@ namespace GeoNorgeAPI.Tests
                             }
                         }
                     }
-                } 
+                }
             };
 
             List<string> operatesOn = _md.OperatesOn;
@@ -2076,7 +2076,7 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(1, metadata.Thumbnails.Count);
         }
-        
+
         [Test]
         public void ShouldIgnoreDuplicateKeywords()
         {
@@ -2177,6 +2177,117 @@ namespace GeoNorgeAPI.Tests
         {
             SimpleMetadata metadata = SimpleMetadata.CreateDataset();
             Assert.IsNull(metadata.SpecificUsage);
+        }
+
+        [Test]
+        public void ShouldReturnNullForEnglishSpecificUsageWhenSpecificUsageIsRegularCharacterStringObject()
+        {
+            string specificUsage = _md.EnglishSpecificUsage;
+            Assert.IsNull(specificUsage);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSpecificUsageWhenSpecificUsageIsLocalized()
+        {
+            string expectedEnglishSpecificUsage = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type
+            {
+                resourceSpecificUsage = new MD_Usage_PropertyType[]
+                {
+                  new MD_Usage_PropertyType
+                  {
+                   MD_Usage = new MD_Usage_Type
+                   {
+                        specificUsage = new PT_FreeText_PropertyType
+                        {
+                            CharacterString = "Dette er norsk",
+                            PT_FreeText = new PT_FreeText_Type
+                            {
+                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                {
+                                    new LocalisedCharacterString_PropertyType
+                                    {
+                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                        {
+                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                        Value = expectedEnglishSpecificUsage
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                  }
+                }
+            };
+
+            Assert.AreEqual(expectedEnglishSpecificUsage, _md.EnglishSpecificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishEnglishSpecificUsageWithoutDestroyingExistingLocalEnglishSpecificUsage()
+        {
+            string expectedNorwegianSpecificUsage = "Dette er bruksområder.";
+            string expectedEnglishSpecificUsage = "This is english.";
+
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type { resourceSpecificUsage = new MD_Usage_PropertyType[] { new MD_Usage_PropertyType { MD_Usage = new MD_Usage_Type { specificUsage = new CharacterString_PropertyType { CharacterString = expectedNorwegianSpecificUsage } } } } };
+
+            _md.EnglishSpecificUsage = expectedEnglishSpecificUsage;
+
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var specificUsageElement = dataIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage;
+            PT_FreeText_PropertyType freeTextElement = specificUsageElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianSpecificUsage, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishSpecificUsage, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdateSpecificUsageWithoutDestroyingEnglishSpecificUsage()
+        {
+            string expectedNorwegianSpecificUsage = "Oppdatert norsk bruksområde";
+            string expectedEnglishSpecificUsage = "This is english.";
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification = new MD_DataIdentification_Type
+            {
+               resourceSpecificUsage = new MD_Usage_PropertyType[] 
+               {
+                   new MD_Usage_PropertyType
+                   {
+                       MD_Usage = new MD_Usage_Type
+                       {
+                       specificUsage  = new PT_FreeText_PropertyType
+                            {
+                                CharacterString = "Dette er norsk",
+                                PT_FreeText = new PT_FreeText_Type
+                                {
+                                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                                        new LocalisedCharacterString_PropertyType {
+                                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                Value = expectedEnglishSpecificUsage
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+               }
+            };
+
+            _md.SpecificUsage = expectedNorwegianSpecificUsage;
+
+            var dataIdentification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var specificUsageElement = dataIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage;
+
+            PT_FreeText_PropertyType freeTextElement = specificUsageElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianSpecificUsage, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishSpecificUsage, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
         [Test]
