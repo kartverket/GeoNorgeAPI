@@ -2016,15 +2016,76 @@ namespace GeoNorgeAPI
                     };
                 }
 
+                PT_FreeText_PropertyType processHistoryElementWithFreeText = GetProcessHistoryElement() as PT_FreeText_PropertyType;
+                if (processHistoryElementWithFreeText != null)
+                {
+                    processHistoryElementWithFreeText.CharacterString = value;
+                    _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                    {
+                        LI_Lineage = new LI_Lineage_Type
+                        {
+                            statement = processHistoryElementWithFreeText
+                        }
+                    };
+                }
+                else
+                { 
+                    _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                    {
+                        LI_Lineage = new LI_Lineage_Type
+                        {
+                            statement = toCharString(value)
+                        }
+                    };
+                }
+
+            }
+        }
+
+        public string EnglishProcessHistory
+        {
+            get
+            {
+                return GetEnglishValueFromFreeText(GetProcessHistoryElement());
+            }
+
+            set
+            {
+                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
+                {
+                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                        new DQ_DataQuality_PropertyType {
+                            DQ_DataQuality = new DQ_DataQuality_Type {
+                            }
+                        }
+                    };
+                }
+
+                String existingLocalProcessHistory = null;
+                CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
+                if (processHistoryElement != null)
+                {
+                    existingLocalProcessHistory = processHistoryElement.CharacterString;
+                }
                 _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
                 {
                     LI_Lineage = new LI_Lineage_Type
                     {
-                        statement = toCharString(value)
+                        statement = CreateFreeTextElement(existingLocalProcessHistory, value)
                     }
                 };
-
+                
             }
+        }
+
+        private CharacterString_PropertyType GetProcessHistoryElement()
+        {
+            CharacterString_PropertyType processHistory = null;
+            if (_md.dataQualityInfo != null && _md.dataQualityInfo.Count() > 0
+                && _md.dataQualityInfo[0].DQ_DataQuality != null && _md.dataQualityInfo[0].DQ_DataQuality.lineage !=null
+                && _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage != null && _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement != null)
+                processHistory = _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement;
+            return processHistory;
         }
 
         public DateTime? DateCreated 

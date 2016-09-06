@@ -1488,6 +1488,109 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullForEnglishProcessHistoryWhenProcessHistoryIsRegularCharacterStringObject()
+        {
+            string processHistory = _md.EnglishProcessHistory;
+            Assert.IsNull(processHistory);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishProcessHistoryWhenProcessHistoryIsLocalized()
+        {
+            string expectedEnglishProcessHistory = "This is english.";
+            _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality = new DQ_DataQuality_Type
+            {
+                lineage = new LI_Lineage_PropertyType
+                {
+                    LI_Lineage = new LI_Lineage_Type
+                    {
+                        statement = new PT_FreeText_PropertyType
+                        {
+                            CharacterString = "Dette er norsk",
+                            PT_FreeText = new PT_FreeText_Type
+                            {
+                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                {
+                                    new LocalisedCharacterString_PropertyType
+                                    {
+                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                        {
+                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                        Value = expectedEnglishProcessHistory
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };        
+
+            Assert.AreEqual(expectedEnglishProcessHistory, _md.EnglishProcessHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateProcessHistoryWithoutDestroyingExistingLocalEnglishProcessHistory()
+        {
+            string expectedNorwegianProcessHistory = "Dette er prosesshistorie.";
+            string expectedEnglishProcessHistory = "This is english.";
+
+            _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality = new DQ_DataQuality_Type { lineage = new LI_Lineage_PropertyType { LI_Lineage = new LI_Lineage_Type { statement = toCharString(expectedNorwegianProcessHistory) } } };
+
+            _md.EnglishProcessHistory = expectedEnglishProcessHistory;
+
+            var processHistoryElement = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement;
+            PT_FreeText_PropertyType freeTextElement = processHistoryElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianProcessHistory, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishProcessHistory, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldUpdateProcessHistoryWithoutDestroyingEnglishProcessHistory()
+        {
+            string expectedNorwegianProcessHistory = "Oppdatert norsk prosesshistorie";
+            string expectedEnglishProcessHistory = "This is english.";
+            _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality = new DQ_DataQuality_Type
+            {
+                lineage = new LI_Lineage_PropertyType
+                {
+                    LI_Lineage = new LI_Lineage_Type
+                    {
+                        statement = new PT_FreeText_PropertyType
+                        {
+                            CharacterString = "Dette er norsk",
+                            PT_FreeText = new PT_FreeText_Type
+                            {
+                                textGroup = new LocalisedCharacterString_PropertyType[] {
+                                        new LocalisedCharacterString_PropertyType {
+                                            LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                Value = expectedEnglishProcessHistory
+                                            }
+                                        }
+                                    }
+                            }
+                        }
+                    }
+                }
+            };
+
+            _md.ProcessHistory = expectedNorwegianProcessHistory;
+
+            var processHistoryElement = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement;
+
+            PT_FreeText_PropertyType freeTextElement = processHistoryElement as PT_FreeText_PropertyType;
+
+            Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
+            Assert.AreEqual(expectedNorwegianProcessHistory, freeTextElement.CharacterString);
+            Assert.AreEqual(SimpleMetadata.LOCALE_LINK_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
+            Assert.AreEqual(expectedEnglishProcessHistory, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
         public void ShouldReturnNullWhenCreationDateIsNull()
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = null;
