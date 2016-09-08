@@ -2662,7 +2662,12 @@ namespace GeoNorgeAPI
 
                                         var otherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
                                         if (otherConstraint != null)
+                                        {
                                             value.OtherConstraints = otherConstraint.CharacterString;
+                                            var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                                            if(englishOtherConstraint != null)
+                                                value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                                        }
 
 
                                         if (otherConstraint == null)
@@ -2740,7 +2745,12 @@ namespace GeoNorgeAPI
             {
 
                 MD_RestrictionOther_PropertyType[] otherCons;
-                MD_RestrictionOther_PropertyType otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
+                MD_RestrictionOther_PropertyType otherConsString = null;
+                if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
+                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
+                else
+                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
+
                 MD_RestrictionOther_PropertyType otherConsStringAnchor;
                 if (!string.IsNullOrEmpty(value.OtherConstraintsLinkText) && !string.IsNullOrEmpty(value.OtherConstraintsLink))
                 {
@@ -3196,6 +3206,7 @@ namespace GeoNorgeAPI
         public string AccessConstraints { get; set; }
         public string UseConstraints { get; set; }
         public string OtherConstraints { get; set; }
+        public string EnglishOtherConstraints { get; set; }
         public string OtherConstraintsLink { get; set; }
         public string OtherConstraintsLinkText { get; set; }
         public string OtherConstraintsAccess { get; set; }

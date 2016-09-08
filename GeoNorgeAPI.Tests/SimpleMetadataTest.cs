@@ -1990,6 +1990,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("free", constraints.UseConstraints);
             Assert.AreEqual("norway digital restricted", constraints.OtherConstraintsAccess);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
+            Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
 
         [Test]
@@ -2005,6 +2006,7 @@ namespace GeoNorgeAPI.Tests
             string expectedUseConstraints = "license";
             string expectedOtherConstraintsAccess = "norway digital restricted";
             string expectedEnglishUseLimitations = "no limitations";
+            string expectedEnglishOtherConstraints = "no limitations";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
@@ -2017,7 +2019,8 @@ namespace GeoNorgeAPI.Tests
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
                 OtherConstraintsAccess = expectedOtherConstraintsAccess,
-                EnglishUseLimitations = expectedEnglishUseLimitations
+                EnglishUseLimitations = expectedEnglishUseLimitations,
+                EnglishOtherConstraints = expectedEnglishOtherConstraints
 
             };
             _md.Constraints = constraints;
@@ -2032,6 +2035,7 @@ namespace GeoNorgeAPI.Tests
             string actualUseConstraint = null;
             string actualOtherConstraintsAccess = null;
             string actualEnglishUseLimitation = null;
+            string actualEnglishOtherConstraints = null;
             MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
 
             foreach (var constraint in identification.resourceConstraints)
@@ -2052,6 +2056,10 @@ namespace GeoNorgeAPI.Tests
                         var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
                         if (otherConstraintString != null)
                             actualOtherConstraint = otherConstraintString.CharacterString;
+
+                        var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                        if (englishOtherConstraint != null)
+                            actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
 
                         var otherConstraintAnchor = legalConstraint.otherConstraints[1].MD_RestrictionOther as Anchor_Type;
                         if (otherConstraintAnchor != null)
@@ -2096,6 +2104,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedUseConstraints, actualUseConstraint);
             Assert.AreEqual(expectedOtherConstraintsAccess, actualOtherConstraintsAccess);
             Assert.AreEqual(expectedEnglishUseLimitations, actualEnglishUseLimitation);
+            Assert.AreEqual(expectedEnglishOtherConstraints, actualEnglishOtherConstraints);
         }
 
         [Test]

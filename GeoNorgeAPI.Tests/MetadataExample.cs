@@ -233,8 +233,27 @@ namespace GeoNorgeAPI.Tests
                                     {
                                         new MD_RestrictionOther_PropertyType
                                         {
-                                            MD_RestrictionOther = CharString("Ingen begrensninger på bruk.")
-                                        }
+                                            MD_RestrictionOther = 
+                                            new PT_FreeText_PropertyType
+                                                 {
+                                                    CharacterString = "Ingen begrensninger på bruk.",
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                            id = "ENG",
+                                                            textGroup = new LocalisedCharacterString_PropertyType[]
+                                                            {
+                                                                new LocalisedCharacterString_PropertyType {
+                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                    {
+                                                                    locale = "#ENG",
+                                                                    Value = "No restrictions"
+                                                                    }
+                                                                }
+                                                            }
+                                                    }
+                                                  }
+                                            }
+                                        
                                         , new MD_RestrictionOther_PropertyType
                                         {
                                             MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}
