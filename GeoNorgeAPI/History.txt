@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.18: Added english translation for application profiles
 3.0.17: Added EnglishUseLimitations
 3.0.16: Added EnglishProcessHistory
 3.0.15: Added EnglishSpecificUsage
