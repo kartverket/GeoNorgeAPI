@@ -2855,7 +2855,32 @@ namespace GeoNorgeAPI
                 }
             }
         }
-       
+
+        public string ServiceType
+        {
+            get
+            {
+                string value = "other";
+                var identification = GetServiceIdentification();
+
+                if (identification != null && identification.serviceType != null 
+                    && identification.serviceType.Item !=null && identification.serviceType.Item.Value !=null)
+                {
+                    value = identification.serviceType.Item.Value;
+                }
+                return value;
+            }
+            set
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null)
+                {
+                    var serviceType = new GenericName_PropertyType { Item = new CodeType { Value = value } };
+                    identification.serviceType = serviceType;
+                }
+            }
+        }
+
         public bool IsDataset()
         {
             return HierarchyLevel.Equals("dataset", StringComparison.Ordinal);

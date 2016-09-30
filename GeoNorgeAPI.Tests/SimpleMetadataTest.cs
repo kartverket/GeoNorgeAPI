@@ -2169,6 +2169,23 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnServiceType()
+        {
+            string identifier = "view";
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Assert.AreEqual(identifier, metadata.ServiceType);
+        }
+
+        [Test]
+        public void ShouldUpdateServiceType()
+        {
+            string expectedServiceType = "download";
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.ServiceType = expectedServiceType;
+            Assert.AreEqual(expectedServiceType, metadata.ServiceType);
+        }
+
+        [Test]
         public void CreateService()
         {
             SimpleMetadata metadata = SimpleMetadata.CreateService();
