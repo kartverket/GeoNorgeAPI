@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.20: Updated nuget package for Arkitektum.GIS.Lib.MetadataCSW
 3.0.19: Added SimpleConstraints.EnglishOtherConstraints
 3.0.18: Added english translation for application profiles
 3.0.17: Added EnglishUseLimitations
