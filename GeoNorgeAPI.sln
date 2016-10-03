@@ -1,18 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoNorgeAPI", "GeoNorgeAPI\GeoNorgeAPI.csproj", "{FEBB51DC-C746-4884-982A-BC76A860A095}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoNorgeAPI.Tests", "GeoNorgeAPI.Tests\GeoNorgeAPI.Tests.csproj", "{4C5E8158-4503-414D-8507-56AC07BD0B06}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{517CD4E7-95F0-4F4E-AFA4-55D160C9F6F0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{BFB0C226-B55B-4936-9D82-6C23551E9508}"
 EndProject
