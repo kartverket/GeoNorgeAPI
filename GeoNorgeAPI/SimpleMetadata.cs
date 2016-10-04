@@ -934,6 +934,77 @@ namespace GeoNorgeAPI
             }
         }
 
+        public string ApplicationSchema
+        {
+            get
+            {
+                string applicationSchema = null;
+                if (_md.applicationSchemaInfo != null &&
+                    _md.applicationSchemaInfo.Length > 0 &&
+                    _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation != null &&
+                    _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name != null &&
+                    _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation != null &&
+                    _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.title != null)
+                {
+                    applicationSchema = _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.title.CharacterString;
+                }
+                return applicationSchema;
+            }
+            set
+            {
+                if (_md.applicationSchemaInfo == null)
+                {
+                    _md.applicationSchemaInfo = new MD_ApplicationSchemaInformation_PropertyType[1];
+                }
+
+                _md.applicationSchemaInfo[0] = new MD_ApplicationSchemaInformation_PropertyType
+                {
+                    MD_ApplicationSchemaInformation = new MD_ApplicationSchemaInformation_Type
+                    {
+                        name = new CI_Citation_PropertyType
+                        {
+                            CI_Citation = new CI_Citation_Type
+                            {
+                                title = new CharacterString_PropertyType
+                                {
+                                    CharacterString = value
+                                },
+                                date = new CI_Date_PropertyType[]
+                                {
+                                       new CI_Date_PropertyType
+                                       {
+                                           CI_Date = new CI_Date_Type
+                                           {
+                                               date = new Date_PropertyType
+                                               {
+                                                   Item = DateTime.Now.ToString("yyyy-MM-dd")
+                                               },
+                                               dateType = new CI_DateTypeCode_PropertyType
+                                               {
+                                                   CI_DateTypeCode = new CodeListValue_Type
+                                                   {
+                                                       codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode",
+                                                       codeListValue = "publication"
+                                                   }
+                                                }
+                                           }
+                                       }
+                               }
+                            }
+                        },
+                        schemaLanguage = new CharacterString_PropertyType
+                        {
+                            CharacterString = "UML"
+                        },
+                        constraintLanguage = new CharacterString_PropertyType
+                        {
+                            CharacterString = "OCL"
+                        }
+                    }
+                };
+            }
+        }
+
         public SimpleOnlineResource ProductSpecificationOther
         {
             get

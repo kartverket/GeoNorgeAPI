@@ -1,7 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
 using www.opengis.net;
-using GeoNorgeAPI;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Arkitektum.GIS.Lib.SerializeUtil;
@@ -2702,6 +2701,35 @@ namespace GeoNorgeAPI.Tests
             string orderingInstructions = "Norge digitalt tjenesteerklæring A";
             metadata.AccessProperties = new SimpleAccessProperties { OrderingInstructions = orderingInstructions } ;
             Assert.AreEqual(orderingInstructions, metadata.AccessProperties.OrderingInstructions);
+        }
+
+        [Test]
+        public void ShouldSetAndGetApplicationSchema()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            string applicationSchema = "application schema";
+            metadata.ApplicationSchema = applicationSchema;
+
+            Assert.AreEqual(applicationSchema, metadata.ApplicationSchema);
+        }
+
+        [Test]
+        public void ShouldSetDefaultValuesInApplicationSchemaInformation()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.ApplicationSchema = "application schema";
+
+            Assert.AreEqual(DateTime.Now.ToString("yyyy-MM-dd"), metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.date[0].CI_Date.date.Item);
+            Assert.AreEqual("UML", metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.schemaLanguage.CharacterString);
+            Assert.AreEqual("OCL", metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.constraintLanguage.CharacterString);
+        }
+
+        [Test]
+        public void ShouldReturnNullIfApplicationSchemaIsNotSet()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            Assert.IsNull(metadata.ApplicationSchema);
+            Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
         }
 
         private void SetDateOnCitationDateType(object date, string dateType)
