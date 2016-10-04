@@ -952,6 +952,13 @@ namespace GeoNorgeAPI
             }
             set
             {
+                // Remove ApplicationSchemaInfo if value is null or empty
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    _md.applicationSchemaInfo = null;
+                    return;
+                }
+
                 if (_md.applicationSchemaInfo == null)
                 {
                     _md.applicationSchemaInfo = new MD_ApplicationSchemaInformation_PropertyType[1];

@@ -2732,6 +2732,28 @@ namespace GeoNorgeAPI.Tests
             Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
         }
 
+        [Test]
+        public void ShouldRemoveApplicationSchemaIfSetToNull()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.ApplicationSchema = "application schema";
+
+            metadata.ApplicationSchema = null;
+
+            Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
+        }
+
+        [Test]
+        public void ShouldRemoveApplicationSchemaIfSetToEmptyString()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.ApplicationSchema = "application schema";
+
+            metadata.ApplicationSchema = "";
+
+            Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {
