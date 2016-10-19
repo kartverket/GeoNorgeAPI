@@ -3191,6 +3191,7 @@ namespace GeoNorgeAPI
         public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
+        public const string TYPE_CONCEPT = "concept";
 
         public string Keyword { get; set; }
         public string Type { get; set; }
@@ -3233,6 +3234,10 @@ namespace GeoNorgeAPI
                 else if (Type.Equals(TYPE_THEME))
                 {
                     return "Theme";
+                }
+                else if (Type.Equals(TYPE_CONCEPT))
+                {
+                    return "Concept";
                 }
             }
             else if (!string.IsNullOrWhiteSpace(Thesaurus))

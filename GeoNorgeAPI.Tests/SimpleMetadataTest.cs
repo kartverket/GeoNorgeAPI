@@ -531,6 +531,10 @@ namespace GeoNorgeAPI.Tests
                     Type = SimpleKeyword.TYPE_THEME
                 },
                 new SimpleKeyword {
+                    Keyword = "Akvakulturgrense",
+                    Type = SimpleKeyword.TYPE_CONCEPT
+                },
+                new SimpleKeyword {
                     Keyword = "Buildings",
                     Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
                 },
@@ -551,6 +555,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfNationalKeywords = 0;
             int numberOfThemeKeywords = 0;
             int numberOfPlaceKeywords = 0;
+            int numberOfConceptKeywords = 0;
             int numberOfOtherKeywords = 0;
             bool inspireAddressesFound = false;
             bool inspireBuildingsFound = false;
@@ -558,6 +563,7 @@ namespace GeoNorgeAPI.Tests
             bool placeOsloFound = false;
             bool placeAkershusFound = false;
             bool themeBygningFound = false;
+            bool conceptAkvakulturgrenseFound = false;
             bool otherEksempeldataFound = false;
             bool otherTestingFound = false;
             bool englishKeywordFound = false;
@@ -623,6 +629,14 @@ namespace GeoNorgeAPI.Tests
                         themeBygningFound = true;
                     }
                 }
+                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_CONCEPT))
+                {
+                    numberOfConceptKeywords = numberOfKeywords;
+                    if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Akvakulturgrense"))
+                    {
+                        conceptAkvakulturgrenseFound = true;
+                    }
+                }
                 else
                 {
                     numberOfOtherKeywords = numberOfKeywords;
@@ -649,6 +663,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfNationalKeywords, "Expected one national keyword in same wrapper element");
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
             Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
+            Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
             Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
 
             Assert.True(inspireAddressesFound);
@@ -657,6 +672,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(placeOsloFound);
             Assert.True(placeAkershusFound);
             Assert.True(themeBygningFound);
+            Assert.True(conceptAkvakulturgrenseFound);
             Assert.True(otherEksempeldataFound);
             Assert.True(otherTestingFound);
             Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
