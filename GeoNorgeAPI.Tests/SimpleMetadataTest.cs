@@ -532,7 +532,7 @@ namespace GeoNorgeAPI.Tests
                 },
                 new SimpleKeyword {
                     Keyword = "Akvakulturgrense",
-                    Type = SimpleKeyword.TYPE_CONCEPT
+                    Type = SimpleKeyword.THESAURUS_CONCEPT
                 },
                 new SimpleKeyword {
                     Keyword = "Buildings",
@@ -629,7 +629,7 @@ namespace GeoNorgeAPI.Tests
                         themeBygningFound = true;
                     }
                 }
-                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_CONCEPT))
+                else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.THESAURUS_CONCEPT))
                 {
                     numberOfConceptKeywords = numberOfKeywords;
                     if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Akvakulturgrense"))

@@ -745,6 +745,10 @@ namespace GeoNorgeAPI
                                 {
                                     date = "2014-10-28";
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_CONCEPT))
+                                {
+                                    date = "2008-06-01";
+                                }
 
                                 thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
@@ -3189,9 +3193,9 @@ namespace GeoNorgeAPI
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
         public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
+        public const string THESAURUS_CONCEPT = "SOSI produktspesifikasjon";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
-        public const string TYPE_CONCEPT = "concept";
 
         public string Keyword { get; set; }
         public string Type { get; set; }
@@ -3235,10 +3239,6 @@ namespace GeoNorgeAPI
                 {
                     return "Theme";
                 }
-                else if (Type.Equals(TYPE_CONCEPT))
-                {
-                    return "Concept";
-                }
             }
             else if (!string.IsNullOrWhiteSpace(Thesaurus))
             {
@@ -3253,6 +3253,10 @@ namespace GeoNorgeAPI
                 else if (Thesaurus.Equals(THESAURUS_NATIONAL_THEME))
                 {
                     return "NationalTheme";
+                }
+                else if (Thesaurus.Equals(THESAURUS_CONCEPT))
+                {
+                    return "Concept";
                 }
                 else if (Thesaurus.Equals(THESAURUS_SERVICES_TAXONOMY))
                 {
