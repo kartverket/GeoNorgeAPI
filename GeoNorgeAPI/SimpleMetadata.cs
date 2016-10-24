@@ -875,7 +875,7 @@ namespace GeoNorgeAPI
                     keywordValue = charString.CharacterString;
                 }
             }
-            else if (keyword == typeof(Anchor_Type))
+            else if (keyword.GetType() == typeof(Anchor_Type))
             {
                 Anchor_Type anchor = keyword as Anchor_Type;
                 if (anchor != null)
