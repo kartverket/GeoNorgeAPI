@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.26: Added support for SimpleKeyword.KeywordLink
 3.0.25: Change keyword concept from type to thesaurus
 3.0.24: Added keyword type concept
 3.0.23: Added the possibility to remove ApplicationSchema
