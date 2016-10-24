@@ -675,12 +675,14 @@ namespace GeoNorgeAPI
                             foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
                             {
                                 string keywordValue = GetStringOrNull(keywordElement);
+                                string keywordLink = GetLinkOrNull(keywordElement);
                                 string keywordEnglishValue = GetEnglishValueFromFreeText(keywordElement);
                                 if (!string.IsNullOrWhiteSpace(keywordValue))
                                 {
                                     keywords.Add(new SimpleKeyword
                                     {
                                         Keyword = keywordValue,
+                                        KeywordLink = keywordLink,
                                         Thesaurus = thesaurus,
                                         Type = type,
                                         EnglishKeyword = keywordEnglishValue,
@@ -706,7 +708,7 @@ namespace GeoNorgeAPI
                         if (!processed.ContainsKey(createKeywordKey(simpleKeyword.Keyword, simpleKeyword)))
                         {
                             List<SimpleKeyword> filteredKeywords = SimpleKeyword.Filter(value, simpleKeyword.Type, simpleKeyword.Thesaurus);
-                            List<CharacterString_PropertyType> keywordsToAdd = new List<CharacterString_PropertyType>();
+                            List<MD_Keyword> keywordsToAdd = new List<MD_Keyword>();
                             foreach (var fk in filteredKeywords)
                             {
                                 string key = createKeywordKey(fk.Keyword, simpleKeyword);
@@ -716,11 +718,14 @@ namespace GeoNorgeAPI
 
                                     if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
                                     {
-                                        keywordsToAdd.Add(CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword));
+                                        keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword) });
                                     }
                                     else
                                     {
-                                        keywordsToAdd.Add(new CharacterString_PropertyType { CharacterString = fk.Keyword });
+                                        if(!string.IsNullOrEmpty(fk.KeywordLink))
+                                            keywordsToAdd.Add(new MD_Keyword { keyword = new Anchor_Type {  Value = fk.Keyword, href = fk.KeywordLink } });
+                                        else
+                                            keywordsToAdd.Add(new MD_Keyword { keyword = new CharacterString_PropertyType { CharacterString = fk.Keyword } });
                                     }                                    
                                 }
                             }
@@ -803,6 +808,83 @@ namespace GeoNorgeAPI
                 }
 
             }
+        }
+
+        private string GetEnglishValueFromFreeText(MD_Keyword input)
+        {
+            string value = null;
+
+            var keyword = input.keyword;
+            if (keyword != null)
+            {
+                PT_FreeText_PropertyType freeText = keyword as PT_FreeText_PropertyType;
+                if (freeText != null && freeText.PT_FreeText != null && freeText.PT_FreeText.textGroup != null)
+                {
+                    foreach (var localizedStringProperty in freeText.PT_FreeText.textGroup)
+                    {
+                        if (localizedStringProperty.LocalisedCharacterString != null
+                            && localizedStringProperty.LocalisedCharacterString.locale != null
+                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_LINK_ENG))
+                        {
+                            value = localizedStringProperty.LocalisedCharacterString.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
+        private string GetLinkOrNull(MD_Keyword keywordElement)
+        {
+            string keywordLink = null;
+
+            var keyword = keywordElement.keyword;
+
+            if (keyword.GetType() == typeof(Anchor_Type))
+            {
+                Anchor_Type anchor = keyword as Anchor_Type;
+                if (anchor != null)
+                {
+                    keywordLink = anchor.href;
+                }
+            }
+
+            return keywordLink;
+        }
+
+        private string GetStringOrNull(MD_Keyword keywordElement)
+        {
+            string keywordValue = null;
+
+            var keyword = keywordElement.keyword;
+
+            if (keyword.GetType() == typeof(PT_FreeText_PropertyType))
+            {
+                CharacterString_PropertyType charString = keyword as CharacterString_PropertyType;
+                if (charString != null)
+                {
+                    keywordValue = charString.CharacterString;
+                }
+            }
+            else if (keyword.GetType() == typeof(CharacterString_PropertyType))
+            {
+                CharacterString_PropertyType charString = keyword as CharacterString_PropertyType;
+                if (charString != null)
+                {
+                    keywordValue = charString.CharacterString;
+                }
+            }
+            else if (keyword == typeof(Anchor_Type))
+            {
+                Anchor_Type anchor = keyword as Anchor_Type;
+                if (anchor != null)
+                {
+                    keywordValue = anchor.Value;
+                }
+            }
+
+            return keywordValue;
         }
 
         private string createKeywordKey(string keyword, SimpleKeyword simpleKeyword)
@@ -3198,6 +3280,7 @@ namespace GeoNorgeAPI
         public const string TYPE_THEME = "theme";
 
         public string Keyword { get; set; }
+        public string KeywordLink { get; set; }
         public string Type { get; set; }
         public string Thesaurus { get; set; }
         public string EnglishKeyword { get; set; }

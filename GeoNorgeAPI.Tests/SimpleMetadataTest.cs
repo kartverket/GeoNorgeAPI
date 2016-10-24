@@ -532,7 +532,8 @@ namespace GeoNorgeAPI.Tests
                 },
                 new SimpleKeyword {
                     Keyword = "Akvakulturgrense",
-                    Type = SimpleKeyword.THESAURUS_CONCEPT
+                    Type = SimpleKeyword.THESAURUS_CONCEPT,
+                    KeywordLink = "http://objektkatalog.geonorge.no"
                 },
                 new SimpleKeyword {
                     Keyword = "Buildings",
@@ -581,17 +582,19 @@ namespace GeoNorgeAPI.Tests
                         numberOfInspireKeywords = numberOfKeywords;
                         foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                         {
-                            if (k.CharacterString.Equals("Adresser"))
+                            var keyword = k.keyword as CharacterString_PropertyType;
+
+                            if (keyword.CharacterString.Equals("Adresser"))
                             {
                                 inspireAddressesFound = true;
 
-                                var freeText = k as PT_FreeText_PropertyType;
+                                var freeText = k.keyword as PT_FreeText_PropertyType;
                                 if (freeText != null && freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value.Equals("Addresses"))
                                 {
                                     englishKeywordFound = true;
                                 }
                             }
-                            else if (k.CharacterString.Equals("Buildings"))
+                            else if (keyword.CharacterString.Equals("Buildings"))
                             {
                                 inspireBuildingsFound = true;
                             }
@@ -600,7 +603,8 @@ namespace GeoNorgeAPI.Tests
                     else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
                     {
                         numberOfNationalKeywords = numberOfKeywords;
-                        if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Det offentlige kartgrunnlaget"))
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
+                        if (keyword.CharacterString.Equals("Det offentlige kartgrunnlaget"))
                         {
                             nationalDOKfound = true;
                         }
@@ -611,11 +615,13 @@ namespace GeoNorgeAPI.Tests
                     numberOfPlaceKeywords = numberOfKeywords;
                     foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                     {
-                        if (k.CharacterString.Equals("Oslo"))
+                        var keyword = k.keyword as CharacterString_PropertyType;
+
+                        if (keyword.CharacterString.Equals("Oslo"))
                         {
                             placeOsloFound = true;
                         }
-                        else if (k.CharacterString.Equals("Akershus"))
+                        else if (keyword.CharacterString.Equals("Akershus"))
                         {
                             placeAkershusFound = true;
                         }
@@ -624,7 +630,8 @@ namespace GeoNorgeAPI.Tests
                 else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_THEME))
                 {
                     numberOfThemeKeywords = numberOfKeywords;
-                    if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Bygninger"))
+                    var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
+                    if (keyword.CharacterString.Equals("Bygninger"))
                     {
                         themeBygningFound = true;
                     }
@@ -632,7 +639,8 @@ namespace GeoNorgeAPI.Tests
                 else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.THESAURUS_CONCEPT))
                 {
                     numberOfConceptKeywords = numberOfKeywords;
-                    if (descriptiveKeyword.MD_Keywords.keyword[0].CharacterString.Equals("Akvakulturgrense"))
+                    var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                    if (keyword.Value.Equals("Akvakulturgrense") && keyword.href.Equals("http://objektkatalog.geonorge.no"))
                     {
                         conceptAkvakulturgrenseFound = true;
                     }
@@ -642,16 +650,18 @@ namespace GeoNorgeAPI.Tests
                     numberOfOtherKeywords = numberOfKeywords;
                     foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                     {
-                        if (k.CharacterString.Equals("Eksempeldata"))
+                        var keyword = k.keyword as CharacterString_PropertyType;
+
+                        if (keyword.CharacterString.Equals("Eksempeldata"))
                         {
                             otherEksempeldataFound = true;
-                            var freeText = k as PT_FreeText_PropertyType;
+                            var freeText = k.keyword as PT_FreeText_PropertyType;
                             if (freeText != null && freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value.Equals("Example data"))
                             {
                                 englishKeywordFoundInOtherGroup = true;
                             }
                         }
-                        else if (k.CharacterString.Equals("testing"))
+                        else if (keyword.CharacterString.Equals("testing"))
                         {
                             otherTestingFound = true;
                         }
@@ -677,6 +687,9 @@ namespace GeoNorgeAPI.Tests
             Assert.True(otherTestingFound);
             Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
             Assert.True(englishKeywordFoundInOtherGroup, "Engelsk nøkkelord mangler for ikke-gruppert nøkkelord");
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
         }
 
 

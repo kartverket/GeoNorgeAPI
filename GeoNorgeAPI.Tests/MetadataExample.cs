@@ -135,10 +135,10 @@ namespace GeoNorgeAPI.Tests
             mdDataIdentificationType.descriptiveKeywords = new[] { 
                 new MD_Keywords_PropertyType {
                     MD_Keywords = new MD_Keywords_Type {
-                        keyword = new CharacterString_PropertyType[] 
-                        { 
-                            new PT_FreeText_PropertyType 
-                            { 
+                        keyword = new MD_Keyword[] 
+                        { new MD_Keyword
+                           { keyword =  new PT_FreeText_PropertyType 
+                                { 
                                     CharacterString = "Adresser",
                                     PT_FreeText = new PT_FreeText_Type {
                                             id = "ENG",
@@ -153,7 +153,8 @@ namespace GeoNorgeAPI.Tests
                                                 }                                                         
                                             }
                                     }
-                            }                            
+                                }                            
+                            }
                         },
                         thesaurusName = new CI_Citation_PropertyType
                             {
