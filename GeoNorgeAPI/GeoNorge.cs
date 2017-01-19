@@ -102,6 +102,21 @@ namespace GeoNorgeAPI
         }
 
         /// <summary>
+        /// Search and retrieve records by MetadataPointOfContact. 
+        /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
+        /// </summary>
+        /// <param name="searchString">Search string, use % as wildcard</param>
+        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <param name="limit">Maximum number of records to return</param>
+        /// <param name="sortByTitle">Sort results by title, default value is false</param>
+        /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
+        public SearchResultsType SearchWithOrganisationMetadataPointOfContact(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
+        {
+            GetRecordsType request = _requestFactory.GetRecordsOrganisationMetadataPointOfContactSearch(searchString, startPosition, limit, sortByTitle);
+            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
+        }
+
+        /// <summary>
         /// Search and retrieve records by free text together with organisation name.
         /// </summary>
         /// <param name="searchString">Search string, use % as wildcard</param>
@@ -113,6 +128,21 @@ namespace GeoNorgeAPI
         public SearchResultsType SearchFreeTextWithOrganisationName(string searchString, string organisationName, int startPosition = 1, int limit = 20, bool sortByTitle = true)
         {
             GetRecordsType request = _requestFactory.GetRecordsFreeTextOrganisationNameSearch(searchString, organisationName, startPosition, limit, sortByTitle);
+            return _requestRunner.RunGetRecordsRequest(request).SearchResults;
+        }
+
+        /// <summary>
+        /// Search and retrieve records by free text together with organisation MetadataPointOfContact.
+        /// </summary>
+        /// <param name="searchString">Search string, use % as wildcard</param>
+        /// <param name="organisationName">Organisation name</param>
+        /// <param name="startPosition">Search offset for pagination of results</param>
+        /// <param name="limit">Maximum number of records to return</param>
+        /// <param name="sortByTitle">Sort results by title, default value is true</param>
+        /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
+        public SearchResultsType SearchFreeTextWithOrganisationMetadataPointOfContact(string searchString, string organisationName, int startPosition = 1, int limit = 20, bool sortByTitle = true)
+        {
+            GetRecordsType request = _requestFactory.GetRecordsFreeTextOrganisationMetadataPointOfContactSearch(searchString, organisationName, startPosition, limit, sortByTitle);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
