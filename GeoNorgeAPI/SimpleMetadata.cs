@@ -3196,11 +3196,11 @@ namespace GeoNorgeAPI
         private CharacterString_PropertyType GetSpecificUsageElement()
         {
             CharacterString_PropertyType specificUsage = null;
-            var datasetIdentification = GetDatasetIdentification();
-            if (datasetIdentification != null && datasetIdentification.resourceSpecificUsage != null && datasetIdentification.resourceSpecificUsage.Count() > 0
-                && datasetIdentification.resourceSpecificUsage[0].MD_Usage != null && datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage != null
-                &&  !string.IsNullOrEmpty(datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString))
-                specificUsage = datasetIdentification.resourceSpecificUsage[0].MD_Usage.specificUsage;
+            var identification = GetIdentification();
+            if (identification != null && identification.resourceSpecificUsage != null && identification.resourceSpecificUsage.Count() > 0
+                && identification.resourceSpecificUsage[0].MD_Usage != null && identification.resourceSpecificUsage[0].MD_Usage.specificUsage != null
+                &&  !string.IsNullOrEmpty(identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString))
+                specificUsage = identification.resourceSpecificUsage[0].MD_Usage.specificUsage;
             return specificUsage;
         }
 

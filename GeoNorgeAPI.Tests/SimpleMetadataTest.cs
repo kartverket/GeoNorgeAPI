@@ -2319,6 +2319,22 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateSpecificUsageService()
+        {
+            string expected = "THis is the specific usage details.";
+            string expectedEnglish = "THis is the specific usage details english.";
+            SimpleMetadata metadata = SimpleMetadata.CreateService();
+            metadata.SpecificUsage = expected;
+            metadata.EnglishSpecificUsage = expectedEnglish;
+
+            string actual = metadata.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+            var english = metadata.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceSpecificUsage[0].MD_Usage.specificUsage as PT_FreeText_PropertyType;
+            string actualEnglish = english.PT_FreeText.textGroup[0].LocalisedCharacterString.Value;
+            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expectedEnglish, actualEnglish);
+        }
+
+        [Test]
         public void ShouldReturnSpecificUsageWhenNotNull()
         {
             string expected = "hello";
