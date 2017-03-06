@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.31: Added HelpUrl
 3.0.30: Fix for specificUsage
 3.0.29: Added search for MetadataPointOfContact
 3.0.28: Update nuget package MetadataCSW to version 1.9.91
