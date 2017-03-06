@@ -2731,6 +2731,45 @@ namespace GeoNorgeAPI.Tests
 
         }
 
+        [Test]
+        public void ShouldReturnHelpUrl()
+        {
+            string expectedURL = "http://example.com";
+            _md.GetMetadata().metadataExtensionInfo = new MD_MetadataExtensionInformation_PropertyType[] {
+                new MD_MetadataExtensionInformation_PropertyType {
+                MD_MetadataExtensionInformation = new MD_MetadataExtensionInformation_Type{
+                    extensionOnLineResource = new CI_OnlineResource_PropertyType{
+                        CI_OnlineResource = new CI_OnlineResource_Type{
+                            linkage = new URL_PropertyType{ URL = expectedURL},
+                            applicationProfile = new CharacterString_PropertyType{ CharacterString = "hjelp"}
+                        }
+                    }
+                }
+              }
+            };
+
+            var help = _md.HelpUrl;
+
+            Assert.NotNull(help);
+            Assert.AreEqual(expectedURL, help);
+
+        }
+
+        [Test]
+        public void ShouldUpdateHelpUrl()
+        {
+            string expectedURL = "http://example.com";
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
+            simpleMetadata.HelpUrl = expectedURL;
+
+            var md = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+
+            string actualURL = md.linkage.URL;
+
+            Assert.AreEqual(expectedURL, actualURL);
+
+        }
+
 
         [Test]
         public void ShouldReturnNullWhenAccessPropertiesIsNotDefined()
