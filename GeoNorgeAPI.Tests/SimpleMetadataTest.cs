@@ -2185,6 +2185,80 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnCrossReference()
+        {
+            string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
+            string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
+            _md.HierarchyLevel = "software";
+            MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+
+            identification.aggregationInfo = new MD_AggregateInformation_PropertyType[]
+            {
+              new MD_AggregateInformation_PropertyType
+              {
+                  MD_AggregateInformation = new MD_AggregateInformation_Type
+                  {
+                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
+                      {
+                          MD_Identifier = new MD_Identifier_Type
+                          {
+                              code = new CharacterString_PropertyType { CharacterString = uuid1 }
+                          }
+                      }
+                  }
+              },
+              new MD_AggregateInformation_PropertyType
+              {
+                  MD_AggregateInformation = new MD_AggregateInformation_Type
+                  {
+                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
+                      {
+                          MD_Identifier = new MD_Identifier_Type
+                          {
+                              code = new CharacterString_PropertyType { CharacterString = uuid2 }
+                          }
+                      }
+                  }
+              }
+            };
+
+            List<string> references = _md.CrossReference;
+            Assert.True(references.Contains(uuid1));
+            Assert.True(references.Contains(uuid2));
+        }
+
+        [Test]
+        public void ShouldSetCrossReference()
+        {
+            string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
+            string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
+            List<string> uuids = new List<string> { uuid1, uuid2 };
+            _md.HierarchyLevel = "software";
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[] { new MD_Identification_PropertyType { AbstractMD_Identification = new MD_DataIdentification_Type() } };
+            _md.CrossReference = uuids;
+
+            bool foundUuid1 = false;
+            bool foundUuid2 = false;
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
+            var crossReferences = identification.aggregationInfo;
+            foreach (MD_AggregateInformation_PropertyType element in crossReferences)
+            {
+                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid1))
+                {
+                    foundUuid1 = true;
+                }
+                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid2))
+                {
+                    foundUuid2 = true;
+                }
+            }
+
+            Assert.True(foundUuid1);
+            Assert.True(foundUuid2);
+        }
+
+        [Test]
         public void ShouldReturnServiceType()
         {
             string identifier = "view";

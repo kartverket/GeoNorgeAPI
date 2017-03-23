@@ -3009,6 +3009,70 @@ namespace GeoNorgeAPI
                 }
             }
         }
+        public List<string> CrossReference
+        {
+            get
+            {
+                List<string> values = new List<string>();
+                var identification = GetIdentification();
+
+                if (identification != null && identification.aggregationInfo != null)
+                {
+                    foreach (var element in identification.aggregationInfo)
+                    {
+                        if (element.MD_AggregateInformation != null && element.MD_AggregateInformation.aggregateDataSetIdentifier != null
+                           && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier != null
+                           && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code != null)
+                            values.Add(element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString);
+                    }
+                }
+
+                return values;
+            }
+
+            set
+            {
+                var identification = GetIdentification();
+                if (identification != null)
+                {
+                    List<MD_AggregateInformation_PropertyType> crossReference = new List<MD_AggregateInformation_PropertyType>();
+                    foreach (string uuid in value)
+                    {
+                        crossReference.Add( new MD_AggregateInformation_PropertyType
+                        {
+                            MD_AggregateInformation = new MD_AggregateInformation_Type
+                            {
+                                aggregateDataSetIdentifier = new MD_Identifier_PropertyType
+                                {
+                                    MD_Identifier = new MD_Identifier_Type
+                                    {
+                                        code = new CharacterString_PropertyType { CharacterString = uuid }
+                                    }
+                                },
+                                associationType = new DS_AssociationTypeCode_PropertyType {
+                                    DS_AssociationTypeCode = new CodeListValue_Type
+                                    {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml",
+                                        codeListValue = "crossReference"
+                                    }
+                                },
+                                initiativeType = new DS_InitiativeTypeCode_PropertyType
+                                {
+                                    DS_InitiativeTypeCode = new CodeListValue_Type
+                                    {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml",
+                                        codeListValue = "program"
+
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    identification.aggregationInfo = crossReference.ToArray();
+                }
+            }
+        }
 
         public List<string> OperatesOn
         {
