@@ -1339,6 +1339,7 @@ namespace GeoNorgeAPI
             }
         }
 
+        [Obsolete("DistributionFormat is deprecated, please use DistributionsFormats instead.")]
         public SimpleDistributionFormat DistributionFormat
         {
             get
@@ -1387,7 +1388,7 @@ namespace GeoNorgeAPI
         }
 
 
-        // Multiple distribution formats
+        [Obsolete("DistributionFormats is deprecated, please use DistributionsFormats instead.")]
         public List<SimpleDistributionFormat> DistributionFormats
         {
             get
@@ -1620,7 +1621,7 @@ namespace GeoNorgeAPI
         }
 
 
-
+        [Obsolete("DistributionDetails is deprecated, please use DistributionsFormats instead.")]
         public SimpleDistributionDetails DistributionDetails
         {
             get
@@ -3042,6 +3043,184 @@ namespace GeoNorgeAPI
             }
         }
 
+        public List<SimpleDistribution> DistributionsFormats
+        {
+            get
+            {
+                SimpleDistributionDetails transferOption = GetDistributionTransferOption();
+
+                List<SimpleDistribution> formats = null;
+
+                if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat != null
+                    && _md.distributionInfo.MD_Distribution.distributionFormat.Length > 0)
+                {
+                    formats = new List<SimpleDistribution>();
+
+                    foreach (var mdFormat in _md.distributionInfo.MD_Distribution.distributionFormat)
+                    {
+                        SimpleDistribution format = null;
+
+                        if (mdFormat.MD_Format != null && mdFormat.MD_Format.name != null)
+                        {
+                            var df = mdFormat.MD_Format;
+                            format = new SimpleDistribution
+                            {
+                                FormatName = df.name.CharacterString,
+                                FormatVersion = df.version != null ? df.version.CharacterString : null
+                            };
+                            if (df.formatDistributor != null && df.formatDistributor.Length > 0
+                                && df.formatDistributor[0] != null && df.formatDistributor[0].MD_Distributor != null)
+                            {
+                                if (df.formatDistributor[0].MD_Distributor.distributorContact != null
+                                    && df.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty != null
+                                    && df.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName != null)
+                                {
+                                    format.Organization = df.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString;
+                                }
+                                if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions != null
+                                    && df.formatDistributor[0].MD_Distributor.distributorTransferOptions.Length > 0
+                                    && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0] != null
+                                    && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions != null)
+                                {
+                                    if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution != null)
+                                    {
+                                        format.UnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString;
+                                    }
+                                    if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine != null
+                                        && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine.Length > 0
+                                        && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0] != null
+                                        && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null)
+                                    {
+                                        format.Name = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString;
+                                        format.Protocol = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString;
+                                        if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage != null)
+                                        {
+                                            format.URL = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if (string.IsNullOrEmpty(format.Protocol) && transferOption != null)
+                            {
+                                format.Protocol = transferOption.Protocol;
+                                format.URL = transferOption.URL;
+                                format.Name = transferOption.Name;
+                                format.UnitsOfDistribution = transferOption.UnitsOfDistribution;
+                            }
+
+                            formats.Add(format);
+                        }
+                    }
+                }
+
+                return formats;
+            }
+
+            set
+            {
+
+                if (_md.distributionInfo == null)
+                {
+                    _md.distributionInfo = new MD_Distribution_PropertyType { MD_Distribution = new MD_Distribution_Type() };
+                }
+                if (_md.distributionInfo.MD_Distribution == null)
+                {
+                    _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
+                }
+
+                List<MD_Format_PropertyType> dsFormats = new List<MD_Format_PropertyType>();
+
+
+                foreach (var dsFormat in value)
+                {
+                    MD_Format_PropertyType mdFormatPropertyType = new MD_Format_PropertyType
+                    {
+                        MD_Format = new MD_Format_Type
+                        {
+                            name = toCharString(dsFormat.FormatName),
+                            version = toCharString(dsFormat.FormatVersion),
+                            formatDistributor = new MD_Distributor_PropertyType[]
+                           {
+                                new MD_Distributor_PropertyType
+                                {
+                                    MD_Distributor = new MD_Distributor_Type
+                                    {
+                                        distributorContact =  new CI_ResponsibleParty_PropertyType
+                                        {
+                                            CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                            {
+                                                organisationName = new CharacterString_PropertyType
+                                                {
+                                                    CharacterString = dsFormat.Organization
+                                                },
+                                                role = new CI_RoleCode_PropertyType { CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" } }
+                                            }
+                                        },
+                                        distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                                        {
+                                            new MD_DigitalTransferOptions_PropertyType
+                                            {
+                                                MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                {
+                                                    unitsOfDistribution = new CharacterString_PropertyType { CharacterString = dsFormat.UnitsOfDistribution },
+                                                    onLine = new CI_OnlineResource_PropertyType[]
+                                                    {
+                                                        new CI_OnlineResource_PropertyType
+                                                        {
+                                                            CI_OnlineResource = new CI_OnlineResource_Type
+                                                            {
+                                                                protocol = new CharacterString_PropertyType { CharacterString = dsFormat.Protocol },
+                                                                name = new CharacterString_PropertyType { CharacterString = dsFormat.Name },
+                                                                linkage = new URL_PropertyType { URL = dsFormat.URL }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                           }
+                        }
+                    };
+                    dsFormats.Add(mdFormatPropertyType);
+                }
+
+                _md.distributionInfo.MD_Distribution.distributionFormat = dsFormats.ToArray();
+
+            }
+        }
+
+        public SimpleDistributionDetails GetDistributionTransferOption()
+        {
+            SimpleDistributionDetails value = null;
+
+            if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
+                && _md.distributionInfo.MD_Distribution.transferOptions != null
+                && _md.distributionInfo.MD_Distribution.transferOptions.Length > 0
+                && _md.distributionInfo.MD_Distribution.transferOptions[0] != null
+                && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions != null
+                && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine != null
+                && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine.Length > 0
+                && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0] != null
+                && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null)
+            {
+                var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
+                var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+                value = new SimpleDistributionDetails
+                {
+                    URL = resource.linkage != null ? resource.linkage.URL : null,
+                    Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
+                    Name = resource.name != null ? resource.name.CharacterString : null,
+                    UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null
+                };
+            }
+            return value;
+        }
+
+
         public string ServiceType
         {
             get
@@ -3382,6 +3561,17 @@ namespace GeoNorgeAPI
     {
         public string Name { get; set; }
         public string Version { get; set; }
+    }
+
+    public class SimpleDistribution
+    {
+        public string FormatName { get; set; }
+        public string FormatVersion { get; set; }
+        public string URL { get; set; }
+        public string Protocol { get; set; }
+        public string Name { get; set; }
+        public string Organization { get; set; }
+        public string UnitsOfDistribution { get; set; }
     }
 
     public class SimpleReferenceSystem

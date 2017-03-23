@@ -704,12 +704,6 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("vector", dataIdentification.spatialRepresentationType[0].MD_SpatialRepresentationTypeCode.codeListValue);
         }
 
-        [Test]
-        public void ShouldReturnDistributionFormatAsNullWhenNull()
-        {
-            Assert.IsNull(_md.DistributionFormat);
-        }
-
 
         [Test]
         public void ShouldReturnDistributionFormatWhenPresent()
@@ -762,12 +756,6 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(format);
             Assert.AreEqual(expectedName, format.Name);
             Assert.IsNull(format.Version);
-        }
-
-        [Test]
-        public void ShouldReturnDistributionFormatsAsNullWhenNull()
-        {
-            Assert.IsNull(_md.DistributionFormats);
         }
 
 
@@ -2836,6 +2824,127 @@ namespace GeoNorgeAPI.Tests
             metadata.ApplicationSchema = "";
 
             Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenDistributionsFormatsIsNull()
+        {
+            _md.GetMetadata().distributionInfo = null;
+
+            Assert.IsNull(_md.DistributionsFormats);
+        }
+
+        [Test]
+        public void ShouldReturnDistributionsFormats()
+        {
+            string expectedName = "SOSI";
+            string expectedVersion = "4.5";
+            string expectedOrganization = "kartverket";
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            string expectedResourceName = "navn";
+            string expectedUnitsOfDistribution = "unit1";
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new[]
+                    {
+                        new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = new CharacterString_PropertyType { CharacterString = expectedVersion },
+                                formatDistributor = new MD_Distributor_PropertyType[]
+                                {
+                                   new MD_Distributor_PropertyType
+                                   {
+                                       MD_Distributor = new MD_Distributor_Type
+                                       {
+                                           distributorContact = new CI_ResponsibleParty_PropertyType
+                                           {
+                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                               {
+                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
+                                                   role = new CI_RoleCode_PropertyType
+                                                   {
+                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
+                                                   }
+                                               }
+                                           },
+                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                                           {
+                                               new MD_DigitalTransferOptions_PropertyType
+                                               {
+                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                   {
+                                                       unitsOfDistribution = new CharacterString_PropertyType { CharacterString = expectedUnitsOfDistribution },
+                                                       onLine = new CI_OnlineResource_PropertyType[]
+                                                       {
+                                                           new CI_OnlineResource_PropertyType
+                                                           {
+                                                               CI_OnlineResource = new CI_OnlineResource_Type
+                                                               {
+                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
+                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
+                                                                   linkage = new URL_PropertyType
+                                                                   {
+                                                                       URL = expectedURL
+                                                                   }
+                                                               }
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+                                   }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            var details = _md.DistributionsFormats;
+
+            Assert.NotNull(details);
+            Assert.AreEqual(expectedName, details[0].FormatName);
+            Assert.AreEqual(expectedVersion, details[0].FormatVersion);
+            Assert.AreEqual(expectedOrganization, details[0].Organization);
+            Assert.AreEqual(expectedURL, details[0].URL);
+            Assert.AreEqual(expectedProtocol, details[0].Protocol);
+            Assert.AreEqual(expectedResourceName, details[0].Name);
+            Assert.AreEqual(expectedUnitsOfDistribution, details[0].UnitsOfDistribution);
+
+        }
+
+        [Test]
+        public void ShouldUpdateDistributionsFormats()
+        {
+            string expectedName = "SOSI";
+            string expectedVersion = "4.5";
+            string expectedOrganization = "kartverket";
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            string expectedResourceName = "navn";
+            string expectedUnitsOfDistribution = "unit1";
+
+            var formats = new List<SimpleDistribution>();
+            var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution };
+            formats.Add(format);
+            _md.DistributionsFormats = formats;
+
+            var mdFormat = _md.GetMetadata().distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
+            Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
+            Assert.AreEqual(expectedVersion, mdFormat.version.CharacterString);
+            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
+            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
+            Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
+            Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
+            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
         }
 
         private void SetDateOnCitationDateType(object date, string dateType)

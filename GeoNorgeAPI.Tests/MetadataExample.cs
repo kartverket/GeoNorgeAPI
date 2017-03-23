@@ -374,7 +374,63 @@ namespace GeoNorgeAPI.Tests
                                                         }
                                                 }
                                         }
+                                },
+                    distributionFormat = new[] 
+                    {
+                        new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = new CharacterString_PropertyType { CharacterString = "SOSI" },
+                                version = new CharacterString_PropertyType { CharacterString = "4.5" },
+                                formatDistributor = new MD_Distributor_PropertyType[]
+                                {
+                                   new MD_Distributor_PropertyType
+                                   {
+                                       MD_Distributor = new MD_Distributor_Type
+                                       {
+                                           distributorContact = new CI_ResponsibleParty_PropertyType
+                                           {
+                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                               {
+                                                   organisationName = new CharacterString_PropertyType { CharacterString = "Kartverket" },
+                                                   role = new CI_RoleCode_PropertyType
+                                                   {
+                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
+                                                   }
+                                               }
+                                           },
+                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[] 
+                                           {
+                                               new MD_DigitalTransferOptions_PropertyType
+                                               {
+                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                   {
+                                                       unitsOfDistribution = new CharacterString_PropertyType { CharacterString = "unit1" },
+                                                       onLine = new CI_OnlineResource_PropertyType[]
+                                                       {
+                                                           new CI_OnlineResource_PropertyType
+                                                           {
+                                                               CI_OnlineResource = new CI_OnlineResource_Type
+                                                               {
+                                                                   protocol = new CharacterString_PropertyType { CharacterString = "www" },
+                                                                   name = new CharacterString_PropertyType { CharacterString = "layer1" },
+                                                                   linkage = new URL_PropertyType
+                                                                   {
+                                                                       URL = "http://www.kartverket.no"
+                                                                   }
+                                                               }
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+                                   }
                                 }
+                            }
+                        }
+                    }
                 }
             };
 
