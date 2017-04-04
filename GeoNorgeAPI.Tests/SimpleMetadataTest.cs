@@ -2900,13 +2900,6 @@ namespace GeoNorgeAPI.Tests
             Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
         }
 
-        [Test]
-        public void ShouldReturnNullWhenDistributionsFormatsIsNull()
-        {
-            _md.GetMetadata().distributionInfo = null;
-
-            Assert.IsNull(_md.DistributionsFormats);
-        }
 
         [Test]
         public void ShouldReturnDistributionsFormats()

@@ -3111,15 +3111,14 @@ namespace GeoNorgeAPI
         {
             get
             {
-                SimpleDistributionDetails transferOption = GetDistributionTransferOption();
+                List<SimpleDistribution> formats = new List<SimpleDistribution>();
 
-                List<SimpleDistribution> formats = null;
+                SimpleDistributionDetails transferOption = GetDistributionTransferOption();
 
                 if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
                     && _md.distributionInfo.MD_Distribution.distributionFormat != null
                     && _md.distributionInfo.MD_Distribution.distributionFormat.Length > 0)
                 {
-                    formats = new List<SimpleDistribution>();
 
                     foreach (var mdFormat in _md.distributionInfo.MD_Distribution.distributionFormat)
                     {
