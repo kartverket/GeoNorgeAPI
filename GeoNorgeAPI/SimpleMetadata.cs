@@ -1339,7 +1339,6 @@ namespace GeoNorgeAPI
             }
         }
 
-        [Obsolete("DistributionFormat is deprecated, please use DistributionsFormats instead.")]
         public SimpleDistributionFormat DistributionFormat
         {
             get
@@ -1388,7 +1387,6 @@ namespace GeoNorgeAPI
         }
 
 
-        [Obsolete("DistributionFormats is deprecated, please use DistributionsFormats instead.")]
         public List<SimpleDistributionFormat> DistributionFormats
         {
             get
@@ -1621,7 +1619,6 @@ namespace GeoNorgeAPI
         }
 
 
-        [Obsolete("DistributionDetails is deprecated, please use DistributionsFormats instead.")]
         public SimpleDistributionDetails DistributionDetails
         {
             get
