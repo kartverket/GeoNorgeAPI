@@ -550,6 +550,10 @@ namespace GeoNorgeAPI.Tests
                     Keyword = "Det offentlige kartgrunnlaget",
                     Thesaurus = SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE
                 },
+                new SimpleKeyword {
+                    Keyword = "infoFeatureAccessService",
+                    Thesaurus = SimpleKeyword.THESAURUS_SERVICE_TYPE
+                },
             };
 
             int numberOfInspireKeywords = 0;
@@ -557,6 +561,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfThemeKeywords = 0;
             int numberOfPlaceKeywords = 0;
             int numberOfConceptKeywords = 0;
+            int numberOfServiceTypeKeywords = 0;
             int numberOfOtherKeywords = 0;
             bool inspireAddressesFound = false;
             bool inspireBuildingsFound = false;
@@ -565,6 +570,7 @@ namespace GeoNorgeAPI.Tests
             bool placeAkershusFound = false;
             bool themeBygningFound = false;
             bool conceptAkvakulturgrenseFound = false;
+            bool serviceTypeFound = false;
             bool otherEksempeldataFound = false;
             bool otherTestingFound = false;
             bool englishKeywordFound = false;
@@ -607,6 +613,15 @@ namespace GeoNorgeAPI.Tests
                         if (keyword.CharacterString.Equals("Det offentlige kartgrunnlaget"))
                         {
                             nationalDOKfound = true;
+                        }
+                    }
+                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
+                    {
+                        numberOfServiceTypeKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
+                        if (keyword.CharacterString.Equals("infoFeatureAccessService"))
+                        {
+                            serviceTypeFound = true;
                         }
                     }
                 }
@@ -674,6 +689,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
             Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
             Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
+            Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
 
             Assert.True(inspireAddressesFound);
@@ -683,6 +699,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(placeAkershusFound);
             Assert.True(themeBygningFound);
             Assert.True(conceptAkvakulturgrenseFound);
+            Assert.True(serviceTypeFound);
             Assert.True(otherEksempeldataFound);
             Assert.True(otherTestingFound);
             Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
