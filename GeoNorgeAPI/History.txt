@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.38: Added keyword thesaurus service type
 3.0.37: Methods are not obsolete
 3.0.36: Not return null for DistributionsFormats
 3.0.35: Added CrossReference for mapping software to dataset
