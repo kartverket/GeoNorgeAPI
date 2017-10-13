@@ -29,6 +29,8 @@ namespace GeoNorgeAPI
         private const string ENGLISH_APPLICATION_PROFILE_PRODUCTSHEET = "product sheet";
         private const string ENGLISH_APPLICATION_PROFILE_LEGEND = "cartography";
         private const string ENGLISH_APPLICATION_PROFILE_PRODUCTPAGE = "website";
+        private const string ENGLISH_APPLICATION_PROFILE_COVERAGE = "coverage map";
+        private const string ENGLISH_APPLICATION_PROFILE_HELP = "help";
 
         private MD_Metadata_Type _md;
 
@@ -1282,7 +1284,7 @@ namespace GeoNorgeAPI
                 }
                 onlineResource.linkage = new URL_PropertyType { URL = value };
                 onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_COVERAGE };
-                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_COVERAGE };
+                onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_COVERAGE, ENGLISH_APPLICATION_PROFILE_COVERAGE);
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
         }
@@ -1303,7 +1305,7 @@ namespace GeoNorgeAPI
                 }
                 onlineResource.linkage = new URL_PropertyType { URL = value };
                 onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_HELP };
-                onlineResource.name = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_HELP };
+                onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_HELP, ENGLISH_APPLICATION_PROFILE_HELP);
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
         }
