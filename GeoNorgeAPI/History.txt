@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.40: Added EnglishExplanation for SimpleQualitySpecification
 3.0.39: Added english translation for coverage and help
 3.0.38: Added keyword thesaurus service type
 3.0.37: Methods are not obsolete
