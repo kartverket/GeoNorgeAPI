@@ -1889,6 +1889,9 @@ namespace GeoNorgeAPI
                                 if (result.explanation != null)
                                 {
                                     value.Explanation = result.explanation.CharacterString;
+                                    var englishExplanation = result.explanation as PT_FreeText_PropertyType;
+                                    if (englishExplanation != null)
+                                        value.EnglishExplanation = GetEnglishValueFromFreeText(englishExplanation);
                                 }
 
                                 // result
@@ -1931,7 +1934,7 @@ namespace GeoNorgeAPI
                                                 }
                                             }    
                                         },
-                                        explanation = toCharString(value.Explanation),
+                                        explanation = CreateFreeTextElement(value.Explanation, value.EnglishExplanation),
                                         pass = new Boolean_PropertyType { Boolean = value.Result }
                                     }
                                 }
@@ -2059,6 +2062,9 @@ namespace GeoNorgeAPI
                                     if (result.explanation != null)
                                     {
                                         resultItem.Explanation = result.explanation.CharacterString;
+                                        var englishExplanation = result.explanation as PT_FreeText_PropertyType;
+                                        if (englishExplanation != null)
+                                            resultItem.EnglishExplanation = GetEnglishValueFromFreeText(englishExplanation);
                                     }
 
                                     // result
@@ -2135,7 +2141,7 @@ namespace GeoNorgeAPI
                                         }
                                     }
                                 },
-                                explanation = toCharString(mdResult.Explanation),
+                                explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
                                 pass = new Boolean_PropertyType { Boolean = mdResult.Result }
                             }
                         };
@@ -3665,6 +3671,7 @@ namespace GeoNorgeAPI
         public string Date { get; set; }
         public string DateType { get; set; }
         public string Explanation { get; set; }
+        public string EnglishExplanation { get; set; }
         public bool Result { get; set; }
         public string Responsible { get; set; }
     }

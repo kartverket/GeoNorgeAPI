@@ -1202,6 +1202,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate = "2014-01-01";
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
+            string expectedEnglishExplanation = "explained english";
             bool expectedResult = true;
 
             _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
@@ -1234,7 +1235,24 @@ namespace GeoNorgeAPI.Tests
                                                         }
                                                     }
                                                 },
-                                                explanation = toCharString(expectedExplanation),
+                                                explanation = new PT_FreeText_PropertyType
+                                                {
+                                                    CharacterString = expectedExplanation,
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                                        {
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                Value = expectedEnglishExplanation
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult }
                                             }
                                         }
@@ -1254,6 +1272,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDate, spec.Date);
             Assert.AreEqual(expectedDateType, spec.DateType);
             Assert.AreEqual(expectedExplanation, spec.Explanation);
+            Assert.AreEqual(expectedEnglishExplanation, spec.EnglishExplanation);
             Assert.AreEqual(expectedResult, spec.Result);
         }
 
@@ -1264,6 +1283,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate = "2014-01-01";
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
+            string expectedEnglishExplanation = "explained english";
             bool expectedResult = true;
 
             _md.QualitySpecification = new SimpleQualitySpecification
@@ -1272,16 +1292,20 @@ namespace GeoNorgeAPI.Tests
                 Date = expectedDate,
                 DateType = expectedDateType,
                 Explanation = expectedExplanation,
+                EnglishExplanation = expectedEnglishExplanation,
                 Result = expectedResult
             };
 
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
 
+            var actualExplanation = conformanceResult.explanation as PT_FreeText_PropertyType;
+
             Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
+            Assert.AreEqual(expectedEnglishExplanation, actualExplanation.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
         }
 
@@ -1300,6 +1324,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate = "2014-01-01";
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
+            string expectedEnglishExplanation = "explained english";
             bool expectedResult = true;
             string expectedResponsible = "SOSI";
 
@@ -1307,6 +1332,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate2 = "2014-01-01";
             string expectedDateType2 = "creation";
             string expectedExplanation2 = "explained";
+            string expectedEnglishExplanation2 = "explained english";
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
@@ -1351,7 +1377,24 @@ namespace GeoNorgeAPI.Tests
                                                         }
                                                     }
                                                 },
-                                                explanation = toCharString(expectedExplanation),
+                                                explanation = new PT_FreeText_PropertyType
+                                                {
+                                                    CharacterString = expectedExplanation,
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                                        {
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                Value = expectedEnglishExplanation
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult }
                                             }
                                         },
@@ -1388,7 +1431,24 @@ namespace GeoNorgeAPI.Tests
                                                         }
                                                     }
                                                 },
-                                                explanation = toCharString(expectedExplanation2),
+                                                explanation = new PT_FreeText_PropertyType
+                                                {
+                                                    CharacterString = expectedExplanation2,
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                                        {
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                Value = expectedEnglishExplanation2
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult2 }
                                             }
                                         }
@@ -1408,6 +1468,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDate, spec[0].Date);
             Assert.AreEqual(expectedDateType, spec[0].DateType);
             Assert.AreEqual(expectedExplanation, spec[0].Explanation);
+            Assert.AreEqual(expectedEnglishExplanation, spec[0].EnglishExplanation);
             Assert.AreEqual(expectedResult, spec[0].Result);
             Assert.AreEqual(expectedResponsible, spec[0].Responsible);
 
@@ -1415,6 +1476,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDate2, spec[1].Date);
             Assert.AreEqual(expectedDateType2, spec[1].DateType);
             Assert.AreEqual(expectedExplanation2, spec[1].Explanation);
+            Assert.AreEqual(expectedEnglishExplanation2, spec[1].EnglishExplanation);
             Assert.AreEqual(expectedResult2, spec[1].Result);
             Assert.AreEqual(expectedResponsible2, spec[1].Responsible);
 
@@ -1428,6 +1490,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate = "2014-01-01";
             string expectedDateType = "creation";
             string expectedExplanation = "explained";
+            string expectedEnglishExplanation = "explained english";
             bool expectedResult = true;
             string expectedResponsible = "SOSI";
 
@@ -1435,6 +1498,7 @@ namespace GeoNorgeAPI.Tests
             string expectedDate2 = "2014-01-01";
             string expectedDateType2 = "creation";
             string expectedExplanation2 = "explained";
+            string expectedEnglishExplanation2 = "explained english";
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
@@ -1446,6 +1510,7 @@ namespace GeoNorgeAPI.Tests
                 Date = expectedDate,
                 DateType = expectedDateType,
                 Explanation = expectedExplanation,
+                EnglishExplanation = expectedEnglishExplanation,
                 Result = expectedResult,
                 Responsible = expectedResponsible
             });
@@ -1456,6 +1521,7 @@ namespace GeoNorgeAPI.Tests
                 Date = expectedDate2,
                 DateType = expectedDateType2,
                 Explanation = expectedExplanation2,
+                EnglishExplanation = expectedEnglishExplanation2,
                 Result = expectedResult2,
                 Responsible = expectedResponsible2
             });
@@ -1466,11 +1532,14 @@ namespace GeoNorgeAPI.Tests
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
             DQ_ConformanceResult_Type conformanceResult2 = domainConsistency.result[1].AbstractDQ_Result as DQ_ConformanceResult_Type;
+            var explanation = conformanceResult.explanation as PT_FreeText_PropertyType;
+            var explanation2 = conformanceResult2.explanation as PT_FreeText_PropertyType;
 
             Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
+            Assert.AreEqual(expectedEnglishExplanation, explanation.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
             Assert.AreEqual(expectedResponsible, conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
 
@@ -1478,6 +1547,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedDate2, (string)conformanceResult2.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType2, conformanceResult2.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation2, conformanceResult2.explanation.CharacterString);
+            Assert.AreEqual(expectedEnglishExplanation2, explanation2.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
             Assert.AreEqual(expectedResponsible2, conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
 
