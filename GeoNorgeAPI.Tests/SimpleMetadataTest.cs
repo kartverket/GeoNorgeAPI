@@ -1009,6 +1009,7 @@ namespace GeoNorgeAPI.Tests
             string expectedProtocol = "www";
             string expectedName = "navn";
             string expectedUnitsOfDistribution = "unit1";
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
             _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType {
                 MD_Distribution = new MD_Distribution_Type
                 {
@@ -1016,7 +1017,24 @@ namespace GeoNorgeAPI.Tests
                     {
                         new MD_DigitalTransferOptions_PropertyType {
                             MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
-                                unitsOfDistribution = new CharacterString_PropertyType { CharacterString = expectedUnitsOfDistribution},
+                                unitsOfDistribution = new PT_FreeText_PropertyType
+                                {
+                                    CharacterString = expectedUnitsOfDistribution,
+                                    PT_FreeText = new PT_FreeText_Type
+                                    {
+                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                        {
+                                            new LocalisedCharacterString_PropertyType
+                                            {
+                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                {
+                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                Value = expectedEnglishUnitsOfDistribution
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
                                 onLine = new CI_OnlineResource_PropertyType[]
                                 {
                                     new CI_OnlineResource_PropertyType
@@ -1043,6 +1061,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedProtocol, details.Protocol);
             Assert.AreEqual(expectedName, details.Name);
             Assert.AreEqual(expectedUnitsOfDistribution, details.UnitsOfDistribution);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, details.EnglishUnitsOfDistribution);
 
         }
 
@@ -1053,14 +1072,17 @@ namespace GeoNorgeAPI.Tests
             string expectedProtocol = "www";
             string expectedName = "navn";
             string expectedUnitsOfDistribution = "unit1";
-            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName, UnitsOfDistribution = expectedUnitsOfDistribution };
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
+            _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
 
             var resource = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
             var tranferOptions = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+            var actualEnglishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
             Assert.AreEqual(expectedURL, resource.linkage.URL);
             Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
             Assert.AreEqual(expectedName, resource.name.CharacterString);
             Assert.AreEqual(expectedUnitsOfDistribution, tranferOptions.unitsOfDistribution.CharacterString);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
         [Test]
@@ -2998,6 +3020,7 @@ namespace GeoNorgeAPI.Tests
             string expectedProtocol = "www";
             string expectedResourceName = "navn";
             string expectedUnitsOfDistribution = "unit1";
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
             _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
             {
                 MD_Distribution = new MD_Distribution_Type
@@ -3033,7 +3056,24 @@ namespace GeoNorgeAPI.Tests
                                                {
                                                    MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
                                                    {
-                                                       unitsOfDistribution = new CharacterString_PropertyType { CharacterString = expectedUnitsOfDistribution },
+                                                       unitsOfDistribution = new PT_FreeText_PropertyType
+                                                        {
+                                                            CharacterString = expectedUnitsOfDistribution,
+                                                            PT_FreeText = new PT_FreeText_Type
+                                                            {
+                                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                                                {
+                                                                    new LocalisedCharacterString_PropertyType
+                                                                    {
+                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                        {
+                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                        Value = expectedEnglishUnitsOfDistribution
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
                                                        onLine = new CI_OnlineResource_PropertyType[]
                                                        {
                                                            new CI_OnlineResource_PropertyType
@@ -3072,6 +3112,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedProtocol, details[0].Protocol);
             Assert.AreEqual(expectedResourceName, details[0].Name);
             Assert.AreEqual(expectedUnitsOfDistribution, details[0].UnitsOfDistribution);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, details[0].EnglishUnitsOfDistribution);
 
         }
 
@@ -3085,13 +3126,15 @@ namespace GeoNorgeAPI.Tests
             string expectedProtocol = "www";
             string expectedResourceName = "navn";
             string expectedUnitsOfDistribution = "unit1";
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
 
             var formats = new List<SimpleDistribution>();
-            var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution };
+            var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
             formats.Add(format);
             _md.DistributionsFormats = formats;
 
             var mdFormat = _md.GetMetadata().distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
+            var actualEnglishUnitsOfDistribution = mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
             Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
             Assert.AreEqual(expectedVersion, mdFormat.version.CharacterString);
             Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
@@ -3099,6 +3142,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
             Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
             Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
         }
 
         private void SetDateOnCitationDateType(object date, string dateType)

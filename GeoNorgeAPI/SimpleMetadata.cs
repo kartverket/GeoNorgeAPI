@@ -1643,6 +1643,8 @@ namespace GeoNorgeAPI
                 {
                     var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
                     var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+                    var englishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+            
                     value = new SimpleDistributionDetails
                     {
                         URL = resource.linkage != null ? resource.linkage.URL : null,
@@ -1650,6 +1652,8 @@ namespace GeoNorgeAPI
                         Name = resource.name != null ? resource.name.CharacterString : null,
                         UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null
                     };
+                    if (englishUnitsOfDistribution != null)
+                        value.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
                 }
                 return value;
             }
@@ -1677,9 +1681,9 @@ namespace GeoNorgeAPI
                 if (!string.IsNullOrWhiteSpace(value.Name))
                     name = new CharacterString_PropertyType { CharacterString = value.Name };
 
-                CharacterString_PropertyType UnitsOfDistribution = null;
+                PT_FreeText_PropertyType UnitsOfDistribution = null;
                 if (!string.IsNullOrWhiteSpace(value.UnitsOfDistribution))
-                    UnitsOfDistribution = new CharacterString_PropertyType { CharacterString = value.UnitsOfDistribution };
+                    UnitsOfDistribution = CreateFreeTextElement( value.UnitsOfDistribution, value.EnglishUnitsOfDistribution);
 
                 _md.distributionInfo.MD_Distribution.transferOptions = new MD_DigitalTransferOptions_PropertyType[] {
                     new MD_DigitalTransferOptions_PropertyType {
@@ -3158,6 +3162,11 @@ namespace GeoNorgeAPI
                                     if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution != null)
                                     {
                                         format.UnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString;
+                                        var englishUnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+                                        if (englishUnitsOfDistribution != null)
+                                        {
+                                            format.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
+                                        }
                                     }
                                     if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine != null
                                         && df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine.Length > 0
@@ -3180,6 +3189,7 @@ namespace GeoNorgeAPI
                                 format.URL = transferOption.URL;
                                 format.Name = transferOption.Name;
                                 format.UnitsOfDistribution = transferOption.UnitsOfDistribution;
+                                format.EnglishUnitsOfDistribution = transferOption.EnglishUnitsOfDistribution;
                             }
 
                             formats.Add(format);
@@ -3236,7 +3246,7 @@ namespace GeoNorgeAPI
                                             {
                                                 MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
                                                 {
-                                                    unitsOfDistribution = new CharacterString_PropertyType { CharacterString = dsFormat.UnitsOfDistribution },
+                                                    unitsOfDistribution = CreateFreeTextElement(dsFormat.UnitsOfDistribution, dsFormat.EnglishUnitsOfDistribution),
                                                     onLine = new CI_OnlineResource_PropertyType[]
                                                     {
                                                         new CI_OnlineResource_PropertyType
@@ -3281,13 +3291,18 @@ namespace GeoNorgeAPI
             {
                 var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
                 var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+                var englishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+
                 value = new SimpleDistributionDetails
                 {
                     URL = resource.linkage != null ? resource.linkage.URL : null,
                     Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
                     Name = resource.name != null ? resource.name.CharacterString : null,
-                    UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null
+                    UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null,
                 };
+
+                if (englishUnitsOfDistribution != null)
+                    value.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
             }
             return value;
         }
@@ -3649,6 +3664,7 @@ namespace GeoNorgeAPI
         public string Name { get; set; }
         public string Organization { get; set; }
         public string UnitsOfDistribution { get; set; }
+        public string EnglishUnitsOfDistribution { get; set; }
     }
 
     public class SimpleReferenceSystem
@@ -3663,6 +3679,7 @@ namespace GeoNorgeAPI
         public string Protocol { get; set; }
         public string Name { get; set; }
         public string UnitsOfDistribution { get; set; }
+        public string EnglishUnitsOfDistribution { get; set; }
     }
 
     public class SimpleQualitySpecification
