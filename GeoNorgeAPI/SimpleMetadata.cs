@@ -63,16 +63,19 @@ namespace GeoNorgeAPI
             return metadata;
         }
 
-        public static SimpleMetadata CreateDataset()
+        public static SimpleMetadata CreateDataset(string fileIdentifier = null)
         {
-            return CreateSimpleMetadata("dataset", new MD_DataIdentification_Type());
+            return CreateSimpleMetadata("dataset", new MD_DataIdentification_Type(), fileIdentifier);
         }
 
-        private static SimpleMetadata CreateSimpleMetadata(string hierarchyLevel, AbstractMD_Identification_Type identification)
+        private static SimpleMetadata CreateSimpleMetadata(string hierarchyLevel, AbstractMD_Identification_Type identification, string fileIdentifier = null)
         {
+            if (string.IsNullOrEmpty(fileIdentifier))
+                fileIdentifier = Guid.NewGuid().ToString();
+
             MD_Metadata_Type md = new MD_Metadata_Type
             {
-                fileIdentifier = new CharacterString_PropertyType { CharacterString = Guid.NewGuid().ToString() },
+                fileIdentifier = new CharacterString_PropertyType { CharacterString = fileIdentifier },
                 identificationInfo = new MD_Identification_PropertyType[]
                 {
                     new MD_Identification_PropertyType {
