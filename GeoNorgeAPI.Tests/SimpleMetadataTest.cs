@@ -519,6 +519,11 @@ namespace GeoNorgeAPI.Tests
                     EnglishKeyword = "Addresses"
                 },
                 new SimpleKeyword {
+                    Keyword = "Eu direktiv 1",
+                    Thesaurus = SimpleKeyword.THESAURUS_INSPIRE_DIRECTIVE,
+                    EnglishKeyword = "EU directive 1"
+                },
+                new SimpleKeyword {
                     Keyword = "Oslo",
                     Type = SimpleKeyword.TYPE_PLACE
                 },
@@ -557,6 +562,7 @@ namespace GeoNorgeAPI.Tests
             };
 
             int numberOfInspireKeywords = 0;
+            int numberOfInspireDirectiveKeywords = 0;
             int numberOfNationalKeywords = 0;
             int numberOfThemeKeywords = 0;
             int numberOfPlaceKeywords = 0;
@@ -564,6 +570,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfServiceTypeKeywords = 0;
             int numberOfOtherKeywords = 0;
             bool inspireAddressesFound = false;
+            bool inspireDirectivesFound = false;
             bool inspireBuildingsFound = false;
             bool nationalDOKfound = false;
             bool placeOsloFound = false;
@@ -603,6 +610,25 @@ namespace GeoNorgeAPI.Tests
                             else if (keyword.CharacterString.Equals("Buildings"))
                             {
                                 inspireBuildingsFound = true;
+                            }
+                        }
+                    }
+                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_INSPIRE_DIRECTIVE))
+                    {
+                        numberOfInspireDirectiveKeywords = numberOfKeywords;
+                        foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
+                        {
+                            var keyword = k.keyword as CharacterString_PropertyType;
+
+                            if (keyword.CharacterString.Equals("Eu direktiv 1"))
+                            {
+                                inspireDirectivesFound = true;
+
+                                var freeText = k.keyword as PT_FreeText_PropertyType;
+                                if (freeText != null && freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value.Equals("EU directive 1"))
+                                {
+                                    englishKeywordFound = true;
+                                }
                             }
                         }
                     }
@@ -685,6 +711,7 @@ namespace GeoNorgeAPI.Tests
             }
 
             Assert.AreEqual(2, numberOfInspireKeywords, "Expected two inspire keywords in same wrapper element");
+            Assert.AreEqual(1, numberOfInspireDirectiveKeywords, "Expected one inspire directive keyword in same wrapper element");
             Assert.AreEqual(1, numberOfNationalKeywords, "Expected one national keyword in same wrapper element");
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
             Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
@@ -693,6 +720,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
 
             Assert.True(inspireAddressesFound);
+            Assert.True(inspireDirectivesFound);
             Assert.True(inspireBuildingsFound);
             Assert.True(nationalDOKfound);
             Assert.True(placeOsloFound);
