@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.43: Added keyword for inspire directive
 3.0.42: Added support for setting fileIdentifier on CreateSimpleMetadata
 3.0.41: Added EnglishUnitsOfDistribution
 3.0.40: Added EnglishExplanation for SimpleQualitySpecification
