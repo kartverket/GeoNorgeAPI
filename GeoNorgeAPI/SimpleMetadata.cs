@@ -754,7 +754,7 @@ namespace GeoNorgeAPI
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
                                 {
-                                    date = "2008-06-01";
+                                    date = "2017-11-16";
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
                                 {
@@ -769,7 +769,11 @@ namespace GeoNorgeAPI
                                     date = "2016-01-15";
                                 }
 
-                                thesaurus = new CI_Citation_PropertyType { 
+                                var dateType = "publication";
+                                if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
+                                    dateType = "revision";
+
+                                    thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
                                         title = toCharString(simpleKeyword.Thesaurus),
                                         date = new CI_Date_PropertyType[] {
@@ -779,7 +783,7 @@ namespace GeoNorgeAPI
                                                     dateType = new CI_DateTypeCode_PropertyType { 
                                                         CI_DateTypeCode = new CodeListValue_Type {
                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
-                                                            codeListValue = "publication"
+                                                            codeListValue = dateType
                                                         }
                                                     }                                
                                                 }
@@ -3567,7 +3571,7 @@ namespace GeoNorgeAPI
     public class SimpleKeyword
     {
         public const string THESAURUS_GEMET_INSPIRE_V1 = "GEMET - INSPIRE themes, version 1.0";
-        public const string THESAURUS_INSPIRE_PRIORITY_DATASET = "EU - prioriterte datasett";
+        public const string THESAURUS_INSPIRE_PRIORITY_DATASET = "INSPIRE priority data set";
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
         public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
