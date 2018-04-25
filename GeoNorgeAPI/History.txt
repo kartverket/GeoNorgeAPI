@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.46: Added support for Anchor_Type in CI_Citation.title
 3.0.45: Update inspire priority data set
 3.0.44: Rename keyword inspire directive to priority dataset
 3.0.43: Added keyword for inspire directive
