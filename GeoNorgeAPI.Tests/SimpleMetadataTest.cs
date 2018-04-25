@@ -738,6 +738,24 @@ namespace GeoNorgeAPI.Tests
 
         }
 
+        [Test]
+        public void ShouldReturnThesaurusForKeyword()
+        {
+            _md.Keywords = new List<SimpleKeyword> {
+
+                new SimpleKeyword {
+                    Keyword = "Eu direktiv 1",
+                    Thesaurus = SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET,
+                    KeywordLink = "http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset/dir-1991-31"
+                }
+            };
+
+            var keyword = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords[0];
+
+            var thesaurus = keyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
+            Assert.AreEqual(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET, thesaurus.Value);
+        }
+
 
         [Test]
         public void ShouldSetSpatialRepresentationWhenSpatialRepresentationIsNull()

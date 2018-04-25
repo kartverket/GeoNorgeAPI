@@ -683,11 +683,12 @@ namespace GeoNorgeAPI
                             if (descriptiveKeyword.MD_Keywords.thesaurusName != null && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation != null
                                 && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title != null)
                             {
-                                Anchor_Type titleObject = identification.citation.CI_Citation.title.item as Anchor_Type;
+                                Anchor_Type titleObject = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
+                                CharacterString_PropertyType titleCharacterString = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.item as CharacterString_PropertyType;
                                 if (titleObject != null)
                                     thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = titleObject.Value });
                                 else
-                                    thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = identification.citation.CI_Citation.title.item.ToString() });
+                                    thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = titleCharacterString.CharacterString });
                             }
                             
                             foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
