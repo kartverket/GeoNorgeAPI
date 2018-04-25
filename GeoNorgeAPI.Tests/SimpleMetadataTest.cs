@@ -84,7 +84,7 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnEnglishTitleWhenTitleIsLocalized()
         {
             string expectedEnglishTitle = "This is english.";
-            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new PT_FreeText_PropertyType
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item = new PT_FreeText_PropertyType
             {
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
@@ -110,7 +110,7 @@ namespace GeoNorgeAPI.Tests
 
             _md.EnglishTitle = expectedEnglishTitle;
 
-            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
+            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item as CharacterString_PropertyType;
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Eksempeldatasettet sin tittel.", freeTextElement.CharacterString);
@@ -122,12 +122,14 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateTitleWithoutDestroyingEnglishTitle()
         {
             string expectedEnglishTitle = "This is english.";
-            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new PT_FreeText_PropertyType
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new CI_Citation_Title
             {
-                CharacterString = "Dette er norsk",
-                PT_FreeText = new PT_FreeText_Type
+                item = new PT_FreeText_PropertyType
                 {
-                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                    CharacterString = "Dette er norsk",
+                    PT_FreeText = new PT_FreeText_Type
+                    {
+                        textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
                                 locale = SimpleMetadata.LOCALE_ENG,
@@ -135,12 +137,13 @@ namespace GeoNorgeAPI.Tests
                             }
                         }
                     }
+                    }
                 }
             };
 
             _md.Title = "Oppdatert norsk tittel";
 
-            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
+            var titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item;
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Oppdatert norsk tittel", freeTextElement.CharacterString);
@@ -588,10 +591,11 @@ namespace GeoNorgeAPI.Tests
             foreach (MD_Keywords_PropertyType descriptiveKeyword in descriptiveKeywords)
             {
                 int numberOfKeywords = descriptiveKeyword.MD_Keywords.keyword.Length;
+                var title = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as CharacterString_PropertyType;
 
                 if (descriptiveKeyword.MD_Keywords.thesaurusName != null)
                 {
-                    if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1)) {
+                    if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1)) {
                         numberOfInspireKeywords = numberOfKeywords;
                         foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                         {
@@ -613,7 +617,7 @@ namespace GeoNorgeAPI.Tests
                             }
                         }
                     }
-                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
                     {
                         numberOfInspirePriorityDatasetKeywords = numberOfKeywords;
                         var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
@@ -622,7 +626,7 @@ namespace GeoNorgeAPI.Tests
                             inspirePriorityDatasetsFound = true;
                         }
                     }
-                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
                     {
                         numberOfNationalKeywords = numberOfKeywords;
                         var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
@@ -631,7 +635,7 @@ namespace GeoNorgeAPI.Tests
                             nationalDOKfound = true;
                         }
                     }
-                    else if (descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
                     {
                         numberOfServiceTypeKeywords = numberOfKeywords;
                         var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
@@ -1257,7 +1261,7 @@ namespace GeoNorgeAPI.Tests
                                             AbstractDQ_Result = new DQ_ConformanceResult_Type {
                                                 specification = new CI_Citation_PropertyType {
                                                     CI_Citation = new CI_Citation_Type {
-                                                        title = toCharString(expectedTitle),
+                                                        title = new CI_Citation_Title{ item = toCharString(expectedTitle) },
                                                         date = new CI_Date_PropertyType[] {
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
@@ -1340,8 +1344,9 @@ namespace GeoNorgeAPI.Tests
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
 
             var actualExplanation = conformanceResult.explanation as PT_FreeText_PropertyType;
+            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
 
-            Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
@@ -1388,7 +1393,7 @@ namespace GeoNorgeAPI.Tests
                                             AbstractDQ_Result = new DQ_ConformanceResult_Type {
                                                 specification = new CI_Citation_PropertyType {
                                                     CI_Citation = new CI_Citation_Type {
-                                                        title = toCharString(expectedTitle),
+                                                        title = new CI_Citation_Title{ item = toCharString(expectedTitle) },
                                                         date = new CI_Date_PropertyType[] {
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
@@ -1409,7 +1414,7 @@ namespace GeoNorgeAPI.Tests
                                                                 MD_Identifier = new MD_Identifier_Type{
                                                                     authority = new CI_Citation_PropertyType{
                                                                         CI_Citation = new CI_Citation_Type{
-                                                                            title = new CharacterString_PropertyType{ CharacterString = expectedResponsible }
+                                                                            title = new CI_Citation_Title{ item = new CharacterString_PropertyType{ CharacterString = expectedResponsible } }
                                                                         }
                                                                     }
                                                                 }
@@ -1442,7 +1447,7 @@ namespace GeoNorgeAPI.Tests
                                             AbstractDQ_Result = new DQ_ConformanceResult_Type {
                                                 specification = new CI_Citation_PropertyType {
                                                     CI_Citation = new CI_Citation_Type {
-                                                        title = toCharString(expectedTitle2),
+                                                        title = new CI_Citation_Title{ item = toCharString(expectedTitle2) },
                                                         date = new CI_Date_PropertyType[] {
                                                             new CI_Date_PropertyType {
                                                                 CI_Date = new CI_Date_Type {
@@ -1463,7 +1468,7 @@ namespace GeoNorgeAPI.Tests
                                                                 MD_Identifier = new MD_Identifier_Type{
                                                                     authority = new CI_Citation_PropertyType{
                                                                         CI_Citation = new CI_Citation_Type{
-                                                                            title = new CharacterString_PropertyType{ CharacterString = expectedResponsible2 }
+                                                                            title = new CI_Citation_Title { item =  new CharacterString_PropertyType{ CharacterString = expectedResponsible2 } }
                                                                         }
                                                                     }
                                                                 }
@@ -1574,22 +1579,26 @@ namespace GeoNorgeAPI.Tests
             DQ_ConformanceResult_Type conformanceResult2 = domainConsistency.result[1].AbstractDQ_Result as DQ_ConformanceResult_Type;
             var explanation = conformanceResult.explanation as PT_FreeText_PropertyType;
             var explanation2 = conformanceResult2.explanation as PT_FreeText_PropertyType;
+            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
+            var responsible = conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
+            var title2 = conformanceResult2.specification.CI_Citation.title.item as CharacterString_PropertyType;
+            var responsible2 = conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
 
-            Assert.AreEqual(expectedTitle, conformanceResult.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType, conformanceResult.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation, conformanceResult.explanation.CharacterString);
             Assert.AreEqual(expectedEnglishExplanation, explanation.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult, conformanceResult.pass.Boolean);
-            Assert.AreEqual(expectedResponsible, conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedResponsible, responsible.CharacterString);
 
-            Assert.AreEqual(expectedTitle2, conformanceResult2.specification.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedTitle2, title2.CharacterString);
             Assert.AreEqual(expectedDate2, (string)conformanceResult2.specification.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual(expectedDateType2, conformanceResult2.specification.CI_Citation.date[0].CI_Date.dateType.CI_DateTypeCode.codeListValue);
             Assert.AreEqual(expectedExplanation2, conformanceResult2.explanation.CharacterString);
             Assert.AreEqual(expectedEnglishExplanation2, explanation2.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
-            Assert.AreEqual(expectedResponsible2, conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString);
+            Assert.AreEqual(expectedResponsible2, responsible2.CharacterString);
 
         }
 
@@ -3191,6 +3200,20 @@ namespace GeoNorgeAPI.Tests
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
+        }
+
+        private CharacterString_PropertyType toCharString(object input)
+        {
+
+            Anchor_Type titleObject = input as Anchor_Type;
+            PT_FreeText_PropertyType freeText = input as PT_FreeText_PropertyType;
+            if (titleObject != null)
+                return new CharacterString_PropertyType { CharacterString = titleObject.Value };
+            else if (freeText != null)
+                return new CharacterString_PropertyType { CharacterString = freeText.CharacterString};
+            else
+                return new CharacterString_PropertyType { CharacterString = input.ToString() };
+
         }
     }
 }

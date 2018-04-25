@@ -125,7 +125,11 @@ namespace GeoNorgeAPI
             var identification = GetIdentification();
             if (identification != null && identification.citation != null && identification.citation.CI_Citation != null && identification.citation.CI_Citation.title != null)
             {
-                title = identification.citation.CI_Citation.title;
+                Anchor_Type titleObject = identification.citation.CI_Citation.title.item as Anchor_Type;
+                if (titleObject != null)
+                    title = toCharString(titleObject.Value);
+                else
+                    title = identification.citation.CI_Citation.title.item as CharacterString_PropertyType;
             }
             return title;
         }
@@ -143,8 +147,12 @@ namespace GeoNorgeAPI
             {
                 identification.citation.CI_Citation = new CI_Citation_Type();
             }
+            if (identification.citation.CI_Citation.title == null)
+            {
+                identification.citation.CI_Citation.title = new CI_Citation_Title();
+            }
 
-            identification.citation.CI_Citation.title = element;
+            identification.citation.CI_Citation.title.item = element;
         }
 
         public string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
@@ -675,7 +683,11 @@ namespace GeoNorgeAPI
                             if (descriptiveKeyword.MD_Keywords.thesaurusName != null && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation != null
                                 && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title != null)
                             {
-                                thesaurus = GetStringOrNull(descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title);
+                                Anchor_Type titleObject = identification.citation.CI_Citation.title.item as Anchor_Type;
+                                if (titleObject != null)
+                                    thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = titleObject.Value });
+                                else
+                                    thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = identification.citation.CI_Citation.title.item.ToString() });
                             }
                             
                             foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
@@ -739,10 +751,12 @@ namespace GeoNorgeAPI
                             CI_Citation_PropertyType thesaurus = null; 
                             if (!string.IsNullOrWhiteSpace(simpleKeyword.Thesaurus)) {
 
+                                object title = toCharString(simpleKeyword.Thesaurus);
                                 string date = "";
                                 if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
                                 {
                                     date = "2014-03-20";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SERVICES_TAXONOMY))
                                 {
@@ -751,18 +765,22 @@ namespace GeoNorgeAPI
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1))
                                 {
                                     date = "2008-06-01";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
                                 {
                                     date = "2017-11-16";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
                                 {
                                     date = "2014-10-28";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_NATIONAL_THEME_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_CONCEPT))
                                 {
                                     date = "2008-06-01";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_CONCEPT_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
                                 {
@@ -775,7 +793,7 @@ namespace GeoNorgeAPI
 
                                     thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
-                                        title = toCharString(simpleKeyword.Thesaurus),
+                                        title = new CI_Citation_Title { item = title },
                                         date = new CI_Date_PropertyType[] {
                                             new CI_Date_PropertyType {
                                                 CI_Date = new CI_Date_Type {
@@ -1050,7 +1068,7 @@ namespace GeoNorgeAPI
                     _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation != null &&
                     _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.title != null)
                 {
-                    applicationSchema = _md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.title.CharacterString;
+                    applicationSchema = GetStringFromObject(_md.applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.title);
                 }
                 return applicationSchema;
             }
@@ -1076,9 +1094,12 @@ namespace GeoNorgeAPI
                         {
                             CI_Citation = new CI_Citation_Type
                             {
-                                title = new CharacterString_PropertyType
+                                title = new CI_Citation_Title
                                 {
-                                    CharacterString = value
+                                    item = new CharacterString_PropertyType
+                                    {
+                                        CharacterString = value
+                                    }
                                 },
                                 date = new CI_Date_PropertyType[]
                                 {
@@ -1113,6 +1134,25 @@ namespace GeoNorgeAPI
                         }
                     }
                 };
+            }
+        }
+
+        private string GetStringFromObject(object o)
+        {
+            Anchor_Type titleObject = o as Anchor_Type;
+            CI_Citation_Title citation = o as CI_Citation_Title;
+
+            if (titleObject != null)
+                return titleObject.Value;
+            else if (citation != null)
+            {              
+                CharacterString_PropertyType title = citation.item as CharacterString_PropertyType;
+                return title.CharacterString;
+            }
+            else
+            {
+                CharacterString_PropertyType title = o as CharacterString_PropertyType;
+                return title.CharacterString;
             }
         }
 
@@ -1873,8 +1913,8 @@ namespace GeoNorgeAPI
 
 
                                 // title
-                                if (result.specification.CI_Citation.title != null) {
-                                    value.Title = result.specification.CI_Citation.title.CharacterString;
+                                if (result.specification.CI_Citation.title.item != null) {
+                                    value.Title = GetStringFromObject(result.specification.CI_Citation.title.item);
                                 }
 
 
@@ -1931,7 +1971,7 @@ namespace GeoNorgeAPI
                                     AbstractDQ_Result = new DQ_ConformanceResult_Type {
                                         specification = new CI_Citation_PropertyType {
                                             CI_Citation = new CI_Citation_Type {
-                                                title = toCharString(value.Title),
+                                                title = new CI_Citation_Title{ item =  toCharString(value.Title) },
                                                 date = new CI_Date_PropertyType[] {
                                                     new CI_Date_PropertyType {
                                                         CI_Date = new CI_Date_Type {
@@ -2031,7 +2071,7 @@ namespace GeoNorgeAPI
                                     // title
                                     if (result.specification.CI_Citation.title != null)
                                     {
-                                        resultItem.Title = result.specification.CI_Citation.title.CharacterString;
+                                        resultItem.Title = GetStringFromObject (result.specification.CI_Citation.title);
                                     }
 
 
@@ -2069,7 +2109,7 @@ namespace GeoNorgeAPI
                                         && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title != null
                                         ) 
                                     {
-                                        resultItem.Responsible = result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.CharacterString;
+                                        resultItem.Responsible = GetStringFromObject(result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title);
                                     }
 
 
@@ -2122,7 +2162,7 @@ namespace GeoNorgeAPI
                                 {
                                     CI_Citation = new CI_Citation_Type
                                     {
-                                        title = toCharString(mdResult.Title),
+                                        title = new CI_Citation_Title { item = toCharString(mdResult.Title) },
                                         date = new CI_Date_PropertyType[] {
                                             new CI_Date_PropertyType {
                                                 CI_Date = new CI_Date_Type {
@@ -2148,7 +2188,7 @@ namespace GeoNorgeAPI
                                                 {
                                                     CI_Citation = new CI_Citation_Type
                                                     {
-                                                        title = new CharacterString_PropertyType { CharacterString = mdResult.Responsible }
+                                                        title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } }
                                                     }
                                                 }
                                             }
@@ -3571,11 +3611,16 @@ namespace GeoNorgeAPI
     public class SimpleKeyword
     {
         public const string THESAURUS_GEMET_INSPIRE_V1 = "GEMET - INSPIRE themes, version 1.0";
+        public const string THESAURUS_GEMET_INSPIRE_V1_LINK = "http://inspire.ec.europa.eu/theme";
         public const string THESAURUS_INSPIRE_PRIORITY_DATASET = "INSPIRE priority data set";
+        public const string THESAURUS_INSPIRE_PRIORITY_DATASET_LINK = "http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset";
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
+        public const string THESAURUS_NATIONAL_INITIATIVE_LINK = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/samarbeid-og-lover";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
         public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
+        public const string THESAURUS_NATIONAL_THEME_LINK = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling";
         public const string THESAURUS_CONCEPT = "SOSI produktspesifikasjon";
+        public const string THESAURUS_CONCEPT_LINK = "https://objektkatalog.geonorge.no/";
         public const string THESAURUS_SERVICE_TYPE = "ISO 19119:2016 Geographic information -- Services";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";

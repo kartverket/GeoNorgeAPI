@@ -70,7 +70,7 @@ namespace GeoNorgeAPI.Tests
             {
                 CI_Citation = new CI_Citation_Type
                 {
-                    title = CharString("Eksempeldatasettet sin tittel."),
+                    title = new CI_Citation_Title { item = CharString("Eksempeldatasettet sin tittel.") },
                     date = new[] { 
                         new CI_Date_PropertyType {
                             CI_Date = new CI_Date_Type { 
@@ -160,7 +160,7 @@ namespace GeoNorgeAPI.Tests
                             {
                                 CI_Citation = new CI_Citation_Type
                                     {
-                                        title = CharString("GEMET - INSPIRE themes, version 1.0"),
+                                        title = new CI_Citation_Title{ item =  new Anchor_Type{ Value = "GEMET - INSPIRE themes, version 1.0", href = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/inspiretema" } },
 
                                         date = new [] { new CI_Date_PropertyType
                                             {
@@ -471,7 +471,7 @@ namespace GeoNorgeAPI.Tests
                                                         {
                                                             CI_Citation = new CI_Citation_Type
                                                                 {
-                                                                    title = CharString("COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards interoperability of spatial data sets and services"),
+                                                                    title = new CI_Citation_Title{ item = CharString("COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards interoperability of spatial data sets and services") },
                                                                     date = new CI_Date_PropertyType[]
                                                                         {
                                                                             new CI_Date_PropertyType
