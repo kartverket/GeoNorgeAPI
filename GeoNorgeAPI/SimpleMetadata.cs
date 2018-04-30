@@ -3289,7 +3289,7 @@ namespace GeoNorgeAPI
                                                 {
                                                     CharacterString = dsFormat.Organization
                                                 },
-                                                role = new CI_RoleCode_PropertyType { CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" } }
+                                                role = new CI_RoleCode_PropertyType { CI_RoleCode = new CodeListValue_Type { codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode", codeListValue = "distributor" } }
                                             }
                                         },
                                         distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
