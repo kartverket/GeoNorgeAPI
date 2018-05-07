@@ -492,9 +492,32 @@ namespace GeoNorgeAPI.Tests
                                                                                                 }
                                                                                         }
                                                                                 }
+                                                                        },
+                                                                identifier = new MD_Identifier_PropertyType[]
+                                                                {
+                                                                    new MD_Identifier_PropertyType
+                                                                    {
+                                                                        MD_Identifier = new MD_Identifier_Type
+                                                                        {
+                                                                         authority = new CI_Citation_PropertyType
+                                                                            {
+                                                                                CI_Citation = new CI_Citation_Type
+                                                                                {
+                                                                                    title = new CI_Citation_Title
+                                                                                    {
+                                                                                        item = new CharacterString_PropertyType
+                                                                                        {
+                                                                                            CharacterString = "inspire"
+                                                                                        }
+                                                                                    }, date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
+                                                                                }
+                                                                            },
+                                                                            code = new CharacterString_PropertyType()
                                                                         }
+                                                                    }
                                                                 }
-                                                        },
+                                                            }
+                                                    },
                                                     explanation = CharString("See the referenced specification"),
                                                     pass = new Boolean_PropertyType { Boolean = true }
                                                 }

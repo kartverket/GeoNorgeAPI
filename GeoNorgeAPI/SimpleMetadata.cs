@@ -2155,32 +2155,32 @@ namespace GeoNorgeAPI
                     foreach (var mdResult in value)
                     {
 
-                        DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
+                    DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
+                    {
+                        AbstractDQ_Result = new DQ_ConformanceResult_Type
                         {
-                            AbstractDQ_Result = new DQ_ConformanceResult_Type
+                            specification = new CI_Citation_PropertyType
                             {
-                                specification = new CI_Citation_PropertyType
+                                CI_Citation = new CI_Citation_Type
                                 {
-                                    CI_Citation = new CI_Citation_Type
-                                    {
-                                        title = new CI_Citation_Title { item = toCharString(mdResult.Title) },
-                                        date = new CI_Date_PropertyType[] {
+                                    title = new CI_Citation_Title { item = toCharString(mdResult.Title) },
+                                    date = new CI_Date_PropertyType[] {
                                             new CI_Date_PropertyType {
                                                 CI_Date = new CI_Date_Type {
                                                     date = new Date_PropertyType {
-                                                        Item = mdResult.Date  
+                                                        Item = mdResult.Date
                                                     },
                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                         CI_DateTypeCode = new CodeListValue_Type {
                                                             codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
                                                             codeListValue = mdResult.DateType
-                                                        }    
+                                                        }
                                                     }
                                                 }
                                             }
                                         },
-                                        identifier = new MD_Identifier_PropertyType[]
-                                        {
+                                    identifier = new MD_Identifier_PropertyType[]
+                                    {
                                          new MD_Identifier_PropertyType
                                          {
                                             MD_Identifier = new MD_Identifier_Type
@@ -2189,9 +2189,10 @@ namespace GeoNorgeAPI
                                                 {
                                                     CI_Citation = new CI_Citation_Type
                                                     {
-                                                        title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } }
+                                                        title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } },
+                                                        date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
                                                     }
-                                                }
+                                                }, code = new CharacterString_PropertyType()
                                             }
                                           }
                                         }
