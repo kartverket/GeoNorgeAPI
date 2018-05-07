@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.48: Add reference to codelist for distributor, create empty code and date for DQ_Result_PropertyType
 3.0.47: Fix for keyword thesaurus name
 3.0.46: Added support for Anchor_Type in CI_Citation.title
 3.0.45: Update inspire priority data set
