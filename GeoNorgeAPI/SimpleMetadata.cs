@@ -3015,7 +3015,10 @@ namespace GeoNorgeAPI
                 else
                 {
                     otherCons = new MD_RestrictionOther_PropertyType[1];
-                    otherCons[0] = otherConsString;
+                    if (string.IsNullOrEmpty(value.OtherConstraints))
+                        otherCons[0] = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new object() };
+                    else
+                        otherCons[0] = otherConsString;
                 }
 
                 if (!string.IsNullOrEmpty(value.OtherConstraintsAccess))

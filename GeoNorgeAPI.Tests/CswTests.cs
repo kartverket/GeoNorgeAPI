@@ -145,7 +145,7 @@ namespace GeoNorgeAPI.Tests
 
             _geonorge.MetadataUpdate(metadata);
         }
-        
+
         [Test]
         public void DeleteMetadata()
         {
