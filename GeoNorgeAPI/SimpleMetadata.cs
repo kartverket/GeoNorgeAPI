@@ -2043,93 +2043,99 @@ namespace GeoNorgeAPI
                     && _md.dataQualityInfo[0] != null
                     && _md.dataQualityInfo[0].DQ_DataQuality != null
                     && _md.dataQualityInfo[0].DQ_DataQuality.report != null
-                    && _md.dataQualityInfo[0].DQ_DataQuality.report.Length > 0
-                    && _md.dataQualityInfo[0].DQ_DataQuality.report[0] != null
-                    && _md.dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element != null)
+                    && _md.dataQualityInfo[0].DQ_DataQuality.report.Length > 0)
                 {
+                    var numberOfReports = _md.dataQualityInfo[0].DQ_DataQuality.report.Length;
 
-                    DQ_DomainConsistency_Type domainConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
-                    if (domainConsistency != null
-                        && domainConsistency.result != null
-                        && domainConsistency.result.Length > 0
-                        && domainConsistency.result[0] != null
-                        && domainConsistency.result[0].AbstractDQ_Result != null)
+                    value = new List<SimpleQualitySpecification>();
+
+                    for (int r = 0; r < numberOfReports; r++)
                     {
-                        value = new List<SimpleQualitySpecification>();
-
-
-                        foreach (var mdResult in domainConsistency.result)
+                        if (_md.dataQualityInfo[0].DQ_DataQuality.report[r] != null
+                        && _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element != null)
                         {
-                            DQ_ConformanceResult_Type result = mdResult.AbstractDQ_Result as DQ_ConformanceResult_Type;
-                            if (result != null)
+                            DQ_DomainConsistency_Type domainConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element as DQ_DomainConsistency_Type;
+                            if (domainConsistency != null
+                                && domainConsistency.result != null
+                                && domainConsistency.result.Length > 0
+                                && domainConsistency.result[0] != null
+                                && domainConsistency.result[0].AbstractDQ_Result != null)
                             {
-                                SimpleQualitySpecification resultItem = null;
 
-                                if (result.specification != null
-                                && result.specification.CI_Citation != null)
+                                foreach (var mdResult in domainConsistency.result)
                                 {
-                                    resultItem = new SimpleQualitySpecification();
-                                    // title
-                                    if (result.specification.CI_Citation.title != null)
+                                    DQ_ConformanceResult_Type result = mdResult.AbstractDQ_Result as DQ_ConformanceResult_Type;
+                                    if (result != null)
                                     {
-                                        resultItem.Title = GetStringFromObject (result.specification.CI_Citation.title);
-                                    }
+                                        SimpleQualitySpecification resultItem = null;
 
-
-                                    // date and datetype
-                                    if (result.specification.CI_Citation.date != null
-                                        && result.specification.CI_Citation.date.Length > 0
-                                        && result.specification.CI_Citation.date[0] != null
-                                        && result.specification.CI_Citation.date[0].CI_Date != null)
-                                    {
-
-                                        CI_Date_Type dateType = result.specification.CI_Citation.date[0].CI_Date;
-
-                                        if (dateType.date != null && dateType.date.Item != null)
+                                        if (result.specification != null
+                                        && result.specification.CI_Citation != null)
                                         {
-                                            string date = dateType.date.Item as string;
-                                            if (date != null)
+                                            resultItem = new SimpleQualitySpecification();
+                                            // title
+                                            if (result.specification.CI_Citation.title != null)
                                             {
-                                                resultItem.Date = date;
+                                                resultItem.Title = GetStringFromObject(result.specification.CI_Citation.title);
                                             }
+
+
+                                            // date and datetype
+                                            if (result.specification.CI_Citation.date != null
+                                                && result.specification.CI_Citation.date.Length > 0
+                                                && result.specification.CI_Citation.date[0] != null
+                                                && result.specification.CI_Citation.date[0].CI_Date != null)
+                                            {
+
+                                                CI_Date_Type dateType = result.specification.CI_Citation.date[0].CI_Date;
+
+                                                if (dateType.date != null && dateType.date.Item != null)
+                                                {
+                                                    string date = dateType.date.Item as string;
+                                                    if (date != null)
+                                                    {
+                                                        resultItem.Date = date;
+                                                    }
+                                                }
+
+                                                if (dateType.dateType != null && dateType.dateType.CI_DateTypeCode != null)
+                                                {
+                                                    resultItem.DateType = dateType.dateType.CI_DateTypeCode.codeListValue;
+                                                }
+                                            }
+
+                                            // authority
+                                            if (result.specification.CI_Citation.identifier != null
+                                                && result.specification.CI_Citation.identifier.Length > 0
+                                                && result.specification.CI_Citation.identifier[0] != null
+                                                && result.specification.CI_Citation.identifier[0].MD_Identifier != null
+                                                && result.specification.CI_Citation.identifier[0].MD_Identifier.authority != null
+                                                && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation != null
+                                                && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title != null
+                                                )
+                                            {
+                                                resultItem.Responsible = GetStringFromObject(result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title);
+                                            }
+
+
+                                            // explanation
+                                            if (result.explanation != null)
+                                            {
+                                                resultItem.Explanation = result.explanation.CharacterString;
+                                                var englishExplanation = result.explanation as PT_FreeText_PropertyType;
+                                                if (englishExplanation != null)
+                                                    resultItem.EnglishExplanation = GetEnglishValueFromFreeText(englishExplanation);
+                                            }
+
+                                            // result
+                                            if (result.pass != null)
+                                            {
+                                                resultItem.Result = result.pass.Boolean;
+                                            }
+
+                                            value.Add(resultItem);
                                         }
-
-                                        if (dateType.dateType != null && dateType.dateType.CI_DateTypeCode != null)
-                                        {
-                                            resultItem.DateType = dateType.dateType.CI_DateTypeCode.codeListValue;
-                                        }
                                     }
-
-                                    // authority
-                                    if (result.specification.CI_Citation.identifier != null
-                                        && result.specification.CI_Citation.identifier.Length > 0
-                                        && result.specification.CI_Citation.identifier[0] != null
-                                        && result.specification.CI_Citation.identifier[0].MD_Identifier != null
-                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority != null
-                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation != null
-                                        && result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title != null
-                                        ) 
-                                    {
-                                        resultItem.Responsible = GetStringFromObject(result.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title);
-                                    }
-
-
-                                    // explanation
-                                    if (result.explanation != null)
-                                    {
-                                        resultItem.Explanation = result.explanation.CharacterString;
-                                        var englishExplanation = result.explanation as PT_FreeText_PropertyType;
-                                        if (englishExplanation != null)
-                                            resultItem.EnglishExplanation = GetEnglishValueFromFreeText(englishExplanation);
-                                    }
-
-                                    // result
-                                    if (result.pass != null)
-                                    {
-                                        resultItem.Result = result.pass.Boolean;
-                                    }
-
-                                    value.Add(resultItem);
                                 }
                             }
                         }
@@ -2140,20 +2146,15 @@ namespace GeoNorgeAPI
 
             set
             {
+                List<DQ_Element_PropertyType> reports = new List<DQ_Element_PropertyType>();
 
-                    DQ_Element_PropertyType[] reports = new DQ_Element_PropertyType[] {
-                        new DQ_Element_PropertyType {
-                            AbstractDQ_Element = new DQ_DomainConsistency_Type 
-                            {
-                             result = new DQ_Result_PropertyType[] {}   
-                            }
-                        }
-                    };
+                List<DQ_Result_PropertyType> mdResults = new List<DQ_Result_PropertyType>();
+                const int numberOfResultsForEachReport = 2;
+                int reportCounter = 0;
+                int resultCounter = 0;
 
-                    List<DQ_Result_PropertyType> mdResults = new List<DQ_Result_PropertyType>();
-               
-                    foreach (var mdResult in value)
-                    {
+                foreach (var mdResult in value)
+                {
 
                     DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
                     {
@@ -2196,17 +2197,45 @@ namespace GeoNorgeAPI
                                             }
                                           }
                                         }
-                                    }
-                                },
-                                explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
-                                pass = new Boolean_PropertyType { Boolean = mdResult.Result }
-                            }
-                        };
+                                }
+                            },
+                            explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
+                            pass = new Boolean_PropertyType { Boolean = mdResult.Result }
+                        }
+                    };
 
-                        mdResults.Add(DQResult);
+                    mdResults.Add(DQResult);
+                    resultCounter++;
+                    if (resultCounter == numberOfResultsForEachReport)
+                    {
+                        reports.Add(
+                            new DQ_Element_PropertyType
+                            {
+                                AbstractDQ_Element = new DQ_DomainConsistency_Type
+                                {
+                                    result = new DQ_Result_PropertyType[] { }
+                                }
+                            });
+
+                        reports[reportCounter].AbstractDQ_Element.result = mdResults.ToArray();
+                        mdResults = new List<DQ_Result_PropertyType>();
+                        resultCounter = 0;
+                        reportCounter++;
                     }
+                }
 
-                    reports[0].AbstractDQ_Element.result = mdResults.ToArray();
+                if (mdResults.Count > 0)
+                {
+                    reports.Add(
+                    new DQ_Element_PropertyType
+                    {
+                        AbstractDQ_Element = new DQ_DomainConsistency_Type
+                        {
+                            result = new DQ_Result_PropertyType[] { }
+                        }
+                    });
+                    reports[reportCounter].AbstractDQ_Element.result = mdResults.ToArray();
+                }
 
 
                 if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
@@ -2228,14 +2257,14 @@ namespace GeoNorgeAPI
                                         }
                                     }
                                 },
-                                report = reports
+                                report = reports.ToArray()
                             }
                         }
                     };
                 }
                 else
                 {
-                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
+                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports.ToArray();
                 }
 
 

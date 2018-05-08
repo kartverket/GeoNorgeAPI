@@ -1406,6 +1406,14 @@ namespace GeoNorgeAPI.Tests
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
+            string expectedTitle3 = "title3";
+            string expectedDate3 = "2014-01-01";
+            string expectedDateType3 = "creation";
+            string expectedExplanation3 = "explained";
+            string expectedEnglishExplanation3 = "explained english";
+            bool expectedResult3 = false;
+            string expectedResponsible3 = "OtherSpec";
+
             _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
             {
                 new DQ_DataQuality_PropertyType {
@@ -1524,7 +1532,68 @@ namespace GeoNorgeAPI.Tests
                                         }
                                     }
                                 }
-                            }
+                            },
+                            new DQ_Element_PropertyType
+                            {
+                                AbstractDQ_Element = new DQ_DomainConsistency_Type {
+                                    result = new DQ_Result_PropertyType[] {
+                                        new DQ_Result_PropertyType {
+                                            AbstractDQ_Result = new DQ_ConformanceResult_Type {
+                                                specification = new CI_Citation_PropertyType {
+                                                    CI_Citation = new CI_Citation_Type {
+                                                        title = new CI_Citation_Title{ item = toCharString(expectedTitle3) },
+                                                        date = new CI_Date_PropertyType[] {
+                                                            new CI_Date_PropertyType {
+                                                                CI_Date = new CI_Date_Type {
+                                                                    date = new Date_PropertyType {
+                                                                        Item = expectedDate3
+                                                                    },
+                                                                    dateType = new CI_DateTypeCode_PropertyType {
+                                                                        CI_DateTypeCode = new CodeListValue_Type {
+                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeListValue = expectedDateType3
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                        identifier = new MD_Identifier_PropertyType[]{
+                                                            new MD_Identifier_PropertyType{
+                                                                MD_Identifier = new MD_Identifier_Type{
+                                                                    authority = new CI_Citation_PropertyType{
+                                                                        CI_Citation = new CI_Citation_Type{
+                                                                            title = new CI_Citation_Title{ item = new CharacterString_PropertyType{ CharacterString = expectedResponsible3 } }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                explanation = new PT_FreeText_PropertyType
+                                                {
+                                                    CharacterString = expectedExplanation3,
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                                        {
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                Value = expectedEnglishExplanation3
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                },
+                                                pass = new Boolean_PropertyType { Boolean = expectedResult3 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }   
                         }
                     }
                 }
@@ -1532,6 +1601,7 @@ namespace GeoNorgeAPI.Tests
 
 
             List<SimpleQualitySpecification> spec = _md.QualitySpecifications;
+            Assert.AreEqual(3, spec.Count);
 
             Assert.IsNotNull(spec);
             Assert.AreEqual(expectedTitle, spec[0].Title);
@@ -1572,6 +1642,14 @@ namespace GeoNorgeAPI.Tests
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
+            string expectedTitle3 = "title3";
+            string expectedDate3 = "2014-01-01";
+            string expectedDateType3 = "creation";
+            string expectedExplanation3 = "explained";
+            string expectedEnglishExplanation3 = "explained english";
+            bool expectedResult3 = false;
+            string expectedResponsible3 = "OtherSpec";
+
             List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
 
             QualityList.Add(new SimpleQualitySpecification
@@ -1594,6 +1672,17 @@ namespace GeoNorgeAPI.Tests
                 EnglishExplanation = expectedEnglishExplanation2,
                 Result = expectedResult2,
                 Responsible = expectedResponsible2
+            });
+
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Title = expectedTitle3,
+                Date = expectedDate3,
+                DateType = expectedDateType3,
+                Explanation = expectedExplanation3,
+                EnglishExplanation = expectedEnglishExplanation3,
+                Result = expectedResult3,
+                Responsible = expectedResponsible3
             });
 
 
