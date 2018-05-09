@@ -4,6 +4,7 @@ using www.opengis.net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Arkitektum.GIS.Lib.SerializeUtil;
+using System.IO;
 
 namespace GeoNorgeAPI.Tests
 {
@@ -3284,6 +3285,19 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
             Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
             Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+        }
+
+        [Test]
+        public void ShouldRemoveUnnecessaryElements()
+        {
+            string xml = File.ReadAllText("xml/unnecessary.xml");
+            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
+            metadata.RemoveUnnecessaryElements();
+            MD_Metadata_Type metadataUpdated = metadata.GetMetadata();
+            var citation = metadataUpdated.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation;
+            Assert.IsNull(citation.citedResponsibleParty);
+            Assert.IsNull(citation.edition);
+            Assert.IsNull(citation.presentationForm);
         }
 
         private void SetDateOnCitationDateType(object date, string dateType)

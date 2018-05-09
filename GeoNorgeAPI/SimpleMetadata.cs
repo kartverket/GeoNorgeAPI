@@ -91,7 +91,44 @@ namespace GeoNorgeAPI
         public MD_Metadata_Type GetMetadata()
         {
             return _md;
-        }        
+        }
+
+        public void RemoveUnnecessaryElements()
+        {
+            try
+            {
+                if(_md.identificationInfo != null && _md.identificationInfo.Length > 0
+                    && _md.identificationInfo[0].AbstractMD_Identification != null 
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty != null)
+                        _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty = null;
+            }
+            catch (Exception ex) { }
+
+            try
+            {
+                if (_md.identificationInfo != null && _md.identificationInfo.Length > 0
+                    && _md.identificationInfo[0].AbstractMD_Identification != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition != null)
+                        _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition = null;
+            }
+            catch (Exception ex) { }
+
+            try
+            {
+                if (_md.identificationInfo != null && _md.identificationInfo.Length > 0
+                    && _md.identificationInfo[0].AbstractMD_Identification != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation != null
+                    && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm != null)
+                        _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm = null;
+            }
+            catch (Exception ex) { }
+            
+        }
 
         public string Title
         {
