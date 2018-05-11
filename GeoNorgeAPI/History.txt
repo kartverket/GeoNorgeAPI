@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.52: Add support for setting dataset language
 3.0.51: Added support for removing special unnecessary elements
 3.0.50: Group quality results into maximum 2 per report
 3.0.49: Handle empty gmd:otherConstraints
