@@ -696,6 +696,28 @@ namespace GeoNorgeAPI
             return input != null ? input.CharacterString : null;
         }
 
+        public string Language
+        {
+            get
+            {
+                string language = null;
+                var datasetIdentification = GetDatasetIdentification();
+                if (datasetIdentification != null && datasetIdentification.language != null && datasetIdentification.language.Length > 0)
+                {
+                    language = datasetIdentification.language[0].CharacterString;
+                }
+                return language;
+            }
+
+            set
+            {
+                if(string.IsNullOrEmpty(value))
+                    GetDatasetIdentification().language = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = null } };
+                else
+                    GetDatasetIdentification().language = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value } };
+            }
+        }
+
 
         public List<SimpleKeyword> Keywords
         {
