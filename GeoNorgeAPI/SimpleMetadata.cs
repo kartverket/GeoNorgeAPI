@@ -1852,7 +1852,7 @@ namespace GeoNorgeAPI
                             {
                                 MD_RepresentativeFraction = new MD_RepresentativeFraction_Type
                                 {
-                                    denominator = new Integer_PropertyType { Integer = value }
+                                    denominator = string.IsNullOrWhiteSpace(value) ?  new Integer_PropertyType { Integer = null } : new Integer_PropertyType { Integer = value }
                                 }
                             }
                         }
