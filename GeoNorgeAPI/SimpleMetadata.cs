@@ -1780,9 +1780,7 @@ namespace GeoNorgeAPI
                     _md.distributionInfo.MD_Distribution = new MD_Distribution_Type();
                 }
 
-                URL_PropertyType url = null;
-                if (!string.IsNullOrWhiteSpace(value.URL))
-                    url = new URL_PropertyType { URL = value.URL };
+                URL_PropertyType url = new URL_PropertyType { URL = string.IsNullOrEmpty(value.URL) ? null : value.URL };
 
                 CharacterString_PropertyType protocol = null;
                 if (!string.IsNullOrWhiteSpace(value.Protocol))
