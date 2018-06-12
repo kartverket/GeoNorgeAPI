@@ -2008,7 +2008,7 @@ namespace GeoNorgeAPI
                                 }
 
                                 // result
-                                if (result.pass != null)
+                                if (result.pass != null && result.pass.Boolean.HasValue)
                                 {
                                     value.Result = result.pass.Boolean;
                                 }
@@ -2048,7 +2048,9 @@ namespace GeoNorgeAPI
                                             }    
                                         },
                                         explanation = CreateFreeTextElement(value.Explanation, value.EnglishExplanation),
-                                        pass = new Boolean_PropertyType { Boolean = value.Result }
+                                        pass = value.Result != null
+                                               ? new Boolean_PropertyType { Boolean = value.Result.Value }
+                                               : new Boolean_PropertyType { nilReason = "unknown" }
                                     }
                                 }
                             }
@@ -2185,9 +2187,9 @@ namespace GeoNorgeAPI
                                             }
 
                                             // result
-                                            if (result.pass != null)
+                                            if (result.pass != null && result.pass.Boolean.HasValue)
                                             {
-                                                resultItem.Result = result.pass.Boolean;
+                                                resultItem.Result = result.pass.Boolean.Value;
                                             }
 
                                             value.Add(resultItem);
@@ -2257,7 +2259,9 @@ namespace GeoNorgeAPI
                                 }
                             },
                             explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
-                            pass = new Boolean_PropertyType { Boolean = mdResult.Result }
+                            pass = mdResult.Result != null 
+                            ? new Boolean_PropertyType { Boolean = mdResult.Result.Value } 
+                            : new Boolean_PropertyType { nilReason = "unknown" }
                         }
                     };
 
@@ -3841,7 +3845,7 @@ namespace GeoNorgeAPI
         public string DateType { get; set; }
         public string Explanation { get; set; }
         public string EnglishExplanation { get; set; }
-        public bool Result { get; set; }
+        public bool? Result { get; set; }
         public string Responsible { get; set; }
     }
 
