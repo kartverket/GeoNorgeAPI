@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.57: Added description and function for spatial data service access point
 3.0.56: Handle not evaluated quality specification result
 3.0.55: Update to Arkitektum.GIS.Lib.MetadataCSW version 1.9.94
 3.0.54: Save empty gmd:linkage
