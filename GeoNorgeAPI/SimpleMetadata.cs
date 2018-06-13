@@ -3738,7 +3738,7 @@ namespace GeoNorgeAPI
 
         private bool IsAccessPoint(string protocol)
         {
-            return protocol == "REST-API" || protocol == "Webservice" || protocol == "OGC:WPS" || protocol == "OGC:SOS";
+            return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS";
         }
         
     }
