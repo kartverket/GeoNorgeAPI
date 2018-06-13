@@ -1794,6 +1794,15 @@ namespace GeoNorgeAPI
                 if (!string.IsNullOrWhiteSpace(value.UnitsOfDistribution))
                     UnitsOfDistribution = CreateFreeTextElement( value.UnitsOfDistribution, value.EnglishUnitsOfDistribution);
 
+                CI_OnlineResource_Type.Description_Type descriptionOption = null;
+                CI_OnLineFunctionCode_PropertyType functionOption = null;
+
+                if (!string.IsNullOrEmpty(value.Protocol) && IsAccessPoint(value.Protocol))
+                {
+                    descriptionOption = GetAccessPointDescription();
+                    functionOption = GetOnlineFunction();
+                }
+
                 _md.distributionInfo.MD_Distribution.transferOptions = new MD_DigitalTransferOptions_PropertyType[] {
                     new MD_DigitalTransferOptions_PropertyType {
                         MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type { 
@@ -1803,7 +1812,9 @@ namespace GeoNorgeAPI
                                     CI_OnlineResource = new CI_OnlineResource_Type {
                                         linkage = url,
                                         protocol = protocol,
-                                        name = name
+                                        name = name,
+                                        description = descriptionOption,
+                                        function = functionOption
                                     }
                                 }
                             }
@@ -3363,6 +3374,15 @@ namespace GeoNorgeAPI
 
                 foreach (var dsFormat in value)
                 {
+                    CI_OnlineResource_Type.Description_Type descriptionOption = null;
+                    CI_OnLineFunctionCode_PropertyType functionOption = null;
+
+                    if (!string.IsNullOrEmpty(dsFormat.Protocol) && IsAccessPoint(dsFormat.Protocol))
+                    {
+                        descriptionOption = GetAccessPointDescription();
+                        functionOption = GetOnlineFunction();
+                    }
+
                     MD_Format_PropertyType mdFormatPropertyType = new MD_Format_PropertyType
                     {
                         MD_Format = new MD_Format_Type
@@ -3401,7 +3421,9 @@ namespace GeoNorgeAPI
                                                             {
                                                                 protocol = new CharacterString_PropertyType { CharacterString = dsFormat.Protocol },
                                                                 name = new CharacterString_PropertyType { CharacterString = dsFormat.Name },
-                                                                linkage = new URL_PropertyType { URL = dsFormat.URL }
+                                                                linkage = new URL_PropertyType { URL = dsFormat.URL },
+                                                                description = descriptionOption,
+                                                                function = functionOption
                                                             }
                                                         }
                                                     }
@@ -3419,6 +3441,30 @@ namespace GeoNorgeAPI
                 _md.distributionInfo.MD_Distribution.distributionFormat = dsFormats.ToArray();
 
             }
+        }
+
+        private static CI_OnLineFunctionCode_PropertyType GetOnlineFunction()
+        {
+            return new CI_OnLineFunctionCode_PropertyType
+            {
+                CI_OnLineFunctionCode = new CodeListValue_Type
+                {
+                    codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_OnLineFunctionCode",
+                    codeListValue = "information"
+                }
+            };
+        }
+
+        private static CI_OnlineResource_Type.Description_Type GetAccessPointDescription()
+        {
+            return new CI_OnlineResource_Type.Description_Type
+            {
+                description = new Anchor_Type
+                {
+                    href = "http://inspire.ec.europa.eu/metadata-codelist/OnLineDescriptionCode/accessPoint",
+                    Value = "accessPoint"
+                }
+            };
         }
 
         public SimpleDistributionDetails GetDistributionTransferOption()
@@ -3690,7 +3736,10 @@ namespace GeoNorgeAPI
             return new Decimal_PropertyType { Decimal = Decimal.Parse(input, NumberStyles.Any, cultureInfo) };
         }
 
-
+        private bool IsAccessPoint(string protocol)
+        {
+            return protocol == "REST-API" || protocol == "Webservice" || protocol == "OGC:WPS" || protocol == "OGC:SOS";
+        }
         
     }
 
