@@ -1797,7 +1797,7 @@ namespace GeoNorgeAPI
                 CI_OnlineResource_Type.Description_Type descriptionOption = null;
                 CI_OnLineFunctionCode_PropertyType functionOption = null;
 
-                if (!string.IsNullOrEmpty(value.Protocol) && IsAccessPoint(value.Protocol))
+                if (IsService() && !string.IsNullOrEmpty(value.Protocol) && IsAccessPoint(value.Protocol))
                 {
                     descriptionOption = GetAccessPointDescription();
                     functionOption = GetOnlineFunction();
@@ -3377,7 +3377,7 @@ namespace GeoNorgeAPI
                     CI_OnlineResource_Type.Description_Type descriptionOption = null;
                     CI_OnLineFunctionCode_PropertyType functionOption = null;
 
-                    if (!string.IsNullOrEmpty(dsFormat.Protocol) && IsAccessPoint(dsFormat.Protocol))
+                    if (IsService() && !string.IsNullOrEmpty(dsFormat.Protocol) && IsAccessPoint(dsFormat.Protocol))
                     {
                         descriptionOption = GetAccessPointDescription();
                         functionOption = GetOnlineFunction();
