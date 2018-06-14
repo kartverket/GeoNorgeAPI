@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.59: Set description and function for CI_OnlineResource only for service
 3.0.58: Fix IsAccessPoint protocol value
 3.0.57: Added description and function for spatial data service access point
 3.0.56: Handle not evaluated quality specification result
