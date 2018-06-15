@@ -1643,7 +1643,10 @@ namespace GeoNorgeAPI.Tests
             bool expectedResult2 = false;
             string expectedResponsible2 = "Inspire";
 
+            string expectedSpecificationLink3 = "http://inspire.ec.europa.eu/id/citation/ir/reg-976-2009";
             string expectedTitle3 = "title3";
+            string expectedTitleLink3 = "http://inspire.ec.europa.eu/id/ats/metadata/2.0/sds-invocable";
+            string expectedTitleLinkDescription3 = "INSPIRE Invocable Spatial Data Services metadata";
             string expectedDate3 = "2014-01-01";
             string expectedDateType3 = "creation";
             string expectedExplanation3 = "explained";
@@ -1677,7 +1680,10 @@ namespace GeoNorgeAPI.Tests
 
             QualityList.Add(new SimpleQualitySpecification
             {
+                SpecificationLink = expectedSpecificationLink3,
                 Title = expectedTitle3,
+                TitleLink = expectedTitleLink3,
+                TitleLinkDescription = expectedTitleLinkDescription3,
                 Date = expectedDate3,
                 DateType = expectedDateType3,
                 Explanation = expectedExplanation3,
@@ -1692,6 +1698,8 @@ namespace GeoNorgeAPI.Tests
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
             DQ_ConformanceResult_Type conformanceResult2 = domainConsistency.result[1].AbstractDQ_Result as DQ_ConformanceResult_Type;
+            DQ_DomainConsistency_Type domainConsistency2 = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[1].AbstractDQ_Element as DQ_DomainConsistency_Type;
+            DQ_ConformanceResult_Type conformanceResult3 = domainConsistency2.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
             var explanation = conformanceResult.explanation as PT_FreeText_PropertyType;
             var explanation2 = conformanceResult2.explanation as PT_FreeText_PropertyType;
             var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
@@ -1714,6 +1722,12 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedEnglishExplanation2, explanation2.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
             Assert.AreEqual(expectedResponsible2, responsible2.CharacterString);
+
+            var anchorTitle3 = conformanceResult3.specification.CI_Citation.title.item as Anchor_Type;
+            Assert.AreEqual(expectedTitle3, anchorTitle3.Value);
+            Assert.AreEqual(expectedSpecificationLink3, conformanceResult3.specification.href);
+            Assert.AreEqual(expectedTitleLink3, anchorTitle3.href);
+            Assert.AreEqual(expectedTitleLinkDescription3, anchorTitle3.title);
 
         }
 

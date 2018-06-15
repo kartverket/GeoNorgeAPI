@@ -2143,10 +2143,21 @@ namespace GeoNorgeAPI
                                         && result.specification.CI_Citation != null)
                                         {
                                             resultItem = new SimpleQualitySpecification();
+
+                                            if (!string.IsNullOrEmpty(result.specification.href))
+                                                resultItem.SpecificationLink = result.specification.href;
                                             // title
                                             if (result.specification.CI_Citation.title != null)
                                             {
-                                                resultItem.Title = GetStringFromObject(result.specification.CI_Citation.title);
+                                                var anchorTitle = result.specification.CI_Citation.title.item as Anchor_Type;
+                                                if(anchorTitle != null)
+                                                {
+                                                    resultItem.Title = anchorTitle.Value;
+                                                    resultItem.TitleLink = anchorTitle.href;
+                                                    resultItem.TitleLinkDescription = anchorTitle.title;
+                                                }
+                                                else
+                                                    resultItem.Title = GetStringFromObject(result.specification.CI_Citation.title);
                                             }
 
 
@@ -2225,6 +2236,21 @@ namespace GeoNorgeAPI
 
                 foreach (var mdResult in value)
                 {
+                    string specificationLink = null;
+                    if (!string.IsNullOrEmpty(mdResult.SpecificationLink))
+                        specificationLink = mdResult.SpecificationLink;
+
+                    object title = toCharString(mdResult.Title);
+
+                    if (!string.IsNullOrEmpty(mdResult.TitleLink))
+                    {
+                        title = new Anchor_Type
+                        {
+                            href = mdResult.TitleLink,
+                            title = !string.IsNullOrEmpty(mdResult.TitleLinkDescription) ? mdResult.TitleLinkDescription : null,
+                            Value = mdResult.Title
+                        };
+                    }
 
                     DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
                     {
@@ -2232,9 +2258,10 @@ namespace GeoNorgeAPI
                         {
                             specification = new CI_Citation_PropertyType
                             {
+                                href = specificationLink,
                                 CI_Citation = new CI_Citation_Type
                                 {
-                                    title = new CI_Citation_Title { item = toCharString(mdResult.Title) },
+                                    title = new CI_Citation_Title { item = title },
                                     date = new CI_Date_PropertyType[] {
                                             new CI_Date_PropertyType {
                                                 CI_Date = new CI_Date_Type {
@@ -3889,7 +3916,10 @@ namespace GeoNorgeAPI
 
     public class SimpleQualitySpecification
     {
+        public string SpecificationLink { get; set; }
         public string Title { get; set; }
+        public string TitleLink { get; set; }
+        public string TitleLinkDescription { get; set; }   
         public string Date { get; set; }
         public string DateType { get; set; }
         public string Explanation { get; set; }
