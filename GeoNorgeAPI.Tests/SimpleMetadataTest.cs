@@ -3314,6 +3314,15 @@ namespace GeoNorgeAPI.Tests
             Assert.IsNull(citation.presentationForm);
         }
 
+        [Test]
+        public void ShouldCheckProtocolSpatialDataServices()
+        {
+            Assert.True(SimpleMetadata.IsAccessPoint("W3C:REST"));
+            Assert.False(SimpleMetadata.IsAccessPoint("OGC:WFS"));
+            Assert.True(SimpleMetadata.IsNetworkService("OGC:WFS"));
+            Assert.False(SimpleMetadata.IsNetworkService("W3C:REST"));
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {

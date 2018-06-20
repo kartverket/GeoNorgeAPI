@@ -3763,11 +3763,17 @@ namespace GeoNorgeAPI
             return new Decimal_PropertyType { Decimal = Decimal.Parse(input, NumberStyles.Any, cultureInfo) };
         }
 
-        private bool IsAccessPoint(string protocol)
+        public static bool IsAccessPoint(string protocol)
         {
             return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS";
         }
-        
+
+        public static bool IsNetworkService(string protocol)
+        {
+            return protocol == "OGC:WMS" || protocol == "OGC:WFS" || protocol == "W3C:AtomFeed" || protocol == "OGC:CSW" ||
+                   protocol == "OGC:WCS" || protocol == "OGC:WMTS" || protocol == "OGC-WMS-C";
+        }
+
     }
 
     public class SimpleContact
