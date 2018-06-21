@@ -2247,7 +2247,7 @@ namespace GeoNorgeAPI
                         title = new Anchor_Type
                         {
                             href = mdResult.TitleLink,
-                            title = !string.IsNullOrEmpty(mdResult.TitleLinkDescription) ? mdResult.TitleLinkDescription : null,
+                            title = mdResult.TitleLinkDescription,
                             Value = mdResult.Title
                         };
                     }
