@@ -829,7 +829,7 @@ namespace GeoNorgeAPI
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
                                 {
-                                    date = "2017-11-16";
+                                    date = "2018-04-04";
                                     title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
@@ -849,7 +849,7 @@ namespace GeoNorgeAPI
 
                                 var dateType = "publication";
                                 if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
-                                    dateType = "revision";
+                                    dateType = "publication";
 
                                     thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
