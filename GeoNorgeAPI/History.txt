@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.64: Add quality of service measures
 3.0.63: Update THESAURUS_INSPIRE_PRIORITY_DATASET
 3.0.62: Update to Arkitektum.GIS.Lib.MetadataCSW version 1.9.98
 3.0.61: Added method to check if protocol is network service
