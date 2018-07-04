@@ -2150,7 +2150,7 @@ namespace GeoNorgeAPI
                                             if (result.specification.CI_Citation.title != null)
                                             {
                                                 var anchorTitle = result.specification.CI_Citation.title.item as Anchor_Type;
-                                                if(anchorTitle != null)
+                                                if (anchorTitle != null)
                                                 {
                                                     resultItem.Title = anchorTitle.Value;
                                                     resultItem.TitleLink = anchorTitle.href;
@@ -2219,6 +2219,29 @@ namespace GeoNorgeAPI
                                     }
                                 }
                             }
+                            else
+                            { 
+                                DQ_ConceptualConsistency_Type conceptualConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element as DQ_ConceptualConsistency_Type;
+                                if (conceptualConsistency != null
+                                    && conceptualConsistency.result != null
+                                    && conceptualConsistency.result.Length > 0
+                                    && conceptualConsistency.result[0] != null
+                                    && conceptualConsistency.result[0].AbstractDQ_Result != null)
+                                {
+                                    DQ_QuantitativeResult_Type resultQuantitative = conceptualConsistency.result[0].AbstractDQ_Result as DQ_QuantitativeResult_Type;
+                                    if(resultQuantitative != null)
+                                    {
+                                        SimpleQualitySpecification resultItem = new SimpleQualitySpecification();
+                                        resultItem.Title = conceptualConsistency.nameOfMeasure?[0]?.type?.Value;
+                                        resultItem.Explanation = conceptualConsistency.measureDescription.CharacterString;
+                                        resultItem.QuantitativeResult = resultQuantitative?.value?[0]?.Record?.ToString();
+                                        resultItem.QuantitativeResultValueUnit = GetSimpleValueUnit(resultQuantitative?.valueUnit?.href);
+                                        resultItem.Responsible = "sds-" + conceptualConsistency.nameOfMeasure?[0]?.type?.Value?.ToLower();
+
+                                        value.Add(resultItem);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -2234,7 +2257,10 @@ namespace GeoNorgeAPI
                 int reportCounter = 0;
                 int resultCounter = 0;
 
-                foreach (var mdResult in value)
+                var conformanceResults = value.Where(r => r.Responsible != "sds-performance"
+                && r.Responsible != "sds-availability" && r.Responsible != "sds-capacity").ToList();
+
+                foreach (var mdResult in conformanceResults)
                 {
                     string specificationLink = null;
                     if (!string.IsNullOrEmpty(mdResult.SpecificationLink))
@@ -2252,75 +2278,76 @@ namespace GeoNorgeAPI
                         };
                     }
 
-                    DQ_Result_PropertyType DQResult = new DQ_Result_PropertyType
-                    {
-                        AbstractDQ_Result = new DQ_ConformanceResult_Type
+                    DQ_Result_PropertyType   DQResult = new DQ_Result_PropertyType
                         {
-                            specification = new CI_Citation_PropertyType
+                            AbstractDQ_Result = new DQ_ConformanceResult_Type
                             {
-                                href = specificationLink,
-                                CI_Citation = new CI_Citation_Type
+                                specification = new CI_Citation_PropertyType
                                 {
-                                    title = new CI_Citation_Title { item = title },
-                                    date = new CI_Date_PropertyType[] {
-                                            new CI_Date_PropertyType {
-                                                CI_Date = new CI_Date_Type {
-                                                    date = new Date_PropertyType {
-                                                        Item = mdResult.Date
-                                                    },
-                                                    dateType = new CI_DateTypeCode_PropertyType {
-                                                        CI_DateTypeCode = new CodeListValue_Type {
-                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
-                                                            codeListValue = mdResult.DateType
+                                    href = specificationLink,
+                                    CI_Citation = new CI_Citation_Type
+                                    {
+                                        title = new CI_Citation_Title { item = title },
+                                        date = new CI_Date_PropertyType[] {
+                                                new CI_Date_PropertyType {
+                                                    CI_Date = new CI_Date_Type {
+                                                        date = new Date_PropertyType {
+                                                            Item = mdResult.Date
+                                                        },
+                                                        dateType = new CI_DateTypeCode_PropertyType {
+                                                            CI_DateTypeCode = new CodeListValue_Type {
+                                                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                codeListValue = mdResult.DateType
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                        },
-                                    identifier = new MD_Identifier_PropertyType[]
-                                    {
-                                         new MD_Identifier_PropertyType
-                                         {
-                                            MD_Identifier = new MD_Identifier_Type
-                                            {
-                                                authority = new CI_Citation_PropertyType
+                                            },
+                                        identifier = new MD_Identifier_PropertyType[]
+                                        {
+                                             new MD_Identifier_PropertyType
+                                             {
+                                                MD_Identifier = new MD_Identifier_Type
                                                 {
-                                                    CI_Citation = new CI_Citation_Type
+                                                    authority = new CI_Citation_PropertyType
                                                     {
-                                                        title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } },
-                                                        date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
-                                                    }
-                                                }, code = new CharacterString_PropertyType()
+                                                        CI_Citation = new CI_Citation_Type
+                                                        {
+                                                            title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } },
+                                                            date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
+                                                        }
+                                                    }, code = new CharacterString_PropertyType()
+                                                }
+                                              }
                                             }
-                                          }
-                                        }
-                                }
-                            },
-                            explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
-                            pass = mdResult.Result != null 
-                            ? new Boolean_PropertyType { Boolean = mdResult.Result.Value } 
-                            : new Boolean_PropertyType { nilReason = "unknown" }
-                        }
-                    };
+                                    }
+                                },
+                                explanation = CreateFreeTextElement(mdResult.Explanation, mdResult.EnglishExplanation),
+                                pass = mdResult.Result != null 
+                                ? new Boolean_PropertyType { Boolean = mdResult.Result.Value } 
+                                : new Boolean_PropertyType { nilReason = "unknown" }
+                            }
+                        };
 
-                    mdResults.Add(DQResult);
-                    resultCounter++;
-                    if (resultCounter == numberOfResultsForEachReport)
-                    {
-                        reports.Add(
-                            new DQ_Element_PropertyType
-                            {
-                                AbstractDQ_Element = new DQ_DomainConsistency_Type
+                        mdResults.Add(DQResult);
+                        resultCounter++;
+
+                        if (resultCounter == numberOfResultsForEachReport)
+                        {
+                            reports.Add(
+                                new DQ_Element_PropertyType
                                 {
-                                    result = new DQ_Result_PropertyType[] { }
-                                }
-                            });
+                                    AbstractDQ_Element = new DQ_DomainConsistency_Type
+                                    {
+                                        result = new DQ_Result_PropertyType[] { }
+                                    }
+                                });
 
-                        reports[reportCounter].AbstractDQ_Element.result = mdResults.ToArray();
-                        mdResults = new List<DQ_Result_PropertyType>();
-                        resultCounter = 0;
-                        reportCounter++;
-                    }
+                            reports[reportCounter].AbstractDQ_Element.result = mdResults.ToArray();
+                            mdResults = new List<DQ_Result_PropertyType>();
+                            resultCounter = 0;
+                            reportCounter++;
+                        }
                 }
 
                 if (mdResults.Count > 0)
@@ -2334,6 +2361,133 @@ namespace GeoNorgeAPI
                         }
                     });
                     reports[reportCounter].AbstractDQ_Element.result = mdResults.ToArray();
+                }
+
+
+                var conceptualConsistencyResult = value.Where(r => r.Responsible == "sds-performance"
+                            || r.Responsible == "sds-availability" || r.Responsible == "sds-capacity").ToList();
+
+                foreach(var conceptualConsistency in conceptualConsistencyResult) { 
+
+                    if (conceptualConsistency.Responsible.ToLower() == "sds-performance")
+                    {
+                        DQ_Element_PropertyType sdsPerformance = new DQ_Element_PropertyType
+                        {
+                            AbstractDQ_Element = new DQ_ConceptualConsistency_Type
+                            {
+                                nameOfMeasure = new Measure_Type[]
+                                {
+                                    new Measure_Type
+                                    {
+                                        type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/performance",  Value = "performance" }
+                                    }
+                                },
+                                measureDescription = new CharacterString_PropertyType
+                                {
+                                    CharacterString = "The maximum time in which a typical request to the Spatial Data Service can be carried out in a off-peak load situation"
+                                },
+                                result = new DQ_Result_PropertyType[]
+                                {
+                                    new DQ_Result_PropertyType
+                                    {
+                                        AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                        {
+                                            valueUnit = new UnitOfMeasure_PropertyType{ href = "*http://www.opengis.net/def/uom/SI/second*" } ,
+                                            value = new Record_PropertyType[]
+                                            {
+                                                new Record_PropertyType
+                                                {
+                                                    Record = Convert.ToDouble(conceptualConsistency.QuantitativeResult) 
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        reports.Add(sdsPerformance);
+                    }
+
+                    else if (conceptualConsistency.Responsible.ToLower() == "sds-availability")
+                    {
+                        DQ_Element_PropertyType sdsAvailability = new DQ_Element_PropertyType
+                        {
+                            AbstractDQ_Element = new DQ_ConceptualConsistency_Type
+                            {
+                                nameOfMeasure = new Measure_Type[]
+                                {
+                                    new Measure_Type
+                                    {
+                                        type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/availability",  Value = "availability" }
+                                    }
+                                },
+                                measureDescription = new CharacterString_PropertyType
+                                {
+                                    CharacterString = "Lower limit of the percentage of time the service is estimated to be available on a yearly basis"
+                                },
+                                result = new DQ_Result_PropertyType[]
+                                {
+                                    new DQ_Result_PropertyType
+                                    {
+                                        AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                        {
+                                            valueUnit = new UnitOfMeasure_PropertyType{ href = "urn:ogc:def:uom:OGC::percent" } ,
+                                            value = new Record_PropertyType[]
+                                            {
+                                                new Record_PropertyType
+                                                {
+                                                    Record = Convert.ToDouble(conceptualConsistency.QuantitativeResult)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        reports.Add(sdsAvailability);
+                    }
+
+                    else if (conceptualConsistency.Responsible.ToLower() == "sds-capacity")
+                    {
+                        DQ_Element_PropertyType sdsCapacity = new DQ_Element_PropertyType
+                        {
+                            AbstractDQ_Element = new DQ_ConceptualConsistency_Type
+                            {
+                                nameOfMeasure = new Measure_Type[]
+                                {
+                                    new Measure_Type
+                                    {
+                                        type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/capacity",  Value = "capacity" }
+                                    }
+                                },
+                                measureDescription = new CharacterString_PropertyType
+                                {
+                                    CharacterString = "Lower limit of the maximum number of simultaneous requests that can be completed within the limits of the declared performance"
+                                },
+                                result = new DQ_Result_PropertyType[]
+                                {
+                                    new DQ_Result_PropertyType
+                                    {
+                                        AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                        {
+                                            valueUnit = new UnitOfMeasure_PropertyType{ href = "http://www.opengis.net/def/uom/OGC/1.0/unity" } ,
+                                            value = new Record_PropertyType[]
+                                            {
+                                                new Record_PropertyType
+                                                {
+                                                    Record = new integer{ Value = conceptualConsistency.QuantitativeResult }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        reports.Add(sdsCapacity);
+                    }
                 }
 
 
@@ -2370,6 +2524,17 @@ namespace GeoNorgeAPI
             }
         }
 
+        private string GetSimpleValueUnit(string value)
+        {
+            if (value == "*http://www.opengis.net/def/uom/SI/second*")
+                return "second";
+            else if (value == "urn:ogc:def:uom:OGC::percent")
+                return "percent";
+            else if (value == "http://www.opengis.net/def/uom/OGC/1.0/unity")
+                return "integer";
+            else
+                return value;
+        }
 
         public string ProcessHistory 
         {
@@ -3931,6 +4096,8 @@ namespace GeoNorgeAPI
         public string Explanation { get; set; }
         public string EnglishExplanation { get; set; }
         public bool? Result { get; set; }
+        public string QuantitativeResult { get; set; }
+        public string QuantitativeResultValueUnit { get; set; }
         public string Responsible { get; set; }
     }
 

@@ -1415,6 +1415,9 @@ namespace GeoNorgeAPI.Tests
             bool expectedResult3 = false;
             string expectedResponsible3 = "OtherSpec";
 
+            string expectedInteroperabelQuantitativeResultPerformance = "1,56";
+
+
             _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
             {
                 new DQ_DataQuality_PropertyType {
@@ -1594,7 +1597,41 @@ namespace GeoNorgeAPI.Tests
                                         }
                                     }
                                 }
-                            }   
+                            },
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_ConceptualConsistency_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[]
+                                        {
+                                            new Measure_Type
+                                            {
+                                                type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/performance",  Value = "performance" }
+                                            }
+                                        },
+                                        measureDescription = new CharacterString_PropertyType
+                                        {
+                                            CharacterString = "The maximum time in which a typical request to the Spatial Data Service can be carried out in a off-peak load situation"
+                                        },
+                                        result = new DQ_Result_PropertyType[]
+                                        {
+                                            new DQ_Result_PropertyType
+                                            {
+                                                AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                {
+                                                    valueUnit = new UnitOfMeasure_PropertyType{ href = "*http://www.opengis.net/def/uom/SI/second*" } ,
+                                                    value = new Record_PropertyType[]
+                                                    {
+                                                        new Record_PropertyType
+                                                        {
+                                                            Record = Convert.ToDouble(expectedInteroperabelQuantitativeResultPerformance)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                         }
                     }
                 }
@@ -1602,7 +1639,7 @@ namespace GeoNorgeAPI.Tests
 
 
             List<SimpleQualitySpecification> spec = _md.QualitySpecifications;
-            Assert.AreEqual(3, spec.Count);
+            Assert.AreEqual(4, spec.Count);
 
             Assert.IsNotNull(spec);
             Assert.AreEqual(expectedTitle, spec[0].Title);
@@ -1620,6 +1657,8 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedEnglishExplanation2, spec[1].EnglishExplanation);
             Assert.AreEqual(expectedResult2, spec[1].Result);
             Assert.AreEqual(expectedResponsible2, spec[1].Responsible);
+
+            Assert.AreEqual(expectedInteroperabelQuantitativeResultPerformance, spec[3].QuantitativeResult);
 
         }
 
@@ -1653,6 +1692,15 @@ namespace GeoNorgeAPI.Tests
             string expectedEnglishExplanation3 = "explained english";
             bool expectedResult3 = false;
             string expectedResponsible3 = "OtherSpec";
+
+            string expectedResponsibleInteroperabelPerformance = "sds-performance";
+            string expectedInteroperabelQuantitativeResultPerformance = "1,56";
+
+            string expectedResponsibleInteroperabelAvailability = "sds-availability";
+            string expectedInteroperabelQuantitativeResultAvailability = "98,9";
+
+            string expectedResponsibleInteroperabelCapacity = "sds-capacity";
+            string expectedInteroperabelQuantitativeResultCapacity = "1000";
 
             List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
 
@@ -1692,8 +1740,28 @@ namespace GeoNorgeAPI.Tests
                 Responsible = expectedResponsible3
             });
 
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Responsible = expectedResponsibleInteroperabelPerformance,
+                QuantitativeResult = expectedInteroperabelQuantitativeResultPerformance
+            });
+
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Responsible = expectedResponsibleInteroperabelAvailability,
+                QuantitativeResult = expectedInteroperabelQuantitativeResultAvailability
+            });
+
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Responsible = expectedResponsibleInteroperabelCapacity,
+                QuantitativeResult = expectedInteroperabelQuantitativeResultCapacity
+            });
+
 
             _md.QualitySpecifications = QualityList;
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
