@@ -532,6 +532,12 @@ namespace GeoNorgeAPI
             set { CreateOrUpdateContactWithRole("owner", value); }
         }
 
+        public SimpleContact ContactCustodian
+        {
+            get { return GetContactWithRole("custodian"); }
+            set { CreateOrUpdateContactWithRole("custodian", value); }
+        }
+
         private void CreateOrUpdateContactWithRole(string roleCodeValue, SimpleContact contact)
         {
             CI_ResponsibleParty_Type responsibleParty = GetContactInformationResponsiblePartyWithRole(roleCodeValue);
