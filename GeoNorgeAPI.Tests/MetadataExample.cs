@@ -131,7 +131,7 @@ namespace GeoNorgeAPI.Tests
                         }
                 } 
             };
-            mdDataIdentificationType.language = new[] { CharString("nor") };
+            mdDataIdentificationType.language = new LanguageCode_PropertyType[] { new LanguageCode_PropertyType { LanguageCode = new CodeListValue_Type { codeList = "http://www.loc.gov/standards/iso639-2/", codeListValue = "nor", Value = "Norsk" } } };
             mdDataIdentificationType.descriptiveKeywords = new[] { 
                 new MD_Keywords_PropertyType {
                     MD_Keywords = new MD_Keywords_Type {

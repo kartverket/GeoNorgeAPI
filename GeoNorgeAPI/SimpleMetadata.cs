@@ -708,19 +708,33 @@ namespace GeoNorgeAPI
             {
                 string language = null;
                 var datasetIdentification = GetDatasetIdentification();
-                if (datasetIdentification != null && datasetIdentification.language != null && datasetIdentification.language.Length > 0)
+                if (datasetIdentification != null && datasetIdentification.language != null && datasetIdentification.language.Length > 0
+                    && datasetIdentification.language[0].LanguageCode != null)
                 {
-                    language = datasetIdentification.language[0].CharacterString;
+                    language = datasetIdentification.language[0].LanguageCode.codeListValue;
                 }
                 return language;
             }
 
             set
             {
-                if(string.IsNullOrEmpty(value))
-                    GetDatasetIdentification().language = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = null } };
-                else
-                    GetDatasetIdentification().language = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value } };
+                string languageCode = "nor";
+                string languageValue = "Norsk";
+
+                if (value == "eng")
+                {
+                    languageCode = "eng";
+                    languageValue = "English";
+                }
+
+                GetDatasetIdentification().language = 
+                    new LanguageCode_PropertyType[] 
+                    {
+                        new LanguageCode_PropertyType
+                        {
+                            LanguageCode = new CodeListValue_Type { codeList = "http://www.loc.gov/standards/iso639-2/", codeListValue = languageCode, Value = languageValue }
+                        }
+                    };
             }
         }
 
