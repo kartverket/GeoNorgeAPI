@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.66: Set language for datasets
 3.0.65: Add responsible party role custodian
 3.0.64: Add quality of service measures
 3.0.63: Update THESAURUS_INSPIRE_PRIORITY_DATASET
