@@ -3391,6 +3391,65 @@ namespace GeoNorgeAPI.Tests
             Assert.False(SimpleMetadata.IsNetworkService("W3C:REST"));
         }
 
+        [Test]
+        public void ShouldReturnSimpleOperationForService()
+        {
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+                {
+                    new MD_Identification_PropertyType
+                    {
+                        AbstractMD_Identification = new SV_ServiceIdentification_Type
+                        {
+                            containsOperations = new SV_OperationMetadata_PropertyType[]{ new SV_OperationMetadata_PropertyType { SV_OperationMetadata = new SV_OperationMetadata_Type
+                            {
+                                operationName = new CharacterString_PropertyType { CharacterString = "Operation1" },
+                                operationDescription = new CharacterString_PropertyType{ CharacterString = "Description1" },
+                                DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type { codeListValue = "Platform1" } } },
+                                connectPoint = new CI_OnlineResource_PropertyType[]{ new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = "http://service1.geonorge.no" } } } }
+                            } } }
+                        }
+                    }
+                };
+            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
+
+            SimpleOperation operation = _md.ContainOperation;
+
+            Assert.IsNotNull(operation);
+
+            Assert.AreEqual("Operation1", operation.Name);
+            Assert.AreEqual("Description1", operation.Description);
+            Assert.AreEqual("Platform1", operation.Platform);
+            Assert.AreEqual("http://service1.geonorge.no", operation.URL);
+        }
+        [Test]
+        public void ShouldUpdateSimpleOperationForService()
+        {
+            _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+                {
+                    new MD_Identification_PropertyType
+                    {
+                        AbstractMD_Identification = new SV_ServiceIdentification_Type()
+                    }
+                };
+
+            _md.ContainOperation = new SimpleOperation
+            {
+                Name = "Name1",
+                Description = "Description1",
+                Platform = "Platform1",
+                URL = "www.example.com"
+            };
+
+            var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
+            var operation = identification.containsOperations[0].SV_OperationMetadata;
+
+            Assert.AreEqual("Name1", operation.operationName.CharacterString);
+            Assert.AreEqual("Description1", operation.operationDescription.CharacterString);
+            Assert.AreEqual("Platform1", operation.DCP[0].DCPList.codeListValue);
+            Assert.AreEqual("www.example.com", operation.connectPoint[0].CI_OnlineResource.linkage.URL);
+        }
+
         private void SetDateOnCitationDateType(object date, string dateType)
         {
             _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.date = new CI_Date_PropertyType[] {

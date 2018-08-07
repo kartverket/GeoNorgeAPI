@@ -3655,6 +3655,48 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleOperation ContainOperation
+        {
+            get
+            {
+                SimpleOperation operation = new SimpleOperation();
+                var identification = GetServiceIdentification();
+                if (identification.containsOperations != null && identification.containsOperations.Length > 0 && identification.containsOperations[0] != null
+                    && identification.containsOperations[0].SV_OperationMetadata != null)
+                {
+                    var operationMetadata = identification.containsOperations[0].SV_OperationMetadata;
+                    operation.Name = operationMetadata?.operationName?.CharacterString;
+                    operation.Platform = operationMetadata?.DCP?.FirstOrDefault()?.DCPList?.codeListValue;
+                    operation.URL = operationMetadata?.connectPoint?.FirstOrDefault()?.CI_OnlineResource?.linkage?.URL;
+                    operation.Description = operationMetadata?.operationDescription?.CharacterString;
+                }
+                return operation;
+            }
+            set
+            {
+                var identification = GetServiceIdentification();
+                if (identification != null)
+                {
+                    identification.containsOperations = 
+                        new SV_OperationMetadata_PropertyType[] 
+                        {
+                            new SV_OperationMetadata_PropertyType
+                            {
+                                SV_OperationMetadata = new SV_OperationMetadata_Type
+                                {
+                                    operationName = new CharacterString_PropertyType { CharacterString = value.Name},
+                                    operationDescription = new CharacterString_PropertyType{ CharacterString = value.Description },
+                                    DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type
+                                    {
+                                        codeList = "http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#DCPList" , codeListValue = value.Platform } } },
+                                        connectPoint = new CI_OnlineResource_PropertyType[]{ new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = value.URL } } } }
+                                }
+                            }
+                        };
+                }
+            }
+        }
+
         private static CI_OnLineFunctionCode_PropertyType GetOnlineFunction()
         {
             return new CI_OnLineFunctionCode_PropertyType
@@ -4167,6 +4209,14 @@ namespace GeoNorgeAPI
     public class SimpleAccessProperties
     {
         public string OrderingInstructions { get; set; }
+    }
+
+    public class SimpleOperation
+    {
+        public string Name { get; set; }
+        public string Platform { get; set; }
+        public string URL { get; set; }
+        public string Description { get; set; }
     }
 
 }
