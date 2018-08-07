@@ -3655,44 +3655,52 @@ namespace GeoNorgeAPI
             }
         }
 
-        public SimpleOperation ContainOperation
+        public List<SimpleOperation> ContainOperations
         {
             get
             {
-                SimpleOperation operation = new SimpleOperation();
+                List<SimpleOperation> operations = new List<SimpleOperation>();
                 var identification = GetServiceIdentification();
-                if (identification.containsOperations != null && identification.containsOperations.Length > 0 && identification.containsOperations[0] != null
-                    && identification.containsOperations[0].SV_OperationMetadata != null)
+                if (identification.containsOperations != null && identification.containsOperations.Length > 0)
                 {
-                    var operationMetadata = identification.containsOperations[0].SV_OperationMetadata;
-                    operation.Name = operationMetadata?.operationName?.CharacterString;
-                    operation.Platform = operationMetadata?.DCP?.FirstOrDefault()?.DCPList?.codeListValue;
-                    operation.URL = operationMetadata?.connectPoint?.FirstOrDefault()?.CI_OnlineResource?.linkage?.URL;
-                    operation.Description = operationMetadata?.operationDescription?.CharacterString;
+                    foreach(var containOperation in identification.containsOperations)
+                    { 
+                        SimpleOperation operation = new SimpleOperation();
+                        var operationMetadata = containOperation.SV_OperationMetadata;
+                        operation.Name = operationMetadata?.operationName?.CharacterString;
+                        operation.Platform = operationMetadata?.DCP?.FirstOrDefault()?.DCPList?.codeListValue;
+                        operation.URL = operationMetadata?.connectPoint?.FirstOrDefault()?.CI_OnlineResource?.linkage?.URL;
+                        operation.Description = operationMetadata?.operationDescription?.CharacterString;
+
+                        operations.Add(operation);
+                    }
                 }
-                return operation;
+                return operations;
             }
             set
             {
                 var identification = GetServiceIdentification();
                 if (identification != null)
                 {
-                    identification.containsOperations = 
-                        new SV_OperationMetadata_PropertyType[] 
+                    List<SV_OperationMetadata_PropertyType> operationMetadata = new List<SV_OperationMetadata_PropertyType>();
+
+                    foreach (var operation in value)
+                    {
+                        operationMetadata.Add(new SV_OperationMetadata_PropertyType
                         {
-                            new SV_OperationMetadata_PropertyType
+                            SV_OperationMetadata = new SV_OperationMetadata_Type
                             {
-                                SV_OperationMetadata = new SV_OperationMetadata_Type
-                                {
-                                    operationName = new CharacterString_PropertyType { CharacterString = value.Name},
-                                    operationDescription = new CharacterString_PropertyType{ CharacterString = value.Description },
-                                    DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type
+                                operationName = new CharacterString_PropertyType { CharacterString = operation.Name },
+                                operationDescription = new CharacterString_PropertyType { CharacterString = operation.Description },
+                                DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type
                                     {
-                                        codeList = "http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#DCPList" , codeListValue = value.Platform } } },
-                                        connectPoint = new CI_OnlineResource_PropertyType[]{ new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = value.URL } } } }
-                                }
+                                        codeList = "http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#DCPList" , codeListValue = operation.Platform } } },
+                                connectPoint = new CI_OnlineResource_PropertyType[] { new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = operation.URL } } } }
                             }
-                        };
+                        });
+                    }
+
+                    identification.containsOperations = operationMetadata.ToArray();
                 }
             }
         }

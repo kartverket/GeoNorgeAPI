@@ -3392,7 +3392,7 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
-        public void ShouldReturnSimpleOperationForService()
+        public void ShouldReturnSimpleOperationsForService()
         {
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
                 {
@@ -3412,17 +3412,17 @@ namespace GeoNorgeAPI.Tests
                 };
             _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
 
-            SimpleOperation operation = _md.ContainOperation;
+            List<SimpleOperation> operations = _md.ContainOperations;
 
-            Assert.IsNotNull(operation);
+            Assert.IsNotNull(operations);
 
-            Assert.AreEqual("Operation1", operation.Name);
-            Assert.AreEqual("Description1", operation.Description);
-            Assert.AreEqual("Platform1", operation.Platform);
-            Assert.AreEqual("http://service1.geonorge.no", operation.URL);
+            Assert.AreEqual("Operation1", operations[0].Name);
+            Assert.AreEqual("Description1", operations[0].Description);
+            Assert.AreEqual("Platform1", operations[0].Platform);
+            Assert.AreEqual("http://service1.geonorge.no", operations[0].URL);
         }
         [Test]
-        public void ShouldUpdateSimpleOperationForService()
+        public void ShouldUpdateSimpleOperationsForService()
         {
             _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
@@ -3433,13 +3433,16 @@ namespace GeoNorgeAPI.Tests
                     }
                 };
 
-            _md.ContainOperation = new SimpleOperation
+            List<SimpleOperation> operations = new List<SimpleOperation>();
+            operations.Add(new SimpleOperation
             {
                 Name = "Name1",
                 Description = "Description1",
                 Platform = "Platform1",
                 URL = "www.example.com"
-            };
+            });
+
+            _md.ContainOperations = operations;
 
             var identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as SV_ServiceIdentification_Type;
             var operation = identification.containsOperations[0].SV_OperationMetadata;
