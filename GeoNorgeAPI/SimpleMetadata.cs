@@ -3704,7 +3704,13 @@ namespace GeoNorgeAPI
                         });
                     }
 
-                    identification.containsOperations = operationMetadata.ToArray();
+                    if(operationMetadata.Count == 0)
+                        identification.containsOperations = new SV_OperationMetadata_PropertyType[]
+                            {
+                                new SV_OperationMetadata_PropertyType()
+                            };
+                    else
+                        identification.containsOperations = operationMetadata.ToArray();
                 }
             }
         }
