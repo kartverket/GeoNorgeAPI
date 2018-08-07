@@ -3686,12 +3686,16 @@ namespace GeoNorgeAPI
 
                     foreach (var operation in value)
                     {
+                        string descriptionNilReason = null;
+                        if (string.IsNullOrEmpty(operation.Description))
+                            descriptionNilReason = "missing";
+
                         operationMetadata.Add(new SV_OperationMetadata_PropertyType
                         {
                             SV_OperationMetadata = new SV_OperationMetadata_Type
                             {
                                 operationName = new CharacterString_PropertyType { CharacterString = operation.Name },
-                                operationDescription = new CharacterString_PropertyType { CharacterString = operation.Description },
+                                operationDescription = new CharacterString_PropertyType { CharacterString = operation.Description, nilReason = descriptionNilReason },
                                 DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type
                                     {
                                         codeList = "http://www.isotc211.org/2005/iso19119/resources/Codelist/gmxCodelists.xml#DCPList" , codeListValue = operation.Platform } } },
