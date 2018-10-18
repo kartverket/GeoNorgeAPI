@@ -545,6 +545,11 @@ namespace GeoNorgeAPI.Tests
                     KeywordLink = "http://objektkatalog.geonorge.no"
                 },
                 new SimpleKeyword {
+                    Keyword = "Norge",
+                    Thesaurus = SimpleKeyword.THESAURUS_ADMIN_UNITS,
+                    KeywordLink = "https://data.geonorge.no/administrativeEnheter/nasjon/id/173163"
+                },
+                new SimpleKeyword {
                     Keyword = "Buildings",
                     Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
                 },
@@ -571,6 +576,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfThemeKeywords = 0;
             int numberOfPlaceKeywords = 0;
             int numberOfConceptKeywords = 0;
+            int numberOfAdminUnitKeywords = 0;
             int numberOfServiceTypeKeywords = 0;
             int numberOfOtherKeywords = 0;
             bool inspireAddressesFound = false;
@@ -581,6 +587,7 @@ namespace GeoNorgeAPI.Tests
             bool placeAkershusFound = false;
             bool themeBygningFound = false;
             bool conceptAkvakulturgrenseFound = false;
+            bool adminUnitNorwayFound = false;
             bool serviceTypeFound = false;
             bool otherEksempeldataFound = false;
             bool otherTestingFound = false;
@@ -641,6 +648,15 @@ namespace GeoNorgeAPI.Tests
                         if (keyword.CharacterString.Equals("Det offentlige kartgrunnlaget"))
                         {
                             nationalDOKfound = true;
+                        }
+                    }
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_ADMIN_UNITS))
+                    {
+                        numberOfAdminUnitKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("Norge") && keyword.href.Equals("https://data.geonorge.no/administrativeEnheter/nasjon/id/173163"))
+                        {
+                            adminUnitNorwayFound = true;
                         }
                     }
                     else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
@@ -718,6 +734,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
             Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
             Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
+            Assert.AreEqual(1, numberOfAdminUnitKeywords, "Expected one admin unit keyword in same wrapper element");
             Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
 
@@ -729,6 +746,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(placeAkershusFound);
             Assert.True(themeBygningFound);
             Assert.True(conceptAkvakulturgrenseFound);
+            Assert.True(adminUnitNorwayFound);
             Assert.True(serviceTypeFound);
             Assert.True(otherEksempeldataFound);
             Assert.True(otherTestingFound);

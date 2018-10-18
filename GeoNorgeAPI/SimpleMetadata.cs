@@ -862,6 +862,11 @@ namespace GeoNorgeAPI
                                     date = "2008-06-01";
                                     title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_CONCEPT_LINK };
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_ADMIN_UNITS))
+                                {
+                                    date = "2018-01-01";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_ADMIN_UNITS_LINK };
+                                }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
                                 {
                                     date = "2016-01-15";
@@ -4043,6 +4048,8 @@ namespace GeoNorgeAPI
         public const string THESAURUS_NATIONAL_THEME_LINK = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling";
         public const string THESAURUS_CONCEPT = "SOSI produktspesifikasjon";
         public const string THESAURUS_CONCEPT_LINK = "https://objektkatalog.geonorge.no/";
+        public const string THESAURUS_ADMIN_UNITS = "Administrative enheter i Norge";
+        public const string THESAURUS_ADMIN_UNITS_LINK = "https://data.geonorge.no/administrativeEnheter";
         public const string THESAURUS_SERVICE_TYPE = "ISO 19119:2016 Geographic information -- Services";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
@@ -4112,6 +4119,10 @@ namespace GeoNorgeAPI
                 else if (Thesaurus.Equals(THESAURUS_CONCEPT))
                 {
                     return "Concept";
+                }
+                else if (Thesaurus.Equals(THESAURUS_ADMIN_UNITS))
+                {
+                    return "AdminUnit";
                 }
                 else if (Thesaurus.Equals(THESAURUS_SERVICE_TYPE))
                 {
