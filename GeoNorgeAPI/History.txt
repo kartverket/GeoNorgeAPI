@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.0.72: Add grid coverage map
 3.0.71: Add keyword for administrative units
 3.0.70: Set initial array SV_OperationMetadata_PropertyType if no operations
 3.0.69: Set nilReason missing if operation metadata description is empty
