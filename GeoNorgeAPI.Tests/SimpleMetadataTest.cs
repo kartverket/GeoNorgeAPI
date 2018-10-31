@@ -3183,6 +3183,26 @@ namespace GeoNorgeAPI.Tests
 
         }
 
+        [Test]
+        public void ShouldUpdateCoverageUrls()
+        {
+            string expectedCovarageGridMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:dsb_brannstasjon";
+            string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
+            SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
+            simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
+            simpleMetadata.CoverageUrl = expectedCovarageMapURL;
+
+            var gridMap = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+            var map = simpleMetadata.GetMetadata().metadataExtensionInfo[1].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+
+            string actualCovarageGridMapURL = gridMap.linkage.URL;
+            string actualCovarageMapURL = map.linkage.URL;
+
+            Assert.AreEqual(expectedCovarageGridMapURL, actualCovarageGridMapURL);
+            Assert.AreEqual(expectedCovarageMapURL, actualCovarageMapURL);
+
+        }
+
 
         [Test]
         public void ShouldReturnNullWhenAccessPropertiesIsNotDefined()

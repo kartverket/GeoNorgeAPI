@@ -22,6 +22,7 @@ namespace GeoNorgeAPI
         private const string APPLICATION_PROFILE_LEGEND = "tegnforklaring";
         private const string APPLICATION_PROFILE_PRODUCTPAGE = "produktside";
         private const string APPLICATION_PROFILE_COVERAGE = "dekningsoversikt";
+        private const string APPLICATION_PROFILE_COVERAGE_GRID = "dekningsoversikt rutenett";
         private const string APPLICATION_PROFILE_HELP = "hjelp";
         private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
 
@@ -30,6 +31,7 @@ namespace GeoNorgeAPI
         private const string ENGLISH_APPLICATION_PROFILE_LEGEND = "cartography";
         private const string ENGLISH_APPLICATION_PROFILE_PRODUCTPAGE = "website";
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE = "coverage map";
+        private const string ENGLISH_APPLICATION_PROFILE_COVERAGE_GRID = "grid coverage map";
         private const string ENGLISH_APPLICATION_PROFILE_HELP = "help";
 
         private MD_Metadata_Type _md;
@@ -1421,6 +1423,27 @@ namespace GeoNorgeAPI
                 onlineResource.linkage = new URL_PropertyType { URL = value };
                 onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_COVERAGE };
                 onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_COVERAGE, ENGLISH_APPLICATION_PROFILE_COVERAGE);
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+        public string CoverageGridUrl
+        {
+            get
+            {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_COVERAGE_GRID);
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_COVERAGE_GRID);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_COVERAGE_GRID };
+                onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_COVERAGE_GRID, ENGLISH_APPLICATION_PROFILE_COVERAGE_GRID);
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
         }
