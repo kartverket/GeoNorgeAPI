@@ -74,7 +74,7 @@ namespace GeoNorgeAPI
                 var response = (HttpWebResponse)request.GetResponse();
                 //Log.Debug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
                 OnLogEventDebug("HTTP response: " + response.StatusCode + " - " + response.StatusDescription);
-                return (HttpWebResponse)request.GetResponse();
+                return response;
             }
             catch (Exception e)
             {
