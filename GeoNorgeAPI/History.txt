@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.1.2: Add keyword spatial scope
 3.1.1: Fix bug where HttpWebRequest.getResponse() was being called twice
 3.1.0: Target framework is now 4.6.1
 3.0.72: Add grid coverage map
