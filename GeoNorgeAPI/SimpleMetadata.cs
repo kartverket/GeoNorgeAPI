@@ -4080,7 +4080,7 @@ namespace GeoNorgeAPI
         public const string THESAURUS_ADMIN_UNITS_LINK = "https://data.geonorge.no/administrativeEnheter";
         public const string THESAURUS_SERVICE_TYPE = "ISO 19119:2016 Geographic information -- Services";
         public const string THESAURUS_SPATIAL_SCOPE = "Spatial scope";
-        public const string THESAURUS_SPATIAL_SCOPE_LINK = "https://inspire.ec.europa.eu/metadata-codelist/SpatialScope/national";
+        public const string THESAURUS_SPATIAL_SCOPE_LINK = "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
 
