@@ -854,6 +854,11 @@ namespace GeoNorgeAPI
                                     date = "2018-04-04";
                                     title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET_LINK };
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE))
+                                {
+                                    date = "2019-05-14";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK };
+                                }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
                                 {
                                     date = "2014-10-28";
@@ -4074,6 +4079,8 @@ namespace GeoNorgeAPI
         public const string THESAURUS_ADMIN_UNITS = "Administrative enheter i Norge";
         public const string THESAURUS_ADMIN_UNITS_LINK = "https://data.geonorge.no/administrativeEnheter";
         public const string THESAURUS_SERVICE_TYPE = "ISO 19119:2016 Geographic information -- Services";
+        public const string THESAURUS_SPATIAL_SCOPE = "Spatial scope";
+        public const string THESAURUS_SPATIAL_SCOPE_LINK = "https://inspire.ec.europa.eu/metadata-codelist/SpatialScope/national";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
 
@@ -4146,6 +4153,10 @@ namespace GeoNorgeAPI
                 else if (Thesaurus.Equals(THESAURUS_ADMIN_UNITS))
                 {
                     return "AdminUnit";
+                }
+                else if (Thesaurus.Equals(THESAURUS_SPATIAL_SCOPE))
+                {
+                    return "SpatialScope";
                 }
                 else if (Thesaurus.Equals(THESAURUS_SERVICE_TYPE))
                 {
