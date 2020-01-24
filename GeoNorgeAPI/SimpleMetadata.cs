@@ -339,6 +339,25 @@ namespace GeoNorgeAPI
             }
         }
 
+        /// <summary>
+        /// Note: Only supporting one hierarchyLevelName element. Array is overwritten with an array of one element when value is updated.
+        /// </summary>
+        public string HierarchyLevelName
+        {
+            get
+            {
+                string hierarchyLevelName = null;
+                if (_md.hierarchyLevelName != null && _md.hierarchyLevelName.Count() > 0 && _md.hierarchyLevelName[0] != null && !string.IsNullOrEmpty(_md.hierarchyLevelName[0].CharacterString))
+                    hierarchyLevelName = _md.hierarchyLevelName[0].CharacterString;
+                return hierarchyLevelName;
+            }
+
+            set
+            {
+                _md.hierarchyLevelName = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = value } };        
+            }
+        }
+
         public string Abstract
         {
             get 

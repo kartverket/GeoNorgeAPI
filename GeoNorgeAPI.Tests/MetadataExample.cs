@@ -26,6 +26,7 @@ namespace GeoNorgeAPI.Tests
                         }
                 } 
             };
+            m.hierarchyLevelName = new[] { new CharacterString_PropertyType { CharacterString = "historical" } };
 
             var responsibleParty = new CI_ResponsibleParty_Type()
             {

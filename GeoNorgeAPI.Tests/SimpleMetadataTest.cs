@@ -180,6 +180,12 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnHierarchyLevelName()
+        {
+            Assert.AreEqual("historical", _md.HierarchyLevelName);
+        }
+
+        [Test]
         public void ShouldUpdateHierarchyLevelWhenNoHierarchyLevelExists()
         {
             _md.GetMetadata().hierarchyLevel = null;
@@ -191,12 +197,32 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateHierarchyLevelNameWhenNoHierarchyLevelNameExists()
+        {
+            _md.GetMetadata().hierarchyLevelName = null;
+
+            string newHierarchyLevelName = "historical";
+            _md.HierarchyLevelName = newHierarchyLevelName;
+
+            Assert.AreEqual(newHierarchyLevelName, _md.HierarchyLevelName);
+        }
+
+        [Test]
         public void ShouldUpdateHierarchyLevelWhenHierarchyLevelExists()
         {
             string newHierarchyLevel = "service";
             _md.HierarchyLevel = newHierarchyLevel;
 
             Assert.AreEqual(newHierarchyLevel, _md.HierarchyLevel);
+        }
+
+        [Test]
+        public void ShouldUpdateHierarchyLevelNameWhenHierarchyLevelNameExists()
+        {
+            string newHierarchyLevelName = "historical";
+            _md.HierarchyLevelName = newHierarchyLevelName;
+
+            Assert.AreEqual(newHierarchyLevelName, _md.HierarchyLevelName);
         }
 
         [Test]
