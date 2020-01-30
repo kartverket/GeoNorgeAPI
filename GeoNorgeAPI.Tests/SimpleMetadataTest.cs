@@ -3235,19 +3235,23 @@ namespace GeoNorgeAPI.Tests
         {
             string expectedCovarageGridMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:dsb_brannstasjon";
             string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
+            string expectedCovarageCellMapURL = "https://wms.geonorge.no/test.json";
             SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
             simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
             simpleMetadata.CoverageUrl = expectedCovarageMapURL;
+            simpleMetadata.CoverageCellUrl = expectedCovarageCellMapURL;
 
             var gridMap = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var map = simpleMetadata.GetMetadata().metadataExtensionInfo[1].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+            var cell = simpleMetadata.GetMetadata().metadataExtensionInfo[2].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
 
             string actualCovarageGridMapURL = gridMap.linkage.URL;
             string actualCovarageMapURL = map.linkage.URL;
+            string actualCovarageCellMapURL = cell.linkage.URL;
 
             Assert.AreEqual(expectedCovarageGridMapURL, actualCovarageGridMapURL);
             Assert.AreEqual(expectedCovarageMapURL, actualCovarageMapURL);
-
+            Assert.AreEqual(expectedCovarageCellMapURL, actualCovarageCellMapURL);
         }
 
 
