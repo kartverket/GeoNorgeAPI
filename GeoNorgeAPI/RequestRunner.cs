@@ -92,6 +92,8 @@ namespace GeoNorgeAPI
         public MetadataTransaction RunCswTransaction(TransactionType request, Dictionary<string, string> additionalRequestHeaders)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
+            requestBody = requestBody.Replace("<gmd:MD_Metadata", @"<gmd:MD_Metadata xmlns:gmd=""http://www.isotc211.org/2005/gmd"" xmlns:gco = ""http://www.isotc211.org/2005/gco"" xmlns:gmx=""http://www.isotc211.org/2005/gmx"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:gml=""http://www.opengis.net/gml/3.2"" xmlns:xlink=""http://www.w3.org/1999/xlink"" xsi:schemaLocation=""http://www.isotc211.org/2005/gmd http://schemas.opengis.net/csw/2.0.2/profiles/apiso/1.0.0/apiso.xsd""");
+            System.Diagnostics.Debug.Write(requestBody);
 
             //Log.Info("Running CSW Transaction.");
             OnLogEventInfo("Running CSW Transaction.");

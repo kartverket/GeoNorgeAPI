@@ -119,7 +119,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("1", transaction.TotalUpdated);
         }
 
-        /*
+
         [Test]
         public void InsertMetadata()
         {
@@ -128,14 +128,14 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type metadata = MetadataExample.CreateMetadataExample();
             metadata.fileIdentifier = new CharacterString_PropertyType { CharacterString = Guid.NewGuid().ToString() };
 
-            var transaction = _geonorge.MetadataInsert(metadata, new Dictionary<string, string> { {"GeonorgeUsername", "blabla"} });
+            var transaction = _geonorge.MetadataInsert(metadata, new Dictionary<string, string> { { "GeonorgeUsername", "esk_testbruker" }, { "GeonorgeRole", "nd.metadata_admin" }, { "published", "true" } });
 
             Assert.NotNull(transaction);
             Assert.AreEqual("1", transaction.TotalInserted);
 
             Console.WriteLine(transaction.Identifiers);
         }
-        
+        /*   
         [Test]
         public void UpdateMetadata()
         {
