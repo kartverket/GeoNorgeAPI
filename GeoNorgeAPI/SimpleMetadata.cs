@@ -2932,7 +2932,7 @@ namespace GeoNorgeAPI
                 var validTo = value.ValidTo;
                 TimePositionType timePositionType = new TimePositionType(){ Value = value.ValidTo };
                 if (string.IsNullOrEmpty(validTo))
-                    timePositionType = new TimePositionType() { indeterminatePosition = TimeIndeterminateValueType.now };
+                    timePositionType = new TimePositionType() { indeterminatePosition = TimeIndeterminateValueType.now, indeterminatePositionSpecified = true };
 
 
                 EX_TemporalExtent_PropertyType[]  temporalElement= new EX_TemporalExtent_PropertyType[]
