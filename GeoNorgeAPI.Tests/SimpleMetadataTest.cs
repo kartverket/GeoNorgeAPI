@@ -953,13 +953,14 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnReferenceSystemWhenPresent()
         {
             string expectedCode = "code";
+            string expectedCodeLink = "link";
             string expectedCodeSpace = "codespace";
             _md.GetMetadata().referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] {
                 new MD_ReferenceSystem_PropertyType {
                     MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                         referenceSystemIdentifier = new RS_Identifier_PropertyType {
                             RS_Identifier = new RS_Identifier_Type {
-                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                code = new Anchor_PropertyType{ anchor = new Anchor_Type{ href = expectedCodeLink, Value = expectedCode } },
                                 codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                             }
                         }
@@ -971,6 +972,7 @@ namespace GeoNorgeAPI.Tests
             var rs = _md.ReferenceSystem;
             Assert.NotNull(rs);
             Assert.AreEqual(expectedCode, rs.CoordinateSystem);
+            Assert.AreEqual(expectedCodeLink, rs.CoordinateSystemLink);
             Assert.AreEqual(expectedCodeSpace, rs.Namespace);
         }
 
@@ -978,16 +980,19 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateReferenceSystem()
         {
             string expectedCoordinateSystem = "system";
+            string expectedCoordinateSystemLink = "link";
             string expectedNamespace = "namespace";
             _md.ReferenceSystem = new SimpleReferenceSystem
             {
                 CoordinateSystem = expectedCoordinateSystem,
+                CoordinateSystemLink = expectedCoordinateSystemLink,
                 Namespace = expectedNamespace
             };
 
             var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
-
-            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            var anchor = identifier.code.anchor as Anchor_Type;
+            Assert.AreEqual(expectedCoordinateSystem, anchor.Value);
+            Assert.AreEqual(expectedCoordinateSystemLink, anchor.href);
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
@@ -1007,7 +1012,7 @@ namespace GeoNorgeAPI.Tests
                     MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                         referenceSystemIdentifier = new RS_Identifier_PropertyType {
                             RS_Identifier = new RS_Identifier_Type {
-                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = expectedCode }  } ,
                                 codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                             }
                         }
@@ -1039,7 +1044,9 @@ namespace GeoNorgeAPI.Tests
 
             var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
-            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            var code = identifier.code.anchor as CharacterString_PropertyType;
+
+            Assert.AreEqual(expectedCoordinateSystem, code.CharacterString);
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
@@ -1070,7 +1077,7 @@ namespace GeoNorgeAPI.Tests
                                    {
                                     MD_Identifier = new RS_Identifier_Type
                                         {
-                                        code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                        code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = expectedCode }  } ,
                                         codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                                         }
                                    }
@@ -1101,8 +1108,8 @@ namespace GeoNorgeAPI.Tests
             };
 
             var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
-
-            Assert.AreEqual(expectedResourceReference, identifier.code.CharacterString);
+            var code = identifier.code.anchor as CharacterString_PropertyType;
+            Assert.AreEqual(expectedResourceReference, code.CharacterString);
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
@@ -2600,7 +2607,7 @@ namespace GeoNorgeAPI.Tests
                       {
                           MD_Identifier = new MD_Identifier_Type
                           {
-                              code = new CharacterString_PropertyType { CharacterString = uuid1 }
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid1 }  } ,
                           }
                       }
                   }
@@ -2613,7 +2620,7 @@ namespace GeoNorgeAPI.Tests
                       {
                           MD_Identifier = new MD_Identifier_Type
                           {
-                              code = new CharacterString_PropertyType { CharacterString = uuid2 }
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid2 }  }
                           }
                       }
                   }
@@ -2642,11 +2649,12 @@ namespace GeoNorgeAPI.Tests
             var crossReferences = identification.aggregationInfo;
             foreach (MD_AggregateInformation_PropertyType element in crossReferences)
             {
-                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid1))
+                var code = element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.anchor as CharacterString_PropertyType;
+                if (code.CharacterString.Equals(uuid1))
                 {
                     foundUuid1 = true;
                 }
-                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid2))
+                if (code.CharacterString.Equals(uuid2))
                 {
                     foundUuid2 = true;
                 }

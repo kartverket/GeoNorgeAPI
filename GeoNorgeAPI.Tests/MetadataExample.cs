@@ -92,7 +92,7 @@ namespace GeoNorgeAPI.Tests
                         {
                             MD_Identifier = new MD_Identifier_Type
                                 {
-                                    code = CharString("12345-abcdef-67890-ghijkl")
+                                    code = new Anchor_PropertyType{  anchor = new CharacterString_PropertyType{ CharacterString ="12345-abcdef-67890-ghijkl"} }
                                 }
                         } 
                     }
@@ -514,7 +514,7 @@ namespace GeoNorgeAPI.Tests
                                                                                     }, date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
                                                                                 }
                                                                             },
-                                                                            code = new CharacterString_PropertyType()
+                                                                            code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType() }
                                                                         }
                                                                     }
                                                                 }
@@ -541,9 +541,9 @@ namespace GeoNorgeAPI.Tests
                         { 
                             RS_Identifier = new RS_Identifier_Type 
                             { 
-                                code = new CharacterString_PropertyType 
-                                { 
-                                    CharacterString = "http://www.opengis.net/def/crs/EPSG/0/25831"
+                                code = new Anchor_PropertyType
+                                {
+                                  anchor =  new Anchor_Type{  Value = "http://www.opengis.net/def/crs/EPSG/0/25831", href = "http://www.opengis.net/def/crs/EPSG/0/25831" }
                                 }, 
                                 codeSpace = new CharacterString_PropertyType 
                                 { 

@@ -1682,9 +1682,24 @@ namespace GeoNorgeAPI
                 {
                     RS_Identifier_Type identifier = _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
+                    var anchor = identifier.code.anchor as Anchor_Type;
+                    string text = "";
+                    string link = null;
+                    if (anchor != null)
+                    {
+                        text = anchor.Value;
+                        link = anchor.href;
+                    }
+                    else
+                    {
+                        var code = identifier.code.anchor as CharacterString_PropertyType;
+                        text = code.CharacterString;
+                    }
+
                     value = new SimpleReferenceSystem
                     {
-                        CoordinateSystem = identifier.code.CharacterString,
+                        CoordinateSystem = text,
+                        CoordinateSystemLink = link,
                         Namespace = identifier.codeSpace.CharacterString
                     };
                 }
@@ -1697,8 +1712,10 @@ namespace GeoNorgeAPI
                     new MD_ReferenceSystem_PropertyType {
                         MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                             referenceSystemIdentifier = new RS_Identifier_PropertyType {
-                                 RS_Identifier = new RS_Identifier_Type { 
-                                     code = toCharString(value.CoordinateSystem),
+                                 RS_Identifier = new RS_Identifier_Type {
+                                     code = !string.IsNullOrEmpty(value.CoordinateSystemLink) 
+                                     ? new Anchor_PropertyType{ anchor = new Anchor_Type { Value = value.CoordinateSystem, href = value.CoordinateSystemLink } }
+                                     : new Anchor_PropertyType{ anchor = new CharacterString_PropertyType{ CharacterString = value.CoordinateSystem } },
                                      codeSpace = toCharString(value.Namespace)
                                  }
                             }
@@ -1728,9 +1745,24 @@ namespace GeoNorgeAPI
                             && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null) 
                             {
                                 RS_Identifier_Type identifier = _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
-                                SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
+
+                            var anchor = identifier.code.anchor as Anchor_Type;
+                            string text = "";
+                            string link = null;
+                            if (anchor != null)
+                            {
+                                text = anchor.Value;
+                                link = anchor.href;
+                            }
+                            else
+                            {
+                                var code = identifier.code.anchor as CharacterString_PropertyType;
+                                text = code.CharacterString;
+                            }
+                            SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
                                 {
-                                    CoordinateSystem = identifier.code.CharacterString,
+                                    CoordinateSystem = text,
+                                    CoordinateSystemLink = link,
                                     Namespace = identifier.codeSpace.CharacterString
                                 };
 
@@ -1755,8 +1787,10 @@ namespace GeoNorgeAPI
                             referenceSystemIdentifier = new RS_Identifier_PropertyType 
                             {
                                 RS_Identifier = new RS_Identifier_Type 
-                                { 
-                                    code = toCharString(refSystem.CoordinateSystem),
+                                {
+                                    code = !string.IsNullOrEmpty(refSystem.CoordinateSystemLink)
+                                     ? new Anchor_PropertyType { anchor = new Anchor_Type { Value = refSystem.CoordinateSystem, href = refSystem.CoordinateSystemLink } }
+                                     : new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = refSystem.CoordinateSystem } },
                                     codeSpace = toCharString(refSystem.Namespace)
                                 }
                             }
@@ -1787,9 +1821,22 @@ namespace GeoNorgeAPI
 
                     if (identifier != null) 
                     {
+                        var anchor = identifier.code.anchor as Anchor_Type;
+                        string text = null;
+                        if (anchor != null)
+                        {
+                            text = anchor.Value;
+                        }
+                        else
+                        {
+                            var code = identifier.code.anchor as CharacterString_PropertyType;
+                            if(code != null)
+                                text = code.CharacterString;
+                        }
+
                         value = new SimpleResourceReference
                         {
-                            Code = identifier.code != null ? identifier.code.CharacterString : null,
+                            Code = text,
                             Codespace = identifier.codeSpace != null ? identifier.codeSpace.CharacterString : null
                         };
                     }
@@ -1820,9 +1867,13 @@ namespace GeoNorgeAPI
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] = new MD_Identifier_PropertyType();
                     }
 
+                    Anchor_PropertyType code = null;
+                    if (value.Code != null)
+                        code = new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = value.Code } };
+
                     _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new RS_Identifier_Type
                                     {
-                                        code = value.Code != null ? toCharString(value.Code) : null,
+                                        code = code,
                                         codeSpace = value.Codespace != null ? toCharString(value.Codespace) : null
                                     };
 
@@ -2411,7 +2462,7 @@ namespace GeoNorgeAPI
                                                             title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } },
                                                             date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
                                                         }
-                                                    }, code = new CharacterString_PropertyType()
+                                                    }, code = new Anchor_PropertyType{ anchor =  new CharacterString_PropertyType() }
                                                 }
                                               }
                                             }
@@ -3487,7 +3538,11 @@ namespace GeoNorgeAPI
                         if (element.MD_AggregateInformation != null && element.MD_AggregateInformation.aggregateDataSetIdentifier != null
                            && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier != null
                            && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code != null)
-                            values.Add(element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString);
+                        {
+                            var code = element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.anchor as CharacterString_PropertyType;
+                            if(code != null)
+                                values.Add(code.CharacterString);
+                        }
                     }
                 }
 
@@ -3510,7 +3565,7 @@ namespace GeoNorgeAPI
                                 {
                                     MD_Identifier = new MD_Identifier_Type
                                     {
-                                        code = new CharacterString_PropertyType { CharacterString = uuid }
+                                        code = new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = uuid } }
                                     }
                                 },
                                 associationType = new DS_AssociationTypeCode_PropertyType {
@@ -4247,6 +4302,7 @@ namespace GeoNorgeAPI
     public class SimpleReferenceSystem
     {
         public string CoordinateSystem { get; set; }
+        public string CoordinateSystemLink { get; set; }
         public string Namespace { get; set; }
     }
 
