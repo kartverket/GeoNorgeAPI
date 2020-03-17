@@ -324,11 +324,12 @@ namespace GeoNorgeAPI.Tests
 
                                                             Item = new TimePositionType()
                                                             {
-                                                                Value = "2014-01-01" 
+                                                                Value = "0001-01-01"
                                                             },
                                                             Item1 = new TimePositionType()
                                                             {
-                                                                Value = "2020-01-01"
+                                                                Value = "2030-01-01",
+                                                                indeterminatePosition = TimeIndeterminateValueType.now
                                                             }
                                                       }        
                                                 }

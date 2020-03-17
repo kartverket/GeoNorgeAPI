@@ -3040,6 +3040,21 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateValidTimePeriodWhenNotSet()
+        {
+            //SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
+            //simpleMetadata.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
+
+            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidFrom);
+            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
+
+            _md.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
+        }
+
+        [Test]
         public void ShouldUpdateValidTimePeriodWithoutDestroyingOtherInformationInExtentElement()
         {
             SimpleMetadata simpleMetadata = SimpleMetadata.CreateService(); 

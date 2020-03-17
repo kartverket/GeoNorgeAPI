@@ -2853,7 +2853,7 @@ namespace GeoNorgeAPI
                                     if (timePeriodType.Item1 != null)
                                         validTo = timePeriodType.Item1 as TimePositionType;
 
-                                    if (validFrom != null && validTo != null)
+                                    if (validFrom != null && validTo != null && validFrom.Value != "0001-01-01")
                                     {
                                         value = new SimpleValidTimePeriod
                                         {
@@ -2874,6 +2874,16 @@ namespace GeoNorgeAPI
 
             set 
             {
+                var validFrom = value.ValidFrom;
+                if (string.IsNullOrEmpty(validFrom))
+                    validFrom = "0001-01-01";
+
+                var validTo = value.ValidTo;
+                TimePositionType timePositionType = new TimePositionType(){ Value = value.ValidTo };
+                if (string.IsNullOrEmpty(validTo))
+                    timePositionType = new TimePositionType() { indeterminatePosition = TimeIndeterminateValueType.now };
+
+
                 EX_TemporalExtent_PropertyType[]  temporalElement= new EX_TemporalExtent_PropertyType[]
                     {
                         new EX_TemporalExtent_PropertyType()
@@ -2888,12 +2898,9 @@ namespace GeoNorgeAPI
 
                                         Item = new TimePositionType()
                                         {
-                                            Value = value.ValidFrom 
+                                            Value = validFrom
                                         },
-                                        Item1 = new TimePositionType()
-                                        {
-                                            Value = value.ValidTo
-                                        }
+                                        Item1 = timePositionType
                                     }
                                 } 
                             }
