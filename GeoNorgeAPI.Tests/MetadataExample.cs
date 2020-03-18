@@ -350,6 +350,10 @@ namespace GeoNorgeAPI.Tests
                     }
             };
 
+            m.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new MD_Identifier_Type
+            {
+                code = new Anchor_PropertyType { anchor = new Anchor_Type { href = "https://registry.gdi-de.org/id/de.nw/inspire-cp-alkis", Value = "inspire-cp-alkis" } }
+            };
 
             m.distributionInfo = new MD_Distribution_PropertyType
             {
