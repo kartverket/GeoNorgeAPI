@@ -1108,9 +1108,22 @@ namespace GeoNorgeAPI.Tests
             };
 
             var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
-            var code = identifier.code.anchor as CharacterString_PropertyType;
-            Assert.AreEqual(expectedResourceReference, code.CharacterString);
-            Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+            if (identifier != null)
+            {
+                var code = identifier.code.anchor as CharacterString_PropertyType;
+                Assert.AreEqual(expectedResourceReference, code.CharacterString);
+                Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+            }
+            else
+            {
+                var identifierType = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
+                if (identifierType != null)
+                {
+                    var code = identifierType.code.anchor as Anchor_Type;
+                    Assert.AreEqual(expectedResourceReference, code.Value);
+                    Assert.AreEqual(expectedNamespace + "/" + expectedResourceReference, code.href);
+                }
+            }
         }
 
 

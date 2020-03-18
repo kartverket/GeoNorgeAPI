@@ -1841,6 +1841,29 @@ namespace GeoNorgeAPI
                         };
                     }
 
+                    if (identifier == null)
+                    {
+                        MD_Identifier_Type identifierType = _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
+
+                        if (identifierType != null)
+                        {
+                            var anchor = identifierType.code.anchor as Anchor_Type;
+                            string text = null;
+                            string href = null;
+                            if (anchor != null)
+                            {
+                                text = anchor.Value;
+                                href = anchor.href;
+
+                                value = new SimpleResourceReference
+                                {
+                                    Code = text,
+                                    Codespace = href
+                                };
+                            }
+                        }
+                    }
+
 
                 }
                 return value;
@@ -1867,14 +1890,11 @@ namespace GeoNorgeAPI
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] = new MD_Identifier_PropertyType();
                     }
 
-                    Anchor_PropertyType code = null;
-                    if (value.Code != null)
-                        code = new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = value.Code } };
+                    Anchor_PropertyType code = new Anchor_PropertyType { anchor = new Anchor_Type { Value = value.Code, href = value.Codespace + "/" + value.Code } };
 
-                    _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new RS_Identifier_Type
-                                    {
+                    _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new MD_Identifier_Type
+                    {
                                         code = code,
-                                        codeSpace = value.Codespace != null ? toCharString(value.Codespace) : null
                                     };
 
                 }
