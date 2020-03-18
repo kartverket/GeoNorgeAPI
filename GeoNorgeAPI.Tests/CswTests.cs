@@ -119,7 +119,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("1", transaction.TotalUpdated);
         }
 
-
+        /* 
         [Test]
         public void InsertMetadata()
         {
@@ -134,8 +134,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("1", transaction.TotalInserted);
 
             Console.WriteLine(transaction.Identifiers);
-        }
-        /*   
+        }  
         [Test]
         public void UpdateMetadata()
         {
