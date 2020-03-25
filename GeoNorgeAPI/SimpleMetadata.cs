@@ -3060,6 +3060,10 @@ namespace GeoNorgeAPI
 
         private DateTime? ParseDateProperty(Date_PropertyType dateProperty)
         {
+            if (dateProperty != null && dateProperty.Item != null
+                && dateProperty.Item.ToString().StartsWith("0001-01-01"))
+                return null;
+
             DateTime? date = dateProperty.Item as DateTime?;
 
             if (date == null)
@@ -3083,6 +3087,7 @@ namespace GeoNorgeAPI
             {
                 updatedValue = incomingDateTime.Value.ToString("yyyy-MM-dd");
             }
+            else { updatedValue = "0001-01-01"; }
 
             if (citation.date != null)
             {

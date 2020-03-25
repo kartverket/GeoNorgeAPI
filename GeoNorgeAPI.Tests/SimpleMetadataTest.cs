@@ -2064,6 +2064,27 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateCreatedDateWithDefaultWhenEmpty()
+        {
+            string defaultDate = "0001-01-01";
+            DateTime? date = null;
+
+            _md.DateCreated = date;
+
+            Assert.AreEqual(defaultDate, (string)GetCitationDateWithType("creation"));
+        }
+
+        [Test]
+        public void ShouldReturnEmptyCreatedDateWhenDefault()
+        {
+            string defaultDate = "0001-01-01";
+
+            SetDateOnCitationDateType(defaultDate, "creation");
+
+            Assert.IsNull(_md.DateCreated);
+        }
+
+        [Test]
         public void ShouldReturnNullWhenPublishedDateIsNull()
         {
             Assert.IsNull(_md.DatePublished);
