@@ -14,7 +14,7 @@ namespace GeoNorgeAPI.Tests
         {
             MD_Metadata_Type m = new MD_Metadata_Type();
             m.fileIdentifier = CharString("12345-67890-aabbcc-ddeeff-ggffhhjj");
-            m.language = CharString("nor");
+            m.language = new Language_PropertyType { item = new LanguageCode_PropertyType { LanguageCode = new CodeListValue_Type { codeListValue = "nor", codeList = "http://www.loc.gov/standards/iso639-2/", Value = "Norsk" } } };
             m.metadataStandardName = CharString("ISO19139");
             m.metadataStandardVersion = CharString("1.0");
             m.hierarchyLevel = new[] { new MD_ScopeCode_PropertyType

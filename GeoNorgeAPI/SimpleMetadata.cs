@@ -3135,7 +3135,13 @@ namespace GeoNorgeAPI
                 string value = null;
                 if (_md.language != null)
                 {
-                    value = _md.language.CharacterString;
+                    if (_md.language.item is LanguageCode_PropertyType)
+                    {
+                        var language = _md.language.item as LanguageCode_PropertyType;
+                        value = language.LanguageCode.codeListValue;
+                    }
+                    else 
+                        value = _md.language.item.ToString();
                 }
 
                 return value;
@@ -3143,7 +3149,18 @@ namespace GeoNorgeAPI
 
             set
             {
-                _md.language = toCharString(value);
+                _md.language = new Language_PropertyType
+                {
+                    item = new LanguageCode_PropertyType
+                    {
+                        LanguageCode = new CodeListValue_Type
+                        {
+                        codeList = "http://www.loc.gov/standards/iso639-2/",
+                        codeListValue = value,
+                        Value = (value == "nor" ? "Norsk" : "English")
+                        }
+                    }
+                };
             }
         }
 

@@ -2185,8 +2185,8 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateMetadataLanguage()
         {
             _md.MetadataLanguage = "eng";
-
-            Assert.AreEqual("eng", _md.GetMetadata().language.CharacterString);
+            var language = _md.GetMetadata().language.item as LanguageCode_PropertyType;
+            Assert.AreEqual("eng", language.LanguageCode.codeListValue);
         }
 
         [Test]
