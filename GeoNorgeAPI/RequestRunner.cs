@@ -92,7 +92,7 @@ namespace GeoNorgeAPI
         public MetadataTransaction RunCswTransaction(TransactionType request, Dictionary<string, string> additionalRequestHeaders)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
-            requestBody = requestBody.Replace("<gmd:MD_Metadata", @"<gmd:MD_Metadata xmlns:gmd=""http://www.isotc211.org/2005/gmd""  xmlns:gco=""http://www.isotc211.org/2005/gco"" xmlns:gmx=""http://www.isotc211.org/2005/gmx"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:gml=""http://www.opengis.net/gml"" xmlns:xlink=""http://www.w3.org/1999/xlink"" xsi:schemaLocation=""http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd""");
+            requestBody = requestBody.Replace("<gmd:MD_Metadata ", @"<gmd:MD_Metadata xmlns:gmd=""http://www.isotc211.org/2005/gmd""  xmlns:gco=""http://www.isotc211.org/2005/gco"" xmlns:gmx=""http://www.isotc211.org/2005/gmx"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:gml=""http://www.opengis.net/gml"" xmlns:xlink=""http://www.w3.org/1999/xlink"" xsi:schemaLocation=""http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd""");
             System.Diagnostics.Debug.Write(requestBody);
 
             //Log.Info("Running CSW Transaction.");
