@@ -2236,34 +2236,29 @@ namespace GeoNorgeAPI
                 };
 
 
-                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
-                {
-                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
-                        new DQ_DataQuality_PropertyType {
-                            DQ_DataQuality = new DQ_DataQuality_Type {
-                                scope = new DQ_Scope_PropertyType
-                                { 
-                                    DQ_Scope = new DQ_Scope_Type
-                                    { 
-                                        level = new MD_ScopeCode_PropertyType
-                                        { 
-                                            MD_ScopeCode = new CodeListValue_Type
-                                            {
-                                                codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
-                                                codeListValue="service"
-                                            }
+                _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                    new DQ_DataQuality_PropertyType {
+                        DQ_DataQuality = new DQ_DataQuality_Type {
+                            scope = new DQ_Scope_PropertyType
+                            {
+                                DQ_Scope = new DQ_Scope_Type
+                                {
+                                    level = new MD_ScopeCode_PropertyType
+                                    {
+                                        MD_ScopeCode = new CodeListValue_Type
+                                        {
+                                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
+                                            codeListValue= _md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue
                                         }
                                     }
-                                },
-                                report = reports
+                                }
                             }
                         }
-                    };
-                }
-                else
-                {
-                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
-                }
+                    }
+                };
+                
+  
+                _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
             }
         }
 
@@ -2657,35 +2652,28 @@ namespace GeoNorgeAPI
                 }
 
 
-                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
-                {
-                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
-                        new DQ_DataQuality_PropertyType {
-                            DQ_DataQuality = new DQ_DataQuality_Type {
-                                scope = new DQ_Scope_PropertyType
+                _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                    new DQ_DataQuality_PropertyType {
+                        DQ_DataQuality = new DQ_DataQuality_Type {
+                            scope = new DQ_Scope_PropertyType
+                            { 
+                                DQ_Scope = new DQ_Scope_Type
                                 { 
-                                    DQ_Scope = new DQ_Scope_Type
+                                    level = new MD_ScopeCode_PropertyType
                                     { 
-                                        level = new MD_ScopeCode_PropertyType
-                                        { 
-                                            MD_ScopeCode = new CodeListValue_Type
-                                            {
-                                                codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
-                                                codeListValue="service"
-                                            }
+                                        MD_ScopeCode = new CodeListValue_Type
+                                        {
+                                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
+                                            codeListValue = _md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue
                                         }
                                     }
-                                },
-                                report = reports.ToArray()
+                                }
                             }
                         }
-                    };
-                }
-                else
-                {
-                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports.ToArray();
-                }
+                    }
+                };
 
+                _md.dataQualityInfo[0].DQ_DataQuality.report = reports.ToArray();
 
             }
         }
