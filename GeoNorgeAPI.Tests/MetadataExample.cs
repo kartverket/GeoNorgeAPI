@@ -221,21 +221,48 @@ namespace GeoNorgeAPI.Tests
                                     { 
                                         new MD_RestrictionCode_PropertyType 
                                         { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "none" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "otherRestrictions" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
                                         }
-                                    },
-                                    useConstraints = new MD_RestrictionCode_PropertyType[] 
-                                    { 
-                                        new MD_RestrictionCode_PropertyType 
-                                        { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
-                                        }
-                                    },
-                                    otherConstraints = new MD_RestrictionOther_PropertyType [] 
+                                    }
+                                    ,
+                                     otherConstraints = new MD_RestrictionOther_PropertyType []
                                     {
                                         new MD_RestrictionOther_PropertyType
                                         {
-                                            MD_RestrictionOther = 
+                                            MD_RestrictionOther = new Anchor_Type{href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d",Value="Økonomiske- eller forretningsmessige forhold"}
+                                        }
+                                    }
+                                }
+                        },
+                        new MD_Constraints_PropertyType
+                        {
+                            MD_Constraints = new MD_LegalConstraints_Type
+                            {
+                                    useConstraints = new MD_RestrictionCode_PropertyType[]
+                                    {
+                                        new MD_RestrictionCode_PropertyType
+                                        {
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "otherRestrictions" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
+                                        }
+                                    },
+                                    otherConstraints = new MD_RestrictionOther_PropertyType []
+                                    {
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther = new Anchor_Type{href="https://creativecommons.org/licenses/by/4.0/",Value="Creative Commons BY 4.0 (CC BY 4.0)"}
+                                        }
+                                    }
+                            }
+                        },
+                        new MD_Constraints_PropertyType
+                        {
+                            MD_Constraints = new MD_LegalConstraints_Type
+                            {
+                                    otherConstraints = new MD_RestrictionOther_PropertyType []
+                                    {
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther =
                                             new PT_FreeText_PropertyType
                                                  {
                                                     CharacterString = "Ingen begrensninger på bruk.",
@@ -255,17 +282,8 @@ namespace GeoNorgeAPI.Tests
                                                     }
                                                   }
                                             }
-                                        
-                                        , new MD_RestrictionOther_PropertyType
-                                        {
-                                            MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}
-                                        },
-                                        new MD_RestrictionOther_PropertyType
-                                        {
-                                            MD_RestrictionOther = CharString("norway digital restricted")
-                                        }
-                                    }  
-                                }
+                                    }
+                            },
                         },
                     new MD_Constraints_PropertyType
                         {

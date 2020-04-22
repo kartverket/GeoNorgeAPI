@@ -2436,15 +2436,17 @@ namespace GeoNorgeAPI.Tests
         {
             SimpleConstraints constraints = _md.Constraints;
 
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
             Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
             Assert.AreEqual("Ingen begrensninger på bruk.", constraints.OtherConstraints);
-            Assert.AreEqual("http://test.no", constraints.OtherConstraintsLink);
-            Assert.AreEqual("Link", constraints.OtherConstraintsLinkText);
+            Assert.AreEqual("https://creativecommons.org/licenses/by/4.0/", constraints.OtherConstraintsLink);
+            Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.OtherConstraintsLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
-            Assert.AreEqual("none", constraints.AccessConstraints);
-            Assert.AreEqual("free", constraints.UseConstraints);
-            Assert.AreEqual("norway digital restricted", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("Økonomiske- eller forretningsmessige forhold", constraints.AccessConstraints);
+            Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
             Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
@@ -2452,17 +2454,21 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateConstraints()
         {
-            string expectedUseLimitations = "ingen begrensninger";
+            string expectedUseLimitations = "ingen bruksbegrensninger";
+            string expectedEnglishUseLimitations = "no use limitations";
+
+            string expectedAccessConstraints = "Økonomiske- eller forretningsmessige forhold";
+            string expectedOtherConstraintsAccess = "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
+
+            string expectedUseConstraints = "otherRestrictions";
+            string expectedOtherConstraintsLink = "https://creativecommons.org/licenses/by/4.0/";
+            string expectedOtherConstraintsLinkText = "Creative Commons BY 4.0 (CC BY 4.0)";
+
             string expectedOtherConstraints = "ingen andre begrensninger";
-            string expectedOtherConstraintsLink = "http://test.no";
-            string expectedOtherConstraintsLinkText = "Link";
-            string expectedSecurityConstraints = "classified";
-            string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
-            string expectedAccessConstraints = "restricted";
-            string expectedUseConstraints = "license";
-            string expectedOtherConstraintsAccess = "norway digital restricted";
-            string expectedEnglishUseLimitations = "no limitations";
             string expectedEnglishOtherConstraints = "no limitations";
+
+            string expectedSecurityConstraints = "restricted";
+            string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
@@ -2497,58 +2503,46 @@ namespace GeoNorgeAPI.Tests
             foreach (var constraint in identification.resourceConstraints)
             {
                 MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
+
                 if (securityConstraint != null)
                 {
                     actualSecurityConstraint = securityConstraint.classification.MD_ClassificationCode.codeListValue;
                     actualSecurityConstraintNote = securityConstraint.userNote.CharacterString;
                 }
-                else
+                else if (legalConstraint?.useConstraints != null)
                 {
-                    MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
-                    if (legalConstraint != null)
-                    {
-                        actualAccessConstraint = legalConstraint.accessConstraints[0].MD_RestrictionCode.codeListValue;
-
-                        var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
-                        if (otherConstraintString != null)
-                            actualOtherConstraint = otherConstraintString.CharacterString;
-
-                        var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
-                        if (englishOtherConstraint != null)
-                            actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
-
-                        var otherConstraintAnchor = legalConstraint.otherConstraints[1].MD_RestrictionOther as Anchor_Type;
-                        if (otherConstraintAnchor != null)
-                        {
-                            actualOtherConstraintLink = otherConstraintAnchor.href;
-                            actualOtherConstraintLinkText = otherConstraintAnchor.Value;
-                        }
-
-                        actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
-
-                        for (int a = 0; a < legalConstraint.otherConstraints.Length; a++)
-                        {
-                            var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
-                            if (access != null)
-                            {
-                                if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
-                                {
-                                    actualOtherConstraintsAccess = access.CharacterString;
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
-                        actualUseLimitation = useLimit.CharacterString;
-                        actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
-                    }
+                    actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                    var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualOtherConstraintLinkText = useConstraintsType.Value;
+                    actualOtherConstraintLink = useConstraintsType.href;
 
                 }
+                else if (constraint?.MD_Constraints?.useLimitation != null)
+                {
+                    var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
+                    actualUseLimitation = useLimit.CharacterString;
+                    actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
+                }
+                else if (legalConstraint?.accessConstraints != null)
+                {
+                    var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualAccessConstraint = actualAccessConstraintType.Value;
+                    actualOtherConstraintsAccess = actualAccessConstraintType.href;
+                }
+                else if (legalConstraint?.otherConstraints != null)
+                {
+                    var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                    if (otherConstraintString != null)
+                        actualOtherConstraint = otherConstraintString.CharacterString;
+
+                    var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                    if (englishOtherConstraint != null)
+                        actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
+                }
             }
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 
             Assert.AreEqual(expectedUseLimitations, actualUseLimitation);
             Assert.AreEqual(expectedSecurityConstraints, actualSecurityConstraint);

@@ -3347,7 +3347,7 @@ namespace GeoNorgeAPI
             {
                 SimpleConstraints value = null;
                 var identification = GetIdentification();
-
+                //Populate data default from old constraints structure
                 if (identification != null
                     && identification.resourceConstraints != null
                     && identification.resourceConstraints.Length > 0)
@@ -3467,70 +3467,126 @@ namespace GeoNorgeAPI
                     }
 
                 }
+
+                //Get new constraint structure
+                if (identification != null
+                    && identification.resourceConstraints != null
+                    && identification.resourceConstraints.Length > 0)
+                {
+                    foreach (var constraint in identification.resourceConstraints)
+                    {
+                        MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                        MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
+
+                        if (securityConstraint != null)
+                        {
+                            value.SecurityConstraints = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                            value.SecurityConstraintsNote = securityConstraint.userNote.CharacterString;
+                        }
+                        else if (legalConstraint?.useConstraints != null)
+                        {
+                            value.UseConstraints = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                            var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                            value.OtherConstraintsLinkText = useConstraintsType.Value;
+                            value.OtherConstraintsLink = useConstraintsType.href;
+
+                        }
+                        else if (constraint?.MD_Constraints?.useLimitation != null)
+                        {
+                            var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
+                            value.UseLimitations = useLimit.CharacterString;
+                            value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                        }
+                        else if (legalConstraint?.accessConstraints != null)
+                        {
+                            var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                            value.AccessConstraints = actualAccessConstraintType.Value;
+                            value.OtherConstraintsAccess = actualAccessConstraintType.href;
+                        }
+                        else if (legalConstraint?.otherConstraints != null)
+                        {
+                            var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                            if (otherConstraintString != null)
+                                value.OtherConstraints = otherConstraintString.CharacterString;
+
+                            var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                            if (englishOtherConstraint != null)
+                                value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                        }
+                    }
+
+                }
                 return value;
             }
 
             set
             {
-
-                MD_RestrictionOther_PropertyType[] otherCons;
-                MD_RestrictionOther_PropertyType otherConsString = null;
+                MD_RestrictionOther_PropertyType otherConstraint = null;
                 if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
-                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
+                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
                 else
-                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
-
-                MD_RestrictionOther_PropertyType otherConsStringAnchor;
-                if (!string.IsNullOrEmpty(value.OtherConstraintsLinkText) && !string.IsNullOrEmpty(value.OtherConstraintsLink))
-                {
-                    otherConsStringAnchor = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new Anchor_Type { Value = value.OtherConstraintsLinkText, href = value.OtherConstraintsLink } };
-                    otherCons = new MD_RestrictionOther_PropertyType[2];
-                    otherCons[0] = otherConsString;
-                    otherCons[1] = otherConsStringAnchor;
-                }
-                else
-                {
-                    otherCons = new MD_RestrictionOther_PropertyType[1];
-                    if (string.IsNullOrEmpty(value.OtherConstraints))
-                        otherCons[0] = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new object() };
-                    else
-                        otherCons[0] = otherConsString;
-                }
-
-                if (!string.IsNullOrEmpty(value.OtherConstraintsAccess))
-                {
-                    Array.Resize(ref otherCons, otherCons.Length + 1);
-                    MD_RestrictionOther_PropertyType otherConsAccessString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraintsAccess } };
-                    otherCons[otherCons.Length - 1] = otherConsAccessString;
-                }
+                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
 
 
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_Constraints_Type {
                             useLimitation = new CharacterString_PropertyType[] { CreateFreeTextElement(value.UseLimitations, value.EnglishUseLimitations) }
+                        }
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_LegalConstraints_Type {
+                            accessConstraints = new MD_RestrictionCode_PropertyType[] {
+                                new MD_RestrictionCode_PropertyType {
+                                    MD_RestrictionCode = new CodeListValue_Type {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
+                                        codeListValue = "otherRestrictions"
+                                    }
+                                }
+                            },
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                new MD_RestrictionOther_PropertyType
+                                {
+                                    MD_RestrictionOther =  new Anchor_Type
+                                    {
+                                        Value = value.AccessConstraints,
+                                        href = value.OtherConstraintsAccess //"http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations" //todo add codelistvalue parameter
+                                    }
+                                }
+                            }
                         }    
                     },
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_LegalConstraints_Type {
-                            accessConstraints = new MD_RestrictionCode_PropertyType[] { 
+                            useConstraints = new MD_RestrictionCode_PropertyType[] {
                                 new MD_RestrictionCode_PropertyType {
                                     MD_RestrictionCode = new CodeListValue_Type {
                                         codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
-                                        codeListValue = value.AccessConstraints
-                                    }    
+                                        codeListValue = "otherRestrictions"
+                                    }
                                 }
                             },
-                            useConstraints = new MD_RestrictionCode_PropertyType[] { 
-                                new MD_RestrictionCode_PropertyType {
-                                    MD_RestrictionCode = new CodeListValue_Type {
-                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
-                                        codeListValue = value.UseConstraints
-                                    }    
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                new MD_RestrictionOther_PropertyType
+                                {
+                                    MD_RestrictionOther =  new Anchor_Type
+                                    {
+                                        Value = value.OtherConstraintsLinkText,
+                                        href = value.OtherConstraintsLink
+                                    }
                                 }
-                            },
-                            otherConstraints = otherCons
-                        }    
+                            }
+                        }
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_LegalConstraints_Type {
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                otherConstraint
+                            }
+                        }
                     },
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_SecurityConstraints_Type {
