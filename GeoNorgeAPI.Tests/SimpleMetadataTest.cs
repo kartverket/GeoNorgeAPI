@@ -2441,12 +2441,15 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
             Assert.AreEqual("Ingen begrensninger på bruk.", constraints.OtherConstraints);
             Assert.AreEqual("https://creativecommons.org/licenses/by/4.0/", constraints.OtherConstraintsLink);
+            Assert.AreEqual("https://creativecommons.org/licenses/by/4.0/", constraints.UseConstraintsLicenseLink);
             Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.OtherConstraintsLinkText);
+            Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.UseConstraintsLicenseLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("Økonomiske- eller forretningsmessige forhold", constraints.AccessConstraints);
             Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
             Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
             Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
@@ -2475,12 +2478,15 @@ namespace GeoNorgeAPI.Tests
                 UseLimitations = expectedUseLimitations,
                 OtherConstraints = expectedOtherConstraints,
                 OtherConstraintsLink = expectedOtherConstraintsLink,
+                UseConstraintsLicenseLink = expectedOtherConstraintsLink,
                 OtherConstraintsLinkText = expectedOtherConstraintsLinkText,
+                UseConstraintsLicenseLinkText = expectedOtherConstraintsLinkText,
                 SecurityConstraints = expectedSecurityConstraints,
                 SecurityConstraintsNote = expectedSecurityConstraintsNote,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
                 OtherConstraintsAccess = expectedOtherConstraintsAccess,
+                AccessConstraintsLink = expectedOtherConstraintsAccess,
                 EnglishUseLimitations = expectedEnglishUseLimitations,
                 EnglishOtherConstraints = expectedEnglishOtherConstraints
 

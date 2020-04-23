@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -3405,7 +3405,9 @@ namespace GeoNorgeAPI
                                             if (otherConstrainAnchor != null)
                                             {
                                                 value.OtherConstraintsLink = otherConstrainAnchor.href;
+                                                value.UseConstraintsLicenseLink = otherConstrainAnchor.href;
                                                 value.OtherConstraintsLinkText = otherConstrainAnchor.Value;
+                                                value.UseConstraintsLicenseLinkText = otherConstrainAnchor.Value;
                                             }
                                         }
 
@@ -3416,7 +3418,9 @@ namespace GeoNorgeAPI
                                             if (otherConstrainAnchor2 != null)
                                             {
                                                 value.OtherConstraintsLink = otherConstrainAnchor2.href;
+                                                value.UseConstraintsLicenseLink = otherConstrainAnchor2.href;
                                                 value.OtherConstraintsLinkText = otherConstrainAnchor2.Value;
+                                                value.UseConstraintsLicenseLinkText = otherConstrainAnchor2.Value;
                                             }
                                         }
 
@@ -3428,6 +3432,7 @@ namespace GeoNorgeAPI
                                                 if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
                                                 { 
                                                     value.OtherConstraintsAccess = access.CharacterString;
+                                                    value.AccessConstraints = access.CharacterString;
                                                     break;
                                                 }
                                             }
@@ -3487,21 +3492,36 @@ namespace GeoNorgeAPI
                         {
                             value.UseConstraints = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
                             var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
-                            value.OtherConstraintsLinkText = useConstraintsType.Value;
-                            value.OtherConstraintsLink = useConstraintsType.href;
+
+                            if (useConstraintsType != null)
+                            { 
+                                value.OtherConstraintsLinkText = useConstraintsType.Value;
+                                value.UseConstraintsLicenseLinkText = useConstraintsType.Value;
+                                value.OtherConstraintsLink = useConstraintsType.href;
+                                value.UseConstraintsLicenseLink = useConstraintsType.href;
+                            }
 
                         }
                         else if (constraint?.MD_Constraints?.useLimitation != null)
                         {
-                            var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
-                            value.UseLimitations = useLimit.CharacterString;
-                            value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                            var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;{
+                                if (useLimit != null)
+                                {
+                                    value.UseLimitations = useLimit.CharacterString;
+                                    value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                                }
+                            }
                         }
                         else if (legalConstraint?.accessConstraints != null)
                         {
-                            var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
-                            value.AccessConstraints = actualAccessConstraintType.Value;
-                            value.OtherConstraintsAccess = actualAccessConstraintType.href;
+                            var accessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+
+                            if (accessConstraintType != null)
+                            { 
+                                value.AccessConstraints = accessConstraintType.Value;
+                                value.OtherConstraintsAccess = accessConstraintType.href;
+                                value.AccessConstraintsLink = accessConstraintType.href;
+                            }
                         }
                         else if (legalConstraint?.otherConstraints != null)
                         {
@@ -3551,7 +3571,7 @@ namespace GeoNorgeAPI
                                     MD_RestrictionOther =  new Anchor_Type
                                     {
                                         Value = value.AccessConstraints,
-                                        href = value.OtherConstraintsAccess //"http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations" //todo add codelistvalue parameter
+                                        href = value.AccessConstraintsLink
                                     }
                                 }
                             }
@@ -3574,7 +3594,8 @@ namespace GeoNorgeAPI
                                     MD_RestrictionOther =  new Anchor_Type
                                     {
                                         Value = value.OtherConstraintsLinkText,
-                                        href = value.OtherConstraintsLink
+                                        href = !string.IsNullOrEmpty(value.OtherConstraintsLink)
+                                        ? value.OtherConstraintsLink : value.UseConstraintsLicenseLink
                                     }
                                 }
                             }
@@ -4429,15 +4450,22 @@ namespace GeoNorgeAPI
     {
         public string UseLimitations { get; set; }
         public string EnglishUseLimitations { get; set; }
-        public string AccessConstraints { get; set; }
-        public string UseConstraints { get; set; }
+        public string AccessConstraints { get; set; } // Økonomiske- eller forretningsmessige forhold
+        [ObsoleteAttribute("UseConstraints will soon be deprecated. Use UseConstraintsLicenseLinkText and UseConstraintsLicenseLink instead.")]
+        public string UseConstraints { get; set; } // egentlig fast verdi "otherRestrictions", det er OtherConstraintsLinkText og OtherConstraintsLink som har info lisens.
         public string OtherConstraints { get; set; }
         public string EnglishOtherConstraints { get; set; }
-        public string OtherConstraintsLink { get; set; }
-        public string OtherConstraintsLinkText { get; set; }
-        public string OtherConstraintsAccess { get; set; }
+        [ObsoleteAttribute("OtherConstraintsLink will soon be deprecated. Use UseConstraintsLicenseLink instead.")]
+        public string OtherConstraintsLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
+        [ObsoleteAttribute("OtherConstraintsLinkText  will soon be deprecated. Use UseConstraintsLicenseLinkText instead.")]
+        public string OtherConstraintsLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
+        [ObsoleteAttribute("OtherConstraintsAccess  will soon be deprecated. Use AccessConstraintsLink instead.")]
+        public string OtherConstraintsAccess { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
         public string SecurityConstraints { get; set; }
         public string SecurityConstraintsNote { get; set; }
+        public string UseConstraintsLicenseLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
+        public string UseConstraintsLicenseLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
+        public string AccessConstraintsLink { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
     }
 
 
