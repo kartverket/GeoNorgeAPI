@@ -3593,9 +3593,8 @@ namespace GeoNorgeAPI
                                 {
                                     MD_RestrictionOther =  new Anchor_Type
                                     {
-                                        Value = value.OtherConstraintsLinkText,
-                                        href = !string.IsNullOrEmpty(value.OtherConstraintsLink)
-                                        ? value.OtherConstraintsLink : value.UseConstraintsLicenseLink
+                                        Value = value.UseConstraintsLicenseLinkText,
+                                        href = value.UseConstraintsLicenseLink
                                     }
                                 }
                             }
