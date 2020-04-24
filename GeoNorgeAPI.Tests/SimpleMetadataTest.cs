@@ -953,13 +953,14 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnReferenceSystemWhenPresent()
         {
             string expectedCode = "code";
+            string expectedCodeLink = "link";
             string expectedCodeSpace = "codespace";
             _md.GetMetadata().referenceSystemInfo = new MD_ReferenceSystem_PropertyType[] {
                 new MD_ReferenceSystem_PropertyType {
                     MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                         referenceSystemIdentifier = new RS_Identifier_PropertyType {
                             RS_Identifier = new RS_Identifier_Type {
-                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                code = new Anchor_PropertyType{ anchor = new Anchor_Type{ href = expectedCodeLink, Value = expectedCode } },
                                 codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                             }
                         }
@@ -971,6 +972,7 @@ namespace GeoNorgeAPI.Tests
             var rs = _md.ReferenceSystem;
             Assert.NotNull(rs);
             Assert.AreEqual(expectedCode, rs.CoordinateSystem);
+            Assert.AreEqual(expectedCodeLink, rs.CoordinateSystemLink);
             Assert.AreEqual(expectedCodeSpace, rs.Namespace);
         }
 
@@ -978,16 +980,19 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateReferenceSystem()
         {
             string expectedCoordinateSystem = "system";
+            string expectedCoordinateSystemLink = "link";
             string expectedNamespace = "namespace";
             _md.ReferenceSystem = new SimpleReferenceSystem
             {
                 CoordinateSystem = expectedCoordinateSystem,
+                CoordinateSystemLink = expectedCoordinateSystemLink,
                 Namespace = expectedNamespace
             };
 
             var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
-
-            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            var anchor = identifier.code.anchor as Anchor_Type;
+            Assert.AreEqual(expectedCoordinateSystem, anchor.Value);
+            Assert.AreEqual(expectedCoordinateSystemLink, anchor.href);
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
@@ -1007,7 +1012,7 @@ namespace GeoNorgeAPI.Tests
                     MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                         referenceSystemIdentifier = new RS_Identifier_PropertyType {
                             RS_Identifier = new RS_Identifier_Type {
-                                code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = expectedCode }  } ,
                                 codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                             }
                         }
@@ -1039,15 +1044,18 @@ namespace GeoNorgeAPI.Tests
 
             var identifier = _md.GetMetadata().referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
-            Assert.AreEqual(expectedCoordinateSystem, identifier.code.CharacterString);
+            var code = identifier.code.anchor as CharacterString_PropertyType;
+
+            Assert.AreEqual(expectedCoordinateSystem, code.CharacterString);
             Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
         }
 
-        [Test]
-        public void ShouldReturnNullWhenResourceReferenceIsNull()
-        {
-            Assert.IsNull(_md.ResourceReference);
-        }
+        //[Test]
+        //public void ShouldReturnNullWhenResourceReferenceIsNull()
+        //{
+        //    _md.ResourceReference = null;
+        //    Assert.IsNull(_md.ResourceReference);
+        //}
 
         [Test]
         public void ShouldReturnResourceReferenceWhenPresent()
@@ -1070,7 +1078,7 @@ namespace GeoNorgeAPI.Tests
                                    {
                                     MD_Identifier = new RS_Identifier_Type
                                         {
-                                        code = new CharacterString_PropertyType { CharacterString = expectedCode },
+                                        code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = expectedCode }  } ,
                                         codeSpace = new CharacterString_PropertyType { CharacterString = expectedCodeSpace }
                                         }
                                    }
@@ -1101,9 +1109,22 @@ namespace GeoNorgeAPI.Tests
             };
 
             var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
-
-            Assert.AreEqual(expectedResourceReference, identifier.code.CharacterString);
-            Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+            if (identifier != null)
+            {
+                var code = identifier.code.anchor as CharacterString_PropertyType;
+                Assert.AreEqual(expectedResourceReference, code.CharacterString);
+                Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+            }
+            else
+            {
+                var identifierType = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
+                if (identifierType != null)
+                {
+                    var code = identifierType.code.anchor as Anchor_Type;
+                    Assert.AreEqual(expectedResourceReference, code.Value);
+                    Assert.AreEqual(expectedNamespace + "/" + expectedResourceReference, code.href);
+                }
+            }
         }
 
 
@@ -2043,6 +2064,27 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldUpdateCreatedDateWithDefaultWhenEmpty()
+        {
+            string defaultDate = "0001-01-01";
+            DateTime? date = null;
+
+            _md.DateCreated = date;
+
+            Assert.AreEqual(defaultDate, (string)GetCitationDateWithType("creation"));
+        }
+
+        [Test]
+        public void ShouldReturnEmptyCreatedDateWhenDefault()
+        {
+            string defaultDate = "0001-01-01";
+
+            SetDateOnCitationDateType(defaultDate, "creation");
+
+            Assert.IsNull(_md.DateCreated);
+        }
+
+        [Test]
         public void ShouldReturnNullWhenPublishedDateIsNull()
         {
             Assert.IsNull(_md.DatePublished);
@@ -2143,8 +2185,8 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateMetadataLanguage()
         {
             _md.MetadataLanguage = "eng";
-
-            Assert.AreEqual("eng", _md.GetMetadata().language.CharacterString);
+            var language = _md.GetMetadata().language.item as LanguageCode_PropertyType;
+            Assert.AreEqual("eng", language.LanguageCode.codeListValue);
         }
 
         [Test]
@@ -2394,15 +2436,20 @@ namespace GeoNorgeAPI.Tests
         {
             SimpleConstraints constraints = _md.Constraints;
 
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
             Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
             Assert.AreEqual("Ingen begrensninger på bruk.", constraints.OtherConstraints);
-            Assert.AreEqual("http://test.no", constraints.OtherConstraintsLink);
-            Assert.AreEqual("Link", constraints.OtherConstraintsLinkText);
+            Assert.AreEqual("https://creativecommons.org/licenses/by/4.0/", constraints.OtherConstraintsLink);
+            Assert.AreEqual("https://creativecommons.org/licenses/by/4.0/", constraints.UseConstraintsLicenseLink);
+            Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.OtherConstraintsLinkText);
+            Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.UseConstraintsLicenseLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
-            Assert.AreEqual("none", constraints.AccessConstraints);
-            Assert.AreEqual("free", constraints.UseConstraints);
-            Assert.AreEqual("norway digital restricted", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("Økonomiske- eller forretningsmessige forhold", constraints.AccessConstraints);
+            Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
             Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
@@ -2410,29 +2457,36 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateConstraints()
         {
-            string expectedUseLimitations = "ingen begrensninger";
+            string expectedUseLimitations = "ingen bruksbegrensninger";
+            string expectedEnglishUseLimitations = "no use limitations";
+
+            string expectedAccessConstraints = "Økonomiske- eller forretningsmessige forhold";
+            string expectedOtherConstraintsAccess = "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
+
+            string expectedUseConstraints = "otherRestrictions";
+            string expectedOtherConstraintsLink = "https://creativecommons.org/licenses/by/4.0/";
+            string expectedOtherConstraintsLinkText = "Creative Commons BY 4.0 (CC BY 4.0)";
+
             string expectedOtherConstraints = "ingen andre begrensninger";
-            string expectedOtherConstraintsLink = "http://test.no";
-            string expectedOtherConstraintsLinkText = "Link";
-            string expectedSecurityConstraints = "classified";
-            string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
-            string expectedAccessConstraints = "restricted";
-            string expectedUseConstraints = "license";
-            string expectedOtherConstraintsAccess = "norway digital restricted";
-            string expectedEnglishUseLimitations = "no limitations";
             string expectedEnglishOtherConstraints = "no limitations";
+
+            string expectedSecurityConstraints = "restricted";
+            string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
 
             SimpleConstraints constraints = new SimpleConstraints
             {
                 UseLimitations = expectedUseLimitations,
                 OtherConstraints = expectedOtherConstraints,
                 OtherConstraintsLink = expectedOtherConstraintsLink,
+                UseConstraintsLicenseLink = expectedOtherConstraintsLink,
                 OtherConstraintsLinkText = expectedOtherConstraintsLinkText,
+                UseConstraintsLicenseLinkText = expectedOtherConstraintsLinkText,
                 SecurityConstraints = expectedSecurityConstraints,
                 SecurityConstraintsNote = expectedSecurityConstraintsNote,
                 AccessConstraints = expectedAccessConstraints,
                 UseConstraints = expectedUseConstraints,
                 OtherConstraintsAccess = expectedOtherConstraintsAccess,
+                AccessConstraintsLink = expectedOtherConstraintsAccess,
                 EnglishUseLimitations = expectedEnglishUseLimitations,
                 EnglishOtherConstraints = expectedEnglishOtherConstraints
 
@@ -2455,58 +2509,46 @@ namespace GeoNorgeAPI.Tests
             foreach (var constraint in identification.resourceConstraints)
             {
                 MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
+
                 if (securityConstraint != null)
                 {
                     actualSecurityConstraint = securityConstraint.classification.MD_ClassificationCode.codeListValue;
                     actualSecurityConstraintNote = securityConstraint.userNote.CharacterString;
                 }
-                else
+                else if (legalConstraint?.useConstraints != null)
                 {
-                    MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
-                    if (legalConstraint != null)
-                    {
-                        actualAccessConstraint = legalConstraint.accessConstraints[0].MD_RestrictionCode.codeListValue;
-
-                        var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
-                        if (otherConstraintString != null)
-                            actualOtherConstraint = otherConstraintString.CharacterString;
-
-                        var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
-                        if (englishOtherConstraint != null)
-                            actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
-
-                        var otherConstraintAnchor = legalConstraint.otherConstraints[1].MD_RestrictionOther as Anchor_Type;
-                        if (otherConstraintAnchor != null)
-                        {
-                            actualOtherConstraintLink = otherConstraintAnchor.href;
-                            actualOtherConstraintLinkText = otherConstraintAnchor.Value;
-                        }
-
-                        actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
-
-                        for (int a = 0; a < legalConstraint.otherConstraints.Length; a++)
-                        {
-                            var access = legalConstraint.otherConstraints[a].MD_RestrictionOther as CharacterString_PropertyType;
-                            if (access != null)
-                            {
-                                if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
-                                {
-                                    actualOtherConstraintsAccess = access.CharacterString;
-                                    break;
-                                }
-                            }
-                        }
-
-                    }
-                    else
-                    {
-                        var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
-                        actualUseLimitation = useLimit.CharacterString;
-                        actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
-                    }
+                    actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                    var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualOtherConstraintLinkText = useConstraintsType.Value;
+                    actualOtherConstraintLink = useConstraintsType.href;
 
                 }
+                else if (constraint?.MD_Constraints?.useLimitation != null)
+                {
+                    var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
+                    actualUseLimitation = useLimit.CharacterString;
+                    actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
+                }
+                else if (legalConstraint?.accessConstraints != null)
+                {
+                    var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualAccessConstraint = actualAccessConstraintType.Value;
+                    actualOtherConstraintsAccess = actualAccessConstraintType.href;
+                }
+                else if (legalConstraint?.otherConstraints != null)
+                {
+                    var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                    if (otherConstraintString != null)
+                        actualOtherConstraint = otherConstraintString.CharacterString;
+
+                    var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                    if (englishOtherConstraint != null)
+                        actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
+                }
             }
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 
             Assert.AreEqual(expectedUseLimitations, actualUseLimitation);
             Assert.AreEqual(expectedSecurityConstraints, actualSecurityConstraint);
@@ -2600,7 +2642,7 @@ namespace GeoNorgeAPI.Tests
                       {
                           MD_Identifier = new MD_Identifier_Type
                           {
-                              code = new CharacterString_PropertyType { CharacterString = uuid1 }
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid1 }  } ,
                           }
                       }
                   }
@@ -2613,7 +2655,7 @@ namespace GeoNorgeAPI.Tests
                       {
                           MD_Identifier = new MD_Identifier_Type
                           {
-                              code = new CharacterString_PropertyType { CharacterString = uuid2 }
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid2 }  }
                           }
                       }
                   }
@@ -2642,11 +2684,12 @@ namespace GeoNorgeAPI.Tests
             var crossReferences = identification.aggregationInfo;
             foreach (MD_AggregateInformation_PropertyType element in crossReferences)
             {
-                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid1))
+                var code = element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.anchor as CharacterString_PropertyType;
+                if (code.CharacterString.Equals(uuid1))
                 {
                     foundUuid1 = true;
                 }
-                if (element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString.Equals(uuid2))
+                if (code.CharacterString.Equals(uuid2))
                 {
                     foundUuid2 = true;
                 }
@@ -3037,6 +3080,21 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedValidFrom, actualValidFrom);
             Assert.AreEqual(expectedValidTo, actualValidTo);
             
+        }
+
+        [Test]
+        public void ShouldUpdateValidTimePeriodWhenNotSet()
+        {
+            //SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
+            //simpleMetadata.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
+
+            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidFrom);
+            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
+
+            _md.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
         }
 
         [Test]

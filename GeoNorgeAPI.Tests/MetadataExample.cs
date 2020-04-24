@@ -14,7 +14,7 @@ namespace GeoNorgeAPI.Tests
         {
             MD_Metadata_Type m = new MD_Metadata_Type();
             m.fileIdentifier = CharString("12345-67890-aabbcc-ddeeff-ggffhhjj");
-            m.language = CharString("nor");
+            m.language = new Language_PropertyType { item = new LanguageCode_PropertyType { LanguageCode = new CodeListValue_Type { codeListValue = "nor", codeList = "http://www.loc.gov/standards/iso639-2/", Value = "Norsk" } } };
             m.metadataStandardName = CharString("ISO19139");
             m.metadataStandardVersion = CharString("1.0");
             m.hierarchyLevel = new[] { new MD_ScopeCode_PropertyType
@@ -92,7 +92,7 @@ namespace GeoNorgeAPI.Tests
                         {
                             MD_Identifier = new MD_Identifier_Type
                                 {
-                                    code = CharString("12345-abcdef-67890-ghijkl")
+                                    code = new Anchor_PropertyType{  anchor = new CharacterString_PropertyType{ CharacterString ="12345-abcdef-67890-ghijkl"} }
                                 }
                         } 
                     }
@@ -221,21 +221,48 @@ namespace GeoNorgeAPI.Tests
                                     { 
                                         new MD_RestrictionCode_PropertyType 
                                         { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "none" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "otherRestrictions" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
                                         }
-                                    },
-                                    useConstraints = new MD_RestrictionCode_PropertyType[] 
-                                    { 
-                                        new MD_RestrictionCode_PropertyType 
-                                        { 
-                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "free" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
-                                        }
-                                    },
-                                    otherConstraints = new MD_RestrictionOther_PropertyType [] 
+                                    }
+                                    ,
+                                     otherConstraints = new MD_RestrictionOther_PropertyType []
                                     {
                                         new MD_RestrictionOther_PropertyType
                                         {
-                                            MD_RestrictionOther = 
+                                            MD_RestrictionOther = new Anchor_Type{href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d",Value="Økonomiske- eller forretningsmessige forhold"}
+                                        }
+                                    }
+                                }
+                        },
+                        new MD_Constraints_PropertyType
+                        {
+                            MD_Constraints = new MD_LegalConstraints_Type
+                            {
+                                    useConstraints = new MD_RestrictionCode_PropertyType[]
+                                    {
+                                        new MD_RestrictionCode_PropertyType
+                                        {
+                                            MD_RestrictionCode = new CodeListValue_Type { codeListValue = "otherRestrictions" , codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" }
+                                        }
+                                    },
+                                    otherConstraints = new MD_RestrictionOther_PropertyType []
+                                    {
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther = new Anchor_Type{href="https://creativecommons.org/licenses/by/4.0/",Value="Creative Commons BY 4.0 (CC BY 4.0)"}
+                                        }
+                                    }
+                            }
+                        },
+                        new MD_Constraints_PropertyType
+                        {
+                            MD_Constraints = new MD_LegalConstraints_Type
+                            {
+                                    otherConstraints = new MD_RestrictionOther_PropertyType []
+                                    {
+                                        new MD_RestrictionOther_PropertyType
+                                        {
+                                            MD_RestrictionOther =
                                             new PT_FreeText_PropertyType
                                                  {
                                                     CharacterString = "Ingen begrensninger på bruk.",
@@ -255,17 +282,8 @@ namespace GeoNorgeAPI.Tests
                                                     }
                                                   }
                                             }
-                                        
-                                        , new MD_RestrictionOther_PropertyType
-                                        {
-                                            MD_RestrictionOther = new Anchor_Type{href="http://test.no",Value="Link"}
-                                        },
-                                        new MD_RestrictionOther_PropertyType
-                                        {
-                                            MD_RestrictionOther = CharString("norway digital restricted")
-                                        }
-                                    }  
-                                }
+                                    }
+                            },
                         },
                     new MD_Constraints_PropertyType
                         {
@@ -324,11 +342,12 @@ namespace GeoNorgeAPI.Tests
 
                                                             Item = new TimePositionType()
                                                             {
-                                                                Value = "2014-01-01" 
+                                                                Value = "0001-01-01"
                                                             },
                                                             Item1 = new TimePositionType()
                                                             {
-                                                                Value = "2020-01-01"
+                                                                Value = "2030-01-01",
+                                                                indeterminatePosition = TimeIndeterminateValueType.now
                                                             }
                                                       }        
                                                 }
@@ -349,6 +368,10 @@ namespace GeoNorgeAPI.Tests
                     }
             };
 
+            m.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new MD_Identifier_Type
+            {
+                code = new Anchor_PropertyType { anchor = new Anchor_Type { href = "https://registry.gdi-de.org/id/de.nw/inspire-cp-alkis", Value = "inspire-cp-alkis" } }
+            };
 
             m.distributionInfo = new MD_Distribution_PropertyType
             {
@@ -513,7 +536,7 @@ namespace GeoNorgeAPI.Tests
                                                                                     }, date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
                                                                                 }
                                                                             },
-                                                                            code = new CharacterString_PropertyType()
+                                                                            code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType() }
                                                                         }
                                                                     }
                                                                 }
@@ -540,9 +563,9 @@ namespace GeoNorgeAPI.Tests
                         { 
                             RS_Identifier = new RS_Identifier_Type 
                             { 
-                                code = new CharacterString_PropertyType 
-                                { 
-                                    CharacterString = "http://www.opengis.net/def/crs/EPSG/0/25831"
+                                code = new Anchor_PropertyType
+                                {
+                                  anchor =  new Anchor_Type{  Value = "http://www.opengis.net/def/crs/EPSG/0/25831", href = "http://www.opengis.net/def/crs/EPSG/0/25831" }
                                 }, 
                                 codeSpace = new CharacterString_PropertyType 
                                 { 

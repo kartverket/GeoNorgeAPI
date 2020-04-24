@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -1682,9 +1682,24 @@ namespace GeoNorgeAPI
                 {
                     RS_Identifier_Type identifier = _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
+                    var anchor = identifier.code.anchor as Anchor_Type;
+                    string text = "";
+                    string link = null;
+                    if (anchor != null)
+                    {
+                        text = anchor.Value;
+                        link = anchor.href;
+                    }
+                    else
+                    {
+                        var code = identifier.code.anchor as CharacterString_PropertyType;
+                        text = code.CharacterString;
+                    }
+
                     value = new SimpleReferenceSystem
                     {
-                        CoordinateSystem = identifier.code.CharacterString,
+                        CoordinateSystem = text,
+                        CoordinateSystemLink = link,
                         Namespace = identifier.codeSpace.CharacterString
                     };
                 }
@@ -1697,8 +1712,10 @@ namespace GeoNorgeAPI
                     new MD_ReferenceSystem_PropertyType {
                         MD_ReferenceSystem = new MD_ReferenceSystem_Type {
                             referenceSystemIdentifier = new RS_Identifier_PropertyType {
-                                 RS_Identifier = new RS_Identifier_Type { 
-                                     code = toCharString(value.CoordinateSystem),
+                                 RS_Identifier = new RS_Identifier_Type {
+                                     code = !string.IsNullOrEmpty(value.CoordinateSystemLink) 
+                                     ? new Anchor_PropertyType{ anchor = new Anchor_Type { Value = value.CoordinateSystem, href = value.CoordinateSystemLink } }
+                                     : new Anchor_PropertyType{ anchor = new CharacterString_PropertyType{ CharacterString = value.CoordinateSystem } },
                                      codeSpace = toCharString(value.Namespace)
                                  }
                             }
@@ -1728,9 +1745,24 @@ namespace GeoNorgeAPI
                             && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null) 
                             {
                                 RS_Identifier_Type identifier = _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
-                                SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
+
+                            var anchor = identifier.code.anchor as Anchor_Type;
+                            string text = "";
+                            string link = null;
+                            if (anchor != null)
+                            {
+                                text = anchor.Value;
+                                link = anchor.href;
+                            }
+                            else
+                            {
+                                var code = identifier.code.anchor as CharacterString_PropertyType;
+                                text = code.CharacterString;
+                            }
+                            SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
                                 {
-                                    CoordinateSystem = identifier.code.CharacterString,
+                                    CoordinateSystem = text,
+                                    CoordinateSystemLink = link,
                                     Namespace = identifier.codeSpace.CharacterString
                                 };
 
@@ -1755,8 +1787,10 @@ namespace GeoNorgeAPI
                             referenceSystemIdentifier = new RS_Identifier_PropertyType 
                             {
                                 RS_Identifier = new RS_Identifier_Type 
-                                { 
-                                    code = toCharString(refSystem.CoordinateSystem),
+                                {
+                                    code = !string.IsNullOrEmpty(refSystem.CoordinateSystemLink)
+                                     ? new Anchor_PropertyType { anchor = new Anchor_Type { Value = refSystem.CoordinateSystem, href = refSystem.CoordinateSystemLink } }
+                                     : new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = refSystem.CoordinateSystem } },
                                     codeSpace = toCharString(refSystem.Namespace)
                                 }
                             }
@@ -1787,11 +1821,47 @@ namespace GeoNorgeAPI
 
                     if (identifier != null) 
                     {
+                        var anchor = identifier.code.anchor as Anchor_Type;
+                        string text = null;
+                        if (anchor != null)
+                        {
+                            text = anchor.Value;
+                        }
+                        else
+                        {
+                            var code = identifier.code.anchor as CharacterString_PropertyType;
+                            if(code != null)
+                                text = code.CharacterString;
+                        }
+
                         value = new SimpleResourceReference
                         {
-                            Code = identifier.code != null ? identifier.code.CharacterString : null,
+                            Code = text,
                             Codespace = identifier.codeSpace != null ? identifier.codeSpace.CharacterString : null
                         };
+                    }
+
+                    if (identifier == null)
+                    {
+                        MD_Identifier_Type identifierType = _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
+
+                        if (identifierType != null)
+                        {
+                            var anchor = identifierType.code.anchor as Anchor_Type;
+                            string text = null;
+                            string href = null;
+                            if (anchor != null)
+                            {
+                                text = anchor.Value;
+                                href = anchor.href;
+
+                                value = new SimpleResourceReference
+                                {
+                                    Code = text,
+                                    Codespace = href
+                                };
+                            }
+                        }
                     }
 
 
@@ -1820,10 +1890,11 @@ namespace GeoNorgeAPI
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0] = new MD_Identifier_PropertyType();
                     }
 
-                    _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new RS_Identifier_Type
-                                    {
-                                        code = value.Code != null ? toCharString(value.Code) : null,
-                                        codeSpace = value.Codespace != null ? toCharString(value.Codespace) : null
+                    Anchor_PropertyType code = new Anchor_PropertyType { anchor = new Anchor_Type { Value = value.Code, href = value.Codespace + "/" + value.Code } };
+
+                    _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier = new MD_Identifier_Type
+                    {
+                                        code = code,
                                     };
 
                 }
@@ -2165,34 +2236,29 @@ namespace GeoNorgeAPI
                 };
 
 
-                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
-                {
-                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
-                        new DQ_DataQuality_PropertyType {
-                            DQ_DataQuality = new DQ_DataQuality_Type {
-                                scope = new DQ_Scope_PropertyType
-                                { 
-                                    DQ_Scope = new DQ_Scope_Type
-                                    { 
-                                        level = new MD_ScopeCode_PropertyType
-                                        { 
-                                            MD_ScopeCode = new CodeListValue_Type
-                                            {
-                                                codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
-                                                codeListValue="service"
-                                            }
+                _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                    new DQ_DataQuality_PropertyType {
+                        DQ_DataQuality = new DQ_DataQuality_Type {
+                            scope = new DQ_Scope_PropertyType
+                            {
+                                DQ_Scope = new DQ_Scope_Type
+                                {
+                                    level = new MD_ScopeCode_PropertyType
+                                    {
+                                        MD_ScopeCode = new CodeListValue_Type
+                                        {
+                                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
+                                            codeListValue= _md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue
                                         }
                                     }
-                                },
-                                report = reports
+                                }
                             }
                         }
-                    };
-                }
-                else
-                {
-                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
-                }
+                    }
+                };
+                
+  
+                _md.dataQualityInfo[0].DQ_DataQuality.report = reports;
             }
         }
 
@@ -2411,7 +2477,7 @@ namespace GeoNorgeAPI
                                                             title = new CI_Citation_Title{ item =  new CharacterString_PropertyType { CharacterString = mdResult.Responsible } },
                                                             date = new CI_Date_PropertyType[]{ new CI_Date_PropertyType() }
                                                         }
-                                                    }, code = new CharacterString_PropertyType()
+                                                    }, code = new Anchor_PropertyType{ anchor =  new CharacterString_PropertyType() }
                                                 }
                                               }
                                             }
@@ -2586,35 +2652,28 @@ namespace GeoNorgeAPI
                 }
 
 
-                if (_md.dataQualityInfo == null || _md.dataQualityInfo.Length == 0 || _md.dataQualityInfo[0] == null || _md.dataQualityInfo[0].DQ_DataQuality == null)
-                {
-                    _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
-                        new DQ_DataQuality_PropertyType {
-                            DQ_DataQuality = new DQ_DataQuality_Type {
-                                scope = new DQ_Scope_PropertyType
+                _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
+                    new DQ_DataQuality_PropertyType {
+                        DQ_DataQuality = new DQ_DataQuality_Type {
+                            scope = new DQ_Scope_PropertyType
+                            { 
+                                DQ_Scope = new DQ_Scope_Type
                                 { 
-                                    DQ_Scope = new DQ_Scope_Type
+                                    level = new MD_ScopeCode_PropertyType
                                     { 
-                                        level = new MD_ScopeCode_PropertyType
-                                        { 
-                                            MD_ScopeCode = new CodeListValue_Type
-                                            {
-                                                codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
-                                                codeListValue="service"
-                                            }
+                                        MD_ScopeCode = new CodeListValue_Type
+                                        {
+                                            codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
+                                            codeListValue = _md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue
                                         }
                                     }
-                                },
-                                report = reports.ToArray()
+                                }
                             }
                         }
-                    };
-                }
-                else
-                {
-                    _md.dataQualityInfo[0].DQ_DataQuality.report = reports.ToArray();
-                }
+                    }
+                };
 
+                _md.dataQualityInfo[0].DQ_DataQuality.report = reports.ToArray();
 
             }
         }
@@ -2853,7 +2912,7 @@ namespace GeoNorgeAPI
                                     if (timePeriodType.Item1 != null)
                                         validTo = timePeriodType.Item1 as TimePositionType;
 
-                                    if (validFrom != null && validTo != null)
+                                    if (validFrom != null && validTo != null && validFrom.Value != "0001-01-01")
                                     {
                                         value = new SimpleValidTimePeriod
                                         {
@@ -2874,6 +2933,16 @@ namespace GeoNorgeAPI
 
             set 
             {
+                var validFrom = value.ValidFrom;
+                if (string.IsNullOrEmpty(validFrom))
+                    validFrom = "0001-01-01";
+
+                var validTo = value.ValidTo;
+                TimePositionType timePositionType = new TimePositionType(){ Value = value.ValidTo };
+                if (string.IsNullOrEmpty(validTo))
+                    timePositionType = new TimePositionType() { indeterminatePosition = TimeIndeterminateValueType.now, indeterminatePositionSpecified = true };
+
+
                 EX_TemporalExtent_PropertyType[]  temporalElement= new EX_TemporalExtent_PropertyType[]
                     {
                         new EX_TemporalExtent_PropertyType()
@@ -2888,12 +2957,9 @@ namespace GeoNorgeAPI
 
                                         Item = new TimePositionType()
                                         {
-                                            Value = value.ValidFrom 
+                                            Value = validFrom
                                         },
-                                        Item1 = new TimePositionType()
-                                        {
-                                            Value = value.ValidTo
-                                        }
+                                        Item1 = timePositionType
                                     }
                                 } 
                             }
@@ -2982,6 +3048,10 @@ namespace GeoNorgeAPI
 
         private DateTime? ParseDateProperty(Date_PropertyType dateProperty)
         {
+            if (dateProperty != null && dateProperty.Item != null
+                && dateProperty.Item.ToString().StartsWith("0001-01-01"))
+                return null;
+
             DateTime? date = dateProperty.Item as DateTime?;
 
             if (date == null)
@@ -3005,6 +3075,7 @@ namespace GeoNorgeAPI
             {
                 updatedValue = incomingDateTime.Value.ToString("yyyy-MM-dd");
             }
+            else { updatedValue = "0001-01-01"; }
 
             if (citation.date != null)
             {
@@ -3052,7 +3123,13 @@ namespace GeoNorgeAPI
                 string value = null;
                 if (_md.language != null)
                 {
-                    value = _md.language.CharacterString;
+                    if (_md.language.item is LanguageCode_PropertyType)
+                    {
+                        var language = _md.language.item as LanguageCode_PropertyType;
+                        value = language.LanguageCode.codeListValue;
+                    }
+                    else 
+                        value = _md.language.item.ToString();
                 }
 
                 return value;
@@ -3060,7 +3137,18 @@ namespace GeoNorgeAPI
 
             set
             {
-                _md.language = toCharString(value);
+                _md.language = new Language_PropertyType
+                {
+                    item = new LanguageCode_PropertyType
+                    {
+                        LanguageCode = new CodeListValue_Type
+                        {
+                        codeList = "http://www.loc.gov/standards/iso639-2/",
+                        codeListValue = value,
+                        Value = (value == "nor" ? "Norsk" : "English")
+                        }
+                    }
+                };
             }
         }
 
@@ -3259,7 +3347,7 @@ namespace GeoNorgeAPI
             {
                 SimpleConstraints value = null;
                 var identification = GetIdentification();
-
+                //Populate data default from old constraints structure
                 if (identification != null
                     && identification.resourceConstraints != null
                     && identification.resourceConstraints.Length > 0)
@@ -3317,7 +3405,9 @@ namespace GeoNorgeAPI
                                             if (otherConstrainAnchor != null)
                                             {
                                                 value.OtherConstraintsLink = otherConstrainAnchor.href;
+                                                value.UseConstraintsLicenseLink = otherConstrainAnchor.href;
                                                 value.OtherConstraintsLinkText = otherConstrainAnchor.Value;
+                                                value.UseConstraintsLicenseLinkText = otherConstrainAnchor.Value;
                                             }
                                         }
 
@@ -3328,7 +3418,9 @@ namespace GeoNorgeAPI
                                             if (otherConstrainAnchor2 != null)
                                             {
                                                 value.OtherConstraintsLink = otherConstrainAnchor2.href;
+                                                value.UseConstraintsLicenseLink = otherConstrainAnchor2.href;
                                                 value.OtherConstraintsLinkText = otherConstrainAnchor2.Value;
+                                                value.UseConstraintsLicenseLinkText = otherConstrainAnchor2.Value;
                                             }
                                         }
 
@@ -3340,6 +3432,7 @@ namespace GeoNorgeAPI
                                                 if (access.CharacterString == "no restrictions" || access.CharacterString == "norway digital restricted")
                                                 { 
                                                     value.OtherConstraintsAccess = access.CharacterString;
+                                                    value.AccessConstraints = access.CharacterString;
                                                     break;
                                                 }
                                             }
@@ -3379,70 +3472,142 @@ namespace GeoNorgeAPI
                     }
 
                 }
+
+                //Get new constraint structure
+                if (identification != null
+                    && identification.resourceConstraints != null
+                    && identification.resourceConstraints.Length > 0)
+                {
+                    foreach (var constraint in identification.resourceConstraints)
+                    {
+                        MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                        MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
+
+                        if (securityConstraint != null)
+                        {
+                            value.SecurityConstraints = securityConstraint.classification.MD_ClassificationCode.codeListValue;
+                            value.SecurityConstraintsNote = securityConstraint.userNote.CharacterString;
+                        }
+                        else if (legalConstraint?.useConstraints != null)
+                        {
+                            value.UseConstraints = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                            var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+
+                            if (useConstraintsType != null)
+                            { 
+                                value.OtherConstraintsLinkText = useConstraintsType.Value;
+                                value.UseConstraintsLicenseLinkText = useConstraintsType.Value;
+                                value.OtherConstraintsLink = useConstraintsType.href;
+                                value.UseConstraintsLicenseLink = useConstraintsType.href;
+                            }
+
+                        }
+                        else if (constraint?.MD_Constraints?.useLimitation != null)
+                        {
+                            var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;{
+                                if (useLimit != null)
+                                {
+                                    value.UseLimitations = useLimit.CharacterString;
+                                    value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                                }
+                            }
+                        }
+                        else if (legalConstraint?.accessConstraints != null)
+                        {
+                            var accessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+
+                            if (accessConstraintType != null)
+                            { 
+                                value.AccessConstraints = accessConstraintType.Value;
+                                value.OtherConstraintsAccess = accessConstraintType.href;
+                                value.AccessConstraintsLink = accessConstraintType.href;
+                            }
+                        }
+                        else if (legalConstraint?.otherConstraints != null)
+                        {
+                            var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                            if (otherConstraintString != null)
+                                value.OtherConstraints = otherConstraintString.CharacterString;
+
+                            var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                            if (englishOtherConstraint != null)
+                                value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                        }
+                    }
+
+                }
                 return value;
             }
 
             set
             {
-
-                MD_RestrictionOther_PropertyType[] otherCons;
-                MD_RestrictionOther_PropertyType otherConsString = null;
+                MD_RestrictionOther_PropertyType otherConstraint = null;
                 if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
-                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
+                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
                 else
-                    otherConsString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
-
-                MD_RestrictionOther_PropertyType otherConsStringAnchor;
-                if (!string.IsNullOrEmpty(value.OtherConstraintsLinkText) && !string.IsNullOrEmpty(value.OtherConstraintsLink))
-                {
-                    otherConsStringAnchor = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new Anchor_Type { Value = value.OtherConstraintsLinkText, href = value.OtherConstraintsLink } };
-                    otherCons = new MD_RestrictionOther_PropertyType[2];
-                    otherCons[0] = otherConsString;
-                    otherCons[1] = otherConsStringAnchor;
-                }
-                else
-                {
-                    otherCons = new MD_RestrictionOther_PropertyType[1];
-                    if (string.IsNullOrEmpty(value.OtherConstraints))
-                        otherCons[0] = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new object() };
-                    else
-                        otherCons[0] = otherConsString;
-                }
-
-                if (!string.IsNullOrEmpty(value.OtherConstraintsAccess))
-                {
-                    Array.Resize(ref otherCons, otherCons.Length + 1);
-                    MD_RestrictionOther_PropertyType otherConsAccessString = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraintsAccess } };
-                    otherCons[otherCons.Length - 1] = otherConsAccessString;
-                }
+                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
 
 
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_Constraints_Type {
                             useLimitation = new CharacterString_PropertyType[] { CreateFreeTextElement(value.UseLimitations, value.EnglishUseLimitations) }
+                        }
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_LegalConstraints_Type {
+                            accessConstraints = new MD_RestrictionCode_PropertyType[] {
+                                new MD_RestrictionCode_PropertyType {
+                                    MD_RestrictionCode = new CodeListValue_Type {
+                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
+                                        codeListValue = "otherRestrictions"
+                                    }
+                                }
+                            },
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                new MD_RestrictionOther_PropertyType
+                                {
+                                    MD_RestrictionOther =  new Anchor_Type
+                                    {
+                                        Value = value.AccessConstraints,
+                                        href = value.AccessConstraintsLink
+                                    }
+                                }
+                            }
                         }    
                     },
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_LegalConstraints_Type {
-                            accessConstraints = new MD_RestrictionCode_PropertyType[] { 
+                            useConstraints = new MD_RestrictionCode_PropertyType[] {
                                 new MD_RestrictionCode_PropertyType {
                                     MD_RestrictionCode = new CodeListValue_Type {
                                         codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
-                                        codeListValue = value.AccessConstraints
-                                    }    
+                                        codeListValue = "otherRestrictions"
+                                    }
                                 }
                             },
-                            useConstraints = new MD_RestrictionCode_PropertyType[] { 
-                                new MD_RestrictionCode_PropertyType {
-                                    MD_RestrictionCode = new CodeListValue_Type {
-                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode",
-                                        codeListValue = value.UseConstraints
-                                    }    
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                new MD_RestrictionOther_PropertyType
+                                {
+                                    MD_RestrictionOther =  new Anchor_Type
+                                    {
+                                        Value = value.OtherConstraintsLinkText,
+                                        href = !string.IsNullOrEmpty(value.OtherConstraintsLink)
+                                        ? value.OtherConstraintsLink : value.UseConstraintsLicenseLink
+                                    }
                                 }
-                            },
-                            otherConstraints = otherCons
-                        }    
+                            }
+                        }
+                    },
+                    new MD_Constraints_PropertyType {
+                        MD_Constraints = new MD_LegalConstraints_Type {
+                            otherConstraints = new MD_RestrictionOther_PropertyType[]
+                            {
+                                otherConstraint
+                            }
+                        }
                     },
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_SecurityConstraints_Type {
@@ -3480,7 +3645,11 @@ namespace GeoNorgeAPI
                         if (element.MD_AggregateInformation != null && element.MD_AggregateInformation.aggregateDataSetIdentifier != null
                            && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier != null
                            && element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code != null)
-                            values.Add(element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.CharacterString);
+                        {
+                            var code = element.MD_AggregateInformation.aggregateDataSetIdentifier.MD_Identifier.code.anchor as CharacterString_PropertyType;
+                            if(code != null)
+                                values.Add(code.CharacterString);
+                        }
                     }
                 }
 
@@ -3503,7 +3672,7 @@ namespace GeoNorgeAPI
                                 {
                                     MD_Identifier = new MD_Identifier_Type
                                     {
-                                        code = new CharacterString_PropertyType { CharacterString = uuid }
+                                        code = new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = uuid } }
                                     }
                                 },
                                 associationType = new DS_AssociationTypeCode_PropertyType {
@@ -4240,6 +4409,7 @@ namespace GeoNorgeAPI
     public class SimpleReferenceSystem
     {
         public string CoordinateSystem { get; set; }
+        public string CoordinateSystemLink { get; set; }
         public string Namespace { get; set; }
     }
 
@@ -4280,15 +4450,22 @@ namespace GeoNorgeAPI
     {
         public string UseLimitations { get; set; }
         public string EnglishUseLimitations { get; set; }
-        public string AccessConstraints { get; set; }
-        public string UseConstraints { get; set; }
+        public string AccessConstraints { get; set; } // Økonomiske- eller forretningsmessige forhold
+        [ObsoleteAttribute("UseConstraints will soon be deprecated. Use UseConstraintsLicenseLinkText and UseConstraintsLicenseLink instead.")]
+        public string UseConstraints { get; set; } // egentlig fast verdi "otherRestrictions", det er OtherConstraintsLinkText og OtherConstraintsLink som har info lisens.
         public string OtherConstraints { get; set; }
         public string EnglishOtherConstraints { get; set; }
-        public string OtherConstraintsLink { get; set; }
-        public string OtherConstraintsLinkText { get; set; }
-        public string OtherConstraintsAccess { get; set; }
+        [ObsoleteAttribute("OtherConstraintsLink will soon be deprecated. Use UseConstraintsLicenseLink instead.")]
+        public string OtherConstraintsLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
+        [ObsoleteAttribute("OtherConstraintsLinkText  will soon be deprecated. Use UseConstraintsLicenseLinkText instead.")]
+        public string OtherConstraintsLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
+        [ObsoleteAttribute("OtherConstraintsAccess  will soon be deprecated. Use AccessConstraintsLink instead.")]
+        public string OtherConstraintsAccess { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
         public string SecurityConstraints { get; set; }
         public string SecurityConstraintsNote { get; set; }
+        public string UseConstraintsLicenseLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
+        public string UseConstraintsLicenseLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
+        public string AccessConstraintsLink { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
     }
 
 
