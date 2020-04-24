@@ -2651,6 +2651,12 @@ namespace GeoNorgeAPI
                     }
                 }
 
+                MD_ScopeDescription_PropertyType[] levelDescriptionType = null;
+                if (_md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue == "service")
+                {
+                    var other = new object[] { new CharacterString_PropertyType { CharacterString = "service" } };
+                    levelDescriptionType = new MD_ScopeDescription_PropertyType[] { new MD_ScopeDescription_PropertyType { MD_ScopeDescription = new MD_ScopeDescription_Type { ItemsElementName = new ItemsChoiceType11[] { ItemsChoiceType11.other }, Items = other } } };
+                }
 
                 _md.dataQualityInfo = new DQ_DataQuality_PropertyType[] {
                     new DQ_DataQuality_PropertyType {
@@ -2666,8 +2672,9 @@ namespace GeoNorgeAPI
                                             codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode",
                                             codeListValue = _md?.hierarchyLevel?[0]?.MD_ScopeCode?.codeListValue
                                         }
-                                    }
-                                }
+                                    },
+                                    levelDescription = levelDescriptionType
+                                 }
                             }
                         }
                     }
