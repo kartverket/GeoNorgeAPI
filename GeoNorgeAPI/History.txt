@@ -1,6 +1,7 @@
 ﻿Version History
 ---------------
-3.1.7: Fix useConstraints
+3.1.9: Add data quality level description for service
+3.1.8: Fix useConstraints
 3.1.7: Inspire metadata 2.0
 3.1.6: Fix CoverageCellUrl
 3.1.5: Add CoverageCellUrl
