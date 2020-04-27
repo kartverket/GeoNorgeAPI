@@ -2553,7 +2553,7 @@ namespace GeoNorgeAPI
                                     {
                                         AbstractDQ_Result = new DQ_QuantitativeResult_Type
                                         {
-                                            valueUnit = new UnitOfMeasure_PropertyType{ href = "*http://www.opengis.net/def/uom/SI/second*" } ,
+                                            valueUnit = new UnitOfMeasure_PropertyType{ href = "http://www.opengis.net/def/uom/SI/second" } ,
                                             value = new Record_PropertyType[]
                                             {
                                                 new Record_PropertyType
@@ -2687,7 +2687,8 @@ namespace GeoNorgeAPI
 
         private string GetSimpleValueUnit(string value)
         {
-            if (value == "*http://www.opengis.net/def/uom/SI/second*")
+            if (value == "http://www.opengis.net/def/uom/SI/second" 
+                || (!string.IsNullOrEmpty(value) && value.Contains("second")))
                 return "second";
             else if (value == "urn:ogc:def:uom:OGC::percent")
                 return "percent";

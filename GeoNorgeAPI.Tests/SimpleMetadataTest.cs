@@ -1705,7 +1705,7 @@ namespace GeoNorgeAPI.Tests
                                             {
                                                 AbstractDQ_Result = new DQ_QuantitativeResult_Type
                                                 {
-                                                    valueUnit = new UnitOfMeasure_PropertyType{ href = "*http://www.opengis.net/def/uom/SI/second*" } ,
+                                                    valueUnit = new UnitOfMeasure_PropertyType{ href = "http://www.opengis.net/def/uom/SI/second" } ,
                                                     value = new Record_PropertyType[]
                                                     {
                                                         new Record_PropertyType
