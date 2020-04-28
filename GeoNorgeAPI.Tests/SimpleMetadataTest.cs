@@ -1382,7 +1382,7 @@ namespace GeoNorgeAPI.Tests
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
-                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType
                                                                         }
                                                                     }
@@ -1525,7 +1525,7 @@ namespace GeoNorgeAPI.Tests
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
-                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType
                                                                         }
                                                                     }
@@ -1579,7 +1579,7 @@ namespace GeoNorgeAPI.Tests
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
-                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType2
                                                                         }
                                                                     }
@@ -1640,7 +1640,7 @@ namespace GeoNorgeAPI.Tests
                                                                     },
                                                                     dateType = new CI_DateTypeCode_PropertyType {
                                                                         CI_DateTypeCode = new CodeListValue_Type {
-                                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                            codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                             codeListValue = expectedDateType3
                                                                         }
                                                                     }

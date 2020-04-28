@@ -897,7 +897,7 @@ namespace GeoNorgeAPI
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
                                 {
-                                    date = "2016-01-15";
+                                    date = "2008-12-03";
                                 }
 
                                 var dateType = "publication";
@@ -913,7 +913,7 @@ namespace GeoNorgeAPI
                                                     date = new Date_PropertyType { Item = date },
                                                     dateType = new CI_DateTypeCode_PropertyType { 
                                                         CI_DateTypeCode = new CodeListValue_Type {
-                                                            codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                            codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                             codeListValue = dateType
                                                         }
                                                     }                                
@@ -2215,7 +2215,7 @@ namespace GeoNorgeAPI
                                                             },
                                                             dateType = new CI_DateTypeCode_PropertyType {
                                                                 CI_DateTypeCode = new CodeListValue_Type {
-                                                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                    codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                     codeListValue = value.DateType
                                                                 }    
                                                             }
@@ -2457,7 +2457,7 @@ namespace GeoNorgeAPI
                                                         },
                                                         dateType = new CI_DateTypeCode_PropertyType {
                                                             CI_DateTypeCode = new CodeListValue_Type {
-                                                                codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                                                codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                                                 codeListValue = mdResult.DateType
                                                             }
                                                         }
@@ -3112,7 +3112,7 @@ namespace GeoNorgeAPI
                             },
                             dateType = new CI_DateTypeCode_PropertyType {
                                 CI_DateTypeCode = new CodeListValue_Type {
-                                    codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_DateTypeCode",
+                                    codeList = "http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode",
                                     codeListValue = dateType
                                 }    
                             }
