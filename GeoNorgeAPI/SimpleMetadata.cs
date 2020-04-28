@@ -4296,7 +4296,7 @@ namespace GeoNorgeAPI
         public const string THESAURUS_CONCEPT_LINK = "https://objektkatalog.geonorge.no/";
         public const string THESAURUS_ADMIN_UNITS = "Administrative enheter i Norge";
         public const string THESAURUS_ADMIN_UNITS_LINK = "https://data.geonorge.no/administrativeEnheter";
-        public const string THESAURUS_SERVICE_TYPE = "ISO 19119:2016 Geographic information -- Services";
+        public const string THESAURUS_SERVICE_TYPE = "COMMISSION REGULATION (EC) No 1205/2008 of 3 December 2008 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards metadata, Part D 4, Classification of Spatial Data Services";
         public const string THESAURUS_SPATIAL_SCOPE = "Spatial scope";
         public const string THESAURUS_SPATIAL_SCOPE_LINK = "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope";
         public const string TYPE_PLACE = "place";
