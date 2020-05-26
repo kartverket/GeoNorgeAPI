@@ -2446,7 +2446,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Creative Commons BY 4.0 (CC BY 4.0)", constraints.UseConstraintsLicenseLinkText);
             Assert.AreEqual("unclassified", constraints.SecurityConstraints);
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
-            Assert.AreEqual("Økonomiske- eller forretningsmessige forhold", constraints.AccessConstraints);
+            Assert.AreEqual("norway digital restricted", constraints.AccessConstraints);
             Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
             Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
             Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);

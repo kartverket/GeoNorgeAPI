@@ -3544,6 +3544,9 @@ namespace GeoNorgeAPI
                     }
 
                 }
+
+                value = FixConstraints(value);
+
                 return value;
             }
 
@@ -3638,6 +3641,26 @@ namespace GeoNorgeAPI
                 }
             }
         }
+
+        private SimpleConstraints FixConstraints(SimpleConstraints value)
+        {
+            if (value != null && !string.IsNullOrEmpty(value.AccessConstraints))
+                value.AccessConstraintsLinkText = value.AccessConstraints;
+
+            if (value != null && !string.IsNullOrEmpty(value.AccessConstraintsLink))
+            {
+                if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations")
+                    value.AccessConstraints = "no restrictions";
+                else if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d")
+                    value.AccessConstraints = "norway digital restricted";
+                else if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b")
+                    value.AccessConstraints = "restricted";
+            }
+
+            return value;
+
+        }
+
         public List<string> CrossReference
         {
             get
@@ -4457,7 +4480,7 @@ namespace GeoNorgeAPI
     {
         public string UseLimitations { get; set; }
         public string EnglishUseLimitations { get; set; }
-        public string AccessConstraints { get; set; } // Økonomiske- eller forretningsmessige forhold
+        public string AccessConstraints { get; set; } // "no restrictions" , "restricted", "norway digital restricted"
         [ObsoleteAttribute("UseConstraints will soon be deprecated. Use UseConstraintsLicenseLinkText and UseConstraintsLicenseLink instead.")]
         public string UseConstraints { get; set; } // egentlig fast verdi "otherRestrictions", det er OtherConstraintsLinkText og OtherConstraintsLink som har info lisens.
         public string OtherConstraints { get; set; }
@@ -4473,6 +4496,7 @@ namespace GeoNorgeAPI
         public string UseConstraintsLicenseLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
         public string UseConstraintsLicenseLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
         public string AccessConstraintsLink { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
+        public string AccessConstraintsLinkText { get; set; } // Økonomiske- eller forretningsmessige forhold
     }
 
 
