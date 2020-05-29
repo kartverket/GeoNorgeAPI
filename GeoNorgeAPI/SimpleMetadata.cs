@@ -3649,11 +3649,11 @@ namespace GeoNorgeAPI
 
             if (value != null && !string.IsNullOrEmpty(value.AccessConstraintsLink))
             {
-                if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations")
+                if (value.AccessConstraintsLink == "https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations")
                     value.AccessConstraints = "no restrictions";
-                else if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d")
+                else if (value.AccessConstraintsLink == "https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d")
                     value.AccessConstraints = "norway digital restricted";
-                else if (value.AccessConstraintsLink == "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b")
+                else if (value.AccessConstraintsLink == "https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1b")
                     value.AccessConstraints = "restricted";
             }
 
@@ -4490,12 +4490,12 @@ namespace GeoNorgeAPI
         [ObsoleteAttribute("OtherConstraintsLinkText  will soon be deprecated. Use UseConstraintsLicenseLinkText instead.")]
         public string OtherConstraintsLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
         [ObsoleteAttribute("OtherConstraintsAccess  will soon be deprecated. Use AccessConstraintsLink instead.")]
-        public string OtherConstraintsAccess { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
+        public string OtherConstraintsAccess { get; set; } // https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
         public string SecurityConstraints { get; set; }
         public string SecurityConstraintsNote { get; set; }
         public string UseConstraintsLicenseLinkText { get; set; } // Creative Commons BY 4.0 (CC BY 4.0)
         public string UseConstraintsLicenseLink { get; set; } // https://creativecommons.org/licenses/by/4.0/
-        public string AccessConstraintsLink { get; set; } // http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
+        public string AccessConstraintsLink { get; set; } // https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d
         public string AccessConstraintsLinkText { get; set; } // Økonomiske- eller forretningsmessige forhold
     }
 

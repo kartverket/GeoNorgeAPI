@@ -229,7 +229,7 @@ namespace GeoNorgeAPI.Tests
                                     {
                                         new MD_RestrictionOther_PropertyType
                                         {
-                                            MD_RestrictionOther = new Anchor_Type{href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d",Value="Økonomiske- eller forretningsmessige forhold"}
+                                            MD_RestrictionOther = new Anchor_Type{href="https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d",Value="Økonomiske- eller forretningsmessige forhold"}
                                         }
                                     }
                                 }

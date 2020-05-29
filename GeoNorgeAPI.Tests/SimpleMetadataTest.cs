@@ -2448,8 +2448,8 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("norway digital restricted", constraints.AccessConstraints);
             Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
-            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
-            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
+            Assert.AreEqual("https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
             Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
@@ -2461,7 +2461,7 @@ namespace GeoNorgeAPI.Tests
             string expectedEnglishUseLimitations = "no use limitations";
 
             string expectedAccessConstraints = "Økonomiske- eller forretningsmessige forhold";
-            string expectedOtherConstraintsAccess = "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
+            string expectedOtherConstraintsAccess = "https://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
 
             string expectedUseConstraints = "otherRestrictions";
             string expectedOtherConstraintsLink = "https://creativecommons.org/licenses/by/4.0/";
