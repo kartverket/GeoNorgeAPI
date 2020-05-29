@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.2.4: Change inspire access restriction values
 3.2.3: Fix for constraints
 3.2.2: Update info service type
 3.2.1: Fix namespace for service
