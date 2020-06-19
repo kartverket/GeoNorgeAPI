@@ -152,5 +152,11 @@ namespace GeoNorgeAPI.Tests
             _geonorge.MetadataDelete("bcffba00-5396-4f81-ad65-d34d8771eab4");
         }
         */
+        [Test]
+        public void ShouldReturnConstraints()
+        {
+            SimpleMetadata metadata = new SimpleMetadata(_geonorge.GetRecordByUuid("e0ce2aae-324c-495c-8740-2adfd20b4386"));
+            Assert.NotNull(metadata.Constraints);
+        }
     }
 }

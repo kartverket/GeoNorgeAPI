@@ -3494,7 +3494,8 @@ namespace GeoNorgeAPI
                         if (securityConstraint != null)
                         {
                             value.SecurityConstraints = securityConstraint.classification.MD_ClassificationCode.codeListValue;
-                            value.SecurityConstraintsNote = securityConstraint.userNote.CharacterString;
+                            if(securityConstraint.userNote != null)
+                                value.SecurityConstraintsNote = securityConstraint.userNote.CharacterString;
                         }
                         else if (legalConstraint?.useConstraints != null)
                         {
