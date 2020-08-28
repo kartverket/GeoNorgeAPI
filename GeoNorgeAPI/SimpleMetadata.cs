@@ -1677,8 +1677,7 @@ namespace GeoNorgeAPI
                     && _md.referenceSystemInfo[0].MD_ReferenceSystem != null 
                     && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier != null
                     && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier != null
-                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null
-                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null)
+                    && _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null)
                 {
                     RS_Identifier_Type identifier = _md.referenceSystemInfo[0].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
@@ -1700,7 +1699,7 @@ namespace GeoNorgeAPI
                     {
                         CoordinateSystem = text,
                         CoordinateSystemLink = link,
-                        Namespace = identifier.codeSpace.CharacterString
+                        Namespace = !string.IsNullOrEmpty(identifier?.codeSpace?.CharacterString) ? identifier.codeSpace.CharacterString : null
                     };
                 }
                 return value;
@@ -1716,7 +1715,7 @@ namespace GeoNorgeAPI
                                      code = !string.IsNullOrEmpty(value.CoordinateSystemLink) 
                                      ? new Anchor_PropertyType{ anchor = new Anchor_Type { Value = value.CoordinateSystem, href = value.CoordinateSystemLink } }
                                      : new Anchor_PropertyType{ anchor = new CharacterString_PropertyType{ CharacterString = value.CoordinateSystem } },
-                                     codeSpace = toCharString(value.Namespace)
+                                     codeSpace = !string.IsNullOrEmpty(value.Namespace) ? toCharString(value.Namespace) : null
                                  }
                             }
                         }
@@ -1741,8 +1740,7 @@ namespace GeoNorgeAPI
                         if( _md.referenceSystemInfo[r].MD_ReferenceSystem != null 
                             && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier != null
                             && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier != null
-                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null
-                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.codeSpace != null) 
+                            && _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier.code != null) 
                             {
                                 RS_Identifier_Type identifier = _md.referenceSystemInfo[r].MD_ReferenceSystem.referenceSystemIdentifier.RS_Identifier;
 
@@ -1760,11 +1758,11 @@ namespace GeoNorgeAPI
                                 text = code.CharacterString;
                             }
                             SimpleReferenceSystem referenceSystem = new SimpleReferenceSystem
-                                {
-                                    CoordinateSystem = text,
-                                    CoordinateSystemLink = link,
-                                    Namespace = identifier.codeSpace.CharacterString
-                                };
+                            {
+                                CoordinateSystem = text,
+                                CoordinateSystemLink = link,
+                                Namespace = !string.IsNullOrEmpty(identifier?.codeSpace?.CharacterString) ? identifier.codeSpace.CharacterString : null
+                            };
 
                                 referenceSystems.Add(referenceSystem);
                             }         
@@ -1791,7 +1789,7 @@ namespace GeoNorgeAPI
                                     code = !string.IsNullOrEmpty(refSystem.CoordinateSystemLink)
                                      ? new Anchor_PropertyType { anchor = new Anchor_Type { Value = refSystem.CoordinateSystem, href = refSystem.CoordinateSystemLink } }
                                      : new Anchor_PropertyType { anchor = new CharacterString_PropertyType { CharacterString = refSystem.CoordinateSystem } },
-                                    codeSpace = toCharString(refSystem.Namespace)
+                                    codeSpace = !string.IsNullOrEmpty(refSystem.Namespace) ? toCharString(refSystem.Namespace) : null
                                 }
                             }
                         }
