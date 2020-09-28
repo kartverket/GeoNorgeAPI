@@ -1846,17 +1846,22 @@ namespace GeoNorgeAPI
                         if (identifierType != null)
                         {
                             var anchor = identifierType.code.anchor as Anchor_Type;
-                            string text = null;
-                            string href = null;
+                            string code = null;
+                            string codespace = null;
                             if (anchor != null)
                             {
-                                text = anchor.Value;
-                                href = anchor.href;
+                                code = anchor.Value;
+                                codespace = anchor.href;
+
+                                if (!string.IsNullOrEmpty(code) && !string.IsNullOrEmpty(codespace))
+                                {
+                                    codespace = codespace.Replace("/" + code, "");
+                                }
 
                                 value = new SimpleResourceReference
                                 {
-                                    Code = text,
-                                    Codespace = href
+                                    Code = code,
+                                    Codespace = codespace
                                 };
                             }
                         }

@@ -1098,6 +1098,46 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnResourceReferenceWhenPresentAndAnchor()
+        {
+            string expectedCode = "n50";
+            string expectedCodeSpace = "https://data.geonorge.no/sosi/kartdata";
+            string hrefValue = expectedCodeSpace + "/" + expectedCode;
+            _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
+            {
+               new MD_Identification_PropertyType
+               {
+                   AbstractMD_Identification = new SV_ServiceIdentification_Type
+                   {
+                       citation = new CI_Citation_PropertyType
+                       {
+                           CI_Citation = new CI_Citation_Type
+                           {
+                               identifier = new MD_Identifier_PropertyType[]
+                               {
+                                   new MD_Identifier_PropertyType
+                                   {
+                                    MD_Identifier = new MD_Identifier_Type
+                                        {
+                                        code = new Anchor_PropertyType{ anchor = new Anchor_Type{ href = hrefValue, Value =  expectedCode }  } ,
+                                        }
+                                   }
+                               }
+                           }
+                       }
+                   }
+
+               }
+            };
+
+
+            var rs = _md.ResourceReference;
+            Assert.NotNull(rs);
+            Assert.AreEqual(expectedCode, rs.Code);
+            Assert.AreEqual(expectedCodeSpace, rs.Codespace);
+        }
+
+        [Test]
         public void ShouldUpdateResourceReference()
         {
             string expectedResourceReference = "system";
