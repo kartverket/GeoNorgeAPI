@@ -1565,9 +1565,10 @@ namespace GeoNorgeAPI
                     && _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format.name != null)
                 {
                     var df = _md.distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
+                    var version = df.version?.item as CharacterString_PropertyType;
                     format = new SimpleDistributionFormat {
                         Name = df.name.CharacterString,
-                        Version = df.version != null ? df.version.CharacterString : null
+                        Version = version != null ? version.CharacterString : null
                     };
                 }
                 return format;
@@ -1590,7 +1591,7 @@ namespace GeoNorgeAPI
                         MD_Format = new MD_Format_Type
                         {
                             name = toCharString(value.Name),
-                            version = toCharString(value.Version)
+                            version = !string.IsNullOrEmpty(value.Version) ? new MD_Format_Type_Version { item = toCharString(value.Version) } : null
                         }
                     }
                 };
@@ -1618,10 +1619,11 @@ namespace GeoNorgeAPI
                         if (mdFormat.MD_Format != null && mdFormat.MD_Format.name != null) 
                         {
                             var df = mdFormat.MD_Format;
+                            var version = df?.version?.item as CharacterString_PropertyType;
                             format = new SimpleDistributionFormat
                             {
                                 Name = df.name.CharacterString,
-                                Version = df.version != null ? df.version.CharacterString : null
+                                Version = version != null ? version.CharacterString : null
                             };
 
                             formats.Add(format);
@@ -1654,7 +1656,7 @@ namespace GeoNorgeAPI
                             MD_Format = new MD_Format_Type
                             {
                                 name = toCharString(dsFormat.Name),
-                                version = toCharString(dsFormat.Version)
+                                version = !string.IsNullOrEmpty(dsFormat.Version) ? new MD_Format_Type_Version { item = toCharString(dsFormat.Version) } : null
                             }
                         };
                      dsFormats.Add(mdFormatPropertyType);
@@ -3787,10 +3789,11 @@ namespace GeoNorgeAPI
                         if (mdFormat.MD_Format != null && mdFormat.MD_Format.name != null)
                         {
                             var df = mdFormat.MD_Format;
+                            var version = df?.version?.item as CharacterString_PropertyType;
                             format = new SimpleDistribution
                             {
                                 FormatName = df.name.CharacterString,
-                                FormatVersion = df.version != null ? df.version.CharacterString : null
+                                FormatVersion = version != null ? version.CharacterString : null
                             };
                             if (df.formatDistributor != null && df.formatDistributor.Length > 0
                                 && df.formatDistributor[0] != null && df.formatDistributor[0].MD_Distributor != null)
@@ -3878,7 +3881,10 @@ namespace GeoNorgeAPI
                         MD_Format = new MD_Format_Type
                         {
                             name = toCharString(dsFormat.FormatName),
-                            version = toCharString(dsFormat.FormatVersion),
+                            version = new MD_Format_Type_Version
+                            {
+                                item = !string.IsNullOrEmpty(dsFormat.FormatVersion) ? toCharString(dsFormat.FormatVersion) : null
+                            },
                             formatDistributor = new MD_Distributor_PropertyType[]
                            {
                                 new MD_Distributor_PropertyType

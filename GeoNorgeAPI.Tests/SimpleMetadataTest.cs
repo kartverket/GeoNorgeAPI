@@ -849,7 +849,7 @@ namespace GeoNorgeAPI.Tests
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
-                                version = new CharacterString_PropertyType { CharacterString = expectedVersion }
+                                version = new MD_Format_Type_Version {  item = new CharacterString_PropertyType{ CharacterString = expectedVersion } }
                             }
                         }
                     }
@@ -903,7 +903,7 @@ namespace GeoNorgeAPI.Tests
                         new MD_Format_PropertyType {
                             MD_Format = new MD_Format_Type {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
-                                version = new CharacterString_PropertyType { CharacterString = expectedVersion }
+                                version = new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString = expectedVersion } }
                             }
                         }
                     }
@@ -3443,7 +3443,7 @@ namespace GeoNorgeAPI.Tests
                             MD_Format = new MD_Format_Type
                             {
                                 name = new CharacterString_PropertyType { CharacterString = expectedName },
-                                version = new CharacterString_PropertyType { CharacterString = expectedVersion },
+                                version = new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString =  expectedVersion } },
                                 formatDistributor = new MD_Distributor_PropertyType[]
                                 {
                                    new MD_Distributor_PropertyType
@@ -3528,6 +3528,113 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnDistributionsFormatsWhenVersionIsEmpty()
+        {
+            string expectedName = "SOSI";
+            string expectedVersion = null;
+            string expectedOrganization = "kartverket";
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            string expectedResourceName = "navn";
+            string expectedUnitsOfDistribution = "unit1";
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            {
+                MD_Distribution = new MD_Distribution_Type
+                {
+                    distributionFormat = new[]
+                    {
+                        new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = !string.IsNullOrEmpty(expectedVersion) ? new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString = expectedVersion } } : new MD_Format_Type_Version(),
+                                formatDistributor = new MD_Distributor_PropertyType[]
+                                {
+                                   new MD_Distributor_PropertyType
+                                   {
+                                       MD_Distributor = new MD_Distributor_Type
+                                       {
+                                           distributorContact = new CI_ResponsibleParty_PropertyType
+                                           {
+                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                               {
+                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
+                                                   role = new CI_RoleCode_PropertyType
+                                                   {
+                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
+                                                   }
+                                               }
+                                           },
+                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                                           {
+                                               new MD_DigitalTransferOptions_PropertyType
+                                               {
+                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                   {
+                                                       unitsOfDistribution = new PT_FreeText_PropertyType
+                                                        {
+                                                            CharacterString = expectedUnitsOfDistribution,
+                                                            PT_FreeText = new PT_FreeText_Type
+                                                            {
+                                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                                                {
+                                                                    new LocalisedCharacterString_PropertyType
+                                                                    {
+                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                        {
+                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                        Value = expectedEnglishUnitsOfDistribution
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                       onLine = new CI_OnlineResource_PropertyType[]
+                                                       {
+                                                           new CI_OnlineResource_PropertyType
+                                                           {
+                                                               CI_OnlineResource = new CI_OnlineResource_Type
+                                                               {
+                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
+                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
+                                                                   linkage = new URL_PropertyType
+                                                                   {
+                                                                       URL = expectedURL
+                                                                   }
+                                                               }
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+                                   }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+
+            var details = _md.DistributionsFormats;
+
+            Assert.NotNull(details);
+            Assert.AreEqual(expectedName, details[0].FormatName);
+            Assert.AreEqual(expectedVersion, details[0].FormatVersion);
+            Assert.AreEqual(expectedOrganization, details[0].Organization);
+            Assert.AreEqual(expectedURL, details[0].URL);
+            Assert.AreEqual(expectedProtocol, details[0].Protocol);
+            Assert.AreEqual(expectedResourceName, details[0].Name);
+            Assert.AreEqual(expectedUnitsOfDistribution, details[0].UnitsOfDistribution);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, details[0].EnglishUnitsOfDistribution);
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
+        }
+
+        [Test]
         public void ShouldUpdateDistributionsFormats()
         {
             string expectedName = "SOSI";
@@ -3547,13 +3654,45 @@ namespace GeoNorgeAPI.Tests
             var mdFormat = _md.GetMetadata().distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
             var actualEnglishUnitsOfDistribution = mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
             Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
-            Assert.AreEqual(expectedVersion, mdFormat.version.CharacterString);
+            var version = mdFormat?.version?.item as CharacterString_PropertyType;
+            Assert.AreEqual(expectedVersion, version.CharacterString);
             Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
             Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
             Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
             Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
             Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
             Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+        }
+
+        [Test]
+        public void ShouldUpdateDistributionsFormatsWhenVersionIsEmpty()
+        {
+            string expectedName = "SOSI";
+            string expectedVersion = null;
+            string expectedOrganization = "kartverket";
+            string expectedURL = "http://example.com";
+            string expectedProtocol = "www";
+            string expectedResourceName = "navn";
+            string expectedUnitsOfDistribution = "unit1";
+            string expectedEnglishUnitsOfDistribution = "unit1eng";
+
+            var formats = new List<SimpleDistribution>();
+            var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
+            formats.Add(format);
+            _md.DistributionsFormats = formats;
+
+            var mdFormat = _md.GetMetadata().distributionInfo.MD_Distribution.distributionFormat[0].MD_Format;
+            var actualEnglishUnitsOfDistribution = mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+            Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
+            Assert.AreEqual(expectedVersion, mdFormat.version.item);
+            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
+            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
+            Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
+            Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
+            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
         }
 
         [Test]

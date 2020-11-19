@@ -406,7 +406,7 @@ namespace GeoNorgeAPI.Tests
                             MD_Format = new MD_Format_Type
                             {
                                 name = new CharacterString_PropertyType { CharacterString = "SOSI" },
-                                version = new CharacterString_PropertyType { CharacterString = "4.5" },
+                                version = new MD_Format_Type_Version {  item = new CharacterString_PropertyType{  CharacterString = "4.5" } },
                                 formatDistributor = new MD_Distributor_PropertyType[]
                                 {
                                    new MD_Distributor_PropertyType
