@@ -877,7 +877,7 @@ namespace GeoNorgeAPI
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE))
                                 {
-                                    date = "2019-05-14";
+                                    date = "2019-05-22";
                                     title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK };
                                 }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
