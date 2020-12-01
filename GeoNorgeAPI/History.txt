@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.2.9: Change date for thesaurus spatial scope, do not use https for LimitationsOnPublicAccess
 3.2.8: Upgrade metadataCSW to handle format version nilReason
 3.2.7: Fix for ResourceReference Codespace
 3.2.6: Adjust ReferenceSystems for inspire 2.0

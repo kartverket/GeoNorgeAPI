@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-      Upgrade metadataCSW to handle format version nilReason
+      Change date for thesaurus spatial scope, do not use https for LimitationsOnPublicAccess
     </releaseNotes>
     <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
