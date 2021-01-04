@@ -1591,7 +1591,10 @@ namespace GeoNorgeAPI
                         MD_Format = new MD_Format_Type
                         {
                             name = toCharString(value.Name),
-                            version = !string.IsNullOrEmpty(value.Version) ? new MD_Format_Type_Version { item = toCharString(value.Version) } : null
+                            version = new MD_Format_Type_Version
+                            {
+                                item = !string.IsNullOrEmpty(value.Version) ? toCharString(value.Version) : null
+                            }
                         }
                     }
                 };
@@ -1656,7 +1659,10 @@ namespace GeoNorgeAPI
                             MD_Format = new MD_Format_Type
                             {
                                 name = toCharString(dsFormat.Name),
-                                version = !string.IsNullOrEmpty(dsFormat.Version) ? new MD_Format_Type_Version { item = toCharString(dsFormat.Version) } : null
+                                version = new MD_Format_Type_Version
+                                {
+                                    item = !string.IsNullOrEmpty(dsFormat.Version) ? toCharString(dsFormat.Version) : null
+                                }
                             }
                         };
                      dsFormats.Add(mdFormatPropertyType);
