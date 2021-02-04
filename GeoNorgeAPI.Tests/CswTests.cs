@@ -67,6 +67,9 @@ namespace GeoNorgeAPI.Tests
                                     },
                                     new PropertyIsLikeType
                                     {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"Type"}},
                                         Literal = new LiteralType {Text = new[] { "service" }}
                                     }
