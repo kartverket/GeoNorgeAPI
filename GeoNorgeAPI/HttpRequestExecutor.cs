@@ -32,6 +32,8 @@ namespace GeoNorgeAPI
 
         public HttpWebResponse FullPostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null, Dictionary<string, string> additionalRequestHeaders = null)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -94,6 +96,8 @@ namespace GeoNorgeAPI
 
         public HttpWebResponse FullGetRequest(string url, string accept, string contentType)
         {
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls13;
+
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             request.Accept = accept;
