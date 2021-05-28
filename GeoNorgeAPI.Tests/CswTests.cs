@@ -3,6 +3,9 @@ using www.opengis.net;
 using GeoNorgeAPI;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Arkitektum.GIS.Lib.SerializeUtil;
+
 namespace GeoNorgeAPI.Tests
 {
     
@@ -160,6 +163,16 @@ namespace GeoNorgeAPI.Tests
         {
             SimpleMetadata metadata = new SimpleMetadata(_geonorge.GetRecordByUuid("e0ce2aae-324c-495c-8740-2adfd20b4386"));
             Assert.NotNull(metadata.Constraints);
+        }
+
+        [Test]
+        public void ShouldReturnMultipleOnlineElementsForMD_DigitalTransferOptionsAsDistributionsFormats()
+        {      
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var distributions = metadata.DistributionsFormats;
         }
     }
 }

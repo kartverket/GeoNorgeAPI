@@ -3781,7 +3781,7 @@ namespace GeoNorgeAPI
             {
                 List<SimpleDistribution> formats = new List<SimpleDistribution>();
 
-                SimpleDistributionDetails transferOption = GetDistributionTransferOption();
+                List<SimpleDistributionDetails> transferOptions = GetDistributionTransferOptions();
 
                 if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
                     && _md.distributionInfo.MD_Distribution.distributionFormat != null
@@ -3839,18 +3839,39 @@ namespace GeoNorgeAPI
                                 }
                             }
 
-                            if (string.IsNullOrEmpty(format.Protocol) && transferOption != null)
+                            if (string.IsNullOrEmpty(format.Protocol) && transferOptions != null)
                             {
-                                format.Protocol = transferOption.Protocol;
-                                format.URL = transferOption.URL;
-                                format.Name = transferOption.Name;
-                                format.UnitsOfDistribution = transferOption.UnitsOfDistribution;
-                                format.EnglishUnitsOfDistribution = transferOption.EnglishUnitsOfDistribution;
+                                format.Protocol = transferOptions[0].Protocol;
+                                format.URL = transferOptions[0].URL;
+                                format.Name = transferOptions[0].Name;
+                                format.UnitsOfDistribution = transferOptions[0].UnitsOfDistribution;
+                                format.EnglishUnitsOfDistribution = transferOptions[0].EnglishUnitsOfDistribution;
+                                format.Organization = ContactOwner?.Organization;
                             }
 
                             formats.Add(format);
+
+                            if (transferOptions != null && transferOptions.Count > 1)
+                            {
+
+                                for (int o = 1; o < transferOptions.Count; o++)
+                                {
+                                    SimpleDistribution simpleDistribution = new SimpleDistribution();
+                                    simpleDistribution.FormatName = format.FormatName;
+                                    simpleDistribution.FormatVersion = format.FormatVersion;
+                                    simpleDistribution.Protocol = transferOptions[o].Protocol;
+                                    simpleDistribution.URL = transferOptions[o].URL;
+                                    simpleDistribution.Name = transferOptions[o].Name;
+                                    simpleDistribution.UnitsOfDistribution = transferOptions[o].UnitsOfDistribution;
+                                    simpleDistribution.EnglishUnitsOfDistribution = transferOptions[o].EnglishUnitsOfDistribution;
+                                    simpleDistribution.Organization = ContactOwner?.Organization;
+                                    formats.Add(simpleDistribution);
+                                }
+
+                            }
                         }
                     }
+
                 }
 
                 return formats;
@@ -4029,9 +4050,9 @@ namespace GeoNorgeAPI
             };
         }
 
-        public SimpleDistributionDetails GetDistributionTransferOption()
+        public List<SimpleDistributionDetails> GetDistributionTransferOptions()
         {
-            SimpleDistributionDetails value = null;
+            List<SimpleDistributionDetails> distributions = null;
 
             if (_md.distributionInfo != null && _md.distributionInfo.MD_Distribution != null
                 && _md.distributionInfo.MD_Distribution.transferOptions != null
@@ -4043,22 +4064,29 @@ namespace GeoNorgeAPI
                 && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0] != null
                 && _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource != null)
             {
-                var resource = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
-                var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
-                var englishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+                distributions = new List<SimpleDistributionDetails>();
 
-                value = new SimpleDistributionDetails
-                {
-                    URL = resource.linkage != null ? resource.linkage.URL : null,
-                    Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
-                    Name = resource.name != null ? resource.name.CharacterString : null,
-                    UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null,
-                };
+                foreach(var option in _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine)
+                { 
+                    var resource = option.CI_OnlineResource;
+                    var tranferOptions = _md.distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+                    var englishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
 
-                if (englishUnitsOfDistribution != null)
-                    value.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
+                    var distribution = new SimpleDistributionDetails
+                    {
+                        URL = resource.linkage != null ? resource.linkage.URL : null,
+                        Protocol = resource.protocol != null ? resource.protocol.CharacterString : null,
+                        Name = resource.name != null ? resource.name.CharacterString : null,
+                        UnitsOfDistribution = tranferOptions.unitsOfDistribution != null ? tranferOptions.unitsOfDistribution.CharacterString : null,
+                    };
+
+                    if (englishUnitsOfDistribution != null)
+                        distribution.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
+
+                    distributions.Add(distribution);
+                }
             }
-            return value;
+            return distributions;
         }
 
 
