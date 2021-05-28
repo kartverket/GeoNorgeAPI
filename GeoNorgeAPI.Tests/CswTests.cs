@@ -173,6 +173,7 @@ namespace GeoNorgeAPI.Tests
             var data = (MD_Metadata_Type)response.Items[0];
             var metadata = new SimpleMetadata(data);
             var distributions = metadata.DistributionsFormats;
+            Assert.NotNull(distributions);
         }
     }
 }
