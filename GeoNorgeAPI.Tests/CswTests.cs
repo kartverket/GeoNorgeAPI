@@ -223,5 +223,54 @@ namespace GeoNorgeAPI.Tests
             var actualAbstract = metadata.EnglishAbstract;
             Assert.AreEqual(expectedAbstract, actualAbstract);
         }
+
+        [Test]
+        public void ShouldReturnNorwegianTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var title = metadata.Title;
+            Assert.AreEqual("Direktesendte satellittdata prosessert i satellittsveip til L1C.", title);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var title = metadata.EnglishTitle;
+            Assert.AreEqual("Direct Broadcast data processed in satellite swath to L1C.", title);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var expectedTitle = "Title norsk";
+            metadata.Title = expectedTitle;
+            var actualTitle = metadata.Title;
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var expectedTitle = "Title english";
+            metadata.EnglishTitle = expectedTitle;
+            var actualTitle = metadata.EnglishTitle;
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
     }
 }

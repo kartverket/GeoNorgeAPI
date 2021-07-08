@@ -34,7 +34,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Arkitektum.GIS.Lib.MetadataCSW, Version=1.9.104.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.9.104\lib\net40\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GIS.Lib.MetadataCSW\bin\Debug\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
     </Reference>
     <Reference Include="Arkitektum.GIS.Lib.SerializeUtil, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Arkitektum.GIS.Lib.SerializeUtil.1.3.1\lib\net40\Arkitektum.GIS.Lib.SerializeUtil.dll</HintPath>
