@@ -16,6 +16,11 @@ namespace GeoNorgeAPI
         public const string LOCALE_ENG = "ENG";
         public const string LOCALE_LINK_ENG = "#" + LOCALE_ENG;
 
+        public const string LOCALE_NOR = "locale-nor";
+        public const string LOCALE_LINK_NOR = "#" + LOCALE_NOR;
+
+        public const string METADATA_LANG_NOR = "nor";
+
         private const string APPLICATION_PROFILE_PRODUCTSPEC = "produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSPEC_OTHER = "annen produktspesifikasjon";
         private const string APPLICATION_PROFILE_PRODUCTSHEET = "produktark";
@@ -139,11 +144,11 @@ namespace GeoNorgeAPI
             get
             {
                 string title = null;
-                CharacterString_PropertyType titleElement = GetTitleElement();
-                if (titleElement != null)
-                {
-                    title = titleElement.CharacterString;
-                } 
+                    CharacterString_PropertyType titleElement = GetTitleElement();
+                    if (titleElement != null)
+                    {
+                        title = titleElement.CharacterString;
+                    }
                 return title;
             }
             set {
@@ -219,6 +224,29 @@ namespace GeoNorgeAPI
             return value;
         }
 
+        public string GetNorwegianValueFromFreeText(CharacterString_PropertyType input)
+        {
+            string value = null;
+            if (input != null)
+            {
+                PT_FreeText_PropertyType freeText = input as PT_FreeText_PropertyType;
+                if (freeText != null && freeText.PT_FreeText != null && freeText.PT_FreeText.textGroup != null)
+                {
+                    foreach (var localizedStringProperty in freeText.PT_FreeText.textGroup)
+                    {
+                        if (localizedStringProperty.LocalisedCharacterString != null
+                            && localizedStringProperty.LocalisedCharacterString.locale != null
+                            && localizedStringProperty.LocalisedCharacterString.locale.Equals(LOCALE_LINK_NOR))
+                        {
+                            value = localizedStringProperty.LocalisedCharacterString.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
         public string EnglishTitle 
         {
             get
@@ -254,6 +282,25 @@ namespace GeoNorgeAPI
                         }
                     }
                 };
+        }
+
+        private PT_FreeText_PropertyType CreateFreeTextElementNorwegian(string characterString, string norwegianLocalizedValue)
+        {
+            return new PT_FreeText_PropertyType
+            {
+                CharacterString = characterString,
+                PT_FreeText = new PT_FreeText_Type
+                {
+                    textGroup = new LocalisedCharacterString_PropertyType[] {
+                            new LocalisedCharacterString_PropertyType {
+                                LocalisedCharacterString = new LocalisedCharacterString_Type {
+                                     locale = LOCALE_LINK_NOR,
+                                     Value = norwegianLocalizedValue
+                                }
+                            }
+                        }
+                }
+            };
         }
 
         private AbstractMD_Identification_Type GetIdentification()
@@ -370,19 +417,40 @@ namespace GeoNorgeAPI
                 {
                     @abstract = abstractElement.CharacterString;
                 }
+
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    var norwegianAbstract = GetNorwegianValueFromFreeText(GetAbstractElement());
+                    if (!string.IsNullOrEmpty(norwegianAbstract))
+                        @abstract = norwegianAbstract;
+                }
+
                 return @abstract;
             }
 
             set
             {
-                PT_FreeText_PropertyType abstractElementWithFreeText = GetAbstractElement() as PT_FreeText_PropertyType;
-                if (abstractElementWithFreeText != null)
+                if(MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    abstractElementWithFreeText.CharacterString = value;
+                    String existingLocalAbstract = null;
+                    CharacterString_PropertyType abstractElement = GetAbstractElement();
+                    if (abstractElement != null)
+                    {
+                        existingLocalAbstract = abstractElement.CharacterString;
+                    }
+                    GetIdentificationNotNull().@abstract = CreateFreeTextElementNorwegian(existingLocalAbstract, value);
                 }
                 else
-                {
-                    GetIdentificationNotNull().@abstract = new CharacterString_PropertyType { CharacterString = value };
+                { 
+                    PT_FreeText_PropertyType abstractElementWithFreeText = GetAbstractElement() as PT_FreeText_PropertyType;
+                    if (abstractElementWithFreeText != null)
+                    {
+                        abstractElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetIdentificationNotNull().@abstract = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
             }
         }
@@ -391,18 +459,49 @@ namespace GeoNorgeAPI
         {
             get
             {
-                return GetEnglishValueFromFreeText(GetAbstractElement());
+                string @abstract = null;
+                CharacterString_PropertyType abstractElement = GetAbstractElement();
+                if (abstractElement != null)
+                {
+                    @abstract = abstractElement.CharacterString;
+                }
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                {
+                    var englishAbstract = GetEnglishValueFromFreeText(GetAbstractElement());
+
+                    if (!string.IsNullOrEmpty(englishAbstract))
+                        @abstract = englishAbstract;
+                    else
+                        return null;
+                }
+
+                return @abstract;
             }
 
             set
             {
-                String existingLocalAbstract = null;
-                CharacterString_PropertyType abstractElement = GetAbstractElement();
-                if (abstractElement != null)
+                if(MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    existingLocalAbstract = abstractElement.CharacterString;
+                    PT_FreeText_PropertyType abstractElementWithFreeText = GetAbstractElement() as PT_FreeText_PropertyType;
+                    if (abstractElementWithFreeText != null)
+                    {
+                        abstractElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetIdentificationNotNull().@abstract = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
-                GetIdentificationNotNull().@abstract = CreateFreeTextElement(existingLocalAbstract, value);
+                else
+                { 
+                    String existingLocalAbstract = null;
+                    CharacterString_PropertyType abstractElement = GetAbstractElement();
+                    if (abstractElement != null)
+                    {
+                        existingLocalAbstract = abstractElement.CharacterString;
+                    }
+                    GetIdentificationNotNull().@abstract = CreateFreeTextElement(existingLocalAbstract, value);
+                }
             }
         }
 

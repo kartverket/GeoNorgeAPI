@@ -175,5 +175,53 @@ namespace GeoNorgeAPI.Tests
             var distributions = metadata.DistributionsFormats;
             Assert.NotNull(distributions);
         }
+
+        [Test]
+        public void ShouldReturnNorwegianAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var @abstract = metadata.Abstract;
+            Assert.AreEqual("Direktesendte satellittdata mottatt ved Meteorologisk Institutt Oslo. Prosessert med standard prosesseringssoftware til geolokaliserte og kalibrerte verdier i satellitsveip i mottatt instrument oppløsning.", @abstract);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var @abstract = metadata.EnglishAbstract;
+            Assert.AreEqual("Direct Broadcast data received at MET NORWAY Oslo. Processed by standard processing software to geolocated and calibrated values in satellite swath in received instrument resolution.", @abstract);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var expectedAbstract = "Abstract norsk";
+            metadata.Abstract = expectedAbstract;
+            var actualAbstract = metadata.Abstract;
+            Assert.AreEqual(expectedAbstract, actualAbstract);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var expectedAbstract = "Abstract english";
+            metadata.EnglishAbstract = expectedAbstract;
+            var actualAbstract = metadata.EnglishAbstract;
+            Assert.AreEqual(expectedAbstract, actualAbstract);
+        }
     }
 }
