@@ -16,7 +16,7 @@ namespace GeoNorgeAPI
         public const string LOCALE_ENG = "ENG";
         public const string LOCALE_LINK_ENG = "#" + LOCALE_ENG;
 
-        public const string LOCALE_NOR = "locale-nor";
+        public const string LOCALE_NOR = "NOR";
         public const string LOCALE_LINK_NOR = "#" + LOCALE_NOR;
 
         public const string METADATA_LANG_NOR = "nor";

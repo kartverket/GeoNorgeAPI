@@ -179,20 +179,18 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnNorwegianAbstractForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var @abstract = metadata.Abstract;
-            Assert.AreEqual("Direktesendte satellittdata mottatt ved Meteorologisk Institutt Oslo. Prosessert med standard prosesseringssoftware til geolokaliserte og kalibrerte verdier i satellitsveip i mottatt instrument oppløsning.", @abstract);
+            Assert.AreEqual("Direkte kringkasting beskrivelse", @abstract);
         }
 
         [Test]
         public void ShouldReturnEnglishAbstractForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var @abstract = metadata.EnglishAbstract;
             Assert.AreEqual("Direct Broadcast data received at MET NORWAY Oslo. Processed by standard processing software to geolocated and calibrated values in satellite swath in received instrument resolution.", @abstract);
@@ -201,9 +199,8 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateNorwegianAbstractForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var expectedAbstract = "Abstract norsk";
             metadata.Abstract = expectedAbstract;
@@ -214,9 +211,8 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateEnglishAbstractForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var expectedAbstract = "Abstract english";
             metadata.EnglishAbstract = expectedAbstract;
@@ -227,20 +223,18 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnNorwegianTitleForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var title = metadata.Title;
-            Assert.AreEqual("Direktesendte satellittdata prosessert i satellittsveip til L1C.", title);
+            Assert.AreEqual("Direkte kringkasting", title);
         }
 
         [Test]
         public void ShouldReturnEnglishTitleForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var title = metadata.EnglishTitle;
             Assert.AreEqual("Direct Broadcast data processed in satellite swath to L1C.", title);
@@ -249,9 +243,8 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateNorwegianTitleForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var expectedTitle = "Title norsk";
             metadata.Title = expectedTitle;
@@ -262,15 +255,13 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateEnglishTitleForEnglishMetadata()
         {
-            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
-            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
-            var data = (MD_Metadata_Type)response.Items[0];
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var expectedTitle = "Title english";
             metadata.EnglishTitle = expectedTitle;
             var actualTitle = metadata.EnglishTitle;
             Assert.AreEqual(expectedTitle, actualTitle);
         }
-
     }
 }
