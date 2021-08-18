@@ -825,7 +825,10 @@ namespace GeoNorgeAPI
             {
                 responsibleParty.organisationName = new CharacterString_PropertyType { CharacterString = contact.Organization };
             }
-            
+
+            if (!string.IsNullOrEmpty(contact.PositionName))
+                responsibleParty.positionName = new CharacterString_PropertyType { CharacterString = contact.PositionName };
+
             if (responsibleParty.contactInfo == null)
             {
                 responsibleParty.contactInfo = new CI_Contact_PropertyType
@@ -900,7 +903,8 @@ namespace GeoNorgeAPI
                 Organization = GetStringOrNull(responsibleParty.organisationName),
                 OrganizationEnglish = GetEnglishValueFromFreeText(responsibleParty.organisationName),
                 Email = email,
-                Role = role
+                Role = role,
+                PositionName = GetStringOrNull(responsibleParty.positionName)
             };
         }
 
@@ -4530,6 +4534,7 @@ namespace GeoNorgeAPI
         public string OrganizationEnglish { get; set; }
         public string Email { get; set; }
         public string Role { get; set; }
+        public string PositionName { get; set; }
     }
 
     public class SimpleKeyword

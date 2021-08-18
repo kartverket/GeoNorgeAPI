@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.3.2: Add Contact PositionName
 3.3.1: Upgrade metadatacsw nuget and framework to 4.8
 3.3.0: Fix distribution format version
 3.2.9: Change date for thesaurus spatial scope, do not use https for LimitationsOnPublicAccess
