@@ -263,5 +263,50 @@ namespace GeoNorgeAPI.Tests
             var actualTitle = metadata.EnglishTitle;
             Assert.AreEqual(expectedTitle, actualTitle);
         }
+
+        [Test]
+        public void ShouldReturnNorwegianPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var purpose = metadata.Purpose;
+            Assert.AreEqual("Formål", purpose);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var purpose = metadata.EnglishPurpose;
+            Assert.AreEqual("Purpose of use", purpose);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedPurpose = "Purpose norsk";
+            metadata.Purpose = expectedPurpose;
+            var actualPurpose = metadata.Purpose;
+            Assert.AreEqual(expectedPurpose, actualPurpose);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedPurpose = "Purpose english";
+            metadata.EnglishPurpose = expectedPurpose;
+            var actualPurpose = metadata.EnglishPurpose;
+            Assert.AreEqual(expectedPurpose, actualPurpose);
+        }
+
     }
 }

@@ -606,18 +606,39 @@ namespace GeoNorgeAPI
                 var identification = GetIdentification();
                 if (identification != null && identification.purpose != null)
                     purpose = identification.purpose.CharacterString;
+
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    var norwegianPurpose = GetNorwegianValueFromFreeText(GetPurposeElement());
+                    if (!string.IsNullOrEmpty(norwegianPurpose))
+                        purpose = norwegianPurpose;
+                }
+
                 return purpose;
             }
             set
             {
-                PT_FreeText_PropertyType purposeElementWithFreeText = GetPurposeElement() as PT_FreeText_PropertyType;
-                if (purposeElementWithFreeText != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    purposeElementWithFreeText.CharacterString = value;
+                    String existingLocalPurpose = null;
+                    CharacterString_PropertyType purposeElement = GetPurposeElement();
+                    if (purposeElement != null)
+                    {
+                        existingLocalPurpose = purposeElement.CharacterString;
+                    }
+                    GetIdentificationNotNull().purpose = CreateFreeTextElementNorwegian(existingLocalPurpose, value);
                 }
                 else
                 {
-                    GetIdentificationNotNull().purpose = new CharacterString_PropertyType { CharacterString = value };
+                    PT_FreeText_PropertyType purposeElementWithFreeText = GetPurposeElement() as PT_FreeText_PropertyType;
+                    if (purposeElementWithFreeText != null)
+                    {
+                        purposeElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetIdentificationNotNull().purpose = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
             }
         }
@@ -626,18 +647,50 @@ namespace GeoNorgeAPI
         {
             get
             {
-                return GetEnglishValueFromFreeText(GetPurposeElement());
+                string purpose = null;
+                CharacterString_PropertyType purposeElement = GetPurposeElement();
+                if (purposeElement != null)
+                {
+                    purpose = purposeElement.CharacterString;
+                }
+
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                {
+                    var englishPurpose = GetEnglishValueFromFreeText(GetPurposeElement());
+
+                    if (!string.IsNullOrEmpty(englishPurpose))
+                        purpose = englishPurpose;
+                    else
+                        return null;
+                }
+
+                return purpose;
             }
 
             set
             {
-                String existingLocalPurpose = null;
-                CharacterString_PropertyType purposeElement = GetPurposeElement();
-                if (purposeElement != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    existingLocalPurpose = purposeElement.CharacterString;
+                    PT_FreeText_PropertyType purposeElementWithFreeText = GetPurposeElement() as PT_FreeText_PropertyType;
+                    if (purposeElementWithFreeText != null)
+                    {
+                        purposeElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetIdentificationNotNull().purpose = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
-                GetIdentificationNotNull().purpose = CreateFreeTextElement(existingLocalPurpose, value);
+                else
+                {
+                    String existingLocalPurpose = null;
+                    CharacterString_PropertyType purposeElement = GetPurposeElement();
+                    if (purposeElement != null)
+                    {
+                        existingLocalPurpose = purposeElement.CharacterString;
+                    }
+                    GetIdentificationNotNull().purpose = CreateFreeTextElement(existingLocalPurpose, value);
+                }
             }
         }
 
