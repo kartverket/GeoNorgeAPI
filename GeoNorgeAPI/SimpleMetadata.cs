@@ -712,19 +712,40 @@ namespace GeoNorgeAPI
                 if (datasetIdentification != null && datasetIdentification.supplementalInformation != null) {
                     desc = datasetIdentification.supplementalInformation.CharacterString;
                 }
+
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    var norwegianSupplementalDescription = GetNorwegianValueFromFreeText(GetSupplementalDescriptionElement());
+                    if (!string.IsNullOrEmpty(norwegianSupplementalDescription))
+                        desc = norwegianSupplementalDescription;
+                }
+
                 return desc;
             }
 
             set
             {
-                PT_FreeText_PropertyType supplementalDescriptionElementWithFreeText = GetSupplementalDescriptionElement() as PT_FreeText_PropertyType;
-                if (supplementalDescriptionElementWithFreeText != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    supplementalDescriptionElementWithFreeText.CharacterString = value;
+                    String existingLocalSupplementalDescription = null;
+                    CharacterString_PropertyType supplementalDescriptionElement = GetSupplementalDescriptionElement();
+                    if (supplementalDescriptionElement != null)
+                    {
+                        existingLocalSupplementalDescription = supplementalDescriptionElement.CharacterString;
+                    }
+                    GetDatasetIdentification().supplementalInformation = CreateFreeTextElementNorwegian(existingLocalSupplementalDescription, value);
                 }
                 else
                 {
-                    GetDatasetIdentification().supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
+                    PT_FreeText_PropertyType supplementalDescriptionElementWithFreeText = GetSupplementalDescriptionElement() as PT_FreeText_PropertyType;
+                    if (supplementalDescriptionElementWithFreeText != null)
+                    {
+                        supplementalDescriptionElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetDatasetIdentification().supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
             }
         }
@@ -733,18 +754,51 @@ namespace GeoNorgeAPI
         {
             get
             {
-                return GetEnglishValueFromFreeText(GetSupplementalDescriptionElement());
+                string supplementalDescription = null;
+                CharacterString_PropertyType supplementalDescriptionElement = GetSupplementalDescriptionElement();
+                if (supplementalDescriptionElement != null)
+                {
+                    supplementalDescription = supplementalDescriptionElement.CharacterString;
+                }
+
+
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                {
+                    var englishSupplementalDescription = GetEnglishValueFromFreeText(GetSupplementalDescriptionElement());
+
+                    if (!string.IsNullOrEmpty(englishSupplementalDescription))
+                        supplementalDescription = englishSupplementalDescription;
+                    else
+                        return null;
+                }
+
+                return supplementalDescription;
             }
 
             set
             {
-                String existingLocalSupplementalDescription = null;
-                CharacterString_PropertyType supplementalDescriptionElement = GetSupplementalDescriptionElement();
-                if (supplementalDescriptionElement != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    existingLocalSupplementalDescription = supplementalDescriptionElement.CharacterString;
+                    PT_FreeText_PropertyType supplementalDescriptionElementWithFreeText = GetSupplementalDescriptionElement() as PT_FreeText_PropertyType;
+                    if (supplementalDescriptionElementWithFreeText != null)
+                    {
+                        supplementalDescriptionElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetDatasetIdentification().supplementalInformation = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
-                GetDatasetIdentification().supplementalInformation = CreateFreeTextElement(existingLocalSupplementalDescription, value);
+                else
+                {
+                    String existingLocalSupplementalDescription = null;
+                    CharacterString_PropertyType supplementalDescriptionElement = GetSupplementalDescriptionElement();
+                    if (supplementalDescriptionElement != null)
+                    {
+                        existingLocalSupplementalDescription = supplementalDescriptionElement.CharacterString;
+                    }
+                    GetDatasetIdentification().supplementalInformation = CreateFreeTextElement(existingLocalSupplementalDescription, value);
+                }
             }
         }
 

@@ -308,5 +308,49 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedPurpose, actualPurpose);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var supplementalDescription = metadata.SupplementalDescription;
+            Assert.AreEqual("Hjelp for bruk", supplementalDescription);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var supplementalDescription = metadata.EnglishSupplementalDescription;
+            Assert.AreEqual("help for use", supplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSupplementalDescription = "SupplementalDescription norsk";
+            metadata.SupplementalDescription = expectedSupplementalDescription;
+            var actualSupplementalDescription = metadata.SupplementalDescription;
+            Assert.AreEqual(expectedSupplementalDescription, actualSupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSupplementalDescription = "SupplementalDescription english";
+            metadata.EnglishSupplementalDescription = expectedSupplementalDescription;
+            var actualSupplementalDescription = metadata.EnglishSupplementalDescription;
+            Assert.AreEqual(expectedSupplementalDescription, actualSupplementalDescription);
+        }
+
     }
 }
