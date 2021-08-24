@@ -1682,7 +1682,10 @@ namespace GeoNorgeAPI
                 }
                 onlineResource.linkage = new URL_PropertyType { URL = value };
                 onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_PRODUCTSHEET };
-                onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_PRODUCTSHEET, ENGLISH_APPLICATION_PROFILE_PRODUCTSHEET);
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                    onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_PRODUCTSHEET, ENGLISH_APPLICATION_PROFILE_PRODUCTSHEET);
+                else
+                    onlineResource.name = CreateFreeTextElementNorwegian(ENGLISH_APPLICATION_PROFILE_PRODUCTSHEET, APPLICATION_PROFILE_PRODUCTSHEET);
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
         }
