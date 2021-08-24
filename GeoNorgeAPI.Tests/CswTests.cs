@@ -352,5 +352,49 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedSupplementalDescription, actualSupplementalDescription);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var processHistory = metadata.ProcessHistory;
+            Assert.AreEqual("Ingen prosesshistorie", processHistory);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var processHistory = metadata.EnglishProcessHistory;
+            Assert.AreEqual("No lineage statement has been provided", processHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedProcessHistory = "ProcessHistory norsk";
+            metadata.ProcessHistory = expectedProcessHistory;
+            var actualProcessHistory = metadata.ProcessHistory;
+            Assert.AreEqual(expectedProcessHistory, actualProcessHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedProcessHistory = "ProcessHistory english";
+            metadata.EnglishProcessHistory = expectedProcessHistory;
+            var actualProcessHistory = metadata.EnglishProcessHistory;
+            Assert.AreEqual(expectedProcessHistory, actualProcessHistory);
+        }
+
     }
 }

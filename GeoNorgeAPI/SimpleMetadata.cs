@@ -3020,6 +3020,13 @@ namespace GeoNorgeAPI
                     value = _md.dataQualityInfo[0].DQ_DataQuality.lineage.LI_Lineage.statement.CharacterString;
                 }
 
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    var norwegianProcessHistory = GetNorwegianValueFromFreeText(GetProcessHistoryElement());
+                    if (!string.IsNullOrEmpty(norwegianProcessHistory))
+                        value = norwegianProcessHistory;
+                }
+
                 return value;
             }
 
@@ -3035,29 +3042,47 @@ namespace GeoNorgeAPI
                     };
                 }
 
-                PT_FreeText_PropertyType processHistoryElementWithFreeText = GetProcessHistoryElement() as PT_FreeText_PropertyType;
-                if (processHistoryElementWithFreeText != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    processHistoryElementWithFreeText.CharacterString = value;
+                    String existingLocalProcessHistory = null;
+                    CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
+                    if (processHistoryElement != null)
+                    {
+                        existingLocalProcessHistory = processHistoryElement.CharacterString;
+                    }
                     _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
                     {
                         LI_Lineage = new LI_Lineage_Type
                         {
-                            statement = processHistoryElementWithFreeText
+                            statement = CreateFreeTextElementNorwegian(existingLocalProcessHistory, value)
                         }
                     };
                 }
                 else
                 { 
-                    _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                    PT_FreeText_PropertyType processHistoryElementWithFreeText = GetProcessHistoryElement() as PT_FreeText_PropertyType;
+                    if (processHistoryElementWithFreeText != null)
                     {
-                        LI_Lineage = new LI_Lineage_Type
+                        processHistoryElementWithFreeText.CharacterString = value;
+                        _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
                         {
-                            statement = toCharString(value)
-                        }
-                    };
+                            LI_Lineage = new LI_Lineage_Type
+                            {
+                                statement = processHistoryElementWithFreeText
+                            }
+                        };
+                    }
+                    else
+                    { 
+                        _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                        {
+                            LI_Lineage = new LI_Lineage_Type
+                            {
+                                statement = toCharString(value)
+                            }
+                        };
+                    }
                 }
-
             }
         }
 
@@ -3065,7 +3090,19 @@ namespace GeoNorgeAPI
         {
             get
             {
-                return GetEnglishValueFromFreeText(GetProcessHistoryElement());
+                var processHistory = GetProcessHistoryElement()?.CharacterString;
+
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                {
+                    var englishProcessHistory = GetEnglishValueFromFreeText(GetProcessHistoryElement());
+
+                    if (!string.IsNullOrEmpty(englishProcessHistory))
+                        processHistory = englishProcessHistory;
+                    else
+                        return null;
+                }
+
+                return processHistory;
             }
 
             set
@@ -3080,20 +3117,33 @@ namespace GeoNorgeAPI
                     };
                 }
 
-                String existingLocalProcessHistory = null;
-                CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
-                if (processHistoryElement != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    existingLocalProcessHistory = processHistoryElement.CharacterString;
-                }
-                _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
-                {
-                    LI_Lineage = new LI_Lineage_Type
+                    CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
+                    _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
                     {
-                        statement = CreateFreeTextElement(existingLocalProcessHistory, value)
+                        LI_Lineage = new LI_Lineage_Type
+                        {
+                            statement = new CharacterString_PropertyType { CharacterString = value }
+                        }
+                    };
+                }
+                else
+                { 
+                    String existingLocalProcessHistory = null;
+                    CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
+                    if (processHistoryElement != null)
+                    {
+                        existingLocalProcessHistory = processHistoryElement.CharacterString;
                     }
-                };
-                
+                    _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
+                    {
+                        LI_Lineage = new LI_Lineage_Type
+                        {
+                            statement = CreateFreeTextElement(existingLocalProcessHistory, value)
+                        }
+                    };
+                }
             }
         }
 
