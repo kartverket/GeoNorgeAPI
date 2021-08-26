@@ -681,10 +681,10 @@
                      <gmd:distributorTransferOptions>
                         <gmd:MD_DigitalTransferOptions>
                            <gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
-                           <gco:CharacterString>kommunevis, fylkesvis, landsfiler, region, celle, kartblad</gco:CharacterString>
+                           <gco:CharacterString>municipality, county, entire country, region, cell, map tile</gco:CharacterString>
                               <gmd:PT_FreeText>
                                  <gmd:textGroup>
-                                    <gmd:LocalisedCharacterString locale="#NOR">municipality, county, entire country, region, cell, map tile</gmd:LocalisedCharacterString>
+                                    <gmd:LocalisedCharacterString locale="#NOR">kommunevis, fylkesvis, landsfiler, region, celle, kartblad</gmd:LocalisedCharacterString>
                                  </gmd:textGroup>
                               </gmd:PT_FreeText>
                            </gmd:unitsOfDistribution>
