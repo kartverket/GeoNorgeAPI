@@ -21,9 +21,14 @@
   <gmd:contact>
       <gmd:CI_ResponsibleParty>
          <gmd:individualName/>
-         <gmd:organisationName>
-            <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
-         </gmd:organisationName>
+        <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+          <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+          <gmd:PT_FreeText>
+            <gmd:textGroup>
+              <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
+            </gmd:textGroup>
+          </gmd:PT_FreeText>
+        </gmd:organisationName>
          <gmd:contactInfo>
             <gmd:CI_Contact>
                <gmd:address>
@@ -318,9 +323,14 @@
          <gmd:pointOfContact>
             <gmd:CI_ResponsibleParty>
                <gmd:individualName/>
-               <gmd:organisationName>
-                  <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
-               </gmd:organisationName>
+              <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+                <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+                <gmd:PT_FreeText>
+                  <gmd:textGroup>
+                    <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
+                  </gmd:textGroup>
+                </gmd:PT_FreeText>
+              </gmd:organisationName>
                <gmd:contactInfo>
                   <gmd:CI_Contact>
                      <gmd:address>
@@ -341,9 +351,14 @@
          <gmd:pointOfContact>
             <gmd:CI_ResponsibleParty>
                <gmd:individualName/>
-               <gmd:organisationName>
-                  <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
-               </gmd:organisationName>
+              <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+                <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+                <gmd:PT_FreeText>
+                  <gmd:textGroup>
+                    <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
+                  </gmd:textGroup>
+                </gmd:PT_FreeText>
+              </gmd:organisationName>
                <gmd:contactInfo>
                   <gmd:CI_Contact>
                      <gmd:address>
