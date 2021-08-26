@@ -926,7 +926,10 @@ namespace GeoNorgeAPI
 
             if (!string.IsNullOrWhiteSpace(contact.OrganizationEnglish))
             {
-                responsibleParty.organisationName = CreateFreeTextElement(contact.Organization, contact.OrganizationEnglish);
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                    responsibleParty.organisationName = CreateFreeTextElementNorwegian(contact.OrganizationEnglish, contact.Organization);
+                else
+                    responsibleParty.organisationName = CreateFreeTextElement(contact.Organization, contact.OrganizationEnglish);
             }
             else
             {
@@ -1004,7 +1007,7 @@ namespace GeoNorgeAPI
                 role = responsibleParty.role.CI_RoleCode.codeListValue;
             }
 
-            return new SimpleContact
+            var contact = new SimpleContact
             {
                 Name = GetStringOrNull(responsibleParty.individualName),
                 Organization = GetStringOrNull(responsibleParty.organisationName),
@@ -1013,6 +1016,14 @@ namespace GeoNorgeAPI
                 Role = role,
                 PositionName = GetStringOrNull(responsibleParty.positionName)
             };
+
+            if (MetadataLanguage == LOCALE_ENG.ToLower())
+            {
+                contact.Organization = GetNorwegianValueFromFreeText(responsibleParty.organisationName);
+                contact.OrganizationEnglish = GetStringOrNull(responsibleParty.organisationName); 
+            }
+
+            return contact;
         }
 
         private string GetStringOrNull(CharacterString_PropertyType input)

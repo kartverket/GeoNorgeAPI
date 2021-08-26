@@ -396,5 +396,49 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedProcessHistory, actualProcessHistory);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var organization = metadata.ContactOwner.Organization;
+            Assert.AreEqual("Meteorologisk institutt", organization);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var organization = metadata.ContactOwner.OrganizationEnglish;
+            Assert.AreEqual("Norwegian Meteorological Institute", organization);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedContactOrganization = "Organisasjon norsk";
+            metadata.ContactOwner = new SimpleContact { Organization = expectedContactOrganization, Role = "owner", OrganizationEnglish = "Organization English" };
+            var actualContactOrganization = metadata.ContactOwner.Organization;
+            Assert.AreEqual(expectedContactOrganization, actualContactOrganization);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedContactOrganization = "Organisasjon engelsk";
+            metadata.ContactOwner = new SimpleContact { Role = "owner", OrganizationEnglish = expectedContactOrganization };
+            var actualContactOrganization = metadata.ContactOwner.OrganizationEnglish;
+            Assert.AreEqual(expectedContactOrganization, actualContactOrganization);
+        }
+
     }
 }
