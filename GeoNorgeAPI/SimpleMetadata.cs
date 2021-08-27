@@ -1102,8 +1102,18 @@ namespace GeoNorgeAPI
                             foreach (var keywordElement in descriptiveKeyword.MD_Keywords.keyword)
                             {
                                 string keywordValue = GetStringOrNull(keywordElement);
+                                if (MetadataLanguage == LOCALE_ENG.ToLower()) { 
+                                    var keywordValueNorwegian = GetNorwegianValueFromFreeText(keywordElement);
+                                    if (!string.IsNullOrEmpty(keywordValueNorwegian))
+                                        keywordValue = keywordValueNorwegian;
+                                }
+
                                 string keywordLink = GetLinkOrNull(keywordElement);
                                 string keywordEnglishValue = GetEnglishValueFromFreeText(keywordElement);
+
+                                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                    keywordEnglishValue = GetStringOrNull(keywordElement);
+
                                 if (!string.IsNullOrWhiteSpace(keywordValue))
                                 {
                                     keywords.Add(new SimpleKeyword
@@ -1145,7 +1155,10 @@ namespace GeoNorgeAPI
 
                                     if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
                                     {
-                                        keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword) });
+                                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                            keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElementNorwegian(fk.EnglishKeyword, fk.Keyword) });
+                                        else
+                                            keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword) });
                                     }
                                     else
                                     {
@@ -1280,6 +1293,31 @@ namespace GeoNorgeAPI
                         if (localizedStringProperty.LocalisedCharacterString != null
                             && localizedStringProperty.LocalisedCharacterString.locale != null
                             && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_LINK_ENG))
+                        {
+                            value = localizedStringProperty.LocalisedCharacterString.Value;
+                            break;
+                        }
+                    }
+                }
+            }
+            return value;
+        }
+
+        private string GetNorwegianValueFromFreeText(MD_Keyword input)
+        {
+            string value = null;
+
+            var keyword = input.keyword;
+            if (keyword != null)
+            {
+                PT_FreeText_PropertyType freeText = keyword as PT_FreeText_PropertyType;
+                if (freeText != null && freeText.PT_FreeText != null && freeText.PT_FreeText.textGroup != null)
+                {
+                    foreach (var localizedStringProperty in freeText.PT_FreeText.textGroup)
+                    {
+                        if (localizedStringProperty.LocalisedCharacterString != null
+                            && localizedStringProperty.LocalisedCharacterString.locale != null
+                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_LINK_NOR))
                         {
                             value = localizedStringProperty.LocalisedCharacterString.Value;
                             break;

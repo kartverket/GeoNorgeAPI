@@ -440,5 +440,63 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedContactOrganization, actualContactOrganization);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var keywords = metadata.Keywords;
+            Assert.AreEqual("Kringkasting", keywords[5].Keyword);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var keywords = metadata.Keywords;
+            Assert.AreEqual("Broadcast data", keywords[5].EnglishKeyword);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedKeyword = "Nøkkelord norsk";
+            var keywords = new List<SimpleKeyword> {
+                new SimpleKeyword {
+                    Keyword = expectedKeyword,
+                    Thesaurus = SimpleKeyword.TYPE_THEME,
+                    EnglishKeyword = "Broadcast data"
+                }
+            };
+            metadata.Keywords = keywords;
+            var actualKeyword = metadata.Keywords[0].Keyword;
+            Assert.AreEqual(expectedKeyword, actualKeyword);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedKeyword = "Broadcast data2";
+            var keywords = new List<SimpleKeyword> {
+                new SimpleKeyword {
+                    Keyword = "Kringkasting",
+                    Thesaurus = SimpleKeyword.TYPE_THEME,
+                    EnglishKeyword = expectedKeyword
+                }
+            };
+            metadata.Keywords = keywords;
+            var actualKeyword = metadata.Keywords[0].EnglishKeyword;
+            Assert.AreEqual(expectedKeyword, actualKeyword);
+        }
+
     }
 }
