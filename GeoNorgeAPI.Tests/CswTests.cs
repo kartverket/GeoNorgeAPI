@@ -498,5 +498,51 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedKeyword, actualKeyword);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var distributionsformats = metadata.DistributionsFormats;
+            Assert.AreEqual("kommunevis, fylkesvis, landsfiler, region, celle, kartblad", 
+                distributionsformats[0].UnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var distributionsformats = metadata.DistributionsFormats;
+            Assert.AreEqual("municipality, county, entire country, region, cell, map tile",
+                distributionsformats[0].EnglishUnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUnitsOfDistribution = "UnitsOfDistribution norsk";
+            metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = "UnitsOfDistribution engelsk", FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL= "https://nedlasting.test.geonorge.no/api/capabilities/" } };
+            var actualUnitsOfDistribution = metadata.DistributionsFormats[0].UnitsOfDistribution;
+            Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUnitsOfDistribution = "UnitsOfDistribution engelsk";
+            metadata.DistributionsFormats = metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = "UnitsOfDistribution norsk", EnglishUnitsOfDistribution = expectedUnitsOfDistribution, FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL = "https://nedlasting.test.geonorge.no/api/capabilities/" } };
+            var actualUnitsOfDistribution = metadata.DistributionsFormats[0].EnglishUnitsOfDistribution; ;
+            Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
+        }
+
     }
 }

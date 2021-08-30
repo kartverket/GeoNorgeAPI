@@ -4235,11 +4235,25 @@ namespace GeoNorgeAPI
                                 {
                                     if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution != null)
                                     {
-                                        format.UnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString;
-                                        var englishUnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
-                                        if (englishUnitsOfDistribution != null)
+                                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                            format.UnitsOfDistribution = GetNorwegianValueFromFreeText(df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution);
+                                        else
+                                            format.UnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString;
+                                        if (MetadataLanguage == LOCALE_ENG.ToLower())
                                         {
-                                            format.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
+                                            var englishUnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution;
+                                            if (englishUnitsOfDistribution != null)
+                                            {
+                                                format.EnglishUnitsOfDistribution = englishUnitsOfDistribution.CharacterString;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var englishUnitsOfDistribution = df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+                                            if (englishUnitsOfDistribution != null)
+                                            {
+                                                format.EnglishUnitsOfDistribution = GetEnglishValueFromFreeText(englishUnitsOfDistribution);
+                                            }
                                         }
                                     }
                                     if (df.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine != null
@@ -4353,7 +4367,9 @@ namespace GeoNorgeAPI
                                             {
                                                 MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
                                                 {
-                                                    unitsOfDistribution = CreateFreeTextElement(dsFormat.UnitsOfDistribution, dsFormat.EnglishUnitsOfDistribution),
+                                                    unitsOfDistribution = MetadataLanguage == LOCALE_ENG.ToLower() ?
+                                                    CreateFreeTextElementNorwegian(dsFormat.EnglishUnitsOfDistribution, dsFormat.UnitsOfDistribution) 
+                                                    : CreateFreeTextElement(dsFormat.UnitsOfDistribution, dsFormat.EnglishUnitsOfDistribution),
                                                     onLine = new CI_OnlineResource_PropertyType[]
                                                     {
                                                         new CI_OnlineResource_PropertyType
