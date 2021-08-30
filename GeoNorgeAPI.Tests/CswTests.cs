@@ -588,5 +588,48 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedUseLimitations, actualUseLimitations);
         }
 
+        public void ShouldReturnNorwegianOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var otherConstraints = metadata.Constraints.OtherConstraints;
+            Assert.AreEqual("Ingen restriksjoner", otherConstraints);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var otherConstraints = metadata.Constraints.EnglishOtherConstraints;
+            Assert.AreEqual("conditionsUnknown", otherConstraints);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedOtherConstraints = "OtherConstraints norsk";
+            metadata.Constraints = new SimpleConstraints { EnglishOtherConstraints = "OtherConstraints English", OtherConstraints = expectedOtherConstraints };
+            var actualOtherConstraints = metadata.Constraints.OtherConstraints;
+            Assert.AreEqual(expectedOtherConstraints, actualOtherConstraints);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedOtherConstraints = "OtherConstraints engelsk";
+            metadata.Constraints = new SimpleConstraints { EnglishOtherConstraints = expectedOtherConstraints };
+            var actualOtherConstraints = metadata.Constraints.EnglishOtherConstraints;
+            Assert.AreEqual(expectedOtherConstraints, actualOtherConstraints);
+        }
+
     }
 }

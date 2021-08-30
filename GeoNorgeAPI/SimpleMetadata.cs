@@ -3829,10 +3829,20 @@ namespace GeoNorgeAPI
                                         var otherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
                                         if (otherConstraint != null)
                                         {
-                                            value.OtherConstraints = otherConstraint.CharacterString;
-                                            var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
-                                            if(englishOtherConstraint != null)
-                                                value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                                            if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                            {
+                                                value.EnglishOtherConstraints = otherConstraint.CharacterString;
+                                                var otherConstraintNorwegian = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                                                if (otherConstraintNorwegian != null)
+                                                    value.OtherConstraints = GetNorwegianValueFromFreeText(otherConstraintNorwegian);
+                                            }
+                                            else
+                                            { 
+                                                value.OtherConstraints = otherConstraint.CharacterString;
+                                                var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                                                if(englishOtherConstraint != null)
+                                                    value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                                            }
                                         }
 
 
@@ -3978,13 +3988,26 @@ namespace GeoNorgeAPI
                         }
                         else if (legalConstraint?.otherConstraints != null)
                         {
-                            var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
-                            if (otherConstraintString != null)
-                                value.OtherConstraints = otherConstraintString.CharacterString;
+                            if (MetadataLanguage == LOCALE_ENG.ToLower())
+                            {
+                                var englishOtherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                                if (englishOtherConstraintString != null)
+                                    value.EnglishOtherConstraints = englishOtherConstraintString.CharacterString;
 
-                            var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
-                            if (englishOtherConstraint != null)
-                                value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                                var otherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                                if (otherConstraint != null)
+                                    value.OtherConstraints = GetNorwegianValueFromFreeText(otherConstraint);
+                            }
+                            else
+                            { 
+                                var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                                if (otherConstraintString != null)
+                                    value.OtherConstraints = otherConstraintString.CharacterString;
+
+                                var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                                if (englishOtherConstraint != null)
+                                    value.EnglishOtherConstraints = GetEnglishValueFromFreeText(englishOtherConstraint);
+                            }
                         }
                     }
 
@@ -3998,11 +4021,21 @@ namespace GeoNorgeAPI
             set
             {
                 MD_RestrictionOther_PropertyType otherConstraint = null;
-                if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
-                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
-                else
-                    otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
 
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
+                        otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElementNorwegian(value.EnglishOtherConstraints, value.OtherConstraints) };
+                    else
+                        otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
+                }
+                else
+                { 
+                    if (!string.IsNullOrEmpty(value.EnglishOtherConstraints))
+                        otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = CreateFreeTextElement(value.OtherConstraints, value.EnglishOtherConstraints ) };
+                    else
+                        otherConstraint = new MD_RestrictionOther_PropertyType { MD_RestrictionOther = new CharacterString_PropertyType { CharacterString = value.OtherConstraints } };
+                }
 
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
