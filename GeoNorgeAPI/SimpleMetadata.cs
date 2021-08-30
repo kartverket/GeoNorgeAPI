@@ -3898,9 +3898,16 @@ namespace GeoNorgeAPI
                                     {
                                         var useLimit = regularConstraint.useLimitation[0] as PT_FreeText_PropertyType;
                                         if (useLimit != null)
-                                            value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
-
-                                        value.UseLimitations = regularConstraint.useLimitation[0].CharacterString;
+                                        {
+                                            if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                                value.EnglishUseLimitations = regularConstraint.useLimitation[0].CharacterString;
+                                            else
+                                                value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                                        }
+                                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                            value.UseLimitations = GetNorwegianValueFromFreeText(useLimit);
+                                        else
+                                            value.UseLimitations = regularConstraint.useLimitation[0].CharacterString;
                                     }
                                 }
                             }
@@ -3945,8 +3952,16 @@ namespace GeoNorgeAPI
                             var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;{
                                 if (useLimit != null)
                                 {
-                                    value.UseLimitations = useLimit.CharacterString;
-                                    value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                                    if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                    {
+                                        value.UseLimitations = GetNorwegianValueFromFreeText(useLimit); 
+                                        value.EnglishUseLimitations = useLimit.CharacterString;
+                                    }
+                                    else
+                                    { 
+                                        value.UseLimitations = useLimit.CharacterString;
+                                        value.EnglishUseLimitations = GetEnglishValueFromFreeText(useLimit);
+                                    }
                                 }
                             }
                         }
@@ -3992,7 +4007,9 @@ namespace GeoNorgeAPI
                 MD_Constraints_PropertyType[] resourceConstraints = new MD_Constraints_PropertyType[] {
                     new MD_Constraints_PropertyType {
                         MD_Constraints = new MD_Constraints_Type {
-                            useLimitation = new CharacterString_PropertyType[] { CreateFreeTextElement(value.UseLimitations, value.EnglishUseLimitations) }
+                            useLimitation = MetadataLanguage == LOCALE_ENG.ToLower()
+                            ? new CharacterString_PropertyType[] { CreateFreeTextElementNorwegian(value.EnglishUseLimitations, value.UseLimitations) }
+                            : new CharacterString_PropertyType[] { CreateFreeTextElement(value.UseLimitations, value.EnglishUseLimitations) }
                         }
                     },
                     new MD_Constraints_PropertyType {

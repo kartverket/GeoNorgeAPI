@@ -559,10 +559,10 @@
          <gmd:resourceConstraints>
             <gmd:MD_Constraints>
                <gmd:useLimitation xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>https://spdx.org/licenses/CC-BY-4.0</gco:CharacterString>
+                  <gco:CharacterString>No conditions apply</gco:CharacterString>
                   <gmd:PT_FreeText>
                      <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">https://spdx.org/licenses/CC-BY-4.0</gmd:LocalisedCharacterString>
+                        <gmd:LocalisedCharacterString locale="#NOR">Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.</gmd:LocalisedCharacterString>
                      </gmd:textGroup>
                   </gmd:PT_FreeText>
                </gmd:useLimitation>

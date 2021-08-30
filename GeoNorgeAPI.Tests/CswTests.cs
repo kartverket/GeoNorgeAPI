@@ -544,5 +544,49 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var useLimitations = metadata.Constraints.UseLimitations;
+            Assert.AreEqual("Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.", useLimitations);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var useLimitations = metadata.Constraints.EnglishUseLimitations;
+            Assert.AreEqual("No conditions apply", useLimitations);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUseLimitations = "UseLimitations norsk";
+            metadata.Constraints = new SimpleConstraints { UseLimitations = expectedUseLimitations };
+            var actualUseLimitations = metadata.Constraints.UseLimitations;
+            Assert.AreEqual(expectedUseLimitations, actualUseLimitations);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUseLimitations = "UseLimitations engelsk";
+            metadata.Constraints = new SimpleConstraints { EnglishUseLimitations = expectedUseLimitations };
+            var actualUseLimitations = metadata.Constraints.EnglishUseLimitations;
+            Assert.AreEqual(expectedUseLimitations, actualUseLimitations);
+        }
+
     }
 }
