@@ -631,5 +631,49 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedOtherConstraints, actualOtherConstraints);
         }
 
+        [Test]
+        public void ShouldReturnNorwegianSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var specificUsage = metadata.SpecificUsage;
+            Assert.AreEqual("Bruksområde", specificUsage);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var specificUsage = metadata.EnglishSpecificUsage;
+            Assert.AreEqual("Usage", specificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSpecificUsage = "SpecificUsage norsk";
+            metadata.SpecificUsage = expectedSpecificUsage;
+            var actualSpecificUsage = metadata.SpecificUsage;
+            Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSpecificUsage = "SpecificUsage english";
+            metadata.EnglishSpecificUsage = expectedSpecificUsage;
+            var actualSpecificUsage = metadata.EnglishSpecificUsage;
+            Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
+        }
+
     }
 }

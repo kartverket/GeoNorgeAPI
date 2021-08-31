@@ -4653,7 +4653,14 @@ namespace GeoNorgeAPI
                     && identification.resourceSpecificUsage[0] != null && identification.resourceSpecificUsage[0].MD_Usage != null
                     && identification.resourceSpecificUsage[0].MD_Usage.specificUsage != null)
                 {
-                    value = identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+                   value = identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+
+                    if (MetadataLanguage == LOCALE_ENG.ToLower())
+                    {
+                        var norwegianSpecificUsage = GetNorwegianValueFromFreeText(GetSpecificUsageElement());
+                        if (!string.IsNullOrEmpty(norwegianSpecificUsage))
+                            value = norwegianSpecificUsage;
+                    }
                 }
                 return value;
             }
@@ -4668,7 +4675,10 @@ namespace GeoNorgeAPI
 
                     if (specificUsageElementWithFreeText != null)
                     {
-                        specificUsageElementWithFreeText.CharacterString = value;
+                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                            specificUsageElementWithFreeText = CreateFreeTextElementNorwegian(specificUsageElementWithFreeText.CharacterString, value);
+                        else
+                            specificUsageElementWithFreeText.CharacterString = value;
 
                         identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
                         {
@@ -4698,12 +4708,19 @@ namespace GeoNorgeAPI
                     }
                     else
                     {
+                        var specificUsage = new CharacterString_PropertyType { CharacterString = value };
+
+                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                        {
+                            specificUsage = CreateFreeTextElementNorwegian("", value);
+                        }
+
                         identification.resourceSpecificUsage = new MD_Usage_PropertyType[]
                         {
                             new MD_Usage_PropertyType {
                                 MD_Usage = new MD_Usage_Type
                                 {
-                                    specificUsage = new CharacterString_PropertyType { CharacterString = value },
+                                    specificUsage = specificUsage,
                                     userContactInfo = new CI_ResponsibleParty_PropertyType[] {
                                         new CI_ResponsibleParty_PropertyType
                                         {
@@ -4732,19 +4749,50 @@ namespace GeoNorgeAPI
         {
             get
             {
-                return GetEnglishValueFromFreeText(GetSpecificUsageElement());
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
+                {
+                    var identification = GetIdentification();
+                    if (identification != null && identification.resourceSpecificUsage != null && identification.resourceSpecificUsage.Length > 0
+                        && identification.resourceSpecificUsage[0] != null && identification.resourceSpecificUsage[0].MD_Usage != null
+                        && identification.resourceSpecificUsage[0].MD_Usage.specificUsage != null)
+                    {
+                        return identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
+                    }
+
+                    return "";
+                }
+                else
+                {
+                    return GetEnglishValueFromFreeText(GetSpecificUsageElement());
+                }
+
             }
 
             set
             {
-                String existingLocalSpecificUsage = null;
-                CharacterString_PropertyType specificUsageElement = GetSpecificUsageElement();
-                if (specificUsageElement != null)
+                if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
-                    existingLocalSpecificUsage = specificUsageElement.CharacterString;
+                    PT_FreeText_PropertyType specificUsageElementWithFreeText = GetSpecificUsageElement() as PT_FreeText_PropertyType;
+                    if (specificUsageElementWithFreeText != null)
+                    {
+                        specificUsageElementWithFreeText.CharacterString = value;
+                    }
+                    else
+                    {
+                        GetIdentificationNotNull().resourceSpecificUsage[0].MD_Usage.specificUsage = new CharacterString_PropertyType { CharacterString = value };
+                    }
                 }
-                GetIdentificationNotNull().resourceSpecificUsage[0].MD_Usage.specificUsage = CreateFreeTextElement(existingLocalSpecificUsage, value);
-            }
+                else
+                {
+                    String existingLocalSpecificUsage = null;
+                    CharacterString_PropertyType specificUsageElement = GetSpecificUsageElement();
+                    if (specificUsageElement != null)
+                    {
+                        existingLocalSpecificUsage = specificUsageElement.CharacterString;
+                    }
+                    GetIdentificationNotNull().resourceSpecificUsage[0].MD_Usage.specificUsage = CreateFreeTextElement(existingLocalSpecificUsage, value);
+                }
+                }
         }
 
         private CharacterString_PropertyType GetSpecificUsageElement()
