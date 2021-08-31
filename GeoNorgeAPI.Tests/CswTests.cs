@@ -3,6 +3,9 @@ using www.opengis.net;
 using GeoNorgeAPI;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Arkitektum.GIS.Lib.SerializeUtil;
+
 namespace GeoNorgeAPI.Tests
 {
     
@@ -161,5 +164,516 @@ namespace GeoNorgeAPI.Tests
             SimpleMetadata metadata = new SimpleMetadata(_geonorge.GetRecordByUuid("e0ce2aae-324c-495c-8740-2adfd20b4386"));
             Assert.NotNull(metadata.Constraints);
         }
+
+        [Test]
+        public void ShouldReturnMultipleOnlineElementsForMD_DigitalTransferOptionsAsDistributionsFormats()
+        {      
+            string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var distributions = metadata.DistributionsFormats;
+            Assert.NotNull(distributions);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var @abstract = metadata.Abstract;
+            Assert.AreEqual("Direkte kringkasting beskrivelse", @abstract);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var @abstract = metadata.EnglishAbstract;
+            Assert.AreEqual("Direct Broadcast data received at MET NORWAY Oslo. Processed by standard processing software to geolocated and calibrated values in satellite swath in received instrument resolution.", @abstract);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedAbstract = "Abstract norsk";
+            metadata.Abstract = expectedAbstract;
+            var actualAbstract = metadata.Abstract;
+            Assert.AreEqual(expectedAbstract, actualAbstract);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishAbstractForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedAbstract = "Abstract english";
+            metadata.EnglishAbstract = expectedAbstract;
+            var actualAbstract = metadata.EnglishAbstract;
+            Assert.AreEqual(expectedAbstract, actualAbstract);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var title = metadata.Title;
+            Assert.AreEqual("Direkte kringkasting", title);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var title = metadata.EnglishTitle;
+            Assert.AreEqual("Direct Broadcast data processed in satellite swath to L1C.", title);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedTitle = "Title norsk";
+            metadata.Title = expectedTitle;
+            var actualTitle = metadata.Title;
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishTitleForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedTitle = "Title english";
+            metadata.EnglishTitle = expectedTitle;
+            var actualTitle = metadata.EnglishTitle;
+            Assert.AreEqual(expectedTitle, actualTitle);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var purpose = metadata.Purpose;
+            Assert.AreEqual("Formål", purpose);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var purpose = metadata.EnglishPurpose;
+            Assert.AreEqual("Purpose of use", purpose);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedPurpose = "Purpose norsk";
+            metadata.Purpose = expectedPurpose;
+            var actualPurpose = metadata.Purpose;
+            Assert.AreEqual(expectedPurpose, actualPurpose);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishPurposeForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedPurpose = "Purpose english";
+            metadata.EnglishPurpose = expectedPurpose;
+            var actualPurpose = metadata.EnglishPurpose;
+            Assert.AreEqual(expectedPurpose, actualPurpose);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var supplementalDescription = metadata.SupplementalDescription;
+            Assert.AreEqual("Hjelp for bruk", supplementalDescription);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var supplementalDescription = metadata.EnglishSupplementalDescription;
+            Assert.AreEqual("help for use", supplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSupplementalDescription = "SupplementalDescription norsk";
+            metadata.SupplementalDescription = expectedSupplementalDescription;
+            var actualSupplementalDescription = metadata.SupplementalDescription;
+            Assert.AreEqual(expectedSupplementalDescription, actualSupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishSupplementalDescriptionForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSupplementalDescription = "SupplementalDescription english";
+            metadata.EnglishSupplementalDescription = expectedSupplementalDescription;
+            var actualSupplementalDescription = metadata.EnglishSupplementalDescription;
+            Assert.AreEqual(expectedSupplementalDescription, actualSupplementalDescription);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var processHistory = metadata.ProcessHistory;
+            Assert.AreEqual("Ingen prosesshistorie", processHistory);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var processHistory = metadata.EnglishProcessHistory;
+            Assert.AreEqual("No lineage statement has been provided", processHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedProcessHistory = "ProcessHistory norsk";
+            metadata.ProcessHistory = expectedProcessHistory;
+            var actualProcessHistory = metadata.ProcessHistory;
+            Assert.AreEqual(expectedProcessHistory, actualProcessHistory);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishProcessHistoryForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedProcessHistory = "ProcessHistory english";
+            metadata.EnglishProcessHistory = expectedProcessHistory;
+            var actualProcessHistory = metadata.EnglishProcessHistory;
+            Assert.AreEqual(expectedProcessHistory, actualProcessHistory);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var organization = metadata.ContactOwner.Organization;
+            Assert.AreEqual("Meteorologisk institutt", organization);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var organization = metadata.ContactOwner.OrganizationEnglish;
+            Assert.AreEqual("Norwegian Meteorological Institute", organization);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedContactOrganization = "Organisasjon norsk";
+            metadata.ContactOwner = new SimpleContact { Organization = expectedContactOrganization, Role = "owner", OrganizationEnglish = "Organization English" };
+            var actualContactOrganization = metadata.ContactOwner.Organization;
+            Assert.AreEqual(expectedContactOrganization, actualContactOrganization);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishContactForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedContactOrganization = "Organisasjon engelsk";
+            metadata.ContactOwner = new SimpleContact { Role = "owner", OrganizationEnglish = expectedContactOrganization };
+            var actualContactOrganization = metadata.ContactOwner.OrganizationEnglish;
+            Assert.AreEqual(expectedContactOrganization, actualContactOrganization);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var keywords = metadata.Keywords;
+            Assert.AreEqual("Kringkasting", keywords[5].Keyword);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var keywords = metadata.Keywords;
+            Assert.AreEqual("Broadcast data", keywords[5].EnglishKeyword);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedKeyword = "Nøkkelord norsk";
+            var keywords = new List<SimpleKeyword> {
+                new SimpleKeyword {
+                    Keyword = expectedKeyword,
+                    Thesaurus = SimpleKeyword.TYPE_THEME,
+                    EnglishKeyword = "Broadcast data"
+                }
+            };
+            metadata.Keywords = keywords;
+            var actualKeyword = metadata.Keywords[0].Keyword;
+            Assert.AreEqual(expectedKeyword, actualKeyword);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishKeywordsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedKeyword = "Broadcast data2";
+            var keywords = new List<SimpleKeyword> {
+                new SimpleKeyword {
+                    Keyword = "Kringkasting",
+                    Thesaurus = SimpleKeyword.TYPE_THEME,
+                    EnglishKeyword = expectedKeyword
+                }
+            };
+            metadata.Keywords = keywords;
+            var actualKeyword = metadata.Keywords[0].EnglishKeyword;
+            Assert.AreEqual(expectedKeyword, actualKeyword);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var distributionsformats = metadata.DistributionsFormats;
+            Assert.AreEqual("kommunevis, fylkesvis, landsfiler, region, celle, kartblad", 
+                distributionsformats[0].UnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var distributionsformats = metadata.DistributionsFormats;
+            Assert.AreEqual("municipality, county, entire country, region, cell, map tile",
+                distributionsformats[0].EnglishUnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUnitsOfDistribution = "UnitsOfDistribution norsk";
+            metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = "UnitsOfDistribution engelsk", FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL= "https://nedlasting.test.geonorge.no/api/capabilities/" } };
+            var actualUnitsOfDistribution = metadata.DistributionsFormats[0].UnitsOfDistribution;
+            Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishDistributionsFormatsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUnitsOfDistribution = "UnitsOfDistribution engelsk";
+            metadata.DistributionsFormats = metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = "UnitsOfDistribution norsk", EnglishUnitsOfDistribution = expectedUnitsOfDistribution, FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL = "https://nedlasting.test.geonorge.no/api/capabilities/" } };
+            var actualUnitsOfDistribution = metadata.DistributionsFormats[0].EnglishUnitsOfDistribution; ;
+            Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var useLimitations = metadata.Constraints.UseLimitations;
+            Assert.AreEqual("Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.", useLimitations);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var useLimitations = metadata.Constraints.EnglishUseLimitations;
+            Assert.AreEqual("No conditions apply", useLimitations);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUseLimitations = "UseLimitations norsk";
+            metadata.Constraints = new SimpleConstraints { UseLimitations = expectedUseLimitations };
+            var actualUseLimitations = metadata.Constraints.UseLimitations;
+            Assert.AreEqual(expectedUseLimitations, actualUseLimitations);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishUseLimitationsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedUseLimitations = "UseLimitations engelsk";
+            metadata.Constraints = new SimpleConstraints { EnglishUseLimitations = expectedUseLimitations };
+            var actualUseLimitations = metadata.Constraints.EnglishUseLimitations;
+            Assert.AreEqual(expectedUseLimitations, actualUseLimitations);
+        }
+
+        public void ShouldReturnNorwegianOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var otherConstraints = metadata.Constraints.OtherConstraints;
+            Assert.AreEqual("Ingen restriksjoner", otherConstraints);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var otherConstraints = metadata.Constraints.EnglishOtherConstraints;
+            Assert.AreEqual("conditionsUnknown", otherConstraints);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedOtherConstraints = "OtherConstraints norsk";
+            metadata.Constraints = new SimpleConstraints { EnglishOtherConstraints = "OtherConstraints English", OtherConstraints = expectedOtherConstraints };
+            var actualOtherConstraints = metadata.Constraints.OtherConstraints;
+            Assert.AreEqual(expectedOtherConstraints, actualOtherConstraints);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishOtherConstraintsForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedOtherConstraints = "OtherConstraints engelsk";
+            metadata.Constraints = new SimpleConstraints { EnglishOtherConstraints = expectedOtherConstraints };
+            var actualOtherConstraints = metadata.Constraints.EnglishOtherConstraints;
+            Assert.AreEqual(expectedOtherConstraints, actualOtherConstraints);
+        }
+
+        [Test]
+        public void ShouldReturnNorwegianSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var specificUsage = metadata.SpecificUsage;
+            Assert.AreEqual("Bruksområde", specificUsage);
+        }
+
+        [Test]
+        public void ShouldReturnEnglishSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var specificUsage = metadata.EnglishSpecificUsage;
+            Assert.AreEqual("Usage", specificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSpecificUsage = "SpecificUsage norsk";
+            metadata.SpecificUsage = expectedSpecificUsage;
+            var actualSpecificUsage = metadata.SpecificUsage;
+            Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateEnglishSpecificUsageForEnglishMetadata()
+        {
+            string xml = File.ReadAllText("xml/english-main-language.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSpecificUsage = "SpecificUsage english";
+            metadata.EnglishSpecificUsage = expectedSpecificUsage;
+            var actualSpecificUsage = metadata.EnglishSpecificUsage;
+            Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
+        }
+
     }
 }
