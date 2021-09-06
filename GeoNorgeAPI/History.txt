@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.3.4: Adjust title rendering
 3.3.3: Handle norwegian localization
 3.3.2: Add Contact PositionName
 3.3.1: Upgrade metadatacsw nuget and framework to 4.8
