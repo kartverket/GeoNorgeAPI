@@ -144,17 +144,20 @@ namespace GeoNorgeAPI
             get
             {
                 string title = null;
-                    CharacterString_PropertyType titleElement = GetTitleElement();
-                    if (titleElement != null)
-                    {
-                        title = titleElement.CharacterString;
-                    }
 
                 if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
                     var norwegianTitle = GetNorwegianValueFromFreeText(GetTitleElement());
                     if (!string.IsNullOrEmpty(norwegianTitle))
                         title = norwegianTitle;
+                }
+                else
+                {
+                    CharacterString_PropertyType titleElement = GetTitleElement();
+                    if (titleElement != null)
+                    {
+                        title = titleElement.CharacterString;
+                    }
                 }
 
                 return title;
