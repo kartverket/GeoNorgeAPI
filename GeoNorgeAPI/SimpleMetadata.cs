@@ -3196,11 +3196,14 @@ namespace GeoNorgeAPI
                 if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
                     CharacterString_PropertyType processHistoryElement = GetProcessHistoryElement();
+
+                    var norwegianProcessHistory = GetNorwegianValueFromFreeText(processHistoryElement);
+
                     _md.dataQualityInfo[0].DQ_DataQuality.lineage = new LI_Lineage_PropertyType
                     {
                         LI_Lineage = new LI_Lineage_Type
                         {
-                            statement = new CharacterString_PropertyType { CharacterString = value }
+                            statement = CreateFreeTextElementNorwegian(value, norwegianProcessHistory)
                         }
                     };
                 }
