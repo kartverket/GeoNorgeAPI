@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.3.8: Return english title and organization if norwegian is empty
 3.3.7: Fix EnglishProcessHistory
 3.3.6: Update nuget for MetadataCSW to 1.9.107
 3.3.5: Update nuget for MetadataCSW to 1.9.106
