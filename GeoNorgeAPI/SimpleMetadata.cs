@@ -145,19 +145,17 @@ namespace GeoNorgeAPI
             {
                 string title = null;
 
+                CharacterString_PropertyType titleElement = GetTitleElement();
+                if (titleElement != null)
+                {
+                    title = titleElement.CharacterString;
+                }
+
                 if (MetadataLanguage == LOCALE_ENG.ToLower())
                 {
                     var norwegianTitle = GetNorwegianValueFromFreeText(GetTitleElement());
                     if (!string.IsNullOrEmpty(norwegianTitle))
                         title = norwegianTitle;
-                }
-                else
-                {
-                    CharacterString_PropertyType titleElement = GetTitleElement();
-                    if (titleElement != null)
-                    {
-                        title = titleElement.CharacterString;
-                    }
                 }
 
                 return title;
@@ -1023,7 +1021,11 @@ namespace GeoNorgeAPI
             if (MetadataLanguage == LOCALE_ENG.ToLower())
             {
                 contact.Organization = GetNorwegianValueFromFreeText(responsibleParty.organisationName);
-                contact.OrganizationEnglish = GetStringOrNull(responsibleParty.organisationName); 
+                contact.OrganizationEnglish = GetStringOrNull(responsibleParty.organisationName);
+
+                if (string.IsNullOrEmpty(contact.Organization) && !string.IsNullOrEmpty(contact.OrganizationEnglish))
+                    contact.Organization = contact.OrganizationEnglish;
+
             }
 
             return contact;
