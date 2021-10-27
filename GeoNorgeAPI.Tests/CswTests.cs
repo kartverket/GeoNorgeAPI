@@ -183,7 +183,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var @abstract = metadata.Abstract;
-            Assert.AreEqual("Direkte kringkasting beskrivelse", @abstract);
+            Assert.AreEqual("Direktesendte satellittdata mottatt ved Meteorologisk Institutt Oslo. Prosessert med standard prosesseringssoftware til geolokaliserte og kalibrerte verdier i satellitsveip i mottatt instrument oppløsning.", @abstract);
         }
 
         [Test]
@@ -227,7 +227,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var title = metadata.Title;
-            Assert.AreEqual("Direkte kringkasting", title);
+            Assert.AreEqual("Direktesendte satellittdata prosessert i satellittsveip til L1C. Test", title);
         }
 
         [Test]
@@ -237,7 +237,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var title = metadata.EnglishTitle;
-            Assert.AreEqual("Direct Broadcast data processed in satellite swath to L1C.", title);
+            Assert.AreEqual("Direct Broadcast data processed in satellite swath to L1C. TEST", title);
         }
 
         [Test]
@@ -447,7 +447,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var keywords = metadata.Keywords;
-            Assert.AreEqual("Kringkasting", keywords[5].Keyword);
+            Assert.AreEqual("Jordvitenskap > atmosfære > stråling", keywords[0].Keyword);
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var keywords = metadata.Keywords;
-            Assert.AreEqual("Broadcast data", keywords[5].EnglishKeyword);
+            Assert.AreEqual("Oceanographic geographical features", keywords[5].EnglishKeyword);
         }
 
         [Test]

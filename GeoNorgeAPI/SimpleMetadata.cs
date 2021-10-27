@@ -16,7 +16,7 @@ namespace GeoNorgeAPI
         public const string LOCALE_ENG = "ENG";
         public const string LOCALE_LINK_ENG = "#" + LOCALE_ENG;
 
-        public const string LOCALE_NOR = "NOR";
+        public const string LOCALE_NOR = "locale-nor";
         public const string LOCALE_LINK_NOR = "#" + LOCALE_NOR;
 
         public const string METADATA_LANG_NOR = "nor";
@@ -1322,7 +1322,7 @@ namespace GeoNorgeAPI
                     {
                         if (localizedStringProperty.LocalisedCharacterString != null
                             && localizedStringProperty.LocalisedCharacterString.locale != null
-                            && localizedStringProperty.LocalisedCharacterString.locale.ToUpper().Equals(LOCALE_LINK_NOR))
+                            && localizedStringProperty.LocalisedCharacterString.locale.ToLower().Equals(LOCALE_LINK_NOR))
                         {
                             value = localizedStringProperty.LocalisedCharacterString.Value;
                             break;

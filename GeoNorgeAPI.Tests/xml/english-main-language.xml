@@ -1,809 +1,604 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd"
-                 xmlns:gco="http://www.isotc211.org/2005/gco"
-                 xmlns:gmx="http://www.isotc211.org/2005/gmx"
-                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                 xmlns:gml="http://www.opengis.net/gml"
-                 xmlns:xlink="http://www.w3.org/1999/xlink"
-                 xmlns:geonet="http://www.fao.org/geonetwork"
-                 xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd">
+<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:gml="http://www.opengis.net/gml" xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd">
   <gmd:fileIdentifier>
-      <gco:CharacterString>edd70aa1-3f91-4ee2-b4cf-d1a46d1fc568</gco:CharacterString>
+    <gco:CharacterString>8d55e06a-5276-4178-b435-03989b487LIA</gco:CharacterString>
   </gmd:fileIdentifier>
   <gmd:language>
-      <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng">Engelsk</gmd:LanguageCode>
+    <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2" codeListValue="eng">English</gmd:LanguageCode>
   </gmd:language>
-  <gmd:parentIdentifier/>
+  <gmd:characterSet>
+    <gmd:MD_CharacterSetCode codeListValue="utf8" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CharacterSetCode" />
+  </gmd:characterSet>
   <gmd:hierarchyLevel>
-      <gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
-                        codeListValue="dataset"/>
+    <gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" />
   </gmd:hierarchyLevel>
   <gmd:contact>
-      <gmd:CI_ResponsibleParty>
-         <gmd:individualName/>
-        <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
-          <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
-          <gmd:PT_FreeText>
-            <gmd:textGroup>
-              <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
-            </gmd:textGroup>
-          </gmd:PT_FreeText>
-        </gmd:organisationName>
-         <gmd:contactInfo>
-            <gmd:CI_Contact>
-               <gmd:address>
-                  <gmd:CI_Address>
-                     <gmd:electronicMailAddress>
-                        <gco:CharacterString>post@met.no</gco:CharacterString>
-                     </gmd:electronicMailAddress>
-                  </gmd:CI_Address>
-               </gmd:address>
-            </gmd:CI_Contact>
-         </gmd:contactInfo>
-         <gmd:role>
-            <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                             codeListValue="pointOfContact"/>
-         </gmd:role>
-      </gmd:CI_ResponsibleParty>
+    <gmd:CI_ResponsibleParty>
+      <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+        <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+        <gmd:PT_FreeText>
+          <gmd:textGroup>
+            <gmd:LocalisedCharacterString locale="#locale-nor">Meteorologisk institutt</gmd:LocalisedCharacterString>
+          </gmd:textGroup>
+        </gmd:PT_FreeText>
+      </gmd:organisationName>
+      <gmd:contactInfo>
+        <gmd:CI_Contact>
+          <gmd:address>
+            <gmd:CI_Address>
+              <gmd:electronicMailAddress>
+                <gco:CharacterString>post@met.no</gco:CharacterString>
+              </gmd:electronicMailAddress>
+            </gmd:CI_Address>
+          </gmd:address>
+        </gmd:CI_Contact>
+      </gmd:contactInfo>
+      <gmd:role>
+        <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+      </gmd:role>
+    </gmd:CI_ResponsibleParty>
   </gmd:contact>
   <gmd:dateStamp>
-      <gco:Date>2021-08-17</gco:Date>
+    <gco:Date>2021-01-29</gco:Date>
   </gmd:dateStamp>
   <gmd:metadataStandardName>
-      <gco:CharacterString>ISO19115</gco:CharacterString>
+    <gco:CharacterString>ISO 19115:2003/19139</gco:CharacterString>
   </gmd:metadataStandardName>
   <gmd:metadataStandardVersion>
-      <gco:CharacterString>2003</gco:CharacterString>
+    <gco:CharacterString>1.0</gco:CharacterString>
   </gmd:metadataStandardVersion>
   <gmd:locale>
-      <gmd:PT_Locale id="NOR">
-         <gmd:languageCode>
-            <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="nor"/>
-         </gmd:languageCode>
-         <gmd:characterEncoding>
-            <gmd:MD_CharacterSetCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CharacterSetCode"
-                                     codeListValue="utf8"/>
-         </gmd:characterEncoding>
-      </gmd:PT_Locale>
+    <gmd:PT_Locale id="locale-nor">
+      <gmd:languageCode>
+        <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2" codeListValue="nor">Norwegian</gmd:LanguageCode>
+      </gmd:languageCode>
+      <gmd:characterEncoding>
+        <gmd:MD_CharacterSetCode codeList="resources/Codelist/gmxcodelists.xml#MD_CharacterSetCode" codeListValue="utf8" />
+      </gmd:characterEncoding>
+    </gmd:PT_Locale>
   </gmd:locale>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>produktspesifikasjon</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>data product specification</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">produktspesifikasjon</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>produktark</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>product sheet</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">produktark</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>produktside</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>website</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">produktside</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>tegnforklaring</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>cartography</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">tegnforklaring</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>dekningsoversikt</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>coverage map</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">dekningsoversik</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>dekningsoversikt rutenett</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>grid coverage map</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">dekningsoversikt rutenett</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>dekningsoversikt celle</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>cell coverage map</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">dekningsoversikt celle</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
-  <gmd:metadataExtensionInfo>
-      <gmd:MD_MetadataExtensionInformation>
-         <gmd:extensionOnLineResource>
-            <gmd:CI_OnlineResource>
-               <gmd:linkage/>
-               <gmd:protocol>
-                  <gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
-               </gmd:protocol>
-               <gmd:applicationProfile>
-                  <gco:CharacterString>hjelp</gco:CharacterString>
-               </gmd:applicationProfile>
-               <gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>help</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">hjelp</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:name>
-            </gmd:CI_OnlineResource>
-         </gmd:extensionOnLineResource>
-      </gmd:MD_MetadataExtensionInformation>
-  </gmd:metadataExtensionInfo>
+  <gmd:referenceSystemInfo>
+    <gmd:MD_ReferenceSystem>
+      <gmd:referenceSystemIdentifier>
+        <gmd:RS_Identifier>
+          <gmd:code>
+            <gco:CharacterString>EPSG:4326</gco:CharacterString>
+          </gmd:code>
+        </gmd:RS_Identifier>
+      </gmd:referenceSystemIdentifier>
+    </gmd:MD_ReferenceSystem>
+  </gmd:referenceSystemInfo>
   <gmd:identificationInfo>
-      <gmd:MD_DataIdentification>
-         <gmd:citation>
+    <gmd:MD_DataIdentification>
+      <gmd:citation>
+        <gmd:CI_Citation>
+          <gmd:title xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>Direct Broadcast data processed in satellite swath to L1C. TEST</gco:CharacterString>
+            <gmd:PT_FreeText>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Direktesendte satellittdata prosessert i satellittsveip til L1C. Test</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
+            </gmd:PT_FreeText>
+          </gmd:title>
+          <gmd:date>
+            <gmd:CI_Date>
+              <gmd:date>
+                <gco:Date>2021-01-29</gco:Date>
+              </gmd:date>
+              <gmd:dateType>
+                <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+              </gmd:dateType>
+            </gmd:CI_Date>
+          </gmd:date>
+          <gmd:date>
+            <gmd:CI_Date>
+              <gmd:date>
+                <gco:DateTime>2021-01-29T06:56:24Z</gco:DateTime>
+              </gmd:date>
+              <gmd:dateType>
+                <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="creation">creation</gmd:CI_DateTypeCode>
+              </gmd:dateType>
+            </gmd:CI_Date>
+          </gmd:date>
+          <gmd:date>
+            <gmd:CI_Date>
+              <gmd:date>
+                <gco:DateTime>2021-01-29T06:56:24Z</gco:DateTime>
+              </gmd:date>
+              <gmd:dateType>
+                <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision">revision</gmd:CI_DateTypeCode>
+              </gmd:dateType>
+            </gmd:CI_Date>
+          </gmd:date>
+          <gmd:identifier>
+            <gmd:MD_Identifier>
+              <gmd:code>
+                <gco:CharacterString>8d55e06a-5276-4178-b435-03989b487e34</gco:CharacterString>
+              </gmd:code>
+            </gmd:MD_Identifier>
+          </gmd:identifier>
+        </gmd:CI_Citation>
+      </gmd:citation>
+      <gmd:abstract xsi:type="gmd:PT_FreeText_PropertyType">
+        <gco:CharacterString>Direct Broadcast data received at MET NORWAY Oslo. Processed by standard processing software to geolocated and calibrated values in satellite swath in received instrument resolution.</gco:CharacterString>
+        <gmd:PT_FreeText>
+          <gmd:textGroup>
+            <gmd:LocalisedCharacterString locale="#locale-nor">Direktesendte satellittdata mottatt ved Meteorologisk Institutt Oslo. Prosessert med standard prosesseringssoftware til geolokaliserte og kalibrerte verdier i satellitsveip i mottatt instrument oppløsning.</gmd:LocalisedCharacterString>
+          </gmd:textGroup>
+        </gmd:PT_FreeText>
+      </gmd:abstract>
+      <gmd:purpose xsi:type="gmd:PT_FreeText_PropertyType">
+          <gco:CharacterString>Purpose of use</gco:CharacterString>
+          <gmd:PT_FreeText>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Formål</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
+          </gmd:PT_FreeText>
+        </gmd:purpose>
+      <gmd:pointOfContact>
+        <gmd:CI_ResponsibleParty>
+          <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+            <gmd:PT_FreeText>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Meteorologisk institutt</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
+            </gmd:PT_FreeText>
+          </gmd:organisationName>
+          <gmd:contactInfo>
+            <gmd:CI_Contact>
+              <gmd:address>
+                <gmd:CI_Address>
+                  <gmd:electronicMailAddress>
+                    <gco:CharacterString>post@met.no</gco:CharacterString>
+                  </gmd:electronicMailAddress>
+                </gmd:CI_Address>
+              </gmd:address>
+            </gmd:CI_Contact>
+          </gmd:contactInfo>
+          <gmd:role>
+            <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="owner">owner</gmd:CI_RoleCode>
+          </gmd:role>
+        </gmd:CI_ResponsibleParty>
+      </gmd:pointOfContact>
+      <gmd:pointOfContact>
+        <gmd:CI_ResponsibleParty>
+          <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
+            <gmd:PT_FreeText>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Meteorologisk institutt</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
+            </gmd:PT_FreeText>
+          </gmd:organisationName>
+          <gmd:contactInfo>
+            <gmd:CI_Contact>
+              <gmd:address>
+                <gmd:CI_Address>
+                  <gmd:electronicMailAddress>
+                    <gco:CharacterString>post@met.no</gco:CharacterString>
+                  </gmd:electronicMailAddress>
+                </gmd:CI_Address>
+              </gmd:address>
+            </gmd:CI_Contact>
+          </gmd:contactInfo>
+          <gmd:role>
+            <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact">pointOfContact</gmd:CI_RoleCode>
+          </gmd:role>
+        </gmd:CI_ResponsibleParty>
+      </gmd:pointOfContact>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>Earth Science &gt; Atmosphere &gt; Atmospheric radiation</gco:CharacterString>
+            <gmd:PT_FreeText>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Jordvitenskap &gt; atmosfære &gt; stråling</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
+            </gmd:PT_FreeText>
+          </gmd:keyword>
+          <gmd:thesaurusName>
             <gmd:CI_Citation>
-               <gmd:title xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>Direct Broadcast data processed in satellite swath to L1C.</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Direkte kringkasting</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:title>
-               <gmd:date>
-                  <gmd:CI_Date>
-                     <gmd:date>
-                        <gco:Date>2020-12-01</gco:Date>
-                     </gmd:date>
-                     <gmd:dateType>
-                        <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
-                                             codeListValue="publication"/>
-                     </gmd:dateType>
-                  </gmd:CI_Date>
-               </gmd:date>
-               <gmd:date>
-                  <gmd:CI_Date>
-                     <gmd:date>
-                        <gco:Date>2020-12-01</gco:Date>
-                     </gmd:date>
-                     <gmd:dateType>
-                        <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
-                                             codeListValue="creation"/>
-                     </gmd:dateType>
-                  </gmd:CI_Date>
-               </gmd:date>
-               <gmd:date>
-                  <gmd:CI_Date>
-                     <gmd:date>
-                        <gco:Date>2020-12-01</gco:Date>
-                     </gmd:date>
-                     <gmd:dateType>
-                        <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode"
-                                             codeListValue="revision"/>
-                     </gmd:dateType>
-                  </gmd:CI_Date>
-               </gmd:date>
-               <gmd:identifier>
-                  <gmd:MD_Identifier>
-                     <gmd:code>
-                        <gmx:Anchor xlink:href="https://data.geonorge.no/sosi/verogklima/DB_L1C">DB_L1C</gmx:Anchor>
-                     </gmd:code>
-                  </gmd:MD_Identifier>
-               </gmd:identifier>
+              <gmd:title>
+                <gmx:Anchor xlink:href="https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/sciencekeywords">NASA/GCMD Earth Science Keywords</gmx:Anchor>
+              </gmd:title>
+              <gmd:date>
+                <gmd:CI_Date>
+                  <gmd:date>
+                    <gco:Date>2021-02-12</gco:Date>
+                  </gmd:date>
+                  <gmd:dateType>
+                    <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                  </gmd:dateType>
+                </gmd:CI_Date>
+              </gmd:date>
             </gmd:CI_Citation>
-         </gmd:citation>
-         <gmd:abstract xsi:type="gmd:PT_FreeText_PropertyType">
-            <gco:CharacterString>Direct Broadcast data received at MET NORWAY Oslo. Processed by standard processing software to geolocated and calibrated values in satellite swath in received instrument resolution.</gco:CharacterString>
-            <gmd:PT_FreeText>
-               <gmd:textGroup>
-                  <gmd:LocalisedCharacterString locale="#NOR">Direkte kringkasting beskrivelse</gmd:LocalisedCharacterString>
-               </gmd:textGroup>
-            </gmd:PT_FreeText>
-         </gmd:abstract>
-         <gmd:purpose xsi:type="gmd:PT_FreeText_PropertyType">
-            <gco:CharacterString>Purpose of use</gco:CharacterString>
-            <gmd:PT_FreeText>
-               <gmd:textGroup>
-                  <gmd:LocalisedCharacterString locale="#NOR">Formål</gmd:LocalisedCharacterString>
-               </gmd:textGroup>
-            </gmd:PT_FreeText>
-         </gmd:purpose>
-         <gmd:pointOfContact>
-            <gmd:CI_ResponsibleParty>
-               <gmd:individualName/>
-              <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
-                <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
-                <gmd:PT_FreeText>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gco:CharacterString>Government Agencies-non-US &gt; Norway &gt; NO/MET &gt; Norwegian Meteorological Institute</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gmx:Anchor xlink:href="https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/providers">NASA/GCMD Providers</gmx:Anchor>
+              </gmd:title>
+              <gmd:date>
+                <gmd:CI_Date>
+                  <gmd:date>
+                    <gco:Date>2021-04-26</gco:Date>
+                  </gmd:date>
+                  <gmd:dateType>
+                    <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                  </gmd:dateType>
+                </gmd:CI_Date>
+              </gmd:date>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gco:CharacterString>Geographic Region &gt; Northern Hemisphere</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gmx:Anchor xlink:href="https://gcmd.earthdata.nasa.gov/kms/concepts/concept_scheme/locations">NASA/GCMD Locations</gmx:Anchor>
+              </gmd:title>
+              <gmd:date>
+                <gmd:CI_Date>
+                  <gmd:date>
+                    <gco:Date>2021-02-01</gco:Date>
+                  </gmd:date>
+                  <gmd:dateType>
+                    <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                  </gmd:dateType>
+                </gmd:CI_Date>
+              </gmd:date>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gco:CharacterString>Meteorological geographical features</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>Atmospheric conditions</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:keyword>
+            <gco:CharacterString>Oceanographic geographical features</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/theme">GEMET - INSPIRE themes, version 1.0</gmx:Anchor>
+              </gmd:title>
+              <gmd:date>
+                <gmd:CI_Date>
+                  <gmd:date>
+                    <gco:Date>2008-06-01</gco:Date>
+                  </gmd:date>
+                  <gmd:dateType>
+                    <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                  </gmd:dateType>
+                </gmd:CI_Date>
+              </gmd:date>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:descriptiveKeywords>
+        <gmd:MD_Keywords>
+          <gmd:keyword>
+            <gco:CharacterString>Weather and climate</gco:CharacterString>
+          </gmd:keyword>
+          <gmd:thesaurusName>
+            <gmd:CI_Citation>
+              <gmd:title>
+                <gmx:Anchor xlink:href="https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling">Norwegian thematic categories</gmx:Anchor>
+              </gmd:title>
+              <gmd:date>
+                <gmd:CI_Date>
+                  <gmd:date>
+                    <gco:Date>2014-10-28</gco:Date>
+                  </gmd:date>
+                  <gmd:dateType>
+                    <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                  </gmd:dateType>
+                </gmd:CI_Date>
+              </gmd:date>
+            </gmd:CI_Citation>
+          </gmd:thesaurusName>
+        </gmd:MD_Keywords>
+      </gmd:descriptiveKeywords>
+      <gmd:resourceSpecificUsage>
+        <gmd:MD_Usage>
+            <gmd:specificUsage xsi:type="gmd:PT_FreeText_PropertyType">
+              <gco:CharacterString>Usage</gco:CharacterString>
+              <gmd:PT_FreeText>
                   <gmd:textGroup>
-                    <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
+                    <gmd:LocalisedCharacterString locale="#locale-nor">Bruksområde</gmd:LocalisedCharacterString>
                   </gmd:textGroup>
-                </gmd:PT_FreeText>
-              </gmd:organisationName>
-               <gmd:contactInfo>
-                  <gmd:CI_Contact>
-                     <gmd:address>
-                        <gmd:CI_Address>
-                           <gmd:electronicMailAddress>
-                              <gco:CharacterString>post@met.no</gco:CharacterString>
-                           </gmd:electronicMailAddress>
-                        </gmd:CI_Address>
-                     </gmd:address>
-                  </gmd:CI_Contact>
-               </gmd:contactInfo>
-               <gmd:role>
-                  <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                   codeListValue="owner"/>
-               </gmd:role>
-            </gmd:CI_ResponsibleParty>
-         </gmd:pointOfContact>
-         <gmd:pointOfContact>
-            <gmd:CI_ResponsibleParty>
-               <gmd:individualName/>
-              <gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
-                <gco:CharacterString>Norwegian Meteorological Institute</gco:CharacterString>
-                <gmd:PT_FreeText>
-                  <gmd:textGroup>
-                    <gmd:LocalisedCharacterString locale="#NOR">Meteorologisk institutt</gmd:LocalisedCharacterString>
-                  </gmd:textGroup>
-                </gmd:PT_FreeText>
-              </gmd:organisationName>
-               <gmd:contactInfo>
-                  <gmd:CI_Contact>
-                     <gmd:address>
-                        <gmd:CI_Address>
-                           <gmd:electronicMailAddress>
-                              <gco:CharacterString>post@met.no</gco:CharacterString>
-                           </gmd:electronicMailAddress>
-                        </gmd:CI_Address>
-                     </gmd:address>
-                  </gmd:CI_Contact>
-               </gmd:contactInfo>
-               <gmd:role>
-                  <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                   codeListValue="publisher"/>
-               </gmd:role>
-            </gmd:CI_ResponsibleParty>
-         </gmd:pointOfContact>
-         <gmd:resourceMaintenance>
-            <gmd:MD_MaintenanceInformation>
-               <gmd:maintenanceAndUpdateFrequency>
-                  <gmd:MD_MaintenanceFrequencyCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode"
-                                                   codeListValue="asNeeded"/>
-               </gmd:maintenanceAndUpdateFrequency>
-            </gmd:MD_MaintenanceInformation>
-         </gmd:resourceMaintenance>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gco:CharacterString>Meteorological geographical features</gco:CharacterString>
-               </gmd:keyword>
-               <gmd:thesaurusName>
-                  <gmd:CI_Citation>
-                     <gmd:title>
-                        <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/theme">GEMET - INSPIRE themes, version 1.0</gmx:Anchor>
-                     </gmd:title>
-                     <gmd:date>
-                        <gmd:CI_Date>
-                           <gmd:date>
-                              <gco:Date>2008-06-01</gco:Date>
-                           </gmd:date>
-                           <gmd:dateType>
-                              <gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
-                                                   codeListValue="publication"/>
-                           </gmd:dateType>
-                        </gmd:CI_Date>
-                     </gmd:date>
-                  </gmd:CI_Citation>
-               </gmd:thesaurusName>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gco:CharacterString>Norge digitalt</gco:CharacterString>
-               </gmd:keyword>
-               <gmd:thesaurusName>
-                  <gmd:CI_Citation>
-                     <gmd:title>
-                        <gmx:Anchor xlink:href="https://register.geonorge.no/subregister/metadata-kodelister/kartverket/samarbeid-og-lover">Nasjonal inndeling i geografiske initiativ og SDI-er</gmx:Anchor>
-                     </gmd:title>
-                     <gmd:date>
-                        <gmd:CI_Date>
-                           <gmd:date>
-                              <gco:Date>2014-03-20</gco:Date>
-                           </gmd:date>
-                           <gmd:dateType>
-                              <gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
-                                                   codeListValue="publication"/>
-                           </gmd:dateType>
-                        </gmd:CI_Date>
-                     </gmd:date>
-                  </gmd:CI_Citation>
-               </gmd:thesaurusName>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gco:CharacterString>Vær og klima</gco:CharacterString>
-               </gmd:keyword>
-               <gmd:thesaurusName>
-                  <gmd:CI_Citation>
-                     <gmd:title>
-                        <gmx:Anchor xlink:href="https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling">Nasjonal tematisk inndeling (DOK-kategori)</gmx:Anchor>
-                     </gmd:title>
-                     <gmd:date>
-                        <gmd:CI_Date>
-                           <gmd:date>
-                              <gco:Date>2014-10-28</gco:Date>
-                           </gmd:date>
-                           <gmd:dateType>
-                              <gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
-                                                   codeListValue="publication"/>
-                           </gmd:dateType>
-                        </gmd:CI_Date>
-                     </gmd:date>
-                  </gmd:CI_Citation>
-               </gmd:thesaurusName>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gco:CharacterString>Norge</gco:CharacterString>
-               </gmd:keyword>
-               <gmd:type>
-                  <gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode"
-                                          codeListValue="place"/>
-               </gmd:type>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gmx:Anchor xlink:href="https://data.geonorge.no/administrativeEnheter/nasjon/id/173163">Norge</gmx:Anchor>
-               </gmd:keyword>
-               <gmd:thesaurusName>
-                  <gmd:CI_Citation>
-                     <gmd:title>
-                        <gmx:Anchor xlink:href="https://data.geonorge.no/administrativeEnheter">Administrative enheter i Norge</gmx:Anchor>
-                     </gmd:title>
-                     <gmd:date>
-                        <gmd:CI_Date>
-                           <gmd:date>
-                              <gco:Date>2018-01-01</gco:Date>
-                           </gmd:date>
-                           <gmd:dateType>
-                              <gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
-                                                   codeListValue="publication"/>
-                           </gmd:dateType>
-                        </gmd:CI_Date>
-                     </gmd:date>
-                  </gmd:CI_Citation>
-               </gmd:thesaurusName>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>Broadcast data</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Kringkasting</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:keyword>
-               <gmd:type>
-                  <gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode"
-                                          codeListValue="theme"/>
-               </gmd:type>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:descriptiveKeywords>
-            <gmd:MD_Keywords>
-               <gmd:keyword>
-                  <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/national">National</gmx:Anchor>
-               </gmd:keyword>
-               <gmd:thesaurusName>
-                  <gmd:CI_Citation>
-                     <gmd:title>
-                        <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope">Spatial scope</gmx:Anchor>
-                     </gmd:title>
-                     <gmd:date>
-                        <gmd:CI_Date>
-                           <gmd:date>
-                              <gco:Date>2019-05-22</gco:Date>
-                           </gmd:date>
-                           <gmd:dateType>
-                              <gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode"
-                                                   codeListValue="publication"/>
-                           </gmd:dateType>
-                        </gmd:CI_Date>
-                     </gmd:date>
-                  </gmd:CI_Citation>
-               </gmd:thesaurusName>
-            </gmd:MD_Keywords>
-         </gmd:descriptiveKeywords>
-         <gmd:resourceSpecificUsage>
-            <gmd:MD_Usage>
-               <gmd:specificUsage xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>Usage</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Bruksområde</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:specificUsage>
-               <gmd:userContactInfo>
-                  <gmd:CI_ResponsibleParty>
-                     <gmd:role>
-                        <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                         codeListValue="owner"/>
-                     </gmd:role>
-                  </gmd:CI_ResponsibleParty>
-               </gmd:userContactInfo>
-            </gmd:MD_Usage>
-         </gmd:resourceSpecificUsage>
-         <gmd:resourceConstraints>
+              </gmd:PT_FreeText>
+            </gmd:specificUsage>
+            <gmd:userContactInfo>
+              <gmd:CI_ResponsibleParty>
+                  <gmd:role>
+                    <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                      codeListValue="owner"/>
+                  </gmd:role>
+              </gmd:CI_ResponsibleParty>
+            </gmd:userContactInfo>
+        </gmd:MD_Usage>
+      </gmd:resourceSpecificUsage>
+      <gmd:resourceConstraints>
             <gmd:MD_Constraints>
                <gmd:useLimitation xsi:type="gmd:PT_FreeText_PropertyType">
                   <gco:CharacterString>No conditions apply</gco:CharacterString>
                   <gmd:PT_FreeText>
                      <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.</gmd:LocalisedCharacterString>
+                        <gmd:LocalisedCharacterString locale="#locale-nor">Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.</gmd:LocalisedCharacterString>
                      </gmd:textGroup>
                   </gmd:PT_FreeText>
                </gmd:useLimitation>
             </gmd:MD_Constraints>
-         </gmd:resourceConstraints>
-         <gmd:resourceConstraints>
-            <gmd:MD_LegalConstraints>
-               <gmd:accessConstraints>
-                  <gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode"
-                                          codeListValue="otherRestrictions"/>
-               </gmd:accessConstraints>
-               <gmd:otherConstraints>
-                  <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations">Åpne data</gmx:Anchor>
-               </gmd:otherConstraints>
-            </gmd:MD_LegalConstraints>
-         </gmd:resourceConstraints>
-         <gmd:resourceConstraints>
-            <gmd:MD_LegalConstraints>
-               <gmd:useConstraints>
-                  <gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode"
-                                          codeListValue="otherRestrictions"/>
-               </gmd:useConstraints>
-               <gmd:otherConstraints>
-                  <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/ConditionsApplyingToAccessAndUse/noConditionsApply">No conditions apply to access and use</gmx:Anchor>
-               </gmd:otherConstraints>
-            </gmd:MD_LegalConstraints>
-         </gmd:resourceConstraints>
-         <gmd:resourceConstraints>
-            <gmd:MD_LegalConstraints>
-               <gmd:otherConstraints xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>conditionsUnknown</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Ingen restriksjoner</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:otherConstraints>
-            </gmd:MD_LegalConstraints>
-         </gmd:resourceConstraints>
-         <gmd:resourceConstraints>
-            <gmd:MD_SecurityConstraints>
-               <gmd:classification>
-                  <gmd:MD_ClassificationCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ClassificationCode"
-                                             codeListValue=""/>
-               </gmd:classification>
-               <gmd:userNote>
-                  <gco:CharacterString/>
-               </gmd:userNote>
-            </gmd:MD_SecurityConstraints>
-         </gmd:resourceConstraints>
-         <gmd:spatialRepresentationType>
-            <gmd:MD_SpatialRepresentationTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode"
-                                                  codeListValue="grid"/>
-         </gmd:spatialRepresentationType>
-         <gmd:spatialResolution>
-            <gmd:MD_Resolution>
-               <gmd:equivalentScale>
-                  <gmd:MD_RepresentativeFraction>
-                     <gmd:denominator/>
-                  </gmd:MD_RepresentativeFraction>
-               </gmd:equivalentScale>
-            </gmd:MD_Resolution>
-         </gmd:spatialResolution>
-         <gmd:language>
-            <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng">English</gmd:LanguageCode>
-         </gmd:language>
-         <gmd:topicCategory>
-            <gmd:MD_TopicCategoryCode>climatologyMeteorologyAtmosphere</gmd:MD_TopicCategoryCode>
-         </gmd:topicCategory>
-         <gmd:extent>
-            <gmd:EX_Extent>
-               <gmd:geographicElement>
-                  <gmd:EX_GeographicBoundingBox>
-                     <gmd:westBoundLongitude>
-                        <gco:Decimal>2.00</gco:Decimal>
-                     </gmd:westBoundLongitude>
-                     <gmd:eastBoundLongitude>
-                        <gco:Decimal>33.00</gco:Decimal>
-                     </gmd:eastBoundLongitude>
-                     <gmd:southBoundLatitude>
-                        <gco:Decimal>57.00</gco:Decimal>
-                     </gmd:southBoundLatitude>
-                     <gmd:northBoundLatitude>
-                        <gco:Decimal>72.00</gco:Decimal>
-                     </gmd:northBoundLatitude>
-                  </gmd:EX_GeographicBoundingBox>
-               </gmd:geographicElement>
-               <gmd:temporalElement>
-                  <gmd:EX_TemporalExtent>
-                     <gmd:extent>
-                        <gml:TimePeriod gml:id="id_1">
-                           <gml:beginPosition>2020-12-01</gml:beginPosition>
-                           <gml:endPosition>2020-12-01</gml:endPosition>
-                        </gml:TimePeriod>
-                     </gmd:extent>
-                  </gmd:EX_TemporalExtent>
-               </gmd:temporalElement>
-            </gmd:EX_Extent>
-         </gmd:extent>
-         <gmd:supplementalInformation xsi:type="gmd:PT_FreeText_PropertyType">
-            <gco:CharacterString>help for use</gco:CharacterString>
+      </gmd:resourceConstraints>
+      <gmd:resourceConstraints>
+        <gmd:MD_LegalConstraints>
+          <gmd:accessConstraints>
+            <gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+          </gmd:accessConstraints>
+          <gmd:otherConstraints>
+            <gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations">Open data</gmx:Anchor>
+          </gmd:otherConstraints>
+        </gmd:MD_LegalConstraints>
+      </gmd:resourceConstraints>
+      <gmd:resourceConstraints>
+        <gmd:MD_LegalConstraints>
+          <gmd:useConstraints>
+            <gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions">otherRestrictions</gmd:MD_RestrictionCode>
+          </gmd:useConstraints>
+          <gmd:otherConstraints>
+            <gmx:Anchor xlink:href="https://spdx.org/licenses/CC-BY-4.0">Creative Commons BY 4.0 (CC BY 4.0)</gmx:Anchor>
+          </gmd:otherConstraints>
+        </gmd:MD_LegalConstraints>
+      </gmd:resourceConstraints>
+      <gmd:resourceConstraints>
+        <gmd:MD_LegalConstraints>
+          <gmd:otherConstraints xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>conditionsUnknown</gco:CharacterString>
             <gmd:PT_FreeText>
-               <gmd:textGroup>
-                  <gmd:LocalisedCharacterString locale="#NOR">Hjelp for bruk</gmd:LocalisedCharacterString>
-               </gmd:textGroup>
+              <gmd:textGroup>
+                <gmd:LocalisedCharacterString locale="#locale-nor">Ingen restriksjoner</gmd:LocalisedCharacterString>
+              </gmd:textGroup>
             </gmd:PT_FreeText>
-         </gmd:supplementalInformation>
-      </gmd:MD_DataIdentification>
+          </gmd:otherConstraints>
+        </gmd:MD_LegalConstraints>
+      </gmd:resourceConstraints>
+      <gmd:spatialRepresentationType>
+        <gmd:MD_SpatialRepresentationTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="grid">grid</gmd:MD_SpatialRepresentationTypeCode>
+      </gmd:spatialRepresentationType>
+      <gmd:language>
+        <gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng">eng</gmd:LanguageCode>
+      </gmd:language>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>climatologyMeteorologyAtmosphere</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:topicCategory>
+        <gmd:MD_TopicCategoryCode>oceans</gmd:MD_TopicCategoryCode>
+      </gmd:topicCategory>
+      <gmd:extent>
+        <gmd:EX_Extent>
+          <gmd:geographicElement>
+            <gmd:EX_GeographicBoundingBox>
+              <gmd:westBoundLongitude>
+                <gco:Decimal>-179.99989318847656</gco:Decimal>
+              </gmd:westBoundLongitude>
+              <gmd:eastBoundLongitude>
+                <gco:Decimal>179.99990844726562</gco:Decimal>
+              </gmd:eastBoundLongitude>
+              <gmd:southBoundLatitude>
+                <gco:Decimal>62.939735412597656</gco:Decimal>
+              </gmd:southBoundLatitude>
+              <gmd:northBoundLatitude>
+                <gco:Decimal>89.9962158203125</gco:Decimal>
+              </gmd:northBoundLatitude>
+            </gmd:EX_GeographicBoundingBox>
+          </gmd:geographicElement>
+          <gmd:temporalElement>
+            <gmd:EX_TemporalExtent>
+              <gmd:extent>
+                <gml:TimePeriod gml:id="Temporal">
+                  <gml:beginPosition>2021-01-29T06:33:14.943372Z</gml:beginPosition>
+                  <gml:endPosition>2021-01-29T06:41:44.659971Z</gml:endPosition>
+                </gml:TimePeriod>
+              </gmd:extent>
+            </gmd:EX_TemporalExtent>
+          </gmd:temporalElement>
+        </gmd:EX_Extent>
+      </gmd:extent>
+      <gmd:supplementalInformation xsi:type="gmd:PT_FreeText_PropertyType">
+        <gco:CharacterString>help for use</gco:CharacterString>
+        <gmd:PT_FreeText>
+            <gmd:textGroup>
+              <gmd:LocalisedCharacterString locale="#locale-nor">Hjelp for bruk</gmd:LocalisedCharacterString>
+            </gmd:textGroup>
+        </gmd:PT_FreeText>
+      </gmd:supplementalInformation>
+    </gmd:MD_DataIdentification>
   </gmd:identificationInfo>
   <gmd:distributionInfo>
-      <gmd:MD_Distribution>
-         <gmd:distributionFormat>
-            <gmd:MD_Format>
-               <gmd:name>
-                  <gco:CharacterString>NetCDF-CF</gco:CharacterString>
-               </gmd:name>
-               <gmd:version gco:nilReason="inapplicable"/>
-               <gmd:formatDistributor>
-                  <gmd:MD_Distributor>
-                     <gmd:distributorContact>
-                        <gmd:CI_ResponsibleParty>
-                           <gmd:organisationName>
-                              <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
-                           </gmd:organisationName>
-                           <gmd:role>
-                              <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                               codeListValue="distributor"/>
-                           </gmd:role>
-                        </gmd:CI_ResponsibleParty>
-                     </gmd:distributorContact>
-                     <gmd:distributorTransferOptions>
-                        <gmd:MD_DigitalTransferOptions>
-                           <gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
-                           <gco:CharacterString>municipality, county, entire country, region, cell, map tile</gco:CharacterString>
-                              <gmd:PT_FreeText>
-                                 <gmd:textGroup>
-                                    <gmd:LocalisedCharacterString locale="#NOR">kommunevis, fylkesvis, landsfiler, region, celle, kartblad</gmd:LocalisedCharacterString>
-                                 </gmd:textGroup>
-                              </gmd:PT_FreeText>
-                           </gmd:unitsOfDistribution>
-                           <gmd:onLine>
-                              <gmd:CI_OnlineResource>
-                                 <gmd:linkage>
-                                    <gmd:URL>https://thredds.met.no/thredds/dodsC/remotesensingsatellite/polar-swath/2020/12/01/metopb-avhrr-20201201155244-20201201160030.nc</gmd:URL>
-                                 </gmd:linkage>
-                                 <gmd:protocol>
-                                    <gco:CharacterString>OPENDAP:OPENDAP</gco:CharacterString>
-                                 </gmd:protocol>
-                                 <gmd:name/>
-                              </gmd:CI_OnlineResource>
-                           </gmd:onLine>
-                        </gmd:MD_DigitalTransferOptions>
-                     </gmd:distributorTransferOptions>
-                  </gmd:MD_Distributor>
-               </gmd:formatDistributor>
-            </gmd:MD_Format>
-         </gmd:distributionFormat>
-         <gmd:distributionFormat>
-            <gmd:MD_Format>
-               <gmd:name>
-                  <gco:CharacterString>PNG</gco:CharacterString>
-               </gmd:name>
-               <gmd:version gco:nilReason="inapplicable"/>
-               <gmd:formatDistributor>
-                  <gmd:MD_Distributor>
-                     <gmd:distributorContact>
-                        <gmd:CI_ResponsibleParty>
-                           <gmd:organisationName>
-                              <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
-                           </gmd:organisationName>
-                           <gmd:role>
-                              <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
-                                               codeListValue="distributor"/>
-                           </gmd:role>
-                        </gmd:CI_ResponsibleParty>
-                     </gmd:distributorContact>
-                     <gmd:distributorTransferOptions>
-                        <gmd:MD_DigitalTransferOptions>
-                           <gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
-                              <gco:CharacterString>Country</gco:CharacterString>
-                              <gmd:PT_FreeText>
-                                 <gmd:textGroup>
-                                    <gmd:LocalisedCharacterString locale="#NOR">landsfiler</gmd:LocalisedCharacterString>
-                                 </gmd:textGroup>
-                              </gmd:PT_FreeText>
-                           </gmd:unitsOfDistribution>
-                           <gmd:onLine>
-                              <gmd:CI_OnlineResource>
-                                 <gmd:linkage>
-                                    <gmd:URL>https://wms.geonorge.no/skwms1/wms.adm_enheter2?service=wms&amp;request=GetCapabilities</gmd:URL>
-                                 </gmd:linkage>
-                                 <gmd:protocol>
-                                    <gco:CharacterString>OGC:WMS</gco:CharacterString>
-                                 </gmd:protocol>
-                                 <gmd:name/>
-                              </gmd:CI_OnlineResource>
-                           </gmd:onLine>
-                        </gmd:MD_DigitalTransferOptions>
-                     </gmd:distributorTransferOptions>
-                  </gmd:MD_Distributor>
-               </gmd:formatDistributor>
-            </gmd:MD_Format>
-         </gmd:distributionFormat>
-         <gmd:transferOptions>
-            <gmd:MD_DigitalTransferOptions>
-               <gmd:onLine>
-                  <gmd:CI_OnlineResource>
-                     <gmd:linkage>
+    <gmd:MD_Distribution>
+      <gmd:distributionFormat>
+        <gmd:MD_Format>
+          <gmd:name>
+            <gco:CharacterString>NetCDF-CF</gco:CharacterString>
+          </gmd:name>
+          <gmd:version gco:nilReason="unknown" />
+          <gmd:formatDistributor>
+            <gmd:MD_Distributor>
+              <gmd:distributorContact>
+                <gmd:CI_ResponsibleParty>
+                  <gmd:organisationName>
+                    <gco:CharacterString>Meteorologisk institutt</gco:CharacterString>
+                  </gmd:organisationName>
+                  <gmd:role>
+                    <gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode"
+                                     codeListValue="distributor"/>
+                  </gmd:role>
+                </gmd:CI_ResponsibleParty>
+              </gmd:distributorContact>
+              <gmd:distributorTransferOptions>
+                <gmd:MD_DigitalTransferOptions>
+                  <gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+                    <gco:CharacterString>municipality, county, entire country, region, cell, map tile</gco:CharacterString>
+                    <gmd:PT_FreeText>
+                      <gmd:textGroup>
+                        <gmd:LocalisedCharacterString locale="#locale-nor">kommunevis, fylkesvis, landsfiler, region, celle, kartblad</gmd:LocalisedCharacterString>
+                      </gmd:textGroup>
+                    </gmd:PT_FreeText>
+                  </gmd:unitsOfDistribution>
+                  <gmd:onLine>
+                    <gmd:CI_OnlineResource>
+                      <gmd:linkage>
                         <gmd:URL>https://thredds.met.no/thredds/dodsC/remotesensingsatellite/polar-swath/2020/12/01/metopb-avhrr-20201201155244-20201201160030.nc</gmd:URL>
-                     </gmd:linkage>
-                     <gmd:protocol>
+                      </gmd:linkage>
+                      <gmd:protocol>
                         <gco:CharacterString>OPENDAP:OPENDAP</gco:CharacterString>
-                     </gmd:protocol>
-                  </gmd:CI_OnlineResource>
-               </gmd:onLine>
-            </gmd:MD_DigitalTransferOptions>
-         </gmd:transferOptions>
-      </gmd:MD_Distribution>
+                      </gmd:protocol>
+                      <gmd:name/>
+                    </gmd:CI_OnlineResource>
+                  </gmd:onLine>
+                </gmd:MD_DigitalTransferOptions>
+              </gmd:distributorTransferOptions>
+            </gmd:MD_Distributor>
+          </gmd:formatDistributor>          
+        </gmd:MD_Format>
+      </gmd:distributionFormat>
+      <gmd:transferOptions>
+        <gmd:MD_DigitalTransferOptions>
+          <gmd:onLine>
+            <gmd:CI_OnlineResource>
+              <gmd:linkage>
+                <gmd:URL>https://thredds.met.no/thredds/dodsC/remotesensingsatellite/polar-swath/2021/01/29/noaa20-viirs-mband-20210129063314-20210129064144.nc</gmd:URL>
+              </gmd:linkage>
+              <gmd:protocol>
+                <gco:CharacterString>OPENDAP:OPENDAP</gco:CharacterString>
+              </gmd:protocol>
+              <gmd:name>
+                <gco:CharacterString />
+              </gmd:name>
+              <gmd:description>
+                <gco:CharacterString>Open-source Project for a Network Data Access Protocol</gco:CharacterString>
+              </gmd:description>
+              <gmd:function>
+                <gmd:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</gmd:CI_OnLineFunctionCode>
+              </gmd:function>
+            </gmd:CI_OnlineResource>
+          </gmd:onLine>
+          <gmd:onLine>
+            <gmd:CI_OnlineResource>
+              <gmd:linkage>
+                <gmd:URL>https://thredds.met.no/thredds/wms/remotesensingsatellite/polar-swath/2021/01/29/noaa20-viirs-mband-20210129063314-20210129064144.nc?service=WMS&amp;version=1.3.0&amp;request=GetCapabilities?SERVICE=WMS&amp;REQUEST=GetCapabilities</gmd:URL>
+              </gmd:linkage>
+              <gmd:protocol>
+                <gco:CharacterString>OGC:WMS</gco:CharacterString>
+              </gmd:protocol>
+              <gmd:name>
+                <gco:CharacterString />
+              </gmd:name>
+              <gmd:description>
+                <gco:CharacterString>OGC Web Mapping Service, URI to GetCapabilities Document.</gco:CharacterString>
+              </gmd:description>
+              <gmd:function>
+                <gmd:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</gmd:CI_OnLineFunctionCode>
+              </gmd:function>
+            </gmd:CI_OnlineResource>
+          </gmd:onLine>
+          <gmd:onLine>
+            <gmd:CI_OnlineResource>
+              <gmd:linkage>
+                <gmd:URL>https://thredds.met.no/thredds/fileServer/remotesensingsatellite/polar-swath/2021/01/29/noaa20-viirs-mband-20210129063314-20210129064144.nc</gmd:URL>
+              </gmd:linkage>
+              <gmd:protocol>
+                <gco:CharacterString>WWW:DOWNLOAD-1.0-http--download</gco:CharacterString>
+              </gmd:protocol>
+              <gmd:name>
+                <gco:CharacterString />
+              </gmd:name>
+              <gmd:description>
+                <gco:CharacterString>Direct download of file</gco:CharacterString>
+              </gmd:description>
+              <gmd:function>
+                <gmd:CI_OnLineFunctionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="download">download</gmd:CI_OnLineFunctionCode>
+              </gmd:function>
+            </gmd:CI_OnlineResource>
+          </gmd:onLine>
+        </gmd:MD_DigitalTransferOptions>
+      </gmd:transferOptions>
+    </gmd:MD_Distribution>
   </gmd:distributionInfo>
   <gmd:dataQualityInfo>
-      <gmd:DQ_DataQuality>
-         <gmd:scope>
-            <gmd:DQ_Scope>
-               <gmd:level>
-                  <gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode"
-                                    codeListValue="dataset"/>
-               </gmd:level>
-            </gmd:DQ_Scope>
-         </gmd:scope>
-         <gmd:lineage>
-            <gmd:LI_Lineage>
-               <gmd:statement xsi:type="gmd:PT_FreeText_PropertyType">
-                  <gco:CharacterString>No lineage statement has been provided</gco:CharacterString>
-                  <gmd:PT_FreeText>
-                     <gmd:textGroup>
-                        <gmd:LocalisedCharacterString locale="#NOR">Ingen prosesshistorie</gmd:LocalisedCharacterString>
-                     </gmd:textGroup>
-                  </gmd:PT_FreeText>
-               </gmd:statement>
-            </gmd:LI_Lineage>
-         </gmd:lineage>
-      </gmd:DQ_DataQuality>
+    <gmd:DQ_DataQuality>
+      <gmd:scope>
+        <gmd:DQ_Scope>
+          <gmd:level>
+            <gmd:MD_ScopeCode codeListValue="dataset" codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ScopeCode">dataset</gmd:MD_ScopeCode>
+          </gmd:level>
+        </gmd:DQ_Scope>
+      </gmd:scope>
+      <gmd:report>
+        <gmd:DQ_DomainConsistency>
+          <gmd:result>
+            <gmd:DQ_ConformanceResult>
+              <gmd:specification>
+                <gmd:CI_Citation>
+                  <gmd:title>
+                    <gco:CharacterString>COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards interoperability of spatial data sets and services</gco:CharacterString>
+                  </gmd:title>
+                  <gmd:date>
+                    <gmd:CI_Date>
+                      <gmd:date>
+                        <gco:Date>2010-12-08</gco:Date>
+                      </gmd:date>
+                      <gmd:dateType>
+                        <gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+                      </gmd:dateType>
+                    </gmd:CI_Date>
+                  </gmd:date>
+                </gmd:CI_Citation>
+              </gmd:specification>
+              <gmd:explanation>
+                <gco:CharacterString>The dataset has not been evaluated against the requirements of Inspire</gco:CharacterString>
+              </gmd:explanation>
+              <gmd:pass gco:nilReason="unknown" />
+            </gmd:DQ_ConformanceResult>
+          </gmd:result>
+        </gmd:DQ_DomainConsistency>
+      </gmd:report>
+      <gmd:lineage>
+        <gmd:LI_Lineage>
+          <gmd:statement xsi:type="gmd:PT_FreeText_PropertyType">
+            <gco:CharacterString>No lineage statement has been provided</gco:CharacterString>
+              <gmd:PT_FreeText>
+                  <gmd:textGroup>
+                    <gmd:LocalisedCharacterString locale="#locale-nor">Ingen prosesshistorie</gmd:LocalisedCharacterString>
+                  </gmd:textGroup>
+              </gmd:PT_FreeText>
+          </gmd:statement>
+        </gmd:LI_Lineage>
+      </gmd:lineage>
+    </gmd:DQ_DataQuality>
   </gmd:dataQualityInfo>
 </gmd:MD_Metadata>
+
