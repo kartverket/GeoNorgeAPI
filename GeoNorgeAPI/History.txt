@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.4.2: Rename protocol name for WMS-C
 3.4.0: Update MetadataCSW nuget package 1.9.109
 3.3.9: Adjust norwegian localization
 3.3.8: Return english title and organization if norwegian is empty
