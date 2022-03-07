@@ -4874,7 +4874,7 @@ namespace GeoNorgeAPI
         public static bool IsNetworkService(string protocol)
         {
             return protocol == "OGC:WMS" || protocol == "OGC:WFS" || protocol == "W3C:AtomFeed" || protocol == "OGC:CSW" ||
-                   protocol == "OGC:WCS" || protocol == "OGC:WMTS" || protocol == "OGC-WMS-C";
+                   protocol == "OGC:WCS" || protocol == "OGC:WMTS" || protocol == "WMS-C";
         }
 
     }
