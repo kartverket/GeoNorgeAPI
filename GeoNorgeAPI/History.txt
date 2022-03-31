@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.4.4: Fix invalid boolean element
 3.4.3: Add protocol OGC:OAPIF to access points
 3.4.2: Rename protocol name for WMS-C
 3.4.0: Update MetadataCSW nuget package 1.9.109

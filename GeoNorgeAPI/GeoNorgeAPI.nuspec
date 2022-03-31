@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>API for communicating with the CSW-service running at www.geonorge.no</description>
     <releaseNotes>
-		Add protocol OGC:OAPIF to access points
+		Fix invalid boolean element
 	</releaseNotes>
     <copyright>Copyright 2015 Kartverket</copyright>
     <tags>geonorge gis metadata api csw</tags>
