@@ -63,7 +63,9 @@ namespace GeoNorgeAPI
 
         private string FixInvalidBooleanElement(string input)
         {
-            return input.Replace(@"<gco:Boolean/>", "");
+            input = input.Replace(@"<gco:Boolean/>", "");
+            input = input.Replace(@"<gco:Boolean />", "");
+            return input;
         }
 
         private string FixInvalidDateTimeElementInXml(string input)
