@@ -1422,6 +1422,53 @@ namespace GeoNorgeAPI
             }
         }
 
+        // dataset
+        public List<string> TopicCategories
+        {
+            get
+            {
+                List<string> topicCategories = null;
+                var identification = GetDatasetIdentification();
+                if (identification != null && identification.topicCategory != null && identification.topicCategory.Length > 0
+                    && identification.topicCategory[0] != null)
+                {
+                    topicCategories = new List<string>();
+
+                    foreach (var topic in identification.topicCategory) 
+                    { 
+                        if (topic != null)
+                        {
+                            topicCategories.Add (topic.MD_TopicCategoryCode.ToString());
+                        }
+                    }
+                }
+
+                return topicCategories;
+            }
+            set
+            {
+                var identification = GetDatasetIdentification();
+                if (identification != null)
+                {
+                    List<MD_TopicCategoryCode_PropertyType> mD_TopicCategoryCode_PropertyTypes = null;
+
+                    if (value != null && value.Count > 0)
+                        mD_TopicCategoryCode_PropertyTypes = new List<MD_TopicCategoryCode_PropertyType>();
+
+                    foreach (var topic in value) 
+                    {
+                        mD_TopicCategoryCode_PropertyTypes.Add(new MD_TopicCategoryCode_PropertyType
+                        {
+                            MD_TopicCategoryCode = (MD_TopicCategoryCode_Type)Enum.Parse(typeof(MD_TopicCategoryCode_Type), topic, true)
+                        });
+                    }
+
+                    if(mD_TopicCategoryCode_PropertyTypes != null)
+                        identification.topicCategory = mD_TopicCategoryCode_PropertyTypes.ToArray();
+                }
+            }
+        }
+
         public List<SimpleThumbnail> Thumbnails
         {
             get {

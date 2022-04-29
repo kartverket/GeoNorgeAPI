@@ -2840,6 +2840,21 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldAddTopicCategoriesToMetadataWhenNewlyCreated()
+        {
+            string expectedTopicCategory = "elevation";
+            string expectedTopicCategory2 = "environment";
+            List<string> expectedTopicCategories = new List<string>();
+            expectedTopicCategories.Add(expectedTopicCategory);
+            expectedTopicCategories.Add(expectedTopicCategory2);
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            metadata.TopicCategories = expectedTopicCategories;
+
+            Assert.AreEqual(expectedTopicCategory, metadata.TopicCategories[0]);
+            Assert.AreEqual(expectedTopicCategory2, metadata.TopicCategories[1]);
+        }
+
+        [Test]
         public void ShouldAddSupplementalDescriptionToMetadataWhenNewlyCreated()
         {
             string expectedDescription = "hello world";
