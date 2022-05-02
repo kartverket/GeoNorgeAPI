@@ -581,6 +581,11 @@ namespace GeoNorgeAPI.Tests
                     KeywordLink = SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK
                 },
                 new SimpleKeyword {
+                    Keyword = "GlobalChangeMasterDirectory",
+                    Thesaurus = SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY,
+                    KeywordLink = SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK
+                },
+                new SimpleKeyword {
                     Keyword = "Buildings",
                     Thesaurus = SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1
                 },
@@ -611,6 +616,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfServiceTypeKeywords = 0;
             int numberOfOtherKeywords = 0;
             int numberOfSpatialScopeKeywords = 0;
+            int numberOfGlobalChangeMasterDirectoryKeywords = 0;
             bool inspireAddressesFound = false;
             bool inspirePriorityDatasetsFound = false;
             bool inspireBuildingsFound = false;
@@ -626,6 +632,7 @@ namespace GeoNorgeAPI.Tests
             bool englishKeywordFound = false;
             bool englishKeywordFoundInOtherGroup = false;
             bool spatialScopeKeywordFound = false;
+            bool globalChangeMasterDirectoryKeywordFound = false;
 
             MD_Keywords_PropertyType[] descriptiveKeywords = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords;
 
@@ -701,6 +708,16 @@ namespace GeoNorgeAPI.Tests
                         if (keyword.Value.Equals("National") && keyword.href.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK))
                         {
                             spatialScopeKeywordFound = true;
+                        }
+                    }
+
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
+                    {
+                        numberOfGlobalChangeMasterDirectoryKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("GlobalChangeMasterDirectory") && keyword.href.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK))
+                        {
+                            globalChangeMasterDirectoryKeywordFound = true;
                         }
                     }
 
@@ -783,6 +800,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
             Assert.AreEqual(1, numberOfSpatialScopeKeywords, "Expected one service type keyword in same wrapper element");
+            Assert.AreEqual(1, numberOfGlobalChangeMasterDirectoryKeywords, "Expected one GCMD keyword in same wrapper element");
 
             Assert.True(inspireAddressesFound);
             Assert.True(inspirePriorityDatasetsFound);
@@ -799,6 +817,7 @@ namespace GeoNorgeAPI.Tests
             Assert.True(englishKeywordFound, "Mangler engelsk oversetting av nøkkelord");
             Assert.True(englishKeywordFoundInOtherGroup, "Engelsk nøkkelord mangler for ikke-gruppert nøkkelord");
             Assert.True(spatialScopeKeywordFound);
+            Assert.True(globalChangeMasterDirectoryKeywordFound);
 
             Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 

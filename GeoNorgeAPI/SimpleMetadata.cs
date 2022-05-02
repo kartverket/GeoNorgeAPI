@@ -1204,6 +1204,11 @@ namespace GeoNorgeAPI
                                     date = "2019-05-22";
                                     title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK };
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
+                                {
+                                    date = "2008-02-05";
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK };
+                                }
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_NATIONAL_THEME))
                                 {
                                     date = "2014-10-28";
@@ -4956,6 +4961,8 @@ namespace GeoNorgeAPI
         public const string THESAURUS_SPATIAL_SCOPE_LINK = "http://inspire.ec.europa.eu/metadata-codelist/SpatialScope";
         public const string TYPE_PLACE = "place";
         public const string TYPE_THEME = "theme";
+        public const string THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY = "Global Change Master Directory (GCMD) Keywords";
+        public const string THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK = "https://wiki.earthdata.nasa.gov/display/CMR/NASA+GCMD+Keywords";
 
         public string Keyword { get; set; }
         public string KeywordLink { get; set; }
@@ -5030,6 +5037,10 @@ namespace GeoNorgeAPI
                 else if (Thesaurus.Equals(THESAURUS_SPATIAL_SCOPE))
                 {
                     return "SpatialScope";
+                }
+                else if (Thesaurus.Equals(THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
+                {
+                    return "GlobalChangeMasterDirectory";
                 }
                 else if (Thesaurus.Equals(THESAURUS_SERVICE_TYPE))
                 {
