@@ -1232,8 +1232,10 @@ namespace GeoNorgeAPI
                                 var dateType = "publication";
                                 if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
                                     dateType = "publication";
+                                if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
+                                    dateType = "revision";
 
-                                    thesaurus = new CI_Citation_PropertyType { 
+                                thesaurus = new CI_Citation_PropertyType { 
                                     CI_Citation = new CI_Citation_Type { 
                                         title = new CI_Citation_Title { item = title },
                                         date = new CI_Date_PropertyType[] {
