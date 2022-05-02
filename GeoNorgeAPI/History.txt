@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.4.8: Fix dateType THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY
 3.4.7: Add keyword for Global Change Master Directory
 3.4.6: Add TopicCategories
 3.4.5: Fix invalid boolean element
