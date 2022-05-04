@@ -243,7 +243,7 @@ namespace GeoNorgeAPI
                                 {
                                     Constraint = new QueryConstraintType()
                                         {
-                                            version = "1.0.0",
+                                            version = "1.1.0",
                                             Item = new FilterType()
                                                 {
                                                     Items = new object[]
