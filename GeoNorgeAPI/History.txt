@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.5.0: Add Credits
 3.4.9: Update constraint version
 3.4.8: Fix dateType THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY
 3.4.7: Add keyword for Global Change Master Directory
