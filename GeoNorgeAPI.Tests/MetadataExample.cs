@@ -67,6 +67,7 @@ namespace GeoNorgeAPI.Tests
             mdDataIdentificationType.pointOfContact = new[] {
                 new CI_ResponsibleParty_PropertyType { CI_ResponsibleParty = responsibleParty } 
             };
+            mdDataIdentificationType.credit = new CharacterString_PropertyType[] { new CharacterString_PropertyType { CharacterString = "Jens Bånn" } };
             mdDataIdentificationType.citation = new CI_Citation_PropertyType
             {
                 CI_Citation = new CI_Citation_Type

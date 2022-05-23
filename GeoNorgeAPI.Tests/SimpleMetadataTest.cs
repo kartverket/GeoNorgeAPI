@@ -225,6 +225,23 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(newHierarchyLevelName, _md.HierarchyLevelName);
         }
 
+
+        [Test]
+        public void ShouldReturnCredits()
+        {
+            Assert.AreEqual("Jens Bånn", _md.Credits[0]);
+        }
+
+        [Test]
+        public void ShouldUpdateCredits()
+        {
+            List<string> newCredits = new List<string>();
+            newCredits.Add("Ole Hansen");
+            _md.Credits = newCredits;
+
+            Assert.AreEqual(newCredits[0], _md.Credits[0]);
+        }
+
         [Test]
         public void ShouldReturnAbstract()
         {

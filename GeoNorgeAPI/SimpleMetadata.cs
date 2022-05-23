@@ -493,6 +493,46 @@ namespace GeoNorgeAPI
             }
         }
 
+
+        public List<string> Credits
+        {
+            get
+            {
+                List<string> credits = null;
+                var identification = GetIdentificationNotNull();
+
+                if(identification != null && identification.credit != null) 
+                {
+                    credits = new List<string>();
+                    foreach (var credit in identification.credit) 
+                    {
+                        credits.Add(credit.CharacterString);
+                    }
+                }
+
+                return credits;
+            }
+            set
+            {
+
+                CharacterString_PropertyType[] credits = null;
+
+                var identification = GetIdentificationNotNull();
+
+                if(value != null && value.Count > 0)
+                    credits = new CharacterString_PropertyType[value.Count];
+
+                for (int c = 0; c < value.Count; c++) 
+                {
+                    credits[c] = new CharacterString_PropertyType{ CharacterString = value[c] };
+                }
+
+
+                identification.credit = credits;
+
+            }
+        }
+
         public string Abstract
         {
             get 
