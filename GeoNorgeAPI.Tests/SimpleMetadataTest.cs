@@ -26,6 +26,12 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void TestMISample()
+        {
+            Trace.WriteLine(SerializeUtil.SerializeToString(MetadataExample.CreateMetadataMIExample()));
+        }
+
+        [Test]
         public void ShouldReturnTitle()
         {
             Assert.AreEqual("Eksempeldatasettet sin tittel.", _md.Title);

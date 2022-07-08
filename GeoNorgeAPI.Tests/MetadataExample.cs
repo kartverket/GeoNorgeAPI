@@ -10,6 +10,80 @@ namespace GeoNorgeAPI.Tests
 {
     class MetadataExample
     {
+        public static MI_Metadata_Type CreateMetadataMIExample()
+        {
+            MI_Metadata_Type miMetadata = new MI_Metadata_Type();
+            miMetadata.acquisitionInformation = new MI_AcquisitionInformation_PropertyType[]
+            {
+               new MI_AcquisitionInformation_PropertyType
+               {
+                   MI_AcquisitionInformation = new MI_AcquisitionInformation_Type
+                   {
+                       platform = new MI_Platform_PropertyType[]
+                       {
+                           new MI_Platform_PropertyType
+                           {
+                               MI_Platform = new MI_Platform_Type
+                               {
+                                   identifier = new MD_Identifier_PropertyType
+                                   {
+                                       MD_Identifier = new MD_Identifier_Type
+                                       {
+                                           code = new Anchor_PropertyType
+                                           {
+                                               anchor = new Anchor_Type
+                                               {
+                                                   href = "https://www.wmo-sat.info/oscar/satellites/view/sentinel_2b", Value = "Sentinel-2B" }
+                                           }
+                                       }
+                                   },
+                                   description = new CharacterString_PropertyType{ CharacterString = "Sentinel-2B" },
+                                   instrument = new MI_Instrument_PropertyType[]
+                                   {
+                                       new MI_Instrument_PropertyType
+                                       {
+                                           MI_Instrument = new MI_Instrument_Type
+                                           {
+                                               identifier = new MD_Identifier_PropertyType
+                                               {
+                                                   MD_Identifier = new MD_Identifier_Type
+                                                   {
+                                                       code = new Anchor_PropertyType
+                                                       {
+                                                           anchor = new Anchor_Type
+                                                           {
+                                                               href = "https://www.wmo-sat.info/oscar/instruments/view/msi_sentinel_2a", Value = "MSI"  }
+                                                       }
+                                                   }
+                                               },
+                                               type = new CharacterString_PropertyType{ CharacterString = "Multi-Spectral Imager for Sentinel-2"  }
+                                           }
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   }
+               }
+            };
+
+            miMetadata.contentInfo = new MD_ContentInformation_PropertyType[]
+            {
+                new MD_ContentInformation_PropertyType
+                {
+                    AbstractMD_ContentInformation =  new MD_ImageDescription_Type
+                    {
+                        cloudCoverPercentage = new Real_PropertyType
+                        {
+                            Real = 86.2702977096957 }
+                    }
+                }
+            };
+
+            return miMetadata;  
+
+        }
+
         public static MD_Metadata_Type CreateMetadataExample()
         {
             MD_Metadata_Type m = new MD_Metadata_Type();
