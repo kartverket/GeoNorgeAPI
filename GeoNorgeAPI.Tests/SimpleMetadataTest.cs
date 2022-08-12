@@ -450,6 +450,31 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnContentInformation()
+        {
+            Assert.AreEqual(86.2702977096957, _md.ContentInformation.CloudCoverPercentage);
+        }
+
+        [Test]
+        public void ShouldUpdateContentInformation()
+        {
+            double newCloudCoverPercentage = 89.2702977096957;
+            SimpleContentInformation contentInformation = new SimpleContentInformation();
+            contentInformation.CloudCoverPercentage = newCloudCoverPercentage;
+            _md.ContentInformation = contentInformation;
+
+            Assert.AreEqual(newCloudCoverPercentage, _md.ContentInformation.CloudCoverPercentage);
+        }
+
+        [Test]
+        public void ShouldParseContentInfo()
+        {
+            string xml = File.ReadAllText("xml/contentInfo.xml");
+            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
+            Assert.NotNull(metadata);
+        }
+
+        [Test]
         public void ShouldReturnNullForEnglishSupplementalDescriptionWhenSupplementalDescriptionIsRegularCharacterStringObject()
         {
             string supplementalDescription = _md.EnglishSupplementalDescription;

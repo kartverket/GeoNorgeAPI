@@ -4943,6 +4943,40 @@ namespace GeoNorgeAPI
             }
         }
 
+        public SimpleContentInformation ContentInformation
+        {
+            get
+            {
+                SimpleContentInformation value = null;
+
+                if (_md.contentInfo != null && _md.contentInfo.Count() > 0 && _md.contentInfo[0].AbstractMD_ContentInformation != null)
+                {
+                    value = new SimpleContentInformation();
+                    var imageDescription = _md.contentInfo[0].AbstractMD_ContentInformation as MD_ImageDescription_Type;
+                    if (imageDescription != null) 
+                    {
+                        value.CloudCoverPercentage = imageDescription.cloudCoverPercentage.Real;
+                    }
+                }
+                return value;
+            }
+            set
+            {
+                _md.contentInfo = new MD_ContentInformation_PropertyType[]
+                {
+                    new MD_ContentInformation_PropertyType
+                    {
+                        AbstractMD_ContentInformation =  new MD_ImageDescription_Type
+                        {
+                            cloudCoverPercentage = new Real_PropertyType
+                            {
+                                Real = value.CloudCoverPercentage }
+                        }
+                    }
+                };
+            }
+        }
+
 
         private CharacterString_PropertyType toCharString(string input)
         {
@@ -5215,6 +5249,11 @@ namespace GeoNorgeAPI
         public string Platform { get; set; }
         public string URL { get; set; }
         public string Description { get; set; }
+    }
+
+    public class SimpleContentInformation
+    {
+        public double CloudCoverPercentage { get; set; }
     }
 
 }

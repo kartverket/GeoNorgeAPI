@@ -578,6 +578,19 @@ namespace GeoNorgeAPI.Tests
                 } 
             };
 
+            m.contentInfo = new MD_ContentInformation_PropertyType[]
+            {
+                new MD_ContentInformation_PropertyType
+                {
+                    AbstractMD_ContentInformation =  new MD_ImageDescription_Type
+                    {
+                        cloudCoverPercentage = new Real_PropertyType
+                        {
+                            Real = 86.2702977096957 }
+                    }
+                }
+            };
+
             return m;
         }
 
