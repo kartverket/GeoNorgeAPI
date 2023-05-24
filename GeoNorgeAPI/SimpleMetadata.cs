@@ -2516,6 +2516,48 @@ namespace GeoNorgeAPI
             }
         }
 
+        public double? ResolutionDistance
+        {
+            get
+            {
+                double? value = null;
+                var dataIdentification = GetDatasetIdentification();
+                if (dataIdentification != null
+                    && dataIdentification.spatialResolution != null
+                    && dataIdentification.spatialResolution.Length > 0
+                    && dataIdentification.spatialResolution[0] != null
+                    && dataIdentification.spatialResolution[0].MD_Resolution != null
+                    && dataIdentification.spatialResolution[0].MD_Resolution.Item != null)
+                {
+                    Distance_PropertyType item = dataIdentification.spatialResolution[0].MD_Resolution.Item as Distance_PropertyType;
+                    if (item != null
+                        && item.Distance != null
+                        && item.Distance.Value != null)
+                    {
+                        value = item.Distance.Value;
+                    }
+                }
+                return value;
+            }
+
+            set
+            {
+                var dataIdentification = GetDatasetIdentification();
+                if (dataIdentification != null)
+                {
+                    MD_Resolution_PropertyType distance = new MD_Resolution_PropertyType
+                    {
+                        MD_Resolution = new MD_Resolution_Type
+                        {
+                            Item = new Distance_PropertyType { Distance = new LengthType { uom = "m", Value = value.Value } }
+                        }
+                    };
+
+                    dataIdentification.spatialResolution = new MD_Resolution_PropertyType[] { distance };
+                }
+            }
+        }
+
         /// <summary>
         /// Values from codelist: http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode
         /// </summary>

@@ -1372,6 +1372,55 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnNullWhenResolutionDistanceDoesNotExist()
+        {
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = null;
+
+            Assert.IsNull(_md.ResolutionDistance);
+        }
+
+        [Test]
+        public void ShouldReturnNullWhenSpatialResolutionContainsOtherItem2()
+        {
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = new MD_Resolution_PropertyType[] {
+                new MD_Resolution_PropertyType {
+                    MD_Resolution = new MD_Resolution_Type {
+                        Item = new MD_RepresentativeFraction_PropertyType()
+                    }
+                }
+            };
+            Assert.IsNull(_md.ResolutionDistance);
+        }
+
+        [Test]
+        public void ShouldReturnResolutionDistance()
+        {
+            double? distance = 1000;
+
+            ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution = new MD_Resolution_PropertyType[] {
+                new MD_Resolution_PropertyType {
+                    MD_Resolution = new MD_Resolution_Type {
+                        Item = new Distance_PropertyType {
+                            Distance = new LengthType { uom = "m", Value = distance.Value }
+                        }
+                    }
+                }
+            };
+
+            Assert.IsNotNull(_md.ResolutionDistance);
+        }
+
+        [Test]
+        public void ShouldSetResolutionDistance()
+        {
+            _md.ResolutionDistance = 5000;
+
+            var item = ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution[0].MD_Resolution.Item as Distance_PropertyType;
+
+            Assert.AreEqual(5000, item.Distance.Value);
+        }
+
+        [Test]
         public void ShouldReturnNullWhenNoMaintenanceFrequencyExists()
         {
             string frequency = _md.MaintenanceFrequency;
