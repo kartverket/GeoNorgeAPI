@@ -47,6 +47,10 @@ namespace GeoNorgeAPI
         public GetRecordsResponseType RunGetRecordsRequest(GetRecordsType getRecordsRequest)
         {
             var requestBody = SerializeUtil.SerializeToString(getRecordsRequest);
+            if (_geonetworkEndpoint.Contains("met.no")) 
+            {
+                requestBody = requestBody.Replace(@"<csw:GetRecords xmlns:gts=""http://www.isotc211.org/2005/gts"" xmlns:xlink=""http://www.w3.org/1999/xlink"" xmlns:gmx=""http://www.isotc211.org/2005/gmx"" xmlns:gmd=""http://www.isotc211.org/2005/gmd"" xmlns:srv=""http://www.isotc211.org/2005/srv"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:gml=""http://www.opengis.net/gml"" xmlns:gco=""http://www.isotc211.org/2005/gco"" service=""CSW"" version=""2.0.2"" resultType=""results"" outputSchema=""csw:Record"" maxRecords=""20"" xmlns:csw=""http://www.opengis.net/cat/csw/2.0.2"">", @"<csw:GetRecords xmlns:csw=""http://www.opengis.net/cat/csw/2.0.2"" service=""CSW"" version=""2.0.2"" resultType=""results"" outputSchema=""http://www.isotc211.org/2005/gmd"" maxRecords=""200"">");
+            }
             Console.WriteLine(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
