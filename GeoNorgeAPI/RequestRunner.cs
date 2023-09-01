@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Arkitektum.GIS.Lib.SerializeUtil;
 using www.opengis.net;
 using System.Xml.Linq;
@@ -50,6 +50,10 @@ namespace GeoNorgeAPI
             if (_geonetworkEndpoint.Contains("met.no")) 
             {
                 requestBody = requestBody.Replace(@"<csw:GetRecords xmlns:gts=""http://www.isotc211.org/2005/gts"" xmlns:xlink=""http://www.w3.org/1999/xlink"" xmlns:gmx=""http://www.isotc211.org/2005/gmx"" xmlns:gmd=""http://www.isotc211.org/2005/gmd"" xmlns:srv=""http://www.isotc211.org/2005/srv"" xmlns:xs=""http://www.w3.org/2001/XMLSchema"" xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:gml=""http://www.opengis.net/gml"" xmlns:gco=""http://www.isotc211.org/2005/gco"" service=""CSW"" version=""2.0.2"" resultType=""results"" outputSchema=""csw:Record"" maxRecords=""20"" xmlns:csw=""http://www.opengis.net/cat/csw/2.0.2"">", @"<csw:GetRecords xmlns:csw=""http://www.opengis.net/cat/csw/2.0.2"" service=""CSW"" version=""2.0.2"" resultType=""results"" outputSchema=""http://www.isotc211.org/2005/gmd"" maxRecords=""200"">");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_begin</expression>", "<PropertyName>apiso:TempExtent_begin</PropertyName>");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_end</expression>", "<PropertyName>apiso:TempExtent_end</PropertyName>");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""LiteralType"">", "<Literal>");
+                requestBody = requestBody.Replace(@"</expression>", "</Literal>");
             }
             Console.WriteLine(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
