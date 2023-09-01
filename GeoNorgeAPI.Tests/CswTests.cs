@@ -756,7 +756,7 @@ namespace GeoNorgeAPI.Tests
                 };
 
 
-            var result = _geonorge.SearchWithFilters(filters, filterNames);
+            var result = _geonorge.SearchWithFilters(filters, filterNames,1,20,false, true);
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
         }

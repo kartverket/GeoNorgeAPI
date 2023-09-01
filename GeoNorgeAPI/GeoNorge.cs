@@ -156,9 +156,9 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false)
+        public SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, bool sortByDate = false)
         {
-            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
+            GetRecordsType request = _requestFactory.GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, "csw:Record", sortByDate);
             return _requestRunner.RunGetRecordsRequest(request).SearchResults;
         }
 
