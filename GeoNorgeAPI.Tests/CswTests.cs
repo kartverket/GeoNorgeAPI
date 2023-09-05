@@ -675,5 +675,150 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
         }
 
+
+        [Test]
+        public void ShouldReturnFromMets()
+        {
+            _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+            var filters = new object[]
+{
+                new PropertyIsLikeType
+                    {
+                        escapeChar = "\\",
+                        singleChar = "_",
+                        wildCard = "%",
+                        PropertyName = new PropertyNameType {Text = new[] {"apiso:ParentIdentifier"}},
+                        Literal = new LiteralType {Text = new[] {"no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e"}}
+                    }
+};
+
+            var filterNames = new ItemsChoiceType23[]
+            {
+                 ItemsChoiceType23.PropertyIsLike,
+            };
+
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
+        }
+
+        [Test]
+        public void ShouldReturnDateIntervalFromMets()
+        {
+            _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+
+            ExpressionType[] expressionTypesFromDate = new ExpressionType[2];
+            expressionTypesFromDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_begin" } };
+            expressionTypesFromDate[1] = new LiteralType { Text = new[] { "2023-05-01" } };
+
+            ExpressionType[] expressionTypesToDate = new ExpressionType[2];
+            expressionTypesToDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_end" } };
+            expressionTypesToDate[1] = new LiteralType { Text = new[] { "2023-05-31" } };
+
+            var filters = new object[]
+                      {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:ParentIdentifier"}},
+                                        Literal = new LiteralType {Text = new[] { "no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e" }}
+                                    },
+                                    new BinaryComparisonOpType
+                                    {                                     
+                                       expression = expressionTypesFromDate
+                                    }
+                                    ,
+                                    new BinaryComparisonOpType
+                                    {
+                                        expression = expressionTypesToDate
+                                    }
+                                },
+      
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsGreaterThanOrEqualTo,ItemsChoiceType22.PropertyIsLessThanOrEqualTo
+                                    }
+                        },
+
+                      };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames,1,20,false, true);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
+        }
+
+        [Test]
+        public void ShouldReturnSeriesFromMets()
+        {
+            _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+
+            var filters = new object[]
+                      {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:Title"}},
+                                        Literal = new LiteralType {Text = new[] { "%satellite%" }}
+                                    },
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:Type"}},
+                                        Literal = new LiteralType {Text = new[] { "series" }}
+                                    }
+                                },
+
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike
+                                    }
+                        },
+
+                      };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames, 1, 20, false, true);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
+        }
+
+        [Test]
+        public void ShouldReturnRecordByUuidFromMets()
+        {
+            _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+
+            MD_Metadata_Type record = _geonorge.GetRecordByUuid("no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e");
+
+            Assert.NotNull(record, "Record does not exist.");
+        }
+
     }
 }

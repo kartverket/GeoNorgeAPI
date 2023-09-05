@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Arkitektum.GIS.Lib.SerializeUtil;
 using www.opengis.net;
 using System.Xml.Linq;
@@ -47,10 +47,26 @@ namespace GeoNorgeAPI
         public GetRecordsResponseType RunGetRecordsRequest(GetRecordsType getRecordsRequest)
         {
             var requestBody = SerializeUtil.SerializeToString(getRecordsRequest);
+            requestBody = FixRequest(requestBody);
             Console.WriteLine(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
+        }
+
+        private string FixRequest(string requestBody)
+        {
+            if (_geonetworkEndpoint.Contains("met.no"))
+            {
+                requestBody = requestBody.Replace(@"outputSchema=""csw:Record""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
+                requestBody = requestBody.Replace(@"outputSchema=""csw:IsoRecord""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_begin</expression>", "<PropertyName>apiso:TempExtent_begin</PropertyName>");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_end</expression>", "<PropertyName>apiso:TempExtent_end</PropertyName>");
+                requestBody = requestBody.Replace(@"<expression xsi:type=""LiteralType"">", "<Literal>");
+                requestBody = requestBody.Replace(@"</expression>", "</Literal>");
+            }
+
+            return requestBody;
         }
 
         private string FixInvalidXml(string input)
@@ -83,6 +99,7 @@ namespace GeoNorgeAPI
         public MD_Metadata_Type GetRecordById(GetRecordByIdType request)
         {
             var requestBody = SerializeUtil.SerializeToString(request);
+            requestBody = FixRequest(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
             GetRecordByIdResponseType response =  SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(responseBody);

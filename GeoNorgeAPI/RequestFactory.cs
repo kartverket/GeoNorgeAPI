@@ -154,7 +154,7 @@ namespace GeoNorgeAPI
             return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle);
         }
 
-        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
+        public GetRecordsType GetRecordsWithFilter(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record", bool sortByDate = false)
         {
             var getRecords = new GetRecordsType();
             getRecords.resultType = ResultType1.results;
@@ -181,6 +181,16 @@ namespace GeoNorgeAPI
                     new SortPropertyType {
                         PropertyName = new PropertyNameType { Text = new string[] { "Title" } },
                         SortOrder = SortOrderType.ASC
+                    }
+                };
+            }
+            if (sortByDate)
+            {
+                query.SortBy = new SortPropertyType[]
+                {
+                    new SortPropertyType {
+                        PropertyName = new PropertyNameType { Text = new string[] { "dc:date" } },
+                        SortOrder = SortOrderType.DESC
                     }
                 };
             }

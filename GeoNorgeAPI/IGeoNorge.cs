@@ -65,7 +65,7 @@ namespace GeoNorgeAPI
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
         /// <returns>Results returned in Dublin Core format (www.opengis.net.RecordType objects).</returns>
-        SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false);
+        SearchResultsType SearchWithFilters(object[] filters, ItemsChoiceType23[] filterNames, int startPosition = 1, int limit = 20, bool sortByTitle = false, bool sortByDate = false);
 
         /// <summary>
         /// Insert metadata record in GeoNorge.

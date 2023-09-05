@@ -93,6 +93,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeTest.cs" />
     <Compile Include="SimpleMetadataTest.cs" />
+    <Content Include="xml\mets.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

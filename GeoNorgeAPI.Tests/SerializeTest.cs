@@ -26,5 +26,14 @@ namespace GeoNorgeAPI.Tests
             Trace.WriteLine(SerializeUtil.SerializeToString(getRecordsByIdResponseType));
         }
 
+
+        [Test]
+        public void ShouldSerializeGetRecordsResponseMets()
+        {
+            string xml = File.ReadAllText("xml/mets.xml");
+            var getRecordsResponseType = SerializeUtil.DeserializeFromString<GetRecordsResponseType>(xml);
+            Trace.WriteLine(SerializeUtil.SerializeToString(getRecordsResponseType));
+        }
+
     }
 }
