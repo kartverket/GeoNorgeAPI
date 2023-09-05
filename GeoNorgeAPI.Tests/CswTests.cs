@@ -810,5 +810,15 @@ namespace GeoNorgeAPI.Tests
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
         }
 
+        [Test]
+        public void ShouldReturnRecordByUuidFromMets()
+        {
+            _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+
+            MD_Metadata_Type record = _geonorge.GetRecordByUuid("no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e");
+
+            Assert.NotNull(record, "Record does not exist.");
+        }
+
     }
 }
