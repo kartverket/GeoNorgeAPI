@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.5.4: Fix for Mets
 3.5.3: Add ResolutionDistance
 3.5.2: Fix package reference
 3.5.1: Add ContentInformation
