@@ -81,7 +81,7 @@ namespace GeoNorgeAPI
 
         private string FixInvalidDateElement(string input)
         {
-            input = input.Replace("<gco:Date/>", $"<gco:Date>{DateTime.Now.ToString("MM-dd-yyyy")}</gco:Date>");
+            input = input.Replace("<gco:Date/>", $"<gco:Date>{DateTime.Now.ToString("yyyy-MM-dd")}</gco:Date>");
             return input;
         }
 
