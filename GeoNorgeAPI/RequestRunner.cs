@@ -74,7 +74,21 @@ namespace GeoNorgeAPI
             string fixedInput = FixInvalidDateTimeElementInXml(input);
             fixedInput = FixInvalidRealElement(fixedInput);
             fixedInput = FixInvalidBooleanElement(fixedInput);
+            fixedInput = FixInvalidTopicCategoryCodeElement(fixedInput);
+            fixedInput = FixInvalidDateElement(fixedInput);
             return fixedInput;
+        }
+
+        private string FixInvalidDateElement(string input)
+        {
+            input = input.Replace("<gco:Date/>", $"<gco:Date>{DateTime.Now.ToString("MM-dd-yyyy")}</gco:Date>");
+            return input;
+        }
+
+        private string FixInvalidTopicCategoryCodeElement(string input)
+        {
+            input = input.Replace(@"<gmd:MD_TopicCategoryCode>Not available</gmd:MD_TopicCategoryCode>", "<gmd:MD_TopicCategoryCode>environment</gmd:MD_TopicCategoryCode>"); 
+            return input;
         }
 
         private string FixInvalidBooleanElement(string input)
