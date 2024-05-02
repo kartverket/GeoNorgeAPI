@@ -1,2 +1,5 @@
-version: 1.0
-organisasjon: Land
+version: 3.0
+organization: Land
+product: GeoNorge
+repo_types: [Library]
+platforms: [OS_VM]
