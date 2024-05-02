@@ -1,0 +1,38 @@
+# nonk8s
+apiVersion: "backstage.io/v1alpha1"
+kind: "Component"
+metadata:
+  name: "GeoNorgeAPI"
+  tags:
+  - "public"
+spec:
+  type: "library"
+  lifecycle: "production"
+  owner: "datadeling_og_distribusjon"
+  system: "geonorge"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Group"
+metadata:
+  name: "security_champion_GeoNorgeAPI"
+  title: "Security Champion GeoNorgeAPI"
+spec:
+  type: "security_champion"
+  parent: "land_security_champions"
+  members:
+  - "dagolav"
+  children:
+  - "resource:GeoNorgeAPI"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Resource"
+metadata:
+  name: "GeoNorgeAPI"
+  links:
+  - url: "https://github.com/kartverket/GeoNorgeAPI"
+    title: "GeoNorgeAPI på GitHub"
+spec:
+  type: "repo"
+  owner: "security_champion_GeoNorgeAPI"
+  dependencyOf:
+  - "component:GeoNorgeAPI"
