@@ -190,7 +190,8 @@ namespace GeoNorgeAPI
                 {
                     new SortPropertyType {
                         PropertyName = new PropertyNameType { Text = new string[] { "dc:date" } },
-                        SortOrder = SortOrderType.DESC
+                        SortOrder = SortOrderType.DESC,
+                        SortOrderSpecified = true
                     }
                 };
             }
