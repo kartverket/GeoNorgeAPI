@@ -4499,6 +4499,19 @@ namespace GeoNorgeAPI
                     }
 
                 }
+                else if(transferOptions != null) //If no distribution format is found, use the transfer options
+                { 
+                    foreach(var transferOption in transferOptions)
+                    {
+                        SimpleDistribution simpleDistribution = new SimpleDistribution();
+                        simpleDistribution.Protocol = transferOption.Protocol;
+                        simpleDistribution.URL = transferOption.URL;
+                        simpleDistribution.Name = transferOption.Name;
+                        simpleDistribution.UnitsOfDistribution = transferOption.UnitsOfDistribution;
+                        simpleDistribution.EnglishUnitsOfDistribution = transferOption.EnglishUnitsOfDistribution;
+                        formats.Add(simpleDistribution);
+                    }
+                }
 
                 return formats;
             }
