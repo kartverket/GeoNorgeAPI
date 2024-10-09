@@ -4119,7 +4119,7 @@ namespace GeoNorgeAPI
                                 }
                             }
                         }
-                        else if (legalConstraint?.accessConstraints != null)
+                        else if (legalConstraint?.accessConstraints != null && legalConstraint.otherConstraints != null)
                         {
                             var accessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
 
