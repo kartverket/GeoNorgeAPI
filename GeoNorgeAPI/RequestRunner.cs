@@ -221,7 +221,10 @@ namespace GeoNorgeAPI
 
         private string GetUrlForCswService()
         {
-            return _geonetworkEndpoint + "srv/nor/csw";
+            if(_geonetworkEndpoint.Contains("pycsw.nina.no"))
+                return _geonetworkEndpoint;
+            else
+                return _geonetworkEndpoint + "srv/nor/csw";
         }
 
         private void LogEventsInfo(string log)
