@@ -41,7 +41,7 @@ namespace GeoNorgeAPI
                 if (accept != null)
                     request.Accept = accept;
                 request.ContentType = contentType;
-                request.Timeout = 15000;
+                request.Timeout = 30000;
 
                 if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
                 {
