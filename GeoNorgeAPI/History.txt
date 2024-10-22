@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.6.1: Increase request timeout
 3.6.0: Fix endpoint for pycsw.nina.no
 3.5.9: Fix null reference error Constraints
 3.5.8: If no distribution format is found, use the transfer options
