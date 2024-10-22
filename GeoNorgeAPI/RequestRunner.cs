@@ -54,6 +54,14 @@ namespace GeoNorgeAPI
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
         }
 
+        public GetRecordsResponseType RunGetRecordsRequest()
+        {
+            var response = _httpRequestExecutor.FullGetRequest(GetUrlForCswService(), "application/xml", ContentTypeXml);
+            var responseBody = new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd();
+            responseBody = FixInvalidXml(responseBody);
+            return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
+        }
+
         private string FixRequest(string requestBody)
         {
             if (_geonetworkEndpoint.Contains("met.no"))

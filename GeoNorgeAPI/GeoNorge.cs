@@ -196,6 +196,10 @@ namespace GeoNorgeAPI
             return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
 
+        public SearchResultsType GetFromEndpointUrl()
+        {
+            return _requestRunner.RunGetRecordsRequest().SearchResults;
+        }
         private void LogEventsInfo(string log)
         {
             if (OnLogEventInfo != null)
