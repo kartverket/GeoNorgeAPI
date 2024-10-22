@@ -196,6 +196,10 @@ namespace GeoNorgeAPI
             return _requestRunner.RunCswTransaction(request, additionalRequestHeaders);
         }
 
+        /// <summary>
+        /// Get metadata from endpoint URL.
+        /// </summary>
+        /// <returns></returns>
         public SearchResultsType GetFromEndpointUrl()
         {
             return _requestRunner.RunGetRecordsRequest().SearchResults;

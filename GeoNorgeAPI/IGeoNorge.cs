@@ -87,5 +87,11 @@ namespace GeoNorgeAPI
         /// <param name="uuid">identifier of the record to delete</param>
         /// <returns></returns>
         MetadataTransaction MetadataDelete(string uuid, Dictionary<string, string> additionalRequestHeaders = null);
+
+        /// <summary>
+        /// Get metadata from endpoint URL.
+        /// </summary>
+        /// <returns></returns>
+        SearchResultsType GetFromEndpointUrl();
     }
 }
