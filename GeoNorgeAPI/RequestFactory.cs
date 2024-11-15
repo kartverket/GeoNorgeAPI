@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System;
+using System.Xml;
 using www.opengis.net;
 
 namespace GeoNorgeAPI
@@ -7,13 +8,15 @@ namespace GeoNorgeAPI
     {
         public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
         {
+            searchString = checkString(searchString);
+
             var filters = new object[]
                 {
                     new PropertyIsLikeType
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "%",
+                            wildCard = "*",
                             PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                             Literal = new LiteralType {Text = new[] {searchString}}
                         }
@@ -40,13 +43,15 @@ namespace GeoNorgeAPI
 
         public GetRecordsType GetRecordsOrganisationNameSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
+            searchString = checkString(searchString);
+
             var filters = new object[]
                 {
                     new PropertyIsLikeType
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "%",
+                            wildCard = "*",
                             PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
                             Literal = new LiteralType {Text = new[] { searchString }}
                         }
@@ -61,6 +66,7 @@ namespace GeoNorgeAPI
 
         public GetRecordsType GetRecordsOrganisationMetadataPointOfContactSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
+            searchString = checkString(searchString);
             searchString = searchString.Replace(" ", "_");
 
             var filters = new object[]
@@ -69,7 +75,7 @@ namespace GeoNorgeAPI
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "%",
+                            wildCard = "*",
                             PropertyName = new PropertyNameType {Text = new[] {"MetadataPointOfContact"}},
                             Literal = new LiteralType {Text = new[] { searchString }}
                         }
@@ -84,6 +90,8 @@ namespace GeoNorgeAPI
 
         internal GetRecordsType GetRecordsFreeTextOrganisationNameSearch(string searchString, string organisationName, int startPosition, int limit, bool sortByTitle)
         {
+            searchString = checkString(searchString);
+
             var filters = new object[]
                 {
                     new BinaryLogicOpType {
@@ -93,7 +101,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "%",
+                                wildCard = "*",
                                 PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                                 Literal = new LiteralType {Text = new[] {searchString}}
                             },
@@ -101,7 +109,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "%",
+                                wildCard = "*",
                                 PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
                                 Literal = new LiteralType {Text = new[] { organisationName }}
                             }
@@ -119,6 +127,7 @@ namespace GeoNorgeAPI
 
         internal GetRecordsType GetRecordsFreeTextOrganisationMetadataPointOfContactSearch(string searchString, string organisationName, int startPosition, int limit, bool sortByTitle)
         {
+            searchString = checkString(searchString);
             organisationName = organisationName.Replace(" ", "_");
 
             var filters = new object[]
@@ -130,7 +139,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "%",
+                                wildCard = "*",
                                 PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                                 Literal = new LiteralType {Text = new[] {searchString}}
                             },
@@ -138,7 +147,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "%",
+                                wildCard = "*",
                                 PropertyName = new PropertyNameType {Text = new[] {"MetadataPointOfContact"}},
                                 Literal = new LiteralType {Text = new[] { organisationName }}
                             }
@@ -261,7 +270,7 @@ namespace GeoNorgeAPI
                                                         {
                                                             new PropertyIsLikeType()
                                                             {
-                                                                wildCard = "%",
+                                                                wildCard = "*",
                                                                 singleChar = "_",
                                                                 escapeChar = "/",
                                                                 PropertyName = new PropertyNameType()
@@ -290,6 +299,21 @@ namespace GeoNorgeAPI
                         }
                 };
             return cswTransaction;
+        }
+
+        private string checkString(string searchString)
+        {
+            if (string.IsNullOrEmpty(searchString))
+            {
+                searchString = "*";
+            }
+
+            if(searchString.Contains("%"))
+            {
+                searchString = searchString.Replace("%", "*");
+            }
+
+            return searchString;
         }
 
     }
