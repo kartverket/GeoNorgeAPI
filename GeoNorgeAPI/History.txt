@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3:6:3: Fix add missing interface for GetFromEndpointUrl
 3.6.2: Add get method for metadata endpoint
 3.6.1: Increase request timeout
 3.6.0: Fix endpoint for pycsw.nina.no
