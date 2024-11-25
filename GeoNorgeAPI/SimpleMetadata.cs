@@ -41,6 +41,9 @@ namespace GeoNorgeAPI
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE_CELL = "cell coverage map";
         private const string ENGLISH_APPLICATION_PROFILE_HELP = "help";
 
+        public const string FAIR_NAME_OF_MEASURE = "Grad av FAIR dataleveranse";
+        public const string COVERAGE_NAME_OF_MEASURE = "Geografisk dekning oppgitt i prosent";
+        
         private MD_Metadata_Type _md;
 
         /// <summary>
@@ -2805,6 +2808,8 @@ namespace GeoNorgeAPI
                         if (_md.dataQualityInfo[0].DQ_DataQuality.report[r] != null
                         && _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element != null)
                         {
+                            DQ_CompletenessOmission_Type completenessOmmission = _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element as DQ_CompletenessOmission_Type;
+
                             DQ_DomainConsistency_Type domainConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element as DQ_DomainConsistency_Type;
                             if (domainConsistency != null
                                 && domainConsistency.result != null
@@ -2900,6 +2905,21 @@ namespace GeoNorgeAPI
                                     }
                                 }
                             }
+                            else if (completenessOmmission != null) 
+                            {
+                                DQ_QuantitativeResult_Type resultQuantitative = completenessOmmission.result[0].AbstractDQ_Result as DQ_QuantitativeResult_Type;
+                                if (resultQuantitative != null)
+                                {
+                                    SimpleQualitySpecification resultItem = new SimpleQualitySpecification();
+                                    resultItem.Title = completenessOmmission.nameOfMeasure?[0]?.type?.Value;
+                                    resultItem.Explanation = completenessOmmission.measureDescription.CharacterString;
+                                    var result = resultQuantitative.value?[0]?.Record as Integer_PropertyType;
+                                    resultItem.QuantitativeResult = result.Integer;
+                                    resultItem.QuantitativeResultValueUnit = GetSimpleValueUnit(resultQuantitative?.valueUnit?.href);
+
+                                    value.Add(resultItem);
+                                }
+                            }
                             else
                             { 
                                 DQ_ConceptualConsistency_Type conceptualConsistency = _md.dataQualityInfo[0].DQ_DataQuality.report[r].AbstractDQ_Element as DQ_ConceptualConsistency_Type;
@@ -2939,7 +2959,7 @@ namespace GeoNorgeAPI
                 int resultCounter = 0;
 
                 var conformanceResults = value.Where(r => r.Responsible != "sds-performance"
-                && r.Responsible != "sds-availability" && r.Responsible != "sds-capacity").ToList();
+                && r.Responsible != "sds-availability" && r.Responsible != "sds-capacity" && r.Title != FAIR_NAME_OF_MEASURE && r.Title != COVERAGE_NAME_OF_MEASURE).ToList();
 
                 foreach (var mdResult in conformanceResults)
                 {
@@ -3169,6 +3189,104 @@ namespace GeoNorgeAPI
 
                         reports.Add(sdsCapacity);
                     }
+                }
+
+                var completenessOmmissionResult = value.Where(r => r.Title == FAIR_NAME_OF_MEASURE || r.Title == COVERAGE_NAME_OF_MEASURE).ToList();
+
+                foreach (var completenessOmmission in completenessOmmissionResult)
+                {
+
+                    if (completenessOmmission.Title == FAIR_NAME_OF_MEASURE)
+                    {
+                        DQ_Element_PropertyType completenessOmmissionFair = new DQ_Element_PropertyType
+                        {
+                            AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                            {
+                                nameOfMeasure = new Measure_Type[] { new Measure_Type { type = new Anchor_Type 
+                                { Value = FAIR_NAME_OF_MEASURE } } },
+                                measureDescription = new CharacterString_PropertyType 
+                                { 
+                                    CharacterString = "Angir fullstendighet i forhold til krav fra FAIR-prinsippene (The FAIR Guiding Principles for scientific data management and stewardship)" },
+                                
+                                result = new[]
+                                {
+                                    new DQ_Result_PropertyType
+                                    {
+                                        AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                        {
+
+                                            valueUnit = new UnitOfMeasure_PropertyType
+                                            {
+                                                href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                            },
+                                            value = new Record_PropertyType[]
+                                            {
+                                                new Record_PropertyType
+                                                {
+                                                    Record = new Integer_PropertyType
+                                                    {
+                                                        Integer = completenessOmmission.QuantitativeResult
+                                                    }
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        reports.Add(completenessOmmissionFair);
+
+                    }
+
+                    if (completenessOmmission.Title == COVERAGE_NAME_OF_MEASURE)
+                    {
+                        DQ_Element_PropertyType completenessOmmissionFair = new DQ_Element_PropertyType
+                        {
+                            AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                            {
+                                nameOfMeasure = new Measure_Type[] { new Measure_Type { type = new Anchor_Type
+                                { Value = COVERAGE_NAME_OF_MEASURE } } },
+                                measureDescription = new CharacterString_PropertyType
+                                {
+                                    CharacterString = "Datasettets faktiske kartlagte areal i forhold til datasettets spesifiserte utstrekning"
+                                },
+
+                                result = new[]
+                                {
+                                    new DQ_Result_PropertyType
+                                    {
+                                        AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                        {
+
+                                            valueUnit = new UnitOfMeasure_PropertyType
+                                            {
+                                                href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                            },
+                                            value = new Record_PropertyType[]
+                                            {
+                                                new Record_PropertyType
+                                                {
+                                                    Record = new Integer_PropertyType
+                                                    {
+                                                        Integer = completenessOmmission.QuantitativeResult
+                                                    }
+                                                }
+                                            }
+
+
+                                        }
+                                    }
+                                }
+                            }
+                        };
+
+                        reports.Add(completenessOmmissionFair);
+
+                    }
+
                 }
 
                 MD_ScopeDescription_PropertyType[] levelDescriptionType = null;
@@ -5031,7 +5149,6 @@ namespace GeoNorgeAPI
                 };
             }
         }
-
 
         private CharacterString_PropertyType toCharString(string input)
         {

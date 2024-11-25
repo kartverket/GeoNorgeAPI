@@ -1653,6 +1653,8 @@ namespace GeoNorgeAPI.Tests
 
             string expectedInteroperabelQuantitativeResultPerformance = "1,56";
 
+            string expectedCompletenessOmmissionResult = "95";
+            string expectedCompletenessOmmissionCoverageResult = "90";
 
             _md.GetMetadata().dataQualityInfo = new DQ_DataQuality_PropertyType[]
             {
@@ -1867,6 +1869,74 @@ namespace GeoNorgeAPI.Tests
                                             }
                                         }
                                     }
+                                },
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.FAIR_NAME_OF_MEASURE } } },
+                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Angir fullstendighet i forhold til krav fra FAIR-prinsippene (The FAIR Guiding Principles for scientific data management and stewardship)" },
+                                            result = new []
+                                            {
+                                                new DQ_Result_PropertyType
+                                                {
+                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                    {
+
+                                                        valueUnit = new UnitOfMeasure_PropertyType
+                                                        {
+                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                                        },
+                                                        value = new Record_PropertyType[]
+                                                        {
+                                                           new Record_PropertyType
+                                                           {
+                                                               Record = new Integer_PropertyType
+                                                               {
+                                                                   Integer = expectedCompletenessOmmissionResult
+                                                               }
+                                                           }
+                                                        }
+
+
+                                                    }
+                                                }
+                                            }
+                                    }
+                                },
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.COVERAGE_NAME_OF_MEASURE } } },
+                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Datasettets faktiske kartlagte areal i forhold til datasettets spesifiserte utstrekning" },
+                                            result = new []
+                                            {
+                                                new DQ_Result_PropertyType
+                                                {
+                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                    {
+
+                                                        valueUnit = new UnitOfMeasure_PropertyType
+                                                        {
+                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                                        },
+                                                        value = new Record_PropertyType[]
+                                                        {
+                                                           new Record_PropertyType
+                                                           {
+                                                               Record = new Integer_PropertyType
+                                                               {
+                                                                   Integer = expectedCompletenessOmmissionCoverageResult
+                                                               }
+                                                           }
+                                                        }
+
+
+                                                    }
+                                                }
+                                            }
+                                    }
                                 }
                         }
                     }
@@ -1875,7 +1945,7 @@ namespace GeoNorgeAPI.Tests
 
 
             List<SimpleQualitySpecification> spec = _md.QualitySpecifications;
-            Assert.AreEqual(4, spec.Count);
+            Assert.AreEqual(6, spec.Count);
 
             Assert.IsNotNull(spec);
             Assert.AreEqual(expectedTitle, spec[0].Title);
@@ -1895,6 +1965,9 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedResponsible2, spec[1].Responsible);
 
             Assert.AreEqual(expectedInteroperabelQuantitativeResultPerformance, spec[3].QuantitativeResult);
+
+            Assert.AreEqual(expectedCompletenessOmmissionResult, spec[4].QuantitativeResult);
+            Assert.AreEqual(expectedCompletenessOmmissionCoverageResult, spec[5].QuantitativeResult);
 
         }
 
@@ -1937,6 +2010,8 @@ namespace GeoNorgeAPI.Tests
 
             string expectedResponsibleInteroperabelCapacity = "sds-capacity";
             string expectedInteroperabelQuantitativeResultCapacity = "1000";
+
+            string expectedCompletenessOmmissionResult = "95";
 
             List<SimpleQualitySpecification> QualityList = new List<SimpleQualitySpecification>();
 
@@ -1994,16 +2069,33 @@ namespace GeoNorgeAPI.Tests
                 QuantitativeResult = expectedInteroperabelQuantitativeResultCapacity
             });
 
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Title = SimpleMetadata.FAIR_NAME_OF_MEASURE,
+                QuantitativeResult = expectedCompletenessOmmissionResult
+            });
+
+            QualityList.Add(new SimpleQualitySpecification
+            {
+                Title = SimpleMetadata.COVERAGE_NAME_OF_MEASURE,
+                QuantitativeResult = expectedCompletenessOmmissionResult
+            });
+
 
             _md.QualitySpecifications = QualityList;
 
             Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
+            var reports = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report;
 
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
             DQ_ConformanceResult_Type conformanceResult2 = domainConsistency.result[1].AbstractDQ_Result as DQ_ConformanceResult_Type;
             DQ_DomainConsistency_Type domainConsistency2 = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[1].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult3 = domainConsistency2.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
+            DQ_CompletenessOmission_Type domainCompletenessFair = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[5].AbstractDQ_Element as DQ_CompletenessOmission_Type;
+            DQ_QuantitativeResult_Type resultFair = domainCompletenessFair.result[0].AbstractDQ_Result as DQ_QuantitativeResult_Type;
+            Integer_PropertyType resultFairValue = resultFair.value[0].Record as Integer_PropertyType;           
             var explanation = conformanceResult.explanation as PT_FreeText_PropertyType;
             var explanation2 = conformanceResult2.explanation as PT_FreeText_PropertyType;
             var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
@@ -2032,6 +2124,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedSpecificationLink3, conformanceResult3.specification.href);
             Assert.AreEqual(expectedTitleLink3, anchorTitle3.href);
             Assert.AreEqual(expectedTitleLinkDescription3, anchorTitle3.title);
+            Assert.AreEqual(expectedCompletenessOmmissionResult, resultFairValue.Integer);
 
         }
 
