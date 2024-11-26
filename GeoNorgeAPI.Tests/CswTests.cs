@@ -38,9 +38,9 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnRecordsWhenSearchingWithOrganisationName()
         {
-            var result = _geonorge.SearchWithOrganisationName("*Kartverket*");
+            var result = _geonorge.SearchWithOrganisationName("%Kartverket%");
 
-            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '*Kartverket*' should return lots of records.");
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on '%Kartverket%' should return lots of records.");
         }
 
         [Test]
@@ -64,15 +64,15 @@ namespace GeoNorgeAPI.Tests
                                     {
                                         escapeChar = "\\",
                                         singleChar = "_",
-                                        wildCard = "*",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
-                                        Literal = new LiteralType {Text = new[] { "*Kartverket*" }}
+                                        Literal = new LiteralType {Text = new[] { "%Kartverket%" }}
                                     },
                                     new PropertyIsLikeType
                                     {
                                         escapeChar = "\\",
                                         singleChar = "_",
-                                        wildCard = "*",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"Type"}},
                                         Literal = new LiteralType {Text = new[] { "service" }}
                                     }
@@ -686,7 +686,7 @@ namespace GeoNorgeAPI.Tests
                     {
                         escapeChar = "\\",
                         singleChar = "_",
-                        wildCard = "*",
+                        wildCard = "%",
                         PropertyName = new PropertyNameType {Text = new[] {"apiso:ParentIdentifier"}},
                         Literal = new LiteralType {Text = new[] {"no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e"}}
                     }
@@ -727,7 +727,7 @@ namespace GeoNorgeAPI.Tests
                                     {
                                         escapeChar = "\\",
                                         singleChar = "_",
-                                        wildCard = "*",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"apiso:ParentIdentifier"}},
                                         Literal = new LiteralType {Text = new[] { "no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e" }}
                                     },
@@ -777,15 +777,15 @@ namespace GeoNorgeAPI.Tests
                                     {
                                         escapeChar = "\\",
                                         singleChar = "_",
-                                        wildCard = "*",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"apiso:Title"}},
-                                        Literal = new LiteralType {Text = new[] { "*satellite*" }}
+                                        Literal = new LiteralType {Text = new[] { "%satellite%" }}
                                     },
                                     new PropertyIsLikeType
                                     {
                                         escapeChar = "\\",
                                         singleChar = "_",
-                                        wildCard = "*",
+                                        wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"apiso:Type"}},
                                         Literal = new LiteralType {Text = new[] { "series" }}
                                     }

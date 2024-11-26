@@ -9,7 +9,7 @@ namespace GeoNorgeAPI
         /// Free text search for records.
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
         /// </summary>
-        /// <param name="searchString">Search string, use * as wildcard</param>
+        /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
@@ -20,7 +20,7 @@ namespace GeoNorgeAPI
         /// Free text search for records, with ISO 19139 response.
         /// Use numberOfRecordsMatched and nextRecord properties in SearchResults to paginate search. 
         /// </summary>
-        /// <param name="searchString">Search string, use * as wildcard</param>
+        /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
@@ -38,7 +38,7 @@ namespace GeoNorgeAPI
         /// Search and retrieve records by organisation name. 
         /// Results returned in Dublin Core format (www.opengis.net.RecordType objects).
         /// </summary>
-        /// <param name="searchString">Search string, use * as wildcard</param>
+        /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>
         /// <param name="sortByTitle">Sort results by title, default value is false</param>
@@ -48,7 +48,7 @@ namespace GeoNorgeAPI
         /// <summary>
         /// Search and retrieve records by free text together with organisation name.
         /// </summary>
-        /// <param name="searchString">Search string, use * as wildcard</param>
+        /// <param name="searchString">Search string, use % as wildcard</param>
         /// <param name="organisationName">Organisation name</param>
         /// <param name="startPosition">Search offset for pagination of results</param>
         /// <param name="limit">Maximum number of records to return</param>

@@ -16,7 +16,7 @@ namespace GeoNorgeAPI
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "*",
+                            wildCard = "%",
                             PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                             Literal = new LiteralType {Text = new[] {searchString}}
                         }
@@ -51,7 +51,7 @@ namespace GeoNorgeAPI
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "*",
+                            wildCard = "%",
                             PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
                             Literal = new LiteralType {Text = new[] { searchString }}
                         }
@@ -75,7 +75,7 @@ namespace GeoNorgeAPI
                         {
                             escapeChar = "\\",
                             singleChar = "_",
-                            wildCard = "*",
+                            wildCard = "%",
                             PropertyName = new PropertyNameType {Text = new[] {"MetadataPointOfContact"}},
                             Literal = new LiteralType {Text = new[] { searchString }}
                         }
@@ -101,7 +101,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "*",
+                                wildCard = "%",
                                 PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                                 Literal = new LiteralType {Text = new[] {searchString}}
                             },
@@ -109,7 +109,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "*",
+                                wildCard = "%",
                                 PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
                                 Literal = new LiteralType {Text = new[] { organisationName }}
                             }
@@ -139,7 +139,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "*",
+                                wildCard = "%",
                                 PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                                 Literal = new LiteralType {Text = new[] {searchString}}
                             },
@@ -147,7 +147,7 @@ namespace GeoNorgeAPI
                             {
                                 escapeChar = "\\",
                                 singleChar = "_",
-                                wildCard = "*",
+                                wildCard = "%",
                                 PropertyName = new PropertyNameType {Text = new[] {"MetadataPointOfContact"}},
                                 Literal = new LiteralType {Text = new[] { organisationName }}
                             }
@@ -270,7 +270,7 @@ namespace GeoNorgeAPI
                                                         {
                                                             new PropertyIsLikeType()
                                                             {
-                                                                wildCard = "*",
+                                                                wildCard = "%",
                                                                 singleChar = "_",
                                                                 escapeChar = "/",
                                                                 PropertyName = new PropertyNameType()
@@ -303,15 +303,16 @@ namespace GeoNorgeAPI
 
         private string checkString(string searchString)
         {
-            if (string.IsNullOrEmpty(searchString))
-            {
-                searchString = "*";
-            }
+            //todo use * as wildcard for geonetwork 4?
+            //if (string.IsNullOrEmpty(searchString))
+            //{
+            //    searchString = "*";
+            //}
 
-            if(searchString.Contains("%"))
-            {
-                searchString = searchString.Replace("%", "*");
-            }
+            //if(searchString.Contains("%"))
+            //{
+            //    searchString = searchString.Replace("%", "*");
+            //}
 
             return searchString;
         }
