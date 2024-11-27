@@ -1,8 +1,9 @@
 ﻿Version History
 ---------------
-3:6:5: Data quality report results for FAIR and Coverage
-3:6:4: Use * as wildcard character
-3:6:3: Fix add missing interface for GetFromEndpointUrl
+3.6.6: Use % as wildcard character
+3.6.5: Data quality report results for FAIR and Coverage
+3.6.4: Use * as wildcard character
+3.6.3: Fix add missing interface for GetFromEndpointUrl
 3.6.2: Add get method for metadata endpoint
 3.6.1: Increase request timeout
 3.6.0: Fix endpoint for pycsw.nina.no
