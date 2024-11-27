@@ -5168,13 +5168,15 @@ namespace GeoNorgeAPI
 
         public static bool IsAccessPoint(string protocol)
         {
-            return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS" || protocol == "OGC:OAPIF";
+            return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS" || protocol == "OGC:OAPIF"
+                || protocol == "OGC:API-Coverages" || protocol == "OGC:API-EDR";
         }
 
         public static bool IsNetworkService(string protocol)
         {
             return protocol == "OGC:WMS" || protocol == "OGC:WFS" || protocol == "W3C:AtomFeed" || protocol == "OGC:CSW" ||
-                   protocol == "OGC:WCS" || protocol == "OGC:WMTS" || protocol == "WMS-C";
+                   protocol == "OGC:WCS" || protocol == "OGC:WMTS" || protocol == "WMS-C"
+                   || protocol == "OGC:API-Maps" || protocol == "OGC:API-Styles" || protocol == "OGC:API-Tiles";
         }
 
     }
