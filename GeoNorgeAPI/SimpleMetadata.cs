@@ -41,8 +41,8 @@ namespace GeoNorgeAPI
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE_CELL = "cell coverage map";
         private const string ENGLISH_APPLICATION_PROFILE_HELP = "help";
 
-        public const string FAIR_NAME_OF_MEASURE = "Grad av FAIR dataleveranse";
-        public const string COVERAGE_NAME_OF_MEASURE = "Geografisk dekning oppgitt i prosent";
+        public const string FAIR_NAME_OF_MEASURE = "Prosentvis oppfyllelse av FAIR-prinsipper";
+        public const string COVERAGE_NAME_OF_MEASURE = "Prosentvis dekning i forhold til datasettets utstrekning";
         
         private MD_Metadata_Type _md;
 
