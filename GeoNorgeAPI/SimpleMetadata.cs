@@ -4496,7 +4496,7 @@ namespace GeoNorgeAPI
                     foreach(string uuid in value) {
                         operatesOn.Add(new MD_DataIdentification_PropertyType {
                             uuidref = uuid,
-                            href = "https://www.geonorge.no/geonetwork/srv/nor/xml_iso19139?uuid=" + uuid
+                            href = "https://www.geonorge.no/geonetwork/srv/nor/csw?service=CSW&request=GetRecordById&version=2.0.2&outputSchema=http://www.isotc211.org/2005/gmd&elementSetName=full&id=" + uuid
                     });
                     }
 
