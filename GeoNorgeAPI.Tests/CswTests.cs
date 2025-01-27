@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Arkitektum.GIS.Lib.SerializeUtil;
+using System.Linq;
 
 namespace GeoNorgeAPI.Tests
 {
@@ -94,6 +95,56 @@ namespace GeoNorgeAPI.Tests
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Kartverket.");
         }
+
+        [Test]
+        public void ShouldReturnSearchResultForOrganizationFilterPerWord()
+        {
+
+            _geonorge = new GeoNorge("", "", "https://www.geonorge.no/geonetworkbeta/");
+
+            var searchString = "Norges geologiske undersøkelse";
+
+            var words = searchString.Split(' ').ToList();
+
+            var binaryLogicOpTypeObjects = new List<object>();
+
+            var itemsItemsChoiceType22 = new List<ItemsChoiceType22>();
+
+            foreach (var word in words) 
+            { 
+                binaryLogicOpTypeObjects.Add(new PropertyIsLikeType
+                {
+                    escapeChar = "\\",
+                    singleChar = "_",
+                    wildCard = "%",
+                    PropertyName = new PropertyNameType { Text = new[] { "MetadataPointOfContact" } },
+                    Literal = new LiteralType { Text = new[] { word } }
+                });
+
+                itemsItemsChoiceType22.Add(ItemsChoiceType22.PropertyIsLike);
+            }
+
+            var filters = new object[]
+                {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = binaryLogicOpTypeObjects.ToArray(),
+                                ItemsElementName = itemsItemsChoiceType22.ToArray()
+                        },
+
+                };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from " + searchString);
+        }
+
 
         [Test]
         public void ShouldReturnRecordsSpecifiedNumberOfRecords()
@@ -762,9 +813,116 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnDateIntervalFromSentinel()
+        {
+            _geonorge = new GeoNorge("", "", "https://nbs.csw.met.no/csw?");
+
+            ExpressionType[] expressionTypesFromDate = new ExpressionType[2];
+            expressionTypesFromDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_begin" } };
+            expressionTypesFromDate[1] = new LiteralType { Text = new[] { "2023-05-01" } };
+
+            ExpressionType[] expressionTypesToDate = new ExpressionType[2];
+            expressionTypesToDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_end" } };
+            expressionTypesToDate[1] = new LiteralType { Text = new[] { "2023-05-31" } };
+
+            var filters = new object[]
+                      {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:ParentIdentifier"}},
+                                        Literal = new LiteralType {Text = new[] { "no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e" }}
+                                    },
+                                    new BinaryComparisonOpType
+                                    {
+                                       expression = expressionTypesFromDate
+                                    }
+                                    ,
+                                    new BinaryComparisonOpType
+                                    {
+                                        expression = expressionTypesToDate
+                                    }
+                                },
+
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsGreaterThanOrEqualTo,ItemsChoiceType22.PropertyIsLessThanOrEqualTo
+                                    }
+                        },
+
+                      };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames, 1, 20, false, true);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
+        }
+
+        [Test]
         public void ShouldReturnSeriesFromMets()
         {
             _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
+
+            var filters = new object[]
+                      {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:Title"}},
+                                        Literal = new LiteralType {Text = new[] { "%satellite%" }}
+                                    },
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"apiso:Type"}},
+                                        Literal = new LiteralType {Text = new[] { "series" }}
+                                    }
+                                },
+
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike
+                                    }
+                        },
+
+                      };
+
+            var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.And
+                };
+
+
+            var result = _geonorge.SearchWithFilters(filters, filterNames, 1, 20, false, true);
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
+        }
+
+        [Test]
+        public void ShouldReturnSeriesFromSentinel()
+        {
+            _geonorge = new GeoNorge("", "", "https://nbs.csw.met.no/csw?");
 
             var filters = new object[]
                       {
