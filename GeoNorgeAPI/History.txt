@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.6.9: Change path download xml
 3.6.8: Change quality measure texts 
 3.6.7: Update IsAccessPoint and IsNetworkService with new protocols
 3.6.6: Use % as wildcard character
