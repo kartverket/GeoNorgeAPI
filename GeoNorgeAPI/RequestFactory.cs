@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Xml;
 using www.opengis.net;
 
@@ -67,14 +67,15 @@ namespace GeoNorgeAPI
         public GetRecordsType GetRecordsOrganisationMetadataPointOfContactSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false)
         {
             searchString = checkString(searchString);
-            searchString = searchString.Replace(" ", "_");
+            //geonetwork 4 and 2 compability use singleChar ? instead of _
+            searchString = searchString.Replace(" ", "?");
 
             var filters = new object[]
                 {
                     new PropertyIsLikeType
                         {
                             escapeChar = "\\",
-                            singleChar = "_",
+                            singleChar = "?",
                             wildCard = "%",
                             PropertyName = new PropertyNameType {Text = new[] {"MetadataPointOfContact"}},
                             Literal = new LiteralType {Text = new[] { searchString }}
@@ -128,7 +129,7 @@ namespace GeoNorgeAPI
         internal GetRecordsType GetRecordsFreeTextOrganisationMetadataPointOfContactSearch(string searchString, string organisationName, int startPosition, int limit, bool sortByTitle)
         {
             searchString = checkString(searchString);
-            organisationName = organisationName.Replace(" ", "_");
+            organisationName = organisationName.Replace(" ", "?");
 
             var filters = new object[]
                 {
@@ -138,7 +139,7 @@ namespace GeoNorgeAPI
                             new PropertyIsLikeType
                             {
                                 escapeChar = "\\",
-                                singleChar = "_",
+                                singleChar = "?",
                                 wildCard = "%",
                                 PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
                                 Literal = new LiteralType {Text = new[] {searchString}}
@@ -303,16 +304,12 @@ namespace GeoNorgeAPI
 
         private string checkString(string searchString)
         {
-            //todo use * as wildcard for geonetwork 4?
-            //if (string.IsNullOrEmpty(searchString))
-            //{
-            //    searchString = "*";
-            //}
+            //geonetwork 4 needs to escape wildCard %, alternativly use * as wildCard?
 
-            //if(searchString.Contains("%"))
-            //{
-            //    searchString = searchString.Replace("%", "*");
-            //}
+            if (searchString.Contains("%"))
+            {
+                searchString = searchString.Replace("%", "\\%");
+            }
 
             return searchString;
         }

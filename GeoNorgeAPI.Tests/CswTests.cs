@@ -48,8 +48,17 @@ namespace GeoNorgeAPI.Tests
         {
             var result = _geonorge.SearchWithOrganisationName("Norsk institutt for bioøkonomi");
 
-            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on 'Norsk institutt for skog og landskap' should return lots of records.");
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on 'Norsk institutt for bioøkonomi' should return lots of records.");
         }
+
+        [Test]
+        public void ShouldReturnRecordsWhenSearchingWithOrganisationMetadataPointOfContactIncludingWhitespace()
+        {
+            var result = _geonorge.SearchWithOrganisationMetadataPointOfContact("Norsk institutt for bioøkonomi");
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "An organization name search on 'Norsk institutt for bioøkonomi' should return lots of records.");
+        }
+
         [Test]
         public void ShouldReturnServicesFromKartverket()
         {
@@ -66,7 +75,7 @@ namespace GeoNorgeAPI.Tests
                                         singleChar = "_",
                                         wildCard = "%",
                                         PropertyName = new PropertyNameType {Text = new[] {"OrganisationName"}},
-                                        Literal = new LiteralType {Text = new[] { "%Kartverket%" }}
+                                        Literal = new LiteralType {Text = new[] { "\\%Kartverket\\%" }}
                                     },
                                     new PropertyIsLikeType
                                     {
