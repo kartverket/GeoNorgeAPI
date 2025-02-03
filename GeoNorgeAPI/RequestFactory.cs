@@ -306,6 +306,9 @@ namespace GeoNorgeAPI
         {
             //geonetwork 4 needs to escape wildCard %, alternativly use * as wildCard?
 
+            if(string.IsNullOrEmpty(searchString))
+                searchString = "%";
+
             if (searchString.Contains("%"))
             {
                 searchString = searchString.Replace("%", "\\%");

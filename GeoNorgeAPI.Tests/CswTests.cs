@@ -115,6 +115,14 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnAllRecordsSearchingEmptyString()
+        {
+            var result = _geonorge.Search("");
+
+            Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on '' should return records.");
+        }
+
+        [Test]
         public void ShouldSearchAndReturnIsoRecords()
         {
             var result = _geonorge.SearchIso("data");
