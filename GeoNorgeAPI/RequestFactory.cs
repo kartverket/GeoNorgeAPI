@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using www.opengis.net;
 
@@ -8,23 +10,40 @@ namespace GeoNorgeAPI
     {
         public GetRecordsType GetRecordsFreeTextSearch(string searchString, int startPosition = 1, int limit = 20, bool sortByTitle = false, string outputSchema = "csw:Record")
         {
-            searchString = checkString(searchString);
+            var words = searchString.Split(' ').ToList();
+
+            var binaryLogicOpTypeObjects = new List<object>();
+
+            var itemsItemsChoiceType22 = new List<ItemsChoiceType22>();
+
+            foreach (var word in words)
+            {
+                binaryLogicOpTypeObjects.Add(new PropertyIsLikeType
+                {
+                    escapeChar = "\\",
+                    singleChar = "_",
+                    wildCard = "%",
+                    PropertyName = new PropertyNameType { Text = new[] { "AnyText" } },
+                    Literal = new LiteralType { Text = new[] { word } }
+                });
+
+                itemsItemsChoiceType22.Add(ItemsChoiceType22.PropertyIsLike);
+            }
 
             var filters = new object[]
                 {
-                    new PropertyIsLikeType
+
+                    new BinaryLogicOpType()
                         {
-                            escapeChar = "\\",
-                            singleChar = "_",
-                            wildCard = "%",
-                            PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
-                            Literal = new LiteralType {Text = new[] {searchString}}
-                        }
+                            Items = binaryLogicOpTypeObjects.ToArray(),
+                                ItemsElementName = itemsItemsChoiceType22.ToArray()
+                        },
+
                 };
 
             var filterNames = new ItemsChoiceType23[]
                 {
-                    ItemsChoiceType23.PropertyIsLike, 
+                    ItemsChoiceType23.And
                 };
 
             return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, outputSchema);
