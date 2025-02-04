@@ -12,41 +12,67 @@ namespace GeoNorgeAPI
         {
             var words = searchString.Split(' ').ToList();
 
-            var binaryLogicOpTypeObjects = new List<object>();
-
-            var itemsItemsChoiceType22 = new List<ItemsChoiceType22>();
-
-            foreach (var word in words)
+            if (words.Count < 2)
             {
-                binaryLogicOpTypeObjects.Add(new PropertyIsLikeType
+                searchString = checkString(searchString);
+                var filters = new object[]
                 {
-                    escapeChar = "\\",
-                    singleChar = "_",
-                    wildCard = "%",
-                    PropertyName = new PropertyNameType { Text = new[] { "AnyText" } },
-                    Literal = new LiteralType { Text = new[] { word } }
-                });
+                    new PropertyIsLikeType
+                    {
+                        escapeChar = "\\",
+                        singleChar = "_",
+                        wildCard = "%",
+                        PropertyName = new PropertyNameType {Text = new[] {"AnyText"}},
+                        Literal = new LiteralType {Text = new[] { searchString }}
+                    }
+                };
+                var filterNames = new ItemsChoiceType23[]
+                {
+                    ItemsChoiceType23.PropertyIsLike
+                };
 
-                itemsItemsChoiceType22.Add(ItemsChoiceType22.PropertyIsLike);
+                return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, outputSchema);
             }
+            else 
+            {
+                var binaryLogicOpTypeObjects = new List<object>();
 
-            var filters = new object[]
+                var itemsItemsChoiceType22 = new List<ItemsChoiceType22>();
+
+                foreach (var word in words)
                 {
+                    var search = checkString(word);
 
-                    new BinaryLogicOpType()
-                        {
-                            Items = binaryLogicOpTypeObjects.ToArray(),
+                    binaryLogicOpTypeObjects.Add(new PropertyIsLikeType
+                    {
+                        escapeChar = "\\",
+                        singleChar = "_",
+                        wildCard = "%",
+                        PropertyName = new PropertyNameType { Text = new[] { "AnyText" } },
+                        Literal = new LiteralType { Text = new[] { search } }
+                    });
+
+                    itemsItemsChoiceType22.Add(ItemsChoiceType22.PropertyIsLike);
+                }
+
+                var filters = new object[]
+                    {
+
+                        new BinaryLogicOpType()
+                            {
+                                Items = binaryLogicOpTypeObjects.ToArray(),
                                 ItemsElementName = itemsItemsChoiceType22.ToArray()
-                        },
+                            },
 
-                };
+                    };
 
-            var filterNames = new ItemsChoiceType23[]
-                {
-                    ItemsChoiceType23.And
-                };
+                var filterNames = new ItemsChoiceType23[]
+                    {
+                        ItemsChoiceType23.And
+                    };
 
-            return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, outputSchema);
+                return GetRecordsWithFilter(filters, filterNames, startPosition, limit, sortByTitle, outputSchema);
+            }
         }
 
         public GetRecordByIdType GetRecordById(string uuid)
