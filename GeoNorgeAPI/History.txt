@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.7.4: Fix search filter per word
 3.7.3: Search filter per word
 3.7.2: Update nuget MetadataCSW to 1.9.111
 3.7.1: Fix search empty string should return all
