@@ -2911,7 +2911,8 @@ namespace GeoNorgeAPI
                                 if (resultQuantitative != null)
                                 {
                                     SimpleQualitySpecification resultItem = new SimpleQualitySpecification();
-                                    resultItem.Title = completenessOmmission.nameOfMeasure?[0]?.type?.Value;
+                                    var nameOfMeasure = completenessOmmission.nameOfMeasure?[0]?.type as Anchor_Type;
+                                    resultItem.Title = nameOfMeasure?.Value;
                                     resultItem.Explanation = completenessOmmission.measureDescription.CharacterString;
                                     var result = resultQuantitative.value?[0]?.Record as Integer_PropertyType;
                                     resultItem.QuantitativeResult = result.Integer;
@@ -2933,11 +2934,12 @@ namespace GeoNorgeAPI
                                     if(resultQuantitative != null)
                                     {
                                         SimpleQualitySpecification resultItem = new SimpleQualitySpecification();
-                                        resultItem.Title = conceptualConsistency.nameOfMeasure?[0]?.type?.Value;
+                                        var nameOfMeasure = conceptualConsistency.nameOfMeasure?[0]?.type as Anchor_Type;
+                                        resultItem.Title = nameOfMeasure?.Value;
                                         resultItem.Explanation = conceptualConsistency.measureDescription.CharacterString;
                                         resultItem.QuantitativeResult = resultQuantitative?.value?[0]?.Record?.ToString();
                                         resultItem.QuantitativeResultValueUnit = GetSimpleValueUnit(resultQuantitative?.valueUnit?.href);
-                                        resultItem.Responsible = "sds-" + conceptualConsistency.nameOfMeasure?[0]?.type?.Value?.ToLower();
+                                        resultItem.Responsible = "sds-" + nameOfMeasure?.Value?.ToLower();
 
                                         value.Add(resultItem);
                                     }
