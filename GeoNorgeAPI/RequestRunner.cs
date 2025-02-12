@@ -206,12 +206,31 @@ namespace GeoNorgeAPI
                 var insertResult = responseElement.Element(csw + "InsertResult");
                 if (insertResult != null)
                 {
-                    var identifierElements = insertResult.Element(csw + "BriefRecord").Elements("identifier");
-                    if (identifierElements != null)
+                    var briefRecord = insertResult.Element(csw + "BriefRecord");
+                    if(briefRecord != null)
                     {
-                        foreach (var identifierElement in identifierElements)
+                        var identifierElements = briefRecord.Elements("identifier");
+                        if (identifierElements != null)
                         {
-                            identifiers.Add(identifierElement.Value);
+                            foreach (var identifierElement in identifierElements)
+                            {
+                                identifiers.Add(identifierElement.Value);
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        var record = insertResult.Element(csw + "Record");
+                        if (record != null)
+                        {
+                            var identifierElements = record.Elements("identifier");
+                            if (identifierElements != null)
+                            {
+                                foreach (var identifierElement in identifierElements)
+                                {
+                                    identifiers.Add(identifierElement.Value);
+                                }
+                            }
                         }
                     }
                 }
