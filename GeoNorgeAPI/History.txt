@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.7.7: Handle missing BriefRecord insert transaction
 3.7.6: Update nuget MetadataCSW to version 1.9.113
 3.7.5: Update nuget MetadataCSW to version 1.9.112
 3.7.4: Fix search filter per word
