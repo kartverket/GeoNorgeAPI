@@ -5170,7 +5170,7 @@ namespace GeoNorgeAPI
 
         public static bool IsAccessPoint(string protocol)
         {
-            return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS" || protocol == "OGC:OAPIF"
+            return protocol == "W3C:REST" || protocol == "W3C:WS" || protocol == "OGC:WPS" || protocol == "OGC:SOS" || protocol == "OGC:API-Features"
                 || protocol == "OGC:API-Coverages" || protocol == "OGC:API-EDR";
         }
 
