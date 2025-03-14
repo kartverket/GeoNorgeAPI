@@ -49,6 +49,7 @@ namespace GeoNorgeAPI
             var requestBody = SerializeUtil.SerializeToString(getRecordsRequest);
             requestBody = FixRequest(requestBody);
             Console.WriteLine(requestBody);
+            OnLogEventDebug(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
