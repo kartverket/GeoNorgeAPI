@@ -297,7 +297,7 @@
               <gmd:title>
                 <gmx:Anchor xmlns:gmx="http://www.isotc211.org/2005/gmx"
                             xmlns:xlink="http://www.w3.org/1999/xlink"
-                            xlink:href="https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling">Norwegian thematic categories</gmx:Anchor>
+                            xlink:href="https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling">Norwegian thematic categories</gmx:Anchor>
               </gmd:title>
               <gmd:date>
                 <gmd:CI_Date>

@@ -302,7 +302,7 @@
           <gmd:thesaurusName>
             <gmd:CI_Citation>
               <gmd:title>
-                <gmx:Anchor xlink:href="https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling">Norwegian thematic categories</gmx:Anchor>
+                <gmx:Anchor xlink:href="https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling">Norwegian thematic categories</gmx:Anchor>
               </gmd:title>
               <gmd:date>
                 <gmd:CI_Date>

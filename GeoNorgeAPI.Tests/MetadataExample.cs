@@ -162,7 +162,7 @@ namespace GeoNorgeAPI.Tests
                             {
                                 CI_Citation = new CI_Citation_Type
                                     {
-                                        title = new CI_Citation_Title{ item =  new Anchor_Type{ Value = "GEMET - INSPIRE themes, version 1.0", href = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/inspiretema" } },
+                                        title = new CI_Citation_Title{ item =  new Anchor_Type{ Value = "GEMET - INSPIRE themes, version 1.0", href = "https://register.geonorge.no/metadata-kodelister/inspiretema" } },
 
                                         date = new [] { new CI_Date_PropertyType
                                             {

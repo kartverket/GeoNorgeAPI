@@ -5200,10 +5200,10 @@ namespace GeoNorgeAPI
         public const string THESAURUS_INSPIRE_PRIORITY_DATASET = "INSPIRE priority data set";
         public const string THESAURUS_INSPIRE_PRIORITY_DATASET_LINK = "http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset";
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
-        public const string THESAURUS_NATIONAL_INITIATIVE_LINK = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/samarbeid-og-lover";
+        public const string THESAURUS_NATIONAL_INITIATIVE_LINK = "https://register.geonorge.no/metadata-kodelister/samarbeid-og-lover";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";
         public const string THESAURUS_NATIONAL_THEME = "Nasjonal tematisk inndeling (DOK-kategori)";
-        public const string THESAURUS_NATIONAL_THEME_LINK = "https://register.geonorge.no/subregister/metadata-kodelister/kartverket/nasjonal-temainndeling";
+        public const string THESAURUS_NATIONAL_THEME_LINK = "https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling";
         public const string THESAURUS_CONCEPT = "SOSI produktspesifikasjon";
         public const string THESAURUS_CONCEPT_LINK = "https://objektkatalog.geonorge.no/";
         public const string THESAURUS_ADMIN_UNITS = "Administrative enheter i Norge";
