@@ -3632,7 +3632,7 @@ namespace GeoNorgeAPI
                 return value;
             }
 
-            set 
+            set
             {
                 var validFrom = value.ValidFrom;
                 if (string.IsNullOrEmpty(validFrom))
@@ -3644,28 +3644,31 @@ namespace GeoNorgeAPI
                     timePositionType = new TimePositionType() { indeterminatePosition = TimeIndeterminateValueType.now, indeterminatePositionSpecified = true };
 
 
-                EX_TemporalExtent_PropertyType[]  temporalElement= new EX_TemporalExtent_PropertyType[]
-                    {
-                        new EX_TemporalExtent_PropertyType()
-                        {
-                            EX_TemporalExtent= new EX_TemporalExtent_Type()
-                            {
-                                extent = new TM_Primitive_PropertyType()
-                                {
-                                    AbstractTimePrimitive = new TimePeriodType()
-                                    {
-                                        id = "id_1",
+                EX_TemporalExtent_PropertyType[] temporalElement = new EX_TemporalExtent_PropertyType[1];
 
-                                        Item = new TimePositionType()
-                                        {
-                                            Value = validFrom
-                                        },
-                                        Item1 = timePositionType
-                                    }
-                                } 
+                if (validFrom != "0001-01-01")
+                {
+                    temporalElement = new EX_TemporalExtent_PropertyType[1];
+                    temporalElement[0] = new EX_TemporalExtent_PropertyType()
+                    {
+                        EX_TemporalExtent = new EX_TemporalExtent_Type()
+                        {
+                            extent = new TM_Primitive_PropertyType()
+                            {
+                                AbstractTimePrimitive = new TimePeriodType()
+                                {
+                                    id = "id_1",
+
+                                    Item = new TimePositionType()
+                                    {
+                                        Value = validFrom
+                                    },
+                                    Item1 = timePositionType
+                                }
                             }
                         }
                     };
+                }
 
 
                 CharacterString_PropertyType description = null;
