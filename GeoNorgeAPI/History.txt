@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+4.0.0: Converted to netstandard 2.0
 3.8.0: Fix wrong urls to register
 3.7.9: Add logging for debug requestBody
 3.7.8: Change protocol code value to OGC:API-Features

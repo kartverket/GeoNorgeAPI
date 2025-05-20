@@ -15,8 +15,8 @@ namespace GeoNorgeAPI
         public event LogEventHandlerDebug OnLogEventDebug = delegate { };
         public event LogEventHandlerError OnLogEventError = delegate { };
 
-        private readonly RequestFactory _requestFactory;
-        private readonly RequestRunner _requestRunner;
+        //private readonly RequestFactory _requestFactory;
+        //private readonly RequestRunner _requestRunner;
 
         public string PostRequest(string url, string accept, string contentType, string postData, string username = null, string password = null, Cookie cookie = null, Dictionary<string, string> additionalRequestHeaders = null)
         {

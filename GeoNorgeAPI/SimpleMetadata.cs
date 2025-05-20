@@ -116,7 +116,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             try
             {
@@ -127,7 +127,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             try
             {
@@ -138,7 +138,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             
         }
 
@@ -2535,7 +2535,7 @@ namespace GeoNorgeAPI
                     Distance_PropertyType item = dataIdentification.spatialResolution[0].MD_Resolution.Item as Distance_PropertyType;
                     if (item != null
                         && item.Distance != null
-                        && item.Distance.Value != null)
+                        && item.Distance.Value != 0)
                     {
                         value = item.Distance.Value;
                     }

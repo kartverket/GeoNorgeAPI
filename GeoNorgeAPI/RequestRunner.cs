@@ -13,8 +13,8 @@ namespace GeoNorgeAPI
         public event LogEventHandlerDebug OnLogEventDebug = delegate { };
         public event LogEventHandlerError OnLogEventError = delegate { };
 
-        private readonly RequestFactory _requestFactory;
-        private readonly RequestRunner _requestRunner;
+        //private readonly RequestFactory _requestFactory;
+        //private readonly RequestRunner _requestRunner;
   
         private const string ContentTypeXml = "application/xml";
         private const string DefaultGeonetworkEndpoint = "https://www.geonorge.no/geonetwork/";

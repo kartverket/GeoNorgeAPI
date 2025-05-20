@@ -1,13 +1,46 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+	<DocumentationFile>bin\Release\GeoNorgeAPI.XML</DocumentationFile>
+  </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Library</OutputType>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+	<!--Assembly info START-->
+	<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+	<Description>API for search, retrieval, insert and update of metadata on geographical services in www.geonorge.no.</Description>
+	<Configuration />
+	<Company>Statens Kartverk</Company>
+	<Product>$(AssemblyName)</Product>
+	<Copyright>
+		Copyright © 2015-2025 Statens kartverk
+	</Copyright>
+	<ComVisible>false</ComVisible>
+	<AssemblyGuid>8649d51c-c90c-4bb6-95af-33de1c7bc449</AssemblyGuid>
+	<AssemblyVersion>4.0.0</AssemblyVersion>
+	<!--Assembly info END-->
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DocumentationFile>bin\Release\GeoNorgeAPI.XML</DocumentationFile>
+  <PropertyGroup>
+	<Title>Geonorge API</Title>
+	<Authors>Statens kartverk</Authors>
+	<PackageId>$(AssemblyName)</PackageId>
+	<PackageVersion>4.0.0</PackageVersion>
+	<PackageDescription>API for communicating with the CSW-service running at www.geonorge.no</PackageDescription>
+	<PackageTags>geonorge gis metadata api csw</PackageTags>
+	<!--<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>-->
+	<!--<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>-->
+	<PackageReleaseNotes>Converted to netstandard2.0</PackageReleaseNotes>
+	<RepositoryType>git</RepositoryType>
+	<RepositoryUrl>https://github.com/kartverket/GeoNorgeAPI.git</RepositoryUrl>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
+  <ItemGroup>
+	  <InternalsVisibleTo Include="GeonorgeAPI.Tests"/>
+  </ItemGroup>
+  <ItemGroup>
+	  <None Include="..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0" />
     <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0" />
