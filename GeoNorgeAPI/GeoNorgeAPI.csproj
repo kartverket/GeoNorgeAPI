@@ -25,7 +25,7 @@
 	<Title>Geonorge API</Title>
 	<Authors>Statens kartverk</Authors>
 	<PackageId>$(AssemblyName)</PackageId>
-	<PackageVersion>4.0.0</PackageVersion>
+	<PackageVersion>4.0.0-alpha1</PackageVersion>
 	<PackageDescription>API for communicating with the CSW-service running at www.geonorge.no</PackageDescription>
 	<PackageTags>geonorge gis metadata api csw</PackageTags>
 	<!--<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>-->
