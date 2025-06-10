@@ -42,7 +42,7 @@
 	  <None Include="..\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0" />
-    <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0" />
+    <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0-alpha1" />
+    <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0-alpha1" />
   </ItemGroup>
 </Project>
