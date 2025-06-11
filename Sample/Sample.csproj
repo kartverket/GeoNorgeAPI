@@ -161,8 +161,8 @@
     <ProjectReference Include="..\GeoNorgeAPI\GeoNorgeAPI.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0" />
-    <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0" />
+    <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0-alpha1" />
+    <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0-alpha1" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
