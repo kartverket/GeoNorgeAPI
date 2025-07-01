@@ -1271,10 +1271,32 @@ namespace GeoNorgeAPI
                                 {
                                     date = "2008-12-03";
                                 }
+                                else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
+                                {
+                                    date = "2023-09-27";
+                                    //title = new PT_FreeText_PropertyType
+                                    //{
+                                    //    PT_FreeText = new PT_FreeText_Type
+                                    //    {                                            
+                                    //        textGroup = new LocalisedCharacterString_PropertyType[]
+                                    //        {
+                                    //            new LocalisedCharacterString_PropertyType
+                                    //            {
+                                    //                LocalisedCharacterString = new LocalisedCharacterString_Type
+                                    //                {
+                                    //                    locale = LOCALE_LINK_ENG,
+                                    //                    Value = "High-value dataset categories"
+                                    //                }
+                                    //            }
+                                    //        }
+                                    //    }
+                                    //};
+                                    //todo MetadataCsw serialize Anchor_Type and PT_FreeText_PropertyType together as CI_Citation_Title
+                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK };
+                                }
 
                                 var dateType = "publication";
-                                if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
-                                    dateType = "publication";
+ 
                                 if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
                                     dateType = "revision";
 
@@ -5202,6 +5224,10 @@ namespace GeoNorgeAPI
         public const string THESAURUS_GEMET_INSPIRE_V1_LINK = "http://inspire.ec.europa.eu/theme";
         public const string THESAURUS_INSPIRE_PRIORITY_DATASET = "INSPIRE priority data set";
         public const string THESAURUS_INSPIRE_PRIORITY_DATASET_LINK = "http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset";
+
+        public const string THESAURUS_HIGHVALUE_DATASET = "High-value dataset kategorier";
+        public const string THESAURUS_HIGHVALUE_DATASET_LINK = "http://data.europa.eu/bna/asd487ae75";
+
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
         public const string THESAURUS_NATIONAL_INITIATIVE_LINK = "https://register.geonorge.no/metadata-kodelister/samarbeid-og-lover";
         public const string THESAURUS_SERVICES_TAXONOMY = "ISO - 19119 geographic services taxonomy";

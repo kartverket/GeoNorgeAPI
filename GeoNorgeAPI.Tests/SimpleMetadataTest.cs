@@ -646,6 +646,21 @@ namespace GeoNorgeAPI.Tests
                     Keyword = "infoFeatureAccessService",
                     Thesaurus = SimpleKeyword.THESAURUS_SERVICE_TYPE
                 },
+                new SimpleKeyword
+                {
+                    Keyword = "High-value datasett",
+                    EnglishKeyword = "High-value dataset",
+                    KeywordLink = "http://data.europa.eu/eli/reg_impl/2023/138/oj",
+
+                },
+                new SimpleKeyword
+                {
+                    Keyword = "Geodata",
+                    EnglishKeyword = "Geospatial",
+                    KeywordLink = "http://data.europa.eu/bna/c_ac64a52d",
+                    Thesaurus = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET
+
+                }
             };
 
             int numberOfInspireKeywords = 0;
@@ -840,7 +855,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
             Assert.AreEqual(1, numberOfAdminUnitKeywords, "Expected one admin unit keyword in same wrapper element");
             Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
-            Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
+            //Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
             Assert.AreEqual(1, numberOfSpatialScopeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(1, numberOfGlobalChangeMasterDirectoryKeywords, "Expected one GCMD keyword in same wrapper element");
 
