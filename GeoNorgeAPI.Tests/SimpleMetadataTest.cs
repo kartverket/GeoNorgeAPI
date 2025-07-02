@@ -698,9 +698,12 @@ namespace GeoNorgeAPI.Tests
                 int numberOfKeywords = descriptiveKeyword.MD_Keywords.keyword.Length;
                 var titleCharacterString = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as CharacterString_PropertyType;
                 var titleAnchor = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as Anchor_Type;
+                var titleAnchorAndFreeText = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as CI_Citation_Title_Extended;
 
                 CharacterString_PropertyType title = null;
-                if (titleAnchor != null)
+                if (titleAnchorAndFreeText != null) 
+                    title = new CharacterString_PropertyType { CharacterString = titleAnchorAndFreeText.freeText.PT_FreeText.textGroup[0].LocalisedCharacterString.Value };
+                else if (titleAnchor != null)
                     title = new CharacterString_PropertyType { CharacterString = titleAnchor.Value };
                 else
                     title = titleCharacterString;

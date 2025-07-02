@@ -1292,7 +1292,30 @@ namespace GeoNorgeAPI
                                     //    }
                                     //};
                                     //todo MetadataCsw serialize Anchor_Type and PT_FreeText_PropertyType together as CI_Citation_Title
-                                    title = new Anchor_Type { Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK };
+                                    title = new CI_Citation_Title_Extended 
+                                    { 
+                                        anchor = new Anchor_Type 
+                                    { 
+                                        Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK 
+                                    }, 
+                                        freeText = new PT_FreeText_PropertyType
+                                        {
+                                            PT_FreeText = new PT_FreeText_Type
+                                            {
+                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                                {
+                                                    new LocalisedCharacterString_PropertyType
+                                                    {
+                                                        LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                        {
+                                                            locale = LOCALE_LINK_ENG,
+                                                            Value = "High-value dataset categories"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    };
                                 }
 
                                 var dateType = "publication";
