@@ -189,7 +189,7 @@ namespace GeoNorgeAPI
                         identification.citation.CI_Citation.title = new CI_Citation_Title();
                     }
 
-                    identification.citation.CI_Citation.title.item = CreateFreeTextElementNorwegian(existingLocalTitle, value);
+                    identification.citation.CI_Citation.title = CreateFreeTextElementNorwegian(existingLocalTitle, value);
                 }
                 else
                 {
@@ -213,11 +213,11 @@ namespace GeoNorgeAPI
             var identification = GetIdentification();
             if (identification != null && identification.citation != null && identification.citation.CI_Citation != null && identification.citation.CI_Citation.title != null)
             {
-                Anchor_Type titleObject = identification.citation.CI_Citation.title.item as Anchor_Type;
+                Anchor_Type titleObject = identification.citation.CI_Citation.title as Anchor_Type;
                 if (titleObject != null)
                     title = toCharString(titleObject.Value);
                 else
-                    title = identification.citation.CI_Citation.title.item as CharacterString_PropertyType;
+                    title = identification.citation.CI_Citation.title as CharacterString_PropertyType;
             }
             return title;
         }
@@ -240,7 +240,7 @@ namespace GeoNorgeAPI
                 identification.citation.CI_Citation.title = new CI_Citation_Title();
             }
 
-            identification.citation.CI_Citation.title.item = element;
+            identification.citation.CI_Citation.title = element;
         }
 
         public string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
@@ -338,7 +338,7 @@ namespace GeoNorgeAPI
                             identification.citation.CI_Citation.title = new CI_Citation_Title();
                         }
 
-                        identification.citation.CI_Citation.title.item = new CharacterString_PropertyType { CharacterString = value };
+                        identification.citation.CI_Citation.title = new CharacterString_PropertyType { CharacterString = value };
 
                     }
                 }
@@ -1139,9 +1139,17 @@ namespace GeoNorgeAPI
                             if (descriptiveKeyword.MD_Keywords.thesaurusName != null && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation != null
                                 && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title != null)
                             {
-                                Anchor_Type titleObject = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
-                                CharacterString_PropertyType titleCharacterString = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.item as CharacterString_PropertyType;
-                                if (titleObject != null)
+                                Anchor_Type titleObject = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title as Anchor_Type;
+                                CI_Citation_Title cI_Citation_Title = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title as CI_Citation_Title;
+                                CI_Citation_Title_Extended cI_Citation_Title_extended = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title as CI_Citation_Title_Extended;
+                                Anchor_Type titleAnchorExtended = cI_Citation_Title_extended?.anchor;
+                                CharacterString_PropertyType titleCharacterString = cI_Citation_Title?.item as CharacterString_PropertyType;
+                                Anchor_Type titleAnchor = cI_Citation_Title?.item as Anchor_Type;
+                                if (titleAnchorExtended != null && !string.IsNullOrEmpty(titleAnchorExtended.Value))
+                                    thesaurus = titleAnchorExtended.Value;
+                                else if (titleAnchor != null && !string.IsNullOrEmpty(titleAnchor.Value))
+                                    thesaurus = titleAnchor.Value;
+                                else if (titleObject != null)
                                     thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = titleObject.Value });
                                 else
                                     thesaurus = GetStringOrNull(new CharacterString_PropertyType { CharacterString = titleCharacterString.CharacterString });
@@ -1161,6 +1169,20 @@ namespace GeoNorgeAPI
 
                                 if (MetadataLanguage == LOCALE_ENG.ToLower())
                                     keywordEnglishValue = GetStringOrNull(keywordElement);
+
+                                if (keywordElement.keyword.GetType() == typeof(MD_Keyword_Extended)) 
+                                {
+                                   var extendedKeyword = keywordElement.keyword as MD_Keyword_Extended;
+                                    if (extendedKeyword != null && extendedKeyword.anchor != null && !string.IsNullOrEmpty(extendedKeyword.anchor.href))
+                                    {
+                                        keywordLink = extendedKeyword.anchor.href;
+                                        keywordValue = extendedKeyword.anchor.Value;
+                                    }
+                                    if(extendedKeyword != null && extendedKeyword.freeText != null) 
+                                    {
+                                       keywordEnglishValue = GetEnglishValueFromFreeText(extendedKeyword.freeText);
+                                    }
+                                }
 
                                 if (!string.IsNullOrWhiteSpace(keywordValue))
                                 {
@@ -1203,7 +1225,18 @@ namespace GeoNorgeAPI
 
                                     if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
                                     {
-                                        if (MetadataLanguage == LOCALE_ENG.ToLower())
+                                        if(!string.IsNullOrEmpty(fk.KeywordLink) && fk.KeywordLink == SimpleKeyword.HIGHVALUE_DATASET_LINK) 
+                                        { 
+                                            keywordsToAdd.Add(new MD_Keyword
+                                            {
+                                                keyword = new MD_Keyword_Extended
+                                                {
+                                                    anchor = new Anchor_Type { Value = fk.Keyword, href = fk.KeywordLink },
+                                                    freeText = CreateFreeTextElementNorwegian(fk.EnglishKeyword, fk.Keyword)
+                                                }
+                                            });
+                                        }
+                                        else if (MetadataLanguage == LOCALE_ENG.ToLower())
                                             keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElementNorwegian(fk.EnglishKeyword, fk.Keyword) });
                                         else
                                             keywordsToAdd.Add(new MD_Keyword { keyword = CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword) });
@@ -1274,24 +1307,7 @@ namespace GeoNorgeAPI
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
                                 {
                                     date = "2023-09-27";
-                                    //title = new PT_FreeText_PropertyType
-                                    //{
-                                    //    PT_FreeText = new PT_FreeText_Type
-                                    //    {                                            
-                                    //        textGroup = new LocalisedCharacterString_PropertyType[]
-                                    //        {
-                                    //            new LocalisedCharacterString_PropertyType
-                                    //            {
-                                    //                LocalisedCharacterString = new LocalisedCharacterString_Type
-                                    //                {
-                                    //                    locale = LOCALE_LINK_ENG,
-                                    //                    Value = "High-value dataset categories"
-                                    //                }
-                                    //            }
-                                    //        }
-                                    //    }
-                                    //};
-                                    //todo MetadataCsw serialize Anchor_Type and PT_FreeText_PropertyType together as CI_Citation_Title
+  
                                     title = new CI_Citation_Title_Extended 
                                     { 
                                         anchor = new Anchor_Type 
@@ -2716,8 +2732,8 @@ namespace GeoNorgeAPI
 
 
                                 // title
-                                if (result.specification.CI_Citation.title.item != null) {
-                                    value.Title = GetStringFromObject(result.specification.CI_Citation.title.item);
+                                if (result.specification.CI_Citation.title != null) {
+                                    value.Title = GetStringFromObject(result.specification.CI_Citation.title);
                                 }
 
 
@@ -2880,7 +2896,7 @@ namespace GeoNorgeAPI
                                             // title
                                             if (result.specification.CI_Citation.title != null)
                                             {
-                                                var anchorTitle = result.specification.CI_Citation.title.item as Anchor_Type;
+                                                var anchorTitle = result.specification.CI_Citation.title as Anchor_Type;
                                                 if (anchorTitle != null)
                                                 {
                                                     resultItem.Title = anchorTitle.Value;
@@ -5250,6 +5266,7 @@ namespace GeoNorgeAPI
 
         public const string THESAURUS_HIGHVALUE_DATASET = "High-value dataset kategorier";
         public const string THESAURUS_HIGHVALUE_DATASET_LINK = "http://data.europa.eu/bna/asd487ae75";
+        public const string HIGHVALUE_DATASET_LINK = "http://data.europa.eu/eli/reg_impl/2023/138/oj";
 
         public const string THESAURUS_NATIONAL_INITIATIVE = "Nasjonal inndeling i geografiske initiativ og SDI-er";
         public const string THESAURUS_NATIONAL_INITIATIVE_LINK = "https://register.geonorge.no/metadata-kodelister/samarbeid-og-lover";
