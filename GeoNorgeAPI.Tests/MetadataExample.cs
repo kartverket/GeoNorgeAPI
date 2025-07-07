@@ -242,25 +242,30 @@ namespace GeoNorgeAPI.Tests
                             {
                                 CI_Citation = new CI_Citation_Type
                                     {
-                                        title = new CI_Citation_Title_Extended
-                                        {  anchor = new Anchor_Type{ href = SimpleKeyword.HIGHVALUE_DATASET_LINK, Value = "High-value dataset kategorier" },
-                                        freeText = new PT_FreeText_PropertyType
-                                        {
-                                            PT_FreeText = new PT_FreeText_Type
-                                            {
-                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                        title = new CI_Citation_Title
+                                        {  
+                                            item = new CI_Citation_Title_Extended
+                                            { 
+                                                anchor = new Anchor_Type{ href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK, Value = "High-value dataset kategorier" },
+                                                freeText = new PT_FreeText_PropertyType
                                                 {
-                                                    new LocalisedCharacterString_PropertyType
+                                                    PT_FreeText = new PT_FreeText_Type
                                                     {
-                                                        LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
                                                         {
-                                                            locale = "#ENG",
-                                                            Value = "High-value dataset categories"
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                                LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                    locale = "#ENG",
+                                                                    Value = "High-value dataset categories"
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 }
-                                            }
-                                        }},
+                                            } 
+                                        },
 
                                         date = new [] { new CI_Date_PropertyType
                                             {

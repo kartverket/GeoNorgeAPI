@@ -189,7 +189,7 @@ namespace GeoNorgeAPI
                         identification.citation.CI_Citation.title = new CI_Citation_Title();
                     }
 
-                    identification.citation.CI_Citation.title = CreateFreeTextElementNorwegian(existingLocalTitle, value);
+                    identification.citation.CI_Citation.title.item = CreateFreeTextElementNorwegian(existingLocalTitle, value);
                 }
                 else
                 {
@@ -213,11 +213,11 @@ namespace GeoNorgeAPI
             var identification = GetIdentification();
             if (identification != null && identification.citation != null && identification.citation.CI_Citation != null && identification.citation.CI_Citation.title != null)
             {
-                Anchor_Type titleObject = identification.citation.CI_Citation.title as Anchor_Type;
+                Anchor_Type titleObject = identification.citation.CI_Citation.title.item as Anchor_Type;
                 if (titleObject != null)
                     title = toCharString(titleObject.Value);
                 else
-                    title = identification.citation.CI_Citation.title as CharacterString_PropertyType;
+                    title = identification.citation.CI_Citation.title.item as CharacterString_PropertyType;
             }
             return title;
         }
@@ -240,7 +240,7 @@ namespace GeoNorgeAPI
                 identification.citation.CI_Citation.title = new CI_Citation_Title();
             }
 
-            identification.citation.CI_Citation.title = element;
+            identification.citation.CI_Citation.title.item = element;
         }
 
         public string GetEnglishValueFromFreeText(CharacterString_PropertyType input)
@@ -338,7 +338,7 @@ namespace GeoNorgeAPI
                             identification.citation.CI_Citation.title = new CI_Citation_Title();
                         }
 
-                        identification.citation.CI_Citation.title = new CharacterString_PropertyType { CharacterString = value };
+                        identification.citation.CI_Citation.title.item = new CharacterString_PropertyType { CharacterString = value };
 
                     }
                 }
@@ -1139,12 +1139,16 @@ namespace GeoNorgeAPI
                             if (descriptiveKeyword.MD_Keywords.thesaurusName != null && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation != null
                                 && descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title != null)
                             {
-                                Anchor_Type titleObject = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title as Anchor_Type;
-                                CI_Citation_Title cI_Citation_Title = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title as CI_Citation_Title;
-                                CI_Citation_Title_Extended cI_Citation_Title_extended = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title as CI_Citation_Title_Extended;
+                                Anchor_Type titleObject = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
+                                CI_Citation_Title cI_Citation_Title = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title.item as CI_Citation_Title;
+                                CI_Citation_Title_Extended cI_Citation_Title_extended = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title?.item as CI_Citation_Title_Extended;
                                 Anchor_Type titleAnchorExtended = cI_Citation_Title_extended?.anchor;
                                 CharacterString_PropertyType titleCharacterString = cI_Citation_Title?.item as CharacterString_PropertyType;
                                 Anchor_Type titleAnchor = cI_Citation_Title?.item as Anchor_Type;
+
+                                if(titleCharacterString == null)
+                                    titleCharacterString = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title?.item as CharacterString_PropertyType;
+
                                 if (titleAnchorExtended != null && !string.IsNullOrEmpty(titleAnchorExtended.Value))
                                     thesaurus = titleAnchorExtended.Value;
                                 else if (titleAnchor != null && !string.IsNullOrEmpty(titleAnchor.Value))
@@ -1225,7 +1229,7 @@ namespace GeoNorgeAPI
 
                                     if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
                                     {
-                                        if(!string.IsNullOrEmpty(fk.KeywordLink) && fk.KeywordLink == SimpleKeyword.HIGHVALUE_DATASET_LINK) 
+                                        if(!string.IsNullOrEmpty(fk.KeywordLink) && (fk.KeywordLink == SimpleKeyword.HIGHVALUE_DATASET_LINK || fk.KeywordLink.StartsWith("http://data.europa.eu/bna/c_"))) 
                                         { 
                                             keywordsToAdd.Add(new MD_Keyword
                                             {
@@ -2896,7 +2900,7 @@ namespace GeoNorgeAPI
                                             // title
                                             if (result.specification.CI_Citation.title != null)
                                             {
-                                                var anchorTitle = result.specification.CI_Citation.title as Anchor_Type;
+                                                var anchorTitle = result.specification.CI_Citation.title.item as Anchor_Type;
                                                 if (anchorTitle != null)
                                                 {
                                                     resultItem.Title = anchorTitle.Value;

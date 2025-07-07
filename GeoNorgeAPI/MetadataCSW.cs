@@ -17237,7 +17237,7 @@ namespace www.opengis.net
     public partial class CI_Citation_Type : AbstractObject_Type
     {
 
-        private object titleField;
+        private CI_Citation_Title titleField;
 
         private CharacterString_PropertyType[] alternateTitleField;
 
@@ -17264,7 +17264,7 @@ namespace www.opengis.net
         private CharacterString_PropertyType iSSNField;
 
         /// <remarks/>
-        public object title
+        public CI_Citation_Title title
         {
             get
             {
@@ -20853,10 +20853,10 @@ namespace www.opengis.net
                     keywordNorwegian = keywordNorwegianNode.InnerText;
 
                 if (!string.IsNullOrEmpty(keywordNorwegian))
-                    keyword = CreateFreeTextElementNorwegian("hoya" + keywordString, keywordNorwegian);
+                    keyword = CreateFreeTextElementNorwegian(keywordString, keywordNorwegian);
                 else
 
-                    keyword = CreateFreeTextElement("hoyb" + keywordString, keywordEnglish);
+                    keyword = CreateFreeTextElement(keywordString, keywordEnglish);
             }
             else
             {
@@ -20865,7 +20865,7 @@ namespace www.opengis.net
                 if (keyWordNode != null)
                     keyWordString = keyWordNode.InnerText;
 
-                keyword = new CharacterString_PropertyType { CharacterString = "hoyc" + keyWordString };
+                keyword = new CharacterString_PropertyType { CharacterString = keyWordString };
             }
         }
 
@@ -20932,9 +20932,9 @@ namespace www.opengis.net
                     writer.WriteStartElement("LocalisedCharacterString", "http://www.isotc211.org/2005/gmd");
                     writer.WriteAttributeString("locale", locale);
                     if (locale == "#locale-nor")
-                        writer.WriteValue("hoy" + GetNorwegianValueFromFreeText(charString));
+                        writer.WriteValue(GetNorwegianValueFromFreeText(charString));
                     else
-                        writer.WriteValue("hoy2" + GetEnglishValueFromFreeText(charString));
+                        writer.WriteValue(GetEnglishValueFromFreeText(charString));
                     writer.WriteEndElement();
                     writer.WriteEndElement();
                     writer.WriteEndElement();
@@ -20945,7 +20945,7 @@ namespace www.opengis.net
                 CharacterString_PropertyType charString = this.keywordField as CharacterString_PropertyType;
                 if (charString != null)
                 {
-                    writer.WriteElementString("gco:CharacterString", "hoyd" + charString.CharacterString);
+                    writer.WriteElementString("gco:CharacterString", charString.CharacterString);
                 }
             }
             else if (this.keywordField.GetType() == typeof(Anchor_Type))

@@ -85,7 +85,7 @@ namespace GeoNorgeAPI.Tests
         public void ShouldReturnEnglishTitleWhenTitleIsLocalized()
         {
             string expectedEnglishTitle = "This is english.";
-            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new PT_FreeText_PropertyType
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item = new PT_FreeText_PropertyType
             {
                 CharacterString = "Dette er norsk",
                 PT_FreeText = new PT_FreeText_Type
@@ -111,7 +111,7 @@ namespace GeoNorgeAPI.Tests
 
             _md.EnglishTitle = expectedEnglishTitle;
 
-            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title as CharacterString_PropertyType;
+            CharacterString_PropertyType titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item as CharacterString_PropertyType;
             PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Eksempeldatasettet sin tittel.", freeTextElement.CharacterString);
@@ -145,7 +145,7 @@ namespace GeoNorgeAPI.Tests
             _md.Title = "Oppdatert norsk tittel";
 
             var titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
-            PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
+            PT_FreeText_PropertyType freeTextElement = titleElement.item as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Oppdatert norsk tittel", freeTextElement.CharacterString);
             Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
@@ -701,9 +701,9 @@ namespace GeoNorgeAPI.Tests
             foreach (MD_Keywords_PropertyType descriptiveKeyword in descriptiveKeywords)
             {
                 int numberOfKeywords = descriptiveKeyword.MD_Keywords.keyword.Length;
-                var titleCharacterString = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title as CharacterString_PropertyType;
-                var titleAnchor = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title as Anchor_Type;
-                var titleAnchorAndFreeText = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title as CI_Citation_Title_Extended;
+                var titleCharacterString = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as CharacterString_PropertyType;
+                var titleAnchor = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as Anchor_Type;
+                var titleAnchorAndFreeText = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as CI_Citation_Title_Extended;
 
                 CharacterString_PropertyType title = null;
                 if (titleAnchorAndFreeText != null) 
@@ -749,11 +749,9 @@ namespace GeoNorgeAPI.Tests
                     else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
                     {
                         numberOfHighValueDatasetKeywords = numberOfKeywords;
-                        //todo fix here
-                        //var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CI_Citation_Title_Extended;
-                        //if (keyword.anchor.Value.Equals("Geodata") && keyword.anchor.href.Equals("http://data.europa.eu/bna/c_ac64a52d"))
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
-                        if (keyword.CharacterString.Equals("Geodata"))
+
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as MD_Keyword_Extended;
+                        if (keyword.anchor.Value.Equals("Geodata") && keyword.anchor.href.Equals("http://data.europa.eu/bna/c_ac64a52d"))
                         {
                             highValueDatasetsFound = true;
                         }
@@ -922,7 +920,7 @@ namespace GeoNorgeAPI.Tests
 
             var keyword = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords[0];
 
-            var thesaurus = keyword.MD_Keywords.thesaurusName.CI_Citation.title as Anchor_Type;
+            var thesaurus = keyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
             Assert.AreEqual(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET, thesaurus.Value);
         }
 
@@ -1649,7 +1647,7 @@ namespace GeoNorgeAPI.Tests
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
 
             var actualExplanation = conformanceResult.explanation as PT_FreeText_PropertyType;
-            var title = conformanceResult.specification.CI_Citation.title as CharacterString_PropertyType;
+            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
 
             Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
@@ -2141,10 +2139,10 @@ namespace GeoNorgeAPI.Tests
             Integer_PropertyType resultFairValue = resultFair.value[0].Record as Integer_PropertyType;           
             var explanation = conformanceResult.explanation as PT_FreeText_PropertyType;
             var explanation2 = conformanceResult2.explanation as PT_FreeText_PropertyType;
-            var title = conformanceResult.specification.CI_Citation.title as CharacterString_PropertyType;
-            var responsible = conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title as CharacterString_PropertyType;
-            var title2 = conformanceResult2.specification.CI_Citation.title as CharacterString_PropertyType;
-            var responsible2 = conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title as CharacterString_PropertyType;
+            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
+            var responsible = conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
+            var title2 = conformanceResult2.specification.CI_Citation.title.item as CharacterString_PropertyType;
+            var responsible2 = conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
 
             Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
@@ -2162,7 +2160,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
             Assert.AreEqual(expectedResponsible2, responsible2.CharacterString);
 
-            var anchorTitle3 = conformanceResult3.specification.CI_Citation.title as Anchor_Type;
+            var anchorTitle3 = conformanceResult3.specification.CI_Citation.title.item as Anchor_Type;
             Assert.AreEqual(expectedTitle3, anchorTitle3.Value);
             Assert.AreEqual(expectedSpecificationLink3, conformanceResult3.specification.href);
             Assert.AreEqual(expectedTitleLink3, anchorTitle3.href);
