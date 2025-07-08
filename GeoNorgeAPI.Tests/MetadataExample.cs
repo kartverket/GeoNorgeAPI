@@ -183,7 +183,110 @@ namespace GeoNorgeAPI.Tests
                                     }
                             }
                     }
-                } 
+                },
+                new MD_Keywords_PropertyType {
+                    MD_Keywords = new MD_Keywords_Type {
+                        keyword = new MD_Keyword[]
+                        { new MD_Keyword
+                           { keyword =  new MD_Keyword_Extended
+                           { anchor = new Anchor_Type{ href = SimpleKeyword.HIGHVALUE_DATASET_LINK, Value = "High-value datasett" },
+                            freeText = new PT_FreeText_PropertyType
+                            { 
+                                    PT_FreeText = new PT_FreeText_Type
+                                    {
+                                            textGroup = new LocalisedCharacterString_PropertyType[]
+                                            {
+                                                new LocalisedCharacterString_PropertyType
+                                                {
+                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                    {
+                                                    locale = "#ENG",
+                                                    Value = "High-value dataset"
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
+                            }
+                           }
+                        }
+                    }
+                },
+                new MD_Keywords_PropertyType {
+                    MD_Keywords = new MD_Keywords_Type {
+                        keyword = new MD_Keyword[]
+                        { new MD_Keyword
+                        { keyword = new MD_Keyword_Extended
+                           { anchor =  new Anchor_Type{ href = "http://data.europa.eu/bna/c_ac64a52d", Value = "Geodata" },
+                           freeText = new PT_FreeText_PropertyType
+                           {
+                                PT_FreeText = new PT_FreeText_Type
+                                {
+                                    textGroup = new LocalisedCharacterString_PropertyType[]
+                                    {
+                                        new LocalisedCharacterString_PropertyType
+                                        {
+                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                            {
+                                                locale = "#ENG",
+                                                Value = "Geospatial"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                           } 
+                        }
+                        },
+                        thesaurusName = new CI_Citation_PropertyType
+                            {
+                                CI_Citation = new CI_Citation_Type
+                                    {
+                                        title = new CI_Citation_Title
+                                        {  
+                                            item = new CI_Citation_Title_Extended
+                                            { 
+                                                anchor = new Anchor_Type{ href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK, Value = "High-value dataset kategorier" },
+                                                freeText = new PT_FreeText_PropertyType
+                                                {
+                                                    PT_FreeText = new PT_FreeText_Type
+                                                    {
+                                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                                        {
+                                                            new LocalisedCharacterString_PropertyType
+                                                            {
+                                                                LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                {
+                                                                    locale = "#ENG",
+                                                                    Value = "High-value dataset categories"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            } 
+                                        },
+
+                                        date = new [] { new CI_Date_PropertyType
+                                            {
+                                                CI_Date = new CI_Date_Type
+                                                    {
+                                                        date = new Date_PropertyType { Item = "2023-09-27" },
+                                                        dateType = new CI_DateTypeCode_PropertyType
+                                                            {
+                                                                CI_DateTypeCode = new CodeListValue_Type()
+                                                                    {
+                                                                        codeList = "http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode",
+                                                                        codeListValue = "publication"
+                                                                    }
+                                                            }
+                                                    }
+                                            }
+                                        }
+                                    }
+                            }
+                    }
+                },
             };
             mdDataIdentificationType.resourceConstraints = new[]
                 {

@@ -144,8 +144,8 @@ namespace GeoNorgeAPI.Tests
 
             _md.Title = "Oppdatert norsk tittel";
 
-            var titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title.item;
-            PT_FreeText_PropertyType freeTextElement = titleElement as PT_FreeText_PropertyType;
+            var titleElement = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title;
+            PT_FreeText_PropertyType freeTextElement = titleElement.item as PT_FreeText_PropertyType;
             Assert.IsNotNull(freeTextElement, "PT_FreeText_PropertyType does not exist");
             Assert.AreEqual("Oppdatert norsk tittel", freeTextElement.CharacterString);
             Assert.AreEqual(SimpleMetadata.LOCALE_ENG, freeTextElement.PT_FreeText.textGroup[0].LocalisedCharacterString.locale);
@@ -569,7 +569,9 @@ namespace GeoNorgeAPI.Tests
         {
             List<SimpleKeyword> keywords = _md.Keywords;
 
-            Assert.AreEqual(1, keywords.Count);
+            Assert.AreEqual(3, keywords.Count);
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
         }
 
         [Test]
@@ -646,10 +648,26 @@ namespace GeoNorgeAPI.Tests
                     Keyword = "infoFeatureAccessService",
                     Thesaurus = SimpleKeyword.THESAURUS_SERVICE_TYPE
                 },
+                new SimpleKeyword
+                {
+                    Keyword = "High-value datasett",
+                    EnglishKeyword = "High-value dataset",
+                    KeywordLink = SimpleKeyword.HIGHVALUE_DATASET_LINK,
+
+                },
+                new SimpleKeyword
+                {
+                    Keyword = "Geodata",
+                    EnglishKeyword = "Geospatial",
+                    KeywordLink = "http://data.europa.eu/bna/c_ac64a52d",
+                    Thesaurus = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET
+
+                }
             };
 
             int numberOfInspireKeywords = 0;
             int numberOfInspirePriorityDatasetKeywords = 0;
+            int numberOfHighValueDatasetKeywords = 0;
             int numberOfNationalKeywords = 0;
             int numberOfThemeKeywords = 0;
             int numberOfPlaceKeywords = 0;
@@ -661,6 +679,8 @@ namespace GeoNorgeAPI.Tests
             int numberOfGlobalChangeMasterDirectoryKeywords = 0;
             bool inspireAddressesFound = false;
             bool inspirePriorityDatasetsFound = false;
+            bool highValueDatasetsFound = false;
+            bool highValueDatasetSelelectedFound = false;
             bool inspireBuildingsFound = false;
             bool nationalDOKfound = false;
             bool placeOsloFound = false;
@@ -681,11 +701,14 @@ namespace GeoNorgeAPI.Tests
             foreach (MD_Keywords_PropertyType descriptiveKeyword in descriptiveKeywords)
             {
                 int numberOfKeywords = descriptiveKeyword.MD_Keywords.keyword.Length;
-                var titleCharacterString = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as CharacterString_PropertyType;
-                var titleAnchor = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title?.item as Anchor_Type;
+                var titleCharacterString = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as CharacterString_PropertyType;
+                var titleAnchor = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as Anchor_Type;
+                var titleAnchorAndFreeText = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as CI_Citation_Title_Extended;
 
                 CharacterString_PropertyType title = null;
-                if (titleAnchor != null)
+                if (titleAnchorAndFreeText != null) 
+                    title = new CharacterString_PropertyType { CharacterString = titleAnchorAndFreeText.anchor.Value};
+                else if (titleAnchor != null)
                     title = new CharacterString_PropertyType { CharacterString = titleAnchor.Value };
                 else
                     title = titleCharacterString;
@@ -721,6 +744,16 @@ namespace GeoNorgeAPI.Tests
                         if (keyword.Value.Equals("Eu direktiv 1") && keyword.href.Equals("http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset/dir-1991-31"))
                         {
                             inspirePriorityDatasetsFound = true;
+                        }
+                    }
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
+                    {
+                        numberOfHighValueDatasetKeywords = numberOfKeywords;
+
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as MD_Keyword_Extended;
+                        if (keyword.anchor.Value.Equals("Geodata") && keyword.anchor.href.Equals("http://data.europa.eu/bna/c_ac64a52d"))
+                        {
+                            highValueDatasetsFound = true;
                         }
                     }
                     else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
@@ -814,8 +847,13 @@ namespace GeoNorgeAPI.Tests
                     foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                     {
                         var keyword = k.keyword as CharacterString_PropertyType;
+                        var keywordExt = k.keyword as MD_Keyword_Extended;
 
-                        if (keyword.CharacterString.Equals("Eksempeldata"))
+                        if(keywordExt != null && keywordExt.anchor.href == SimpleKeyword.HIGHVALUE_DATASET_LINK)
+                        {
+                            highValueDatasetSelelectedFound = true;
+                        }
+                        else if (keyword.CharacterString.Equals("Eksempeldata"))
                         {
                             otherEksempeldataFound = true;
                             var freeText = k.keyword as PT_FreeText_PropertyType;
@@ -834,18 +872,21 @@ namespace GeoNorgeAPI.Tests
 
             Assert.AreEqual(2, numberOfInspireKeywords, "Expected two inspire keywords in same wrapper element");
             Assert.AreEqual(1, numberOfInspirePriorityDatasetKeywords, "Expected one inspire priority dataset keyword in same wrapper element");
+            Assert.AreEqual(1, numberOfHighValueDatasetKeywords, "Expected one high-value dataset keyword in same wrapper element");
             Assert.AreEqual(1, numberOfNationalKeywords, "Expected one national keyword in same wrapper element");
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
             Assert.AreEqual(2, numberOfPlaceKeywords, "Expected two place keywords in same wrapper element");
             Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
             Assert.AreEqual(1, numberOfAdminUnitKeywords, "Expected one admin unit keyword in same wrapper element");
             Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
-            Assert.AreEqual(2, numberOfOtherKeywords, "Expected two other keywords in same wrapper element");
+            Assert.AreEqual(3, numberOfOtherKeywords, "Expected three other keywords in same wrapper element"); // 3 because of high-value dataset without thesaurus/type
             Assert.AreEqual(1, numberOfSpatialScopeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(1, numberOfGlobalChangeMasterDirectoryKeywords, "Expected one GCMD keyword in same wrapper element");
 
             Assert.True(inspireAddressesFound);
             Assert.True(inspirePriorityDatasetsFound);
+            Assert.True(highValueDatasetSelelectedFound);
+            Assert.True(highValueDatasetsFound);
             Assert.True(inspireBuildingsFound);
             Assert.True(nationalDOKfound);
             Assert.True(placeOsloFound);
