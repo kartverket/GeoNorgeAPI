@@ -1236,7 +1236,7 @@ namespace GeoNorgeAPI
                                                 keyword = new MD_Keyword_Extended
                                                 {
                                                     anchor = new Anchor_Type { Value = fk.Keyword, href = fk.KeywordLink },
-                                                    freeText = CreateFreeTextElementNorwegian(fk.EnglishKeyword, fk.Keyword)
+                                                    freeText = CreateFreeTextElement(fk.Keyword, fk.EnglishKeyword)
                                                 }
                                             });
                                         }
