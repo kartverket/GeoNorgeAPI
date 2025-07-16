@@ -1,0 +1,1726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<csw:GetRecordByIdResponse xmlns:csw="http://www.opengis.net/cat/csw/2.0.2">
+	<gmd:MD_Metadata xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:gco="http://www.isotc211.org/2005/gco" xmlns:gmx="http://www.isotc211.org/2005/gmx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:geonet="http://www.fao.org/geonetwork" xsi:schemaLocation="http://www.isotc211.org/2005/gmd http://schemas.opengis.net/iso/19139/20060504/gmd/gmd.xsd http://www.isotc211.org/2005/gmx http://schemas.opengis.net/iso/19139/20060504/gmx/gmx.xsd">
+		<gmd:fileIdentifier>
+			<gco:CharacterString>041f1e6e-bdbc-4091-b48f-8a5990f3cc5b</gco:CharacterString>
+		</gmd:fileIdentifier>
+		<gmd:language>
+			<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="nor">Norsk</gmd:LanguageCode>
+		</gmd:language>
+		<gmd:parentIdentifier />
+		<gmd:hierarchyLevel>
+			<gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" />
+		</gmd:hierarchyLevel>
+		<gmd:contact>
+			<gmd:CI_ResponsibleParty>
+				<gmd:individualName>
+					<gco:CharacterString>Liv Mari Nesje</gco:CharacterString>
+				</gmd:individualName>
+				<gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+					<gco:CharacterString>Kartverket</gco:CharacterString>
+					<gmd:PT_FreeText>
+						<gmd:textGroup>
+							<gmd:LocalisedCharacterString locale="#ENG">Norwegian Mapping Authority</gmd:LocalisedCharacterString>
+						</gmd:textGroup>
+					</gmd:PT_FreeText>
+				</gmd:organisationName>
+				<gmd:contactInfo>
+					<gmd:CI_Contact>
+						<gmd:address>
+							<gmd:CI_Address>
+								<gmd:electronicMailAddress>
+									<gco:CharacterString>post@kartverket.no</gco:CharacterString>
+								</gmd:electronicMailAddress>
+							</gmd:CI_Address>
+						</gmd:address>
+					</gmd:CI_Contact>
+				</gmd:contactInfo>
+				<gmd:role>
+					<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="pointOfContact" />
+				</gmd:role>
+			</gmd:CI_ResponsibleParty>
+		</gmd:contact>
+		<gmd:dateStamp>
+			<gco:Date>2025-07-14</gco:Date>
+		</gmd:dateStamp>
+		<gmd:metadataStandardName>
+			<gco:CharacterString>ISO19115</gco:CharacterString>
+		</gmd:metadataStandardName>
+		<gmd:metadataStandardVersion>
+			<gco:CharacterString>2003</gco:CharacterString>
+		</gmd:metadataStandardVersion>
+		<gmd:locale>
+			<gmd:PT_Locale id="ENG">
+				<gmd:languageCode>
+					<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="eng" />
+				</gmd:languageCode>
+				<gmd:characterEncoding>
+					<gmd:MD_CharacterSetCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_CharacterSetCode" codeListValue="utf8" />
+				</gmd:characterEncoding>
+			</gmd:PT_Locale>
+		</gmd:locale>
+		<gmd:spatialRepresentationInfo />
+		<gmd:referenceSystemInfo>
+			<gmd:MD_ReferenceSystem>
+				<gmd:referenceSystemIdentifier>
+					<gmd:RS_Identifier>
+						<gmd:code>
+							<gmx:Anchor xlink:href="http://www.opengis.net/def/crs/EPSG/0/25832">EPSG:25832</gmx:Anchor>
+						</gmd:code>
+					</gmd:RS_Identifier>
+				</gmd:referenceSystemIdentifier>
+			</gmd:MD_ReferenceSystem>
+		</gmd:referenceSystemInfo>
+		<gmd:referenceSystemInfo>
+			<gmd:MD_ReferenceSystem>
+				<gmd:referenceSystemIdentifier>
+					<gmd:RS_Identifier>
+						<gmd:code>
+							<gmx:Anchor xlink:href="http://www.opengis.net/def/crs/EPSG/0/25833">EPSG:25833</gmx:Anchor>
+						</gmd:code>
+					</gmd:RS_Identifier>
+				</gmd:referenceSystemIdentifier>
+			</gmd:MD_ReferenceSystem>
+		</gmd:referenceSystemInfo>
+		<gmd:referenceSystemInfo>
+			<gmd:MD_ReferenceSystem>
+				<gmd:referenceSystemIdentifier>
+					<gmd:RS_Identifier>
+						<gmd:code>
+							<gmx:Anchor xlink:href="http://www.opengis.net/def/crs/EPSG/0/25835">EPSG:25835</gmx:Anchor>
+						</gmd:code>
+					</gmd:RS_Identifier>
+				</gmd:referenceSystemIdentifier>
+			</gmd:MD_ReferenceSystem>
+		</gmd:referenceSystemInfo>
+		<gmd:referenceSystemInfo>
+			<gmd:MD_ReferenceSystem>
+				<gmd:referenceSystemIdentifier>
+					<gmd:RS_Identifier>
+						<gmd:code>
+							<gmx:Anchor xlink:href="http://www.opengis.net/def/crs/EPSG/0/3035">EPSG:3035</gmx:Anchor>
+						</gmd:code>
+					</gmd:RS_Identifier>
+				</gmd:referenceSystemIdentifier>
+			</gmd:MD_ReferenceSystem>
+		</gmd:referenceSystemInfo>
+		<gmd:referenceSystemInfo>
+			<gmd:MD_ReferenceSystem>
+				<gmd:referenceSystemIdentifier>
+					<gmd:RS_Identifier>
+						<gmd:code>
+							<gmx:Anchor xlink:href="http://www.opengis.net/def/crs/EPSG/0/4258">EPSG:4258</gmx:Anchor>
+						</gmd:code>
+					</gmd:RS_Identifier>
+				</gmd:referenceSystemIdentifier>
+			</gmd:MD_ReferenceSystem>
+		</gmd:referenceSystemInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>https://register.geonorge.no/produktspesifikasjoner/administrative-enheter-norge</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>produktspesifikasjon</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>produktspesifikasjon</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">data product specification</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>https://register.geonorge.no/produktark/administrative-enheter-norge</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>produktark</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>produktark</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">product sheet</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage />
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>produktside</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>produktside</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">website</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>https://register.geonorge.no/tegneregler/administrative-enheter-norge</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>tegnforklaring</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>tegnforklaring</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">cartography</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:kv_adminomr_kommune</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>dekningsoversikt</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>dekningsoversikt</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">coverage map</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>https://www.kartverket.no/data/</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>hjelp</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>hjelp</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">help</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage>
+							<gmd:URL>TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:kv_adminomr_kommune</gmd:URL>
+						</gmd:linkage>
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>dekningsoversikt rutenett</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>dekningsoversikt rutenett</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">grid coverage map</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:metadataExtensionInfo>
+			<gmd:MD_MetadataExtensionInformation>
+				<gmd:extensionOnLineResource>
+					<gmd:CI_OnlineResource>
+						<gmd:linkage />
+						<gmd:protocol>
+							<gco:CharacterString>WWW:LINK-1.0-http--related</gco:CharacterString>
+						</gmd:protocol>
+						<gmd:applicationProfile>
+							<gco:CharacterString>dekningsoversikt celle</gco:CharacterString>
+						</gmd:applicationProfile>
+						<gmd:name xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>dekningsoversikt celle</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">cell coverage map</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:name>
+					</gmd:CI_OnlineResource>
+				</gmd:extensionOnLineResource>
+			</gmd:MD_MetadataExtensionInformation>
+		</gmd:metadataExtensionInfo>
+		<gmd:identificationInfo>
+			<gmd:MD_DataIdentification>
+				<gmd:citation>
+					<gmd:CI_Citation>
+						<gmd:title xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Administrative enheter kommuner</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Administrative units municipalities</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:title>
+						<gmd:date>
+							<gmd:CI_Date>
+								<gmd:date>
+									<gco:Date>2006-07-01</gco:Date>
+								</gmd:date>
+								<gmd:dateType>
+									<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+								</gmd:dateType>
+							</gmd:CI_Date>
+						</gmd:date>
+						<gmd:date>
+							<gmd:CI_Date>
+								<gmd:date>
+									<gco:Date>0001-01-01</gco:Date>
+								</gmd:date>
+								<gmd:dateType>
+									<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="creation" />
+								</gmd:dateType>
+							</gmd:CI_Date>
+						</gmd:date>
+						<gmd:date>
+							<gmd:CI_Date>
+								<gmd:date>
+									<gco:Date>2025-07-04</gco:Date>
+								</gmd:date>
+								<gmd:dateType>
+									<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="revision" />
+								</gmd:dateType>
+							</gmd:CI_Date>
+						</gmd:date>
+						<gmd:identifier>
+							<gmd:MD_Identifier>
+								<gmd:code>
+									<gmx:Anchor xlink:href="https://data.geonorge.no/sosi/administrativeenheter/kommuner">kommuner</gmx:Anchor>
+								</gmd:code>
+							</gmd:MD_Identifier>
+						</gmd:identifier>
+					</gmd:CI_Citation>
+				</gmd:citation>
+				<gmd:abstract xsi:type="gmd:PT_FreeText_PropertyType">
+					<gco:CharacterString>
+						Datasettet viser kommuneinndelinga i landet med de mest nøyaktige grensene som er registrert digitalt og som er samlet i ett datasett. Datasettet har referansedato 1.7.2025, og er oppdatert med overføring av et areal mellom Sel og Vågå ved Liaskarven - Rudihøe, i tillegg til ei retting av kommunegrensa mellom Stavanger og Sola ved Liapynten.
+
+						Flatene inneholder egenskaper som forteller om offisielle kommunenumre. De offisielle norske, samiske og kvenske navnene for kommunene er hentet fra SSR. I tillegg finnes informasjon om samiske forvaltningsområder.
+
+						Geodataene er fra nasjonal inndelingsbase, som er en del av matrikkelen. Ved overgang til ny forvaltningsløsning, ble det også gjort endringer i UML-modellen.
+					</gco:CharacterString>
+					<gmd:PT_FreeText>
+						<gmd:textGroup>
+							<gmd:LocalisedCharacterString locale="#ENG">
+								The dataset shows national, county and municipal divisions within the country. It has the most accurate boundaries that have been recorded digitally and are collected in a dataset.
+
+								The municipalities are delimited by National Border, Outer Limit of Territorial Waters 12 Nautical Miles, Agreed Delimitation Line, county boundary and municipal boundary.
+
+								The dataset also includes a baseline and 1 nautical mile, which are legal lines that can be used when processing cases linked with specific laws.
+
+								The units include properties which indicate official municipal numbers. The official Norwegian, Sami and Kven names for counties and municipalities are taken from SSR. There is also information about Sami language administrative districts.
+							</gmd:LocalisedCharacterString>
+						</gmd:textGroup>
+					</gmd:PT_FreeText>
+				</gmd:abstract>
+				<gmd:purpose xsi:type="gmd:PT_FreeText_PropertyType">
+					<gco:CharacterString>Framstille den offisielle kommuneinndelingen.</gco:CharacterString>
+					<gmd:PT_FreeText>
+						<gmd:textGroup>
+							<gmd:LocalisedCharacterString locale="#ENG">The dataset consists of the official county boundaries.</gmd:LocalisedCharacterString>
+						</gmd:textGroup>
+					</gmd:PT_FreeText>
+				</gmd:purpose>
+				<gmd:status>
+					<gmd:MD_ProgressCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="onGoing" />
+				</gmd:status>
+				<gmd:pointOfContact>
+					<gmd:CI_ResponsibleParty>
+						<gmd:individualName />
+						<gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Kartverket</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Norwegian Mapping Authority</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:organisationName>
+						<gmd:contactInfo>
+							<gmd:CI_Contact>
+								<gmd:address>
+									<gmd:CI_Address>
+										<gmd:electronicMailAddress>
+											<gco:CharacterString>post@kartverket.no</gco:CharacterString>
+										</gmd:electronicMailAddress>
+									</gmd:CI_Address>
+								</gmd:address>
+							</gmd:CI_Contact>
+						</gmd:contactInfo>
+						<gmd:role>
+							<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="publisher" />
+						</gmd:role>
+					</gmd:CI_ResponsibleParty>
+				</gmd:pointOfContact>
+				<gmd:pointOfContact>
+					<gmd:CI_ResponsibleParty>
+						<gmd:individualName>
+							<gco:CharacterString>Liv Mari Nesje</gco:CharacterString>
+						</gmd:individualName>
+						<gmd:organisationName xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Kartverket</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Norwegian Mapping Authority</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:organisationName>
+						<gmd:contactInfo>
+							<gmd:CI_Contact>
+								<gmd:address>
+									<gmd:CI_Address>
+										<gmd:electronicMailAddress>
+											<gco:CharacterString>post@kartverket.no</gco:CharacterString>
+										</gmd:electronicMailAddress>
+									</gmd:CI_Address>
+								</gmd:address>
+							</gmd:CI_Contact>
+						</gmd:contactInfo>
+						<gmd:role>
+							<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="owner" />
+						</gmd:role>
+					</gmd:CI_ResponsibleParty>
+				</gmd:pointOfContact>
+				<gmd:resourceMaintenance>
+					<gmd:MD_MaintenanceInformation>
+						<gmd:maintenanceAndUpdateFrequency>
+							<gmd:MD_MaintenanceFrequencyCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="asNeeded" />
+						</gmd:maintenanceAndUpdateFrequency>
+					</gmd:MD_MaintenanceInformation>
+				</gmd:resourceMaintenance>
+				<gmd:graphicOverview>
+					<gmd:MD_BrowseGraphic>
+						<gmd:fileName>
+							<gco:CharacterString>https://editor.geonorge.no/thumbnails/041f1e6e-bdbc-4091-b48f-8a5990f3cc5b_20200306090252_admenheter_kommuner.png</gco:CharacterString>
+						</gmd:fileName>
+						<gmd:fileDescription>
+							<gco:CharacterString>original</gco:CharacterString>
+						</gmd:fileDescription>
+					</gmd:MD_BrowseGraphic>
+				</gmd:graphicOverview>
+				<gmd:graphicOverview>
+					<gmd:MD_BrowseGraphic>
+						<gmd:fileName>
+							<gco:CharacterString>https://editor.geonorge.no/thumbnails/041f1e6e-bdbc-4091-b48f-8a5990f3cc5b_20200306090252_mini_admenheter_kommuner.png</gco:CharacterString>
+						</gmd:fileName>
+						<gmd:fileDescription>
+							<gco:CharacterString>miniatyrbilde</gco:CharacterString>
+						</gmd:fileDescription>
+					</gmd:MD_BrowseGraphic>
+				</gmd:graphicOverview>
+				<gmd:graphicOverview>
+					<gmd:MD_BrowseGraphic>
+						<gmd:fileName>
+							<gco:CharacterString>https://editor.geonorge.no/thumbnails/041f1e6e-bdbc-4091-b48f-8a5990f3cc5b_20200306090252_medium_admenheter_kommuner.png</gco:CharacterString>
+						</gmd:fileName>
+						<gmd:fileDescription>
+							<gco:CharacterString>medium</gco:CharacterString>
+						</gmd:fileDescription>
+					</gmd:MD_BrowseGraphic>
+				</gmd:graphicOverview>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Administrative units</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Administrative Units</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title>
+									<gmx:Anchor xlink:href="http://inspire.ec.europa.eu/theme">GEMET - INSPIRE themes, version 1.0</gmx:Anchor>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2008-06-01</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gmx:Anchor xlink:href="http://data.europa.eu/bna/c_ac64a52d">Geodata</gmx:Anchor>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Geospatial</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title xsi:type="gmd:PT_FreeText_PropertyType">
+									<gmx:Anchor xlink:href="http://data.europa.eu/bna/asd487ae75">High-value dataset kategorier</gmx:Anchor>
+									<gmd:PT_FreeText>
+										<gmd:textGroup>
+											<gmd:LocalisedCharacterString locale="#ENG">High-value dataset categories</gmd:LocalisedCharacterString>
+										</gmd:textGroup>
+									</gmd:PT_FreeText>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2023-09-27</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gmx:Anchor xlink:href="http://data.europa.eu/eli/reg_impl/2023/138/oj">High-value datasett</gmx:Anchor>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">High-value dataset</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Det offentlige kartgrunnlaget</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">NSDI data</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>Inspire</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>geodataloven</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Geodata Act</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Norge digitalt</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Norway Digital</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>beredskapsbase</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Beredskapsbase</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>dataNorgeNo</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>fellesDatakatalog</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">National public data catalog</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title>
+									<gmx:Anchor xlink:href="https://register.geonorge.no/metadata-kodelister/samarbeid-og-lover">Nasjonal inndeling i geografiske initiativ og SDI-er</gmx:Anchor>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2014-03-20</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Basis geodata</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Base maps</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title>
+									<gmx:Anchor xlink:href="https://register.geonorge.no/metadata-kodelister/nasjonal-temainndeling">Nasjonal tematisk inndeling (DOK-kategori)</gmx:Anchor>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2014-10-28</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Norge fastland</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Norway Mainland</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:type>
+							<gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="place" />
+						</gmd:type>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword>
+							<gmx:Anchor xlink:href="https://data.geonorge.no/administrativeEnheter/nasjon/id/173163">Norge</gmx:Anchor>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title>
+									<gmx:Anchor xlink:href="https://data.geonorge.no/administrativeEnheter">Administrative enheter i Norge</gmx:Anchor>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2018-01-01</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Kommune</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Municipality</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Administrativ inndeling</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Administrative units</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Administrative grenser</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Administrative borders</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>Kommunegrenser</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>Fylkesgrenser</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>Riksgrense</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:keyword>
+							<gco:CharacterString>ABAS</gco:CharacterString>
+						</gmd:keyword>
+						<gmd:type>
+							<gmd:MD_KeywordTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_KeywordTypeCode" codeListValue="theme" />
+						</gmd:type>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:descriptiveKeywords>
+					<gmd:MD_Keywords>
+						<gmd:keyword>
+							<gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope/national">National</gmx:Anchor>
+						</gmd:keyword>
+						<gmd:thesaurusName>
+							<gmd:CI_Citation>
+								<gmd:title>
+									<gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/SpatialScope">Spatial scope</gmx:Anchor>
+								</gmd:title>
+								<gmd:date>
+									<gmd:CI_Date>
+										<gmd:date>
+											<gco:Date>2019-05-22</gco:Date>
+										</gmd:date>
+										<gmd:dateType>
+											<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+										</gmd:dateType>
+									</gmd:CI_Date>
+								</gmd:date>
+							</gmd:CI_Citation>
+						</gmd:thesaurusName>
+					</gmd:MD_Keywords>
+				</gmd:descriptiveKeywords>
+				<gmd:resourceSpecificUsage>
+					<gmd:MD_Usage>
+						<gmd:specificUsage xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Forvaltningsmessig saksbehandling. Analyse og presentasjon i et GIS-system. Presentasjon av statistikk og analyser. Produksjon av kart og avledede produkter. Saksbehandling på lokalt og regionalt plan etter plan- og bygningsloven.</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">Administrative case processing. Analysis and display in a GIS system. Display of statistics and analyses. Production of maps and derived products.</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:specificUsage>
+						<gmd:userContactInfo>
+							<gmd:CI_ResponsibleParty>
+								<gmd:role>
+									<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="owner" />
+								</gmd:role>
+							</gmd:CI_ResponsibleParty>
+						</gmd:userContactInfo>
+					</gmd:MD_Usage>
+				</gmd:resourceSpecificUsage>
+				<gmd:resourceConstraints>
+					<gmd:MD_Constraints>
+						<gmd:useLimitation xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>Ingen begrensninger på bruk er oppgitt. Se forøvrig lisens.</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">No conditions apply</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:useLimitation>
+					</gmd:MD_Constraints>
+				</gmd:resourceConstraints>
+				<gmd:resourceConstraints>
+					<gmd:MD_LegalConstraints>
+						<gmd:accessConstraints>
+							<gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions" />
+						</gmd:accessConstraints>
+						<gmd:otherConstraints>
+							<gmx:Anchor xlink:href="http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/noLimitations">Åpne data</gmx:Anchor>
+						</gmd:otherConstraints>
+					</gmd:MD_LegalConstraints>
+				</gmd:resourceConstraints>
+				<gmd:resourceConstraints>
+					<gmd:MD_LegalConstraints>
+						<gmd:useConstraints>
+							<gmd:MD_RestrictionCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_RestrictionCode" codeListValue="otherRestrictions" />
+						</gmd:useConstraints>
+						<gmd:otherConstraints>
+							<gmx:Anchor xlink:href="https://creativecommons.org/licenses/by/4.0/">Creative Commons BY 4.0 (CC BY 4.0)</gmx:Anchor>
+						</gmd:otherConstraints>
+					</gmd:MD_LegalConstraints>
+				</gmd:resourceConstraints>
+				<gmd:resourceConstraints>
+					<gmd:MD_LegalConstraints>
+						<gmd:otherConstraints />
+					</gmd:MD_LegalConstraints>
+				</gmd:resourceConstraints>
+				<gmd:resourceConstraints>
+					<gmd:MD_SecurityConstraints>
+						<gmd:classification>
+							<gmd:MD_ClassificationCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/gmxCodelists.xml#MD_ClassificationCode" codeListValue="unclassified" />
+						</gmd:classification>
+						<gmd:userNote>
+							<gco:CharacterString />
+						</gmd:userNote>
+					</gmd:MD_SecurityConstraints>
+				</gmd:resourceConstraints>
+				<gmd:spatialRepresentationType>
+					<gmd:MD_SpatialRepresentationTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#MD_SpatialRepresentationTypeCode" codeListValue="vector" />
+				</gmd:spatialRepresentationType>
+				<gmd:spatialResolution>
+					<gmd:MD_Resolution>
+						<gmd:equivalentScale>
+							<gmd:MD_RepresentativeFraction>
+								<gmd:denominator>
+									<gco:Integer>5000</gco:Integer>
+								</gmd:denominator>
+							</gmd:MD_RepresentativeFraction>
+						</gmd:equivalentScale>
+					</gmd:MD_Resolution>
+				</gmd:spatialResolution>
+				<gmd:language>
+					<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/" codeListValue="nor">Norsk</gmd:LanguageCode>
+				</gmd:language>
+				<gmd:topicCategory>
+					<gmd:MD_TopicCategoryCode>boundaries</gmd:MD_TopicCategoryCode>
+				</gmd:topicCategory>
+				<gmd:extent>
+					<gmd:EX_Extent>
+						<gmd:description>
+							<gco:CharacterString>http://creativecommons.org/licenses/by/3.0/</gco:CharacterString>
+						</gmd:description>
+						<gmd:geographicElement>
+							<gmd:EX_GeographicBoundingBox>
+								<gmd:westBoundLongitude>
+									<gco:Decimal>2.00</gco:Decimal>
+								</gmd:westBoundLongitude>
+								<gmd:eastBoundLongitude>
+									<gco:Decimal>33.00</gco:Decimal>
+								</gmd:eastBoundLongitude>
+								<gmd:southBoundLatitude>
+									<gco:Decimal>57.00</gco:Decimal>
+								</gmd:southBoundLatitude>
+								<gmd:northBoundLatitude>
+									<gco:Decimal>72.00</gco:Decimal>
+								</gmd:northBoundLatitude>
+							</gmd:EX_GeographicBoundingBox>
+						</gmd:geographicElement>
+						<gmd:temporalElement>
+							<gmd:EX_TemporalExtent>
+								<gmd:extent>
+									<gml:TimePeriod gml:id="id_1">
+										<gml:beginPosition>2025-01-01</gml:beginPosition>
+										<gml:endPosition indeterminatePosition="now" />
+									</gml:TimePeriod>
+								</gmd:extent>
+							</gmd:EX_TemporalExtent>
+						</gmd:temporalElement>
+					</gmd:EX_Extent>
+				</gmd:extent>
+				<gmd:supplementalInformation xsi:type="gmd:PT_FreeText_PropertyType">
+					<gco:CharacterString>Trenger du hjelp til å laste ned og ta i bruk Kartverkets data og tjenester? På kartverket.no finner du tips og veiledning.</gco:CharacterString>
+					<gmd:PT_FreeText>
+						<gmd:textGroup>
+							<gmd:LocalisedCharacterString locale="#ENG">The geometry is derived from the Cadastre, which is updated by the municipalities. National Borders and Outer Limit of Territorial Waters are inserted from the Norwegian Mapping Authority's own established files.</gmd:LocalisedCharacterString>
+						</gmd:textGroup>
+					</gmd:PT_FreeText>
+				</gmd:supplementalInformation>
+			</gmd:MD_DataIdentification>
+		</gmd:identificationInfo>
+		<gmd:distributionInfo>
+			<gmd:MD_Distribution>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>FGDB</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>GeoJSON</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>GML</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>PostGIS</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>SOSI</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>FGDB</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG" />
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>http://nedlasting2.geonorge.no/geonorge/ATOM-feeds/AdministrativeEnheterKommuner_AtomFeedFGDB.xml</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>W3C:AtomFeed</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>GeoJSON</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG" />
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>http://nedlasting2.geonorge.no/geonorge/ATOM-feeds/AdministrativeEnheterKommuner_AtomFeedGEOJSON.xml</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>W3C:AtomFeed</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>GML</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG" />
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>http://nedlasting2.geonorge.no/geonorge/ATOM-feeds/AdministrativeEnheterKommuner_AtomFeedGML.xml</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>W3C:AtomFeed</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>PostGIS</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG" />
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>http://nedlasting2.geonorge.no/geonorge/ATOM-feeds/AdministrativeEnheterKommuner_AtomFeedPostGIS.xml</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>W3C:AtomFeed</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributionFormat>
+					<gmd:MD_Format>
+						<gmd:name>
+							<gco:CharacterString>SOSI</gco:CharacterString>
+						</gmd:name>
+						<gmd:version gco:nilReason="inapplicable" />
+						<gmd:formatDistributor>
+							<gmd:MD_Distributor>
+								<gmd:distributorContact>
+									<gmd:CI_ResponsibleParty>
+										<gmd:organisationName>
+											<gco:CharacterString>Kartverket</gco:CharacterString>
+										</gmd:organisationName>
+										<gmd:role>
+											<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+										</gmd:role>
+									</gmd:CI_ResponsibleParty>
+								</gmd:distributorContact>
+								<gmd:distributorTransferOptions>
+									<gmd:MD_DigitalTransferOptions>
+										<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+											<gmd:PT_FreeText>
+												<gmd:textGroup>
+													<gmd:LocalisedCharacterString locale="#ENG" />
+												</gmd:textGroup>
+											</gmd:PT_FreeText>
+										</gmd:unitsOfDistribution>
+										<gmd:onLine>
+											<gmd:CI_OnlineResource>
+												<gmd:linkage>
+													<gmd:URL>http://nedlasting2.geonorge.no/geonorge/ATOM-feeds/AdministrativeEnheterKommuner_AtomFeedSOSI.xml</gmd:URL>
+												</gmd:linkage>
+												<gmd:protocol>
+													<gco:CharacterString>W3C:AtomFeed</gco:CharacterString>
+												</gmd:protocol>
+												<gmd:name />
+											</gmd:CI_OnlineResource>
+										</gmd:onLine>
+									</gmd:MD_DigitalTransferOptions>
+								</gmd:distributorTransferOptions>
+							</gmd:MD_Distributor>
+						</gmd:formatDistributor>
+					</gmd:MD_Format>
+				</gmd:distributionFormat>
+				<gmd:distributor>
+					<gmd:MD_Distributor>
+						<gmd:distributorContact>
+							<gmd:CI_ResponsibleParty>
+								<gmd:organisationName>
+									<gco:CharacterString>Kartverket</gco:CharacterString>
+								</gmd:organisationName>
+								<gmd:contactInfo>
+									<gmd:CI_Contact>
+										<gmd:phone>
+											<gmd:CI_Telephone>
+												<gmd:voice>
+													<gco:CharacterString>+47 08700</gco:CharacterString>
+												</gmd:voice>
+												<gmd:facsimile gco:nilReason="missing">
+													<gco:CharacterString />
+												</gmd:facsimile>
+											</gmd:CI_Telephone>
+										</gmd:phone>
+										<gmd:address>
+											<gmd:CI_Address>
+												<gmd:deliveryPoint gco:nilReason="missing">
+													<gco:CharacterString />
+												</gmd:deliveryPoint>
+												<gmd:city>
+													<gco:CharacterString>Hønefoss</gco:CharacterString>
+												</gmd:city>
+												<gmd:administrativeArea gco:nilReason="missing">
+													<gco:CharacterString />
+												</gmd:administrativeArea>
+												<gmd:postalCode>
+													<gco:CharacterString>3511 Hønefoss</gco:CharacterString>
+												</gmd:postalCode>
+												<gmd:country>
+													<gco:CharacterString>Norge</gco:CharacterString>
+												</gmd:country>
+												<gmd:electronicMailAddress>
+													<gco:CharacterString>post@kartverket.no</gco:CharacterString>
+												</gmd:electronicMailAddress>
+											</gmd:CI_Address>
+										</gmd:address>
+									</gmd:CI_Contact>
+								</gmd:contactInfo>
+								<gmd:role>
+									<gmd:CI_RoleCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_RoleCode" codeListValue="distributor" />
+								</gmd:role>
+							</gmd:CI_ResponsibleParty>
+						</gmd:distributorContact>
+						<gmd:distributionOrderProcess>
+							<gmd:MD_StandardOrderProcess>
+								<gmd:fees gco:nilReason="missing">
+									<gco:CharacterString />
+								</gmd:fees>
+							</gmd:MD_StandardOrderProcess>
+						</gmd:distributionOrderProcess>
+						<gmd:distributorFormat>
+							<gmd:MD_Format>
+								<gmd:name>
+									<gco:CharacterString>SOSI</gco:CharacterString>
+								</gmd:name>
+								<gmd:version>
+									<gco:CharacterString>4.5</gco:CharacterString>
+								</gmd:version>
+							</gmd:MD_Format>
+						</gmd:distributorFormat>
+						<gmd:distributorFormat>
+							<gmd:MD_Format>
+								<gmd:name gco:nilReason="missing">
+									<gco:CharacterString />
+								</gmd:name>
+								<gmd:version gco:nilReason="inapplicable" />
+							</gmd:MD_Format>
+						</gmd:distributorFormat>
+					</gmd:MD_Distributor>
+				</gmd:distributor>
+				<gmd:transferOptions>
+					<gmd:MD_DigitalTransferOptions>
+						<gmd:unitsOfDistribution xsi:type="gmd:PT_FreeText_PropertyType">
+							<gco:CharacterString>fylkesvis, kommunevis, landsfiler</gco:CharacterString>
+							<gmd:PT_FreeText>
+								<gmd:textGroup>
+									<gmd:LocalisedCharacterString locale="#ENG">County, Municipality, Country</gmd:LocalisedCharacterString>
+								</gmd:textGroup>
+							</gmd:PT_FreeText>
+						</gmd:unitsOfDistribution>
+						<gmd:onLine>
+							<gmd:CI_OnlineResource>
+								<gmd:linkage>
+									<gmd:URL>https://nedlasting.geonorge.no/api/capabilities/</gmd:URL>
+								</gmd:linkage>
+								<gmd:protocol>
+									<gco:CharacterString>GEONORGE:DOWNLOAD</gco:CharacterString>
+								</gmd:protocol>
+							</gmd:CI_OnlineResource>
+						</gmd:onLine>
+					</gmd:MD_DigitalTransferOptions>
+				</gmd:transferOptions>
+			</gmd:MD_Distribution>
+		</gmd:distributionInfo>
+		<gmd:dataQualityInfo>
+			<gmd:DQ_DataQuality>
+				<gmd:scope>
+					<gmd:DQ_Scope>
+						<gmd:level>
+							<gmd:MD_ScopeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#MD_ScopeCode" codeListValue="dataset" />
+						</gmd:level>
+					</gmd:DQ_Scope>
+				</gmd:scope>
+				<gmd:report>
+					<gmd:DQ_DomainConsistency>
+						<gmd:result>
+							<gmd:DQ_ConformanceResult>
+								<gmd:specification>
+									<gmd:CI_Citation>
+										<gmd:title>
+											<gco:CharacterString>COMMISSION REGULATION (EU) No 1089/2010 of 23 November 2010 implementing Directive 2007/2/EC of the European Parliament and of the Council as regards interoperability of spatial data sets and services</gco:CharacterString>
+										</gmd:title>
+										<gmd:date>
+											<gmd:CI_Date>
+												<gmd:date>
+													<gco:Date>2010-12-08</gco:Date>
+												</gmd:date>
+												<gmd:dateType>
+													<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+												</gmd:dateType>
+											</gmd:CI_Date>
+										</gmd:date>
+										<gmd:identifier>
+											<gmd:MD_Identifier>
+												<gmd:authority>
+													<gmd:CI_Citation>
+														<gmd:title>
+															<gco:CharacterString>inspire</gco:CharacterString>
+														</gmd:title>
+														<gmd:date />
+													</gmd:CI_Citation>
+												</gmd:authority>
+												<gmd:code>
+													<gco:CharacterString />
+												</gmd:code>
+											</gmd:MD_Identifier>
+										</gmd:identifier>
+									</gmd:CI_Citation>
+								</gmd:specification>
+								<gmd:explanation xsi:type="gmd:PT_FreeText_PropertyType">
+									<gco:CharacterString>Dataene er i henhold til produktspesifikasjonen</gco:CharacterString>
+									<gmd:PT_FreeText>
+										<gmd:textGroup>
+											<gmd:LocalisedCharacterString locale="#ENG">The data is according to the product specification</gmd:LocalisedCharacterString>
+										</gmd:textGroup>
+									</gmd:PT_FreeText>
+								</gmd:explanation>
+								<gmd:pass>
+									<gco:Boolean>true</gco:Boolean>
+								</gmd:pass>
+							</gmd:DQ_ConformanceResult>
+						</gmd:result>
+						<gmd:result>
+							<gmd:DQ_ConformanceResult>
+								<gmd:specification>
+									<gmd:CI_Citation>
+										<gmd:title>
+											<gco:CharacterString>SOSI produktspesifikasjon: Administrative enheter Norge</gco:CharacterString>
+										</gmd:title>
+										<gmd:date>
+											<gmd:CI_Date>
+												<gmd:date>
+													<gco:Date>2022-12-14</gco:Date>
+												</gmd:date>
+												<gmd:dateType>
+													<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+												</gmd:dateType>
+											</gmd:CI_Date>
+										</gmd:date>
+										<gmd:identifier>
+											<gmd:MD_Identifier>
+												<gmd:authority>
+													<gmd:CI_Citation>
+														<gmd:title>
+															<gco:CharacterString>sosi</gco:CharacterString>
+														</gmd:title>
+														<gmd:date />
+													</gmd:CI_Citation>
+												</gmd:authority>
+												<gmd:code>
+													<gco:CharacterString />
+												</gmd:code>
+											</gmd:MD_Identifier>
+										</gmd:identifier>
+									</gmd:CI_Citation>
+								</gmd:specification>
+								<gmd:explanation xsi:type="gmd:PT_FreeText_PropertyType">
+									<gco:CharacterString>Dataene er i henhold til produktspesifikasjonen</gco:CharacterString>
+									<gmd:PT_FreeText>
+										<gmd:textGroup>
+											<gmd:LocalisedCharacterString locale="#ENG">The data is according to the product specification</gmd:LocalisedCharacterString>
+										</gmd:textGroup>
+									</gmd:PT_FreeText>
+								</gmd:explanation>
+								<gmd:pass>
+									<gco:Boolean>true</gco:Boolean>
+								</gmd:pass>
+							</gmd:DQ_ConformanceResult>
+						</gmd:result>
+					</gmd:DQ_DomainConsistency>
+				</gmd:report>
+				<gmd:report>
+					<gmd:DQ_DomainConsistency>
+						<gmd:result>
+							<gmd:DQ_ConformanceResult>
+								<gmd:specification>
+									<gmd:CI_Citation>
+										<gmd:title>
+											<gco:CharacterString>Sosi applikasjonsskjema</gco:CharacterString>
+										</gmd:title>
+										<gmd:date>
+											<gmd:CI_Date>
+												<gmd:date>
+													<gco:Date>2022-12-14</gco:Date>
+												</gmd:date>
+												<gmd:dateType>
+													<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+												</gmd:dateType>
+											</gmd:CI_Date>
+										</gmd:date>
+										<gmd:identifier>
+											<gmd:MD_Identifier>
+												<gmd:authority>
+													<gmd:CI_Citation>
+														<gmd:title>
+															<gco:CharacterString>uml-sosi</gco:CharacterString>
+														</gmd:title>
+														<gmd:date />
+													</gmd:CI_Citation>
+												</gmd:authority>
+												<gmd:code>
+													<gco:CharacterString />
+												</gmd:code>
+											</gmd:MD_Identifier>
+										</gmd:identifier>
+									</gmd:CI_Citation>
+								</gmd:specification>
+								<gmd:explanation xsi:type="gmd:PT_FreeText_PropertyType">
+									<gco:CharacterString>SOSI-filer er i henhold til applikasjonsskjema</gco:CharacterString>
+									<gmd:PT_FreeText>
+										<gmd:textGroup>
+											<gmd:LocalisedCharacterString locale="#ENG">SOSI files are according to application form</gmd:LocalisedCharacterString>
+										</gmd:textGroup>
+									</gmd:PT_FreeText>
+								</gmd:explanation>
+								<gmd:pass>
+									<gco:Boolean>true</gco:Boolean>
+								</gmd:pass>
+							</gmd:DQ_ConformanceResult>
+						</gmd:result>
+						<gmd:result>
+							<gmd:DQ_ConformanceResult>
+								<gmd:specification>
+									<gmd:CI_Citation>
+										<gmd:title>
+											<gco:CharacterString>Sosi applikasjonsskjema</gco:CharacterString>
+										</gmd:title>
+										<gmd:date>
+											<gmd:CI_Date>
+												<gmd:date>
+													<gco:Date>2022-12-14</gco:Date>
+												</gmd:date>
+												<gmd:dateType>
+													<gmd:CI_DateTypeCode codeList="http://standards.iso.org/iso/19139/resources/gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+												</gmd:dateType>
+											</gmd:CI_Date>
+										</gmd:date>
+										<gmd:identifier>
+											<gmd:MD_Identifier>
+												<gmd:authority>
+													<gmd:CI_Citation>
+														<gmd:title>
+															<gco:CharacterString>uml-gml</gco:CharacterString>
+														</gmd:title>
+														<gmd:date />
+													</gmd:CI_Citation>
+												</gmd:authority>
+												<gmd:code>
+													<gco:CharacterString />
+												</gmd:code>
+											</gmd:MD_Identifier>
+										</gmd:identifier>
+									</gmd:CI_Citation>
+								</gmd:specification>
+								<gmd:explanation xsi:type="gmd:PT_FreeText_PropertyType">
+									<gco:CharacterString>GML-filer er i henhold til applikasjonsskjema</gco:CharacterString>
+									<gmd:PT_FreeText>
+										<gmd:textGroup>
+											<gmd:LocalisedCharacterString locale="#ENG">GML files are according to application form</gmd:LocalisedCharacterString>
+										</gmd:textGroup>
+									</gmd:PT_FreeText>
+								</gmd:explanation>
+								<gmd:pass>
+									<gco:Boolean>true</gco:Boolean>
+								</gmd:pass>
+							</gmd:DQ_ConformanceResult>
+						</gmd:result>
+					</gmd:DQ_DomainConsistency>
+				</gmd:report>
+				<gmd:report>
+					<gmd:DQ_CompletenessOmission>
+						<gmd:nameOfMeasure>
+							<gmx:Anchor xlink:href="">Prosentvis dekning i forhold til datasettets utstrekning</gmx:Anchor>
+						</gmd:nameOfMeasure>
+						<gmd:measureDescription>
+							<gco:CharacterString>Datasettets faktiske kartlagte areal i forhold til datasettets spesifiserte utstrekning</gco:CharacterString>
+						</gmd:measureDescription>
+						<gmd:result>
+							<gmd:DQ_QuantitativeResult>
+								<gmd:valueUnit xlink:href="http://dd.eionet.europa.eu/vocabulary/eurostat/percent" />
+								<gmd:value>
+									<gco:Record xsi:type="gco:Integer_PropertyType">
+										<gco:Integer>100</gco:Integer>
+									</gco:Record>
+								</gmd:value>
+							</gmd:DQ_QuantitativeResult>
+						</gmd:result>
+					</gmd:DQ_CompletenessOmission>
+				</gmd:report>
+				<gmd:report>
+					<gmd:DQ_CompletenessOmission>
+						<gmd:nameOfMeasure>
+							<gmx:Anchor xlink:href="">Prosentvis oppfyllelse av FAIR-prinsipper</gmx:Anchor>
+						</gmd:nameOfMeasure>
+						<gmd:measureDescription>
+							<gco:CharacterString>Angir fullstendighet i forhold til krav fra FAIR-prinsippene (The FAIR Guiding Principles for scientific data management and stewardship)</gco:CharacterString>
+						</gmd:measureDescription>
+						<gmd:result>
+							<gmd:DQ_QuantitativeResult>
+								<gmd:valueUnit xlink:href="http://dd.eionet.europa.eu/vocabulary/eurostat/percent" />
+								<gmd:value>
+									<gco:Record xsi:type="gco:Integer_PropertyType">
+										<gco:Integer>96</gco:Integer>
+									</gco:Record>
+								</gmd:value>
+							</gmd:DQ_QuantitativeResult>
+						</gmd:result>
+					</gmd:DQ_CompletenessOmission>
+				</gmd:report>
+				<gmd:lineage>
+					<gmd:LI_Lineage>
+						<gmd:statement>
+							<gco:CharacterString />
+						</gmd:statement>
+					</gmd:LI_Lineage>
+				</gmd:lineage>
+			</gmd:DQ_DataQuality>
+		</gmd:dataQualityInfo>
+		<gmd:applicationSchemaInfo>
+			<gmd:MD_ApplicationSchemaInformation>
+				<gmd:name>
+					<gmd:CI_Citation>
+						<gmd:title>
+							<gco:CharacterString>https://objektkatalog.geonorge.no/Pakke/Index/EAPK_00338335_1357_4832_870C_3BABD8C80927</gco:CharacterString>
+						</gmd:title>
+						<gmd:date>
+							<gmd:CI_Date>
+								<gmd:date>
+									<gco:Date>2025-07-14</gco:Date>
+								</gmd:date>
+								<gmd:dateType>
+									<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication" />
+								</gmd:dateType>
+							</gmd:CI_Date>
+						</gmd:date>
+					</gmd:CI_Citation>
+				</gmd:name>
+				<gmd:schemaLanguage>
+					<gco:CharacterString>UML</gco:CharacterString>
+				</gmd:schemaLanguage>
+				<gmd:constraintLanguage>
+					<gco:CharacterString>OCL</gco:CharacterString>
+				</gmd:constraintLanguage>
+			</gmd:MD_ApplicationSchemaInformation>
+		</gmd:applicationSchemaInfo>
+	</gmd:MD_Metadata>
+</csw:GetRecordByIdResponse>
+
