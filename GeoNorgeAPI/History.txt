@@ -1,5 +1,6 @@
 ﻿Version History
 ---------------
+3.8.2: Handle high value dataset keywords
 3.8.1: Do not set TimePeriod if valid from date is not set
 3.8.0: Fix wrong urls to register
 3.7.9: Add logging for debug requestBody
