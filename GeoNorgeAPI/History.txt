@@ -1,6 +1,8 @@
 ﻿Version History
 ---------------
 4.0.0: Converted to netstandard 2.0
+3.8.2: Handle high value dataset keywords
+3.8.1: Do not set TimePeriod if valid from date is not set
 3.8.0: Fix wrong urls to register
 3.7.9: Add logging for debug requestBody
 3.7.8: Change protocol code value to OGC:API-Features

@@ -538,6 +538,18 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void ShouldReturnEnglishKeywordForHighValueDatasetCategory()
+        {
+            string xml = File.ReadAllText("xml/keywords-english.xml");
+            GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
+            var data = (MD_Metadata_Type)response.Items[0];
+            var metadata = new SimpleMetadata(data);
+            var keywords = SimpleKeyword.Filter(metadata.Keywords, null, SimpleKeyword.THESAURUS_HIGHVALUE_DATASET);
+            Assert.AreEqual("Geospatial",
+                keywords[0].EnglishKeyword);
+        }
+
+        [Test]
         public void ShouldUpdateNorwegianDistributionsFormatsForEnglishMetadata()
         {
             string xml = File.ReadAllText("xml/english-main-language.xml");

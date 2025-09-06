@@ -55,6 +55,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializeTest.cs" />
     <Compile Include="SimpleMetadataTest.cs" />
+    <Content Include="xml\keywords-english.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="xml\mets.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -90,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW">
-      <Version>2.0.0-alpha1</Version>
+      <Version>2.0.0-alpha2</Version>
     </PackageReference>
     <PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil">
       <Version>1.4.0-alpha1</Version>
