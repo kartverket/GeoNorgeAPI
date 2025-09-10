@@ -29,6 +29,7 @@ namespace GeoNorgeAPI
         private const string APPLICATION_PROFILE_COVERAGE = "dekningsoversikt";
         private const string APPLICATION_PROFILE_COVERAGE_GRID = "dekningsoversikt rutenett";
         private const string APPLICATION_PROFILE_COVERAGE_CELL = "dekningsoversikt celle";
+        private const string APPLICATION_PROFILE_SURVEY_AREA_MAP = "fullstendighetsdekningskart";
         private const string APPLICATION_PROFILE_HELP = "hjelp";
         private const string RESOURCE_PROTOCOL_WWW = "WWW:LINK-1.0-http--related";
 
@@ -39,6 +40,7 @@ namespace GeoNorgeAPI
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE = "coverage map";
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE_GRID = "grid coverage map";
         private const string ENGLISH_APPLICATION_PROFILE_COVERAGE_CELL = "cell coverage map";
+        private const string ENGLISH_APPLICATION_PROFILE_SURVEY_AREA_MAP = "survey area map";
         private const string ENGLISH_APPLICATION_PROFILE_HELP = "help";
 
         public const string FAIR_NAME_OF_MEASURE = "Prosentvis oppfyllelse av FAIR-prinsipper";
@@ -2023,6 +2025,30 @@ namespace GeoNorgeAPI
                     onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_COVERAGE_CELL, ENGLISH_APPLICATION_PROFILE_COVERAGE_CELL);
                 else
                     onlineResource.name = CreateFreeTextElementNorwegian(ENGLISH_APPLICATION_PROFILE_COVERAGE_CELL, APPLICATION_PROFILE_COVERAGE_CELL);
+                onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
+            }
+        }
+
+        public string SurveyAreaMapUrl
+        {
+            get
+            {
+                return GetMetadataExtensionInfoURLWithApplicationProfile(APPLICATION_PROFILE_SURVEY_AREA_MAP);
+            }
+            set
+            {
+                CI_OnlineResource_Type onlineResource = GetMetadataExtensionInfoWithApplicationProfile(APPLICATION_PROFILE_SURVEY_AREA_MAP);
+                if (onlineResource == null)
+                {
+                    onlineResource = new CI_OnlineResource_Type();
+                    AddOnlineResourceToMetadataExtensionInfo(onlineResource);
+                }
+                onlineResource.linkage = new URL_PropertyType { URL = value };
+                onlineResource.applicationProfile = new CharacterString_PropertyType { CharacterString = APPLICATION_PROFILE_SURVEY_AREA_MAP };
+                if (MetadataLanguage == METADATA_LANG_NOR)
+                    onlineResource.name = CreateFreeTextElement(APPLICATION_PROFILE_SURVEY_AREA_MAP, ENGLISH_APPLICATION_PROFILE_SURVEY_AREA_MAP);
+                else
+                    onlineResource.name = CreateFreeTextElementNorwegian(ENGLISH_APPLICATION_PROFILE_SURVEY_AREA_MAP, APPLICATION_PROFILE_SURVEY_AREA_MAP);
                 onlineResource.protocol = new CharacterString_PropertyType { CharacterString = RESOURCE_PROTOCOL_WWW };
             }
         }
