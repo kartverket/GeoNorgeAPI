@@ -879,7 +879,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfConceptKeywords, "Expected one concept keywords in same wrapper element");
             Assert.AreEqual(1, numberOfAdminUnitKeywords, "Expected one admin unit keyword in same wrapper element");
             Assert.AreEqual(1, numberOfServiceTypeKeywords, "Expected one service type keyword in same wrapper element");
-            Assert.AreEqual(3, numberOfOtherKeywords, "Expected three other keywords in same wrapper element");
+            Assert.AreEqual(3, numberOfOtherKeywords, "Expected three other keywords in same wrapper element"); // 3 because of high-value dataset without thesaurus/type
             Assert.AreEqual(1, numberOfSpatialScopeKeywords, "Expected one service type keyword in same wrapper element");
             Assert.AreEqual(1, numberOfGlobalChangeMasterDirectoryKeywords, "Expected one GCMD keyword in same wrapper element");
 
@@ -3593,22 +3593,27 @@ namespace GeoNorgeAPI.Tests
             string expectedCovarageGridMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:dsb_brannstasjon";
             string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
             string expectedCovarageCellMapURL = "https://wms.geonorge.no/test.json";
+            string expectedSurveyAreaMapUrl = "https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/GeoJSON/Dekning_Grus_Pukk.geojson";
             SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
             simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
             simpleMetadata.CoverageUrl = expectedCovarageMapURL;
             simpleMetadata.CoverageCellUrl = expectedCovarageCellMapURL;
+            simpleMetadata.SurveyAreaMapUrl = expectedSurveyAreaMapUrl;
 
             var gridMap = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var map = simpleMetadata.GetMetadata().metadataExtensionInfo[1].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var cell = simpleMetadata.GetMetadata().metadataExtensionInfo[2].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+            var surveyArea = simpleMetadata.GetMetadata().metadataExtensionInfo[3].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
 
             string actualCovarageGridMapURL = gridMap.linkage.URL;
             string actualCovarageMapURL = map.linkage.URL;
             string actualCovarageCellMapURL = cell.linkage.URL;
+            string actualsurveyAreaURL = surveyArea.linkage.URL;
 
             Assert.AreEqual(expectedCovarageGridMapURL, actualCovarageGridMapURL);
             Assert.AreEqual(expectedCovarageMapURL, actualCovarageMapURL);
             Assert.AreEqual(expectedCovarageCellMapURL, actualCovarageCellMapURL);
+            Assert.AreEqual(expectedSurveyAreaMapUrl, actualsurveyAreaURL);
         }
 
 
