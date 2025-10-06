@@ -1,77 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FEBB51DC-C746-4884-982A-BC76A860A095}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GeoNorgeAPI</RootNamespace>
-    <AssemblyName>GeoNorgeAPI</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\GeoNorgeAPI.XML</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Arkitektum.GIS.Lib.MetadataCSW, Version=1.9.115.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arkitektum.GIS.Lib.MetadataCSW.1.9.115\lib\net48\Arkitektum.GIS.Lib.MetadataCSW.dll</HintPath>
-    </Reference>
-    <Reference Include="Arkitektum.GIS.Lib.SerializeUtil, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Arkitektum.GIS.Lib.SerializeUtil.1.3.1\lib\net40\Arkitektum.GIS.Lib.SerializeUtil.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="GeoNorge.cs" />
-    <Compile Include="HttpRequestExecutor.cs" />
-    <Compile Include="IGeoNorge.cs" />
-    <Compile Include="MetadataTransaction.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RequestFactory.cs" />
-    <Compile Include="RequestRunner.cs" />
-    <Compile Include="SimpleMetadata.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="GeoNorgeAPI.nuspec" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="History.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<DocumentationFile>bin\Release\GeoNorgeAPI.XML</DocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<OutputType>Library</OutputType>
+		<SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+
+		<!--Assembly info START-->
+		<AssemblyTitle>$(AssemblyName)</AssemblyTitle>
+		<Description>API for search, retrieval, insert and update of metadata on geographical services in www.geonorge.no.</Description>
+		<Configuration />
+		<Company>Statens Kartverk</Company>
+		<Product>$(AssemblyName)</Product>
+		<Copyright>
+			Copyright © 2015-2025 Statens kartverk
+		</Copyright>
+		<ComVisible>false</ComVisible>
+		<AssemblyGuid>8649d51c-c90c-4bb6-95af-33de1c7bc449</AssemblyGuid>
+		<AssemblyVersion>4.0.0</AssemblyVersion>
+		<!--Assembly info END-->
+	</PropertyGroup>
+	<PropertyGroup>
+		<Title>Geonorge API</Title>
+		<Authors>Statens kartverk</Authors>
+		<PackageId>$(AssemblyName)</PackageId>
+		<PackageVersion>4.0.0-alpha3</PackageVersion>
+		<PackageDescription>API for communicating with the CSW-service running at www.geonorge.no</PackageDescription>
+		<PackageTags>geonorge gis metadata api csw</PackageTags>
+		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+		<PackageReleaseNotes>Added support for survey area</PackageReleaseNotes>
+		<RepositoryType>git</RepositoryType>
+		<PackageProjectUrl>https://github.com/kartverket/GeoNorgeAPI</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/kartverket/GeoNorgeAPI</RepositoryUrl>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+
+		<DebugSymbols>true</DebugSymbols>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+	<ItemGroup>
+		<InternalsVisibleTo Include="GeonorgeAPI.Tests" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Arkitektum.GIS.Lib.MetadataCSW" Version="2.0.0-alpha2" />
+		<PackageReference Include="Arkitektum.GIS.Lib.SerializeUtil" Version="1.4.0-alpha1" />
+	</ItemGroup>
 </Project>

@@ -118,7 +118,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.citedResponsibleParty = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             try
             {
@@ -129,7 +129,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.edition = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
 
             try
             {
@@ -140,7 +140,7 @@ namespace GeoNorgeAPI
                     && _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm != null)
                         _md.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.presentationForm = null;
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             
         }
 
@@ -1148,7 +1148,7 @@ namespace GeoNorgeAPI
                                 CharacterString_PropertyType titleCharacterString = cI_Citation_Title?.item as CharacterString_PropertyType;
                                 Anchor_Type titleAnchor = cI_Citation_Title?.item as Anchor_Type;
 
-                                if(titleCharacterString == null)
+                                if (titleCharacterString == null)
                                     titleCharacterString = descriptiveKeyword.MD_Keywords.thesaurusName.CI_Citation?.title?.item as CharacterString_PropertyType;
 
                                 if (titleAnchorExtended != null && !string.IsNullOrEmpty(titleAnchorExtended.Value))
@@ -1176,17 +1176,17 @@ namespace GeoNorgeAPI
                                 if (MetadataLanguage == LOCALE_ENG.ToLower())
                                     keywordEnglishValue = GetStringOrNull(keywordElement);
 
-                                if (keywordElement.keyword.GetType() == typeof(MD_Keyword_Extended)) 
+                                if (keywordElement.keyword.GetType() == typeof(MD_Keyword_Extended))
                                 {
-                                   var extendedKeyword = keywordElement.keyword as MD_Keyword_Extended;
+                                    var extendedKeyword = keywordElement.keyword as MD_Keyword_Extended;
                                     if (extendedKeyword != null && extendedKeyword.anchor != null && !string.IsNullOrEmpty(extendedKeyword.anchor.href))
                                     {
                                         keywordLink = extendedKeyword.anchor.href;
                                         keywordValue = extendedKeyword.anchor.Value;
                                     }
-                                    if(extendedKeyword != null && extendedKeyword.freeText != null) 
+                                    if (extendedKeyword != null && extendedKeyword.freeText != null)
                                     {
-                                       keywordEnglishValue = GetEnglishValueFromFreeText(extendedKeyword.freeText);
+                                        keywordEnglishValue = GetEnglishValueFromFreeText(extendedKeyword.freeText);
                                     }
                                 }
 
@@ -1231,8 +1231,8 @@ namespace GeoNorgeAPI
 
                                     if (!string.IsNullOrWhiteSpace(fk.EnglishKeyword))
                                     {
-                                        if(!string.IsNullOrEmpty(fk.KeywordLink) && (fk.KeywordLink == SimpleKeyword.HIGHVALUE_DATASET_LINK || fk.KeywordLink.StartsWith("http://data.europa.eu/bna/c_"))) 
-                                        { 
+                                        if (!string.IsNullOrEmpty(fk.KeywordLink) && (fk.KeywordLink == SimpleKeyword.HIGHVALUE_DATASET_LINK || fk.KeywordLink.StartsWith("http://data.europa.eu/bna/c_")))
+                                        {
                                             keywordsToAdd.Add(new MD_Keyword
                                             {
                                                 keyword = new MD_Keyword_Extended
@@ -1313,13 +1313,13 @@ namespace GeoNorgeAPI
                                 else if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
                                 {
                                     date = "2023-09-27";
-  
-                                    title = new CI_Citation_Title_Extended 
-                                    { 
-                                        anchor = new Anchor_Type 
-                                    { 
-                                        Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK 
-                                    }, 
+
+                                    title = new CI_Citation_Title_Extended
+                                    {
+                                        anchor = new Anchor_Type
+                                        {
+                                            Value = simpleKeyword.Thesaurus, href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK
+                                        },
                                         freeText = new PT_FreeText_PropertyType
                                         {
                                             PT_FreeText = new PT_FreeText_Type
@@ -1341,7 +1341,7 @@ namespace GeoNorgeAPI
                                 }
 
                                 var dateType = "publication";
- 
+
                                 if (simpleKeyword.Thesaurus.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
                                     dateType = "revision";
 
@@ -2626,7 +2626,7 @@ namespace GeoNorgeAPI
                     Distance_PropertyType item = dataIdentification.spatialResolution[0].MD_Resolution.Item as Distance_PropertyType;
                     if (item != null
                         && item.Distance != null
-                        && item.Distance.Value != null)
+                        && item.Distance.Value != 0)
                     {
                         value = item.Distance.Value;
                     }

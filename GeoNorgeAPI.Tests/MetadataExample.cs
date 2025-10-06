@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -191,7 +191,7 @@ namespace GeoNorgeAPI.Tests
                            { keyword =  new MD_Keyword_Extended
                            { anchor = new Anchor_Type{ href = SimpleKeyword.HIGHVALUE_DATASET_LINK, Value = "High-value datasett" },
                             freeText = new PT_FreeText_PropertyType
-                            { 
+                            {
                                     PT_FreeText = new PT_FreeText_Type
                                     {
                                             textGroup = new LocalisedCharacterString_PropertyType[]
@@ -235,7 +235,7 @@ namespace GeoNorgeAPI.Tests
                                     }
                                 }
                             }
-                           } 
+                           }
                         }
                         },
                         thesaurusName = new CI_Citation_PropertyType
@@ -243,9 +243,9 @@ namespace GeoNorgeAPI.Tests
                                 CI_Citation = new CI_Citation_Type
                                     {
                                         title = new CI_Citation_Title
-                                        {  
+                                        {
                                             item = new CI_Citation_Title_Extended
-                                            { 
+                                            {
                                                 anchor = new Anchor_Type{ href = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET_LINK, Value = "High-value dataset kategorier" },
                                                 freeText = new PT_FreeText_PropertyType
                                                 {
@@ -264,7 +264,7 @@ namespace GeoNorgeAPI.Tests
                                                         }
                                                     }
                                                 }
-                                            } 
+                                            }
                                         },
 
                                         date = new [] { new CI_Date_PropertyType

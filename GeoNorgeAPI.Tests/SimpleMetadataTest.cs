@@ -1,11 +1,11 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using www.opengis.net;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Arkitektum.GIS.Lib.SerializeUtil;
-using System.IO;
-
+using System.IO;
+
 namespace GeoNorgeAPI.Tests
 {
     [TestFixture]
@@ -123,13 +123,13 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateTitleWithoutDestroyingEnglishTitle()
         {
             string expectedEnglishTitle = "This is english.";
-            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new CI_Citation_Title
-            {
-                item = new PT_FreeText_PropertyType
-                {
-                    CharacterString = "Dette er norsk",
-                    PT_FreeText = new PT_FreeText_Type
-                    {
+            _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.title = new CI_Citation_Title
+            {
+                item = new PT_FreeText_PropertyType
+                {
+                    CharacterString = "Dette er norsk",
+                    PT_FreeText = new PT_FreeText_Type
+                    {
                         textGroup = new LocalisedCharacterString_PropertyType[] {
                         new LocalisedCharacterString_PropertyType {
                             LocalisedCharacterString = new LocalisedCharacterString_Type {
@@ -137,9 +137,9 @@ namespace GeoNorgeAPI.Tests
                                 Value = expectedEnglishTitle
                             }
                         }
-                    }
-                    }
-                }
+                    }
+                    }
+                }
             };
 
             _md.Title = "Oppdatert norsk tittel";
@@ -223,15 +223,15 @@ namespace GeoNorgeAPI.Tests
             _md.HierarchyLevelName = newHierarchyLevelName;
 
             Assert.AreEqual(newHierarchyLevelName, _md.HierarchyLevelName);
-        }
-
-
+        }
+
+
         [Test]
         public void ShouldReturnCredits()
         {
             Assert.AreEqual("Jens Bånn", _md.Credits[0]);
-        }
-
+        }
+
         [Test]
         public void ShouldUpdateCredits()
         {
@@ -447,8 +447,8 @@ namespace GeoNorgeAPI.Tests
             _md.SupplementalDescription = newSupplementalDescription;
 
             Assert.AreEqual(newSupplementalDescription, _md.SupplementalDescription);
-        }
-
+        }
+
         [Test]
         public void ShouldReturnContentInformation()
         {
@@ -464,14 +464,14 @@ namespace GeoNorgeAPI.Tests
             _md.ContentInformation = contentInformation;
 
             Assert.AreEqual(newCloudCoverPercentage, _md.ContentInformation.CloudCoverPercentage);
-        }
-
-        [Test]
+        }
+
+        [Test]
         public void ShouldParseContentInfo()
-        {
+        {
             string xml = File.ReadAllText("xml/contentInfo.xml");
-            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
-            Assert.NotNull(metadata);
+            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
+            Assert.NotNull(metadata);
         }
 
         [Test]
@@ -648,25 +648,25 @@ namespace GeoNorgeAPI.Tests
                     Keyword = "infoFeatureAccessService",
                     Thesaurus = SimpleKeyword.THESAURUS_SERVICE_TYPE
                 },
-                new SimpleKeyword
+                new SimpleKeyword
                 {
-                    Keyword = "High-value datasett",
-                    EnglishKeyword = "High-value dataset",
-                    KeywordLink = SimpleKeyword.HIGHVALUE_DATASET_LINK,
-
+                    Keyword = "High-value datasett",
+                    EnglishKeyword = "High-value dataset",
+                    KeywordLink = SimpleKeyword.HIGHVALUE_DATASET_LINK,
+
                 },
-                new SimpleKeyword
+                new SimpleKeyword
                 {
-                    Keyword = "Geodata",
-                    EnglishKeyword = "Geospatial",
-                    KeywordLink = "http://data.europa.eu/bna/c_ac64a52d",
-                    Thesaurus = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET
-
+                    Keyword = "Geodata",
+                    EnglishKeyword = "Geospatial",
+                    KeywordLink = "http://data.europa.eu/bna/c_ac64a52d",
+                    Thesaurus = SimpleKeyword.THESAURUS_HIGHVALUE_DATASET
+
                 }
             };
 
             int numberOfInspireKeywords = 0;
-            int numberOfInspirePriorityDatasetKeywords = 0;
+            int numberOfInspirePriorityDatasetKeywords = 0;
             int numberOfHighValueDatasetKeywords = 0;
             int numberOfNationalKeywords = 0;
             int numberOfThemeKeywords = 0;
@@ -678,7 +678,7 @@ namespace GeoNorgeAPI.Tests
             int numberOfSpatialScopeKeywords = 0;
             int numberOfGlobalChangeMasterDirectoryKeywords = 0;
             bool inspireAddressesFound = false;
-            bool inspirePriorityDatasetsFound = false;
+            bool inspirePriorityDatasetsFound = false;
             bool highValueDatasetsFound = false;
             bool highValueDatasetSelelectedFound = false;
             bool inspireBuildingsFound = false;
@@ -706,8 +706,8 @@ namespace GeoNorgeAPI.Tests
                 var titleAnchorAndFreeText = descriptiveKeyword.MD_Keywords?.thesaurusName?.CI_Citation.title.item as CI_Citation_Title_Extended;
 
                 CharacterString_PropertyType title = null;
-                if (titleAnchorAndFreeText != null) 
-                    title = new CharacterString_PropertyType { CharacterString = titleAnchorAndFreeText.anchor.Value};
+                if (titleAnchorAndFreeText != null)
+                    title = new CharacterString_PropertyType { CharacterString = titleAnchorAndFreeText.anchor.Value };
                 else if (titleAnchor != null)
                     title = new CharacterString_PropertyType { CharacterString = titleAnchor.Value };
                 else
@@ -718,7 +718,7 @@ namespace GeoNorgeAPI.Tests
                     if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_GEMET_INSPIRE_V1)) {
                         numberOfInspireKeywords = numberOfKeywords;
                         foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
-                        {
+                        {
                             var keyword = k.keyword as CharacterString_PropertyType;
 
                             if (keyword.CharacterString.Equals("Adresser"))
@@ -736,25 +736,25 @@ namespace GeoNorgeAPI.Tests
                                 inspireBuildingsFound = true;
                             }
                         }
-                    }
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
-                    {
-                        numberOfInspirePriorityDatasetKeywords = numberOfKeywords;
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
-                        if (keyword.Value.Equals("Eu direktiv 1") && keyword.href.Equals("http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset/dir-1991-31"))
-                        {
-                            inspirePriorityDatasetsFound = true;
-                        }
-                    }
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
-                    {
-                        numberOfHighValueDatasetKeywords = numberOfKeywords;
-
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as MD_Keyword_Extended;
-                        if (keyword.anchor.Value.Equals("Geodata") && keyword.anchor.href.Equals("http://data.europa.eu/bna/c_ac64a52d"))
-                        {
-                            highValueDatasetsFound = true;
-                        }
+                    }
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET))
+                    {
+                        numberOfInspirePriorityDatasetKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("Eu direktiv 1") && keyword.href.Equals("http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset/dir-1991-31"))
+                        {
+                            inspirePriorityDatasetsFound = true;
+                        }
+                    }
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_HIGHVALUE_DATASET))
+                    {
+                        numberOfHighValueDatasetKeywords = numberOfKeywords;
+
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as MD_Keyword_Extended;
+                        if (keyword.anchor.Value.Equals("Geodata") && keyword.anchor.href.Equals("http://data.europa.eu/bna/c_ac64a52d"))
+                        {
+                            highValueDatasetsFound = true;
+                        }
                     }
                     else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_NATIONAL_INITIATIVE))
                     {
@@ -764,46 +764,46 @@ namespace GeoNorgeAPI.Tests
                         {
                             nationalDOKfound = true;
                         }
-                    }
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_ADMIN_UNITS))
-                    {
-                        numberOfAdminUnitKeywords = numberOfKeywords;
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
-                        if (keyword.Value.Equals("Norge") && keyword.href.Equals("https://data.geonorge.no/administrativeEnheter/nasjon/id/173163"))
-                        {
-                            adminUnitNorwayFound = true;
-                        }
-                    }
-
-
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE))
-                    {
-                        numberOfSpatialScopeKeywords = numberOfKeywords;
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
-                        if (keyword.Value.Equals("National") && keyword.href.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK))
-                        {
-                            spatialScopeKeywordFound = true;
-                        }
-                    }
-
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
-                    {
-                        numberOfGlobalChangeMasterDirectoryKeywords = numberOfKeywords;
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
-                        if (keyword.Value.Equals("GlobalChangeMasterDirectory") && keyword.href.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK))
-                        {
-                            globalChangeMasterDirectoryKeywordFound = true;
-                        }
-                    }
-
-                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
-                    {
-                        numberOfServiceTypeKeywords = numberOfKeywords;
-                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
-                        if (keyword.CharacterString.Equals("infoFeatureAccessService"))
-                        {
-                            serviceTypeFound = true;
-                        }
+                    }
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_ADMIN_UNITS))
+                    {
+                        numberOfAdminUnitKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("Norge") && keyword.href.Equals("https://data.geonorge.no/administrativeEnheter/nasjon/id/173163"))
+                        {
+                            adminUnitNorwayFound = true;
+                        }
+                    }
+
+
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE))
+                    {
+                        numberOfSpatialScopeKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("National") && keyword.href.Equals(SimpleKeyword.THESAURUS_SPATIAL_SCOPE_LINK))
+                        {
+                            spatialScopeKeywordFound = true;
+                        }
+                    }
+
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY))
+                    {
+                        numberOfGlobalChangeMasterDirectoryKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as Anchor_Type;
+                        if (keyword.Value.Equals("GlobalChangeMasterDirectory") && keyword.href.Equals(SimpleKeyword.THESAURUS_GLOBAL_CHANGE_MASTER_DIRECTORY_LINK))
+                        {
+                            globalChangeMasterDirectoryKeywordFound = true;
+                        }
+                    }
+
+                    else if (title.CharacterString.Equals(SimpleKeyword.THESAURUS_SERVICE_TYPE))
+                    {
+                        numberOfServiceTypeKeywords = numberOfKeywords;
+                        var keyword = descriptiveKeyword.MD_Keywords.keyword[0].keyword as CharacterString_PropertyType;
+                        if (keyword.CharacterString.Equals("infoFeatureAccessService"))
+                        {
+                            serviceTypeFound = true;
+                        }
                     }
                 }
                 else if (descriptiveKeyword.MD_Keywords.type != null && descriptiveKeyword.MD_Keywords.type.MD_KeywordTypeCode.codeListValue.Equals(SimpleKeyword.TYPE_PLACE))
@@ -847,11 +847,11 @@ namespace GeoNorgeAPI.Tests
                     foreach (var k in descriptiveKeyword.MD_Keywords.keyword)
                     {
                         var keyword = k.keyword as CharacterString_PropertyType;
-                        var keywordExt = k.keyword as MD_Keyword_Extended;
+                        var keywordExt = k.keyword as MD_Keyword_Extended;
 
-                        if(keywordExt != null && keywordExt.anchor.href == SimpleKeyword.HIGHVALUE_DATASET_LINK)
-                        {
-                            highValueDatasetSelelectedFound = true;
+                        if (keywordExt != null && keywordExt.anchor.href == SimpleKeyword.HIGHVALUE_DATASET_LINK)
+                        {
+                            highValueDatasetSelelectedFound = true;
                         }
                         else if (keyword.CharacterString.Equals("Eksempeldata"))
                         {
@@ -871,7 +871,7 @@ namespace GeoNorgeAPI.Tests
             }
 
             Assert.AreEqual(2, numberOfInspireKeywords, "Expected two inspire keywords in same wrapper element");
-            Assert.AreEqual(1, numberOfInspirePriorityDatasetKeywords, "Expected one inspire priority dataset keyword in same wrapper element");
+            Assert.AreEqual(1, numberOfInspirePriorityDatasetKeywords, "Expected one inspire priority dataset keyword in same wrapper element");
             Assert.AreEqual(1, numberOfHighValueDatasetKeywords, "Expected one high-value dataset keyword in same wrapper element");
             Assert.AreEqual(1, numberOfNationalKeywords, "Expected one national keyword in same wrapper element");
             Assert.AreEqual(1, numberOfThemeKeywords, "Expected one theme keyword in same wrapper element");
@@ -884,7 +884,7 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(1, numberOfGlobalChangeMasterDirectoryKeywords, "Expected one GCMD keyword in same wrapper element");
 
             Assert.True(inspireAddressesFound);
-            Assert.True(inspirePriorityDatasetsFound);
+            Assert.True(inspirePriorityDatasetsFound);
             Assert.True(highValueDatasetSelelectedFound);
             Assert.True(highValueDatasetsFound);
             Assert.True(inspireBuildingsFound);
@@ -904,24 +904,24 @@ namespace GeoNorgeAPI.Tests
 
             Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 
-        }
-
+        }
+
         [Test]
         public void ShouldReturnThesaurusForKeyword()
-        {
+        {
             _md.Keywords = new List<SimpleKeyword> {
 
                 new SimpleKeyword {
                     Keyword = "Eu direktiv 1",
                     Thesaurus = SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET,
                     KeywordLink = "http://inspire.ec.europa.eu/metadata-codelist/PriorityDataset/dir-1991-31"
-                }
-            };
-
-            var keyword = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords[0];
-
-            var thesaurus = keyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
-            Assert.AreEqual(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET, thesaurus.Value);
+                }
+            };
+
+            var keyword = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.descriptiveKeywords[0];
+
+            var thesaurus = keyword.MD_Keywords.thesaurusName.CI_Citation.title.item as Anchor_Type;
+            Assert.AreEqual(SimpleKeyword.THESAURUS_INSPIRE_PRIORITY_DATASET, thesaurus.Value);
         }
 
 
@@ -1250,22 +1250,22 @@ namespace GeoNorgeAPI.Tests
                 Codespace = expectedNamespace
             };
 
-            var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
-            if (identifier != null)
-            {
-                var code = identifier.code.anchor as CharacterString_PropertyType;
-                Assert.AreEqual(expectedResourceReference, code.CharacterString);
-                Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
+            var identifier = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as RS_Identifier_Type;
+            if (identifier != null)
+            {
+                var code = identifier.code.anchor as CharacterString_PropertyType;
+                Assert.AreEqual(expectedResourceReference, code.CharacterString);
+                Assert.AreEqual(expectedNamespace, identifier.codeSpace.CharacterString);
             }
-            else
-            {
-                var identifierType = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
-                if (identifierType != null)
-                {
-                    var code = identifierType.code.anchor as Anchor_Type;
-                    Assert.AreEqual(expectedResourceReference, code.Value);
-                    Assert.AreEqual(expectedNamespace + "/" + expectedResourceReference, code.href);
-                }
+            else
+            {
+                var identifierType = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification.citation.CI_Citation.identifier[0].MD_Identifier as MD_Identifier_Type;
+                if (identifierType != null)
+                {
+                    var code = identifierType.code.anchor as Anchor_Type;
+                    Assert.AreEqual(expectedResourceReference, code.Value);
+                    Assert.AreEqual(expectedNamespace + "/" + expectedResourceReference, code.href);
+                }
             }
         }
 
@@ -1293,23 +1293,23 @@ namespace GeoNorgeAPI.Tests
                     {
                         new MD_DigitalTransferOptions_PropertyType {
                             MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type {
-                                unitsOfDistribution = new PT_FreeText_PropertyType
-                                {
-                                    CharacterString = expectedUnitsOfDistribution,
-                                    PT_FreeText = new PT_FreeText_Type
-                                    {
-                                        textGroup = new LocalisedCharacterString_PropertyType[]
-                                        {
-                                            new LocalisedCharacterString_PropertyType
-                                            {
-                                            LocalisedCharacterString = new LocalisedCharacterString_Type
-                                                {
-                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
-                                                Value = expectedEnglishUnitsOfDistribution
-                                                }
-                                            }
-                                        }
-                                    }
+                                unitsOfDistribution = new PT_FreeText_PropertyType
+                                {
+                                    CharacterString = expectedUnitsOfDistribution,
+                                    PT_FreeText = new PT_FreeText_Type
+                                    {
+                                        textGroup = new LocalisedCharacterString_PropertyType[]
+                                        {
+                                            new LocalisedCharacterString_PropertyType
+                                            {
+                                            LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                {
+                                                locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                Value = expectedEnglishUnitsOfDistribution
+                                                }
+                                            }
+                                        }
+                                    }
                                 },
                                 onLine = new CI_OnlineResource_PropertyType[]
                                 {
@@ -1352,8 +1352,8 @@ namespace GeoNorgeAPI.Tests
             _md.DistributionDetails = new SimpleDistributionDetails { Protocol = expectedProtocol, URL = expectedURL, Name = expectedName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
 
             var resource = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource;
-            var tranferOptions = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
-            var actualEnglishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
+            var tranferOptions = _md.GetMetadata().distributionInfo.MD_Distribution.transferOptions[0].MD_DigitalTransferOptions;
+            var actualEnglishUnitsOfDistribution = tranferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
             Assert.AreEqual(expectedURL, resource.linkage.URL);
             Assert.AreEqual(expectedProtocol, resource.protocol.CharacterString);
             Assert.AreEqual(expectedName, resource.name.CharacterString);
@@ -1410,8 +1410,8 @@ namespace GeoNorgeAPI.Tests
             var item = ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution[0].MD_Resolution.Item as MD_RepresentativeFraction_PropertyType;
 
             Assert.AreEqual("5000", item.MD_RepresentativeFraction.denominator.Integer);
-        }
-
+        }
+
         [Test]
         public void ShouldReturnNullWhenResolutionDistanceDoesNotExist()
         {
@@ -1459,8 +1459,8 @@ namespace GeoNorgeAPI.Tests
             var item = ((MD_DataIdentification_Type)_md.GetMetadata().identificationInfo[0].AbstractMD_Identification).spatialResolution[0].MD_Resolution.Item as Distance_PropertyType;
 
             Assert.AreEqual(5000, item.Distance.Value);
-        }
-
+        }
+
         [Test]
         public void ShouldReturnNullWhenNoMaintenanceFrequencyExists()
         {
@@ -1646,8 +1646,8 @@ namespace GeoNorgeAPI.Tests
             DQ_DomainConsistency_Type domainConsistency = _md.GetMetadata().dataQualityInfo[0].DQ_DataQuality.report[0].AbstractDQ_Element as DQ_DomainConsistency_Type;
             DQ_ConformanceResult_Type conformanceResult = domainConsistency.result[0].AbstractDQ_Result as DQ_ConformanceResult_Type;
 
-            var actualExplanation = conformanceResult.explanation as PT_FreeText_PropertyType;
-            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
+            var actualExplanation = conformanceResult.explanation as PT_FreeText_PropertyType;
+            var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
 
             Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
@@ -1682,15 +1682,15 @@ namespace GeoNorgeAPI.Tests
             string expectedExplanation2 = "explained";
             string expectedEnglishExplanation2 = "explained english";
             bool expectedResult2 = false;
-            string expectedResponsible2 = "Inspire";
-
+            string expectedResponsible2 = "Inspire";
+
             string expectedTitle3 = "title3";
             string expectedDate3 = "2014-01-01";
             string expectedDateType3 = "creation";
             string expectedExplanation3 = "explained";
             string expectedEnglishExplanation3 = "explained english";
             bool expectedResult3 = false;
-            string expectedResponsible3 = "OtherSpec";
+            string expectedResponsible3 = "OtherSpec";
 
             string expectedInteroperabelQuantitativeResultPerformance = "1,56";
 
@@ -1815,9 +1815,9 @@ namespace GeoNorgeAPI.Tests
                                         }
                                     }
                                 }
-                            },
-                            new DQ_Element_PropertyType
-                            {
+                            },
+                            new DQ_Element_PropertyType
+                            {
                                 AbstractDQ_Element = new DQ_DomainConsistency_Type {
                                     result = new DQ_Result_PropertyType[] {
                                         new DQ_Result_PropertyType {
@@ -1873,112 +1873,112 @@ namespace GeoNorgeAPI.Tests
                                                 },
                                                 pass = new Boolean_PropertyType { Boolean = expectedResult3 }
                                             }
-                                        }
-                                    }
-                                }
+                                        }
+                                    }
+                                }
                             },
-                                new DQ_Element_PropertyType
-                                {
-                                    AbstractDQ_Element = new DQ_ConceptualConsistency_Type
-                                    {
-                                        nameOfMeasure = new Measure_Type[]
-                                        {
-                                            new Measure_Type
-                                            {
-                                                type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/performance",  Value = "performance" }
-                                            }
-                                        },
-                                        measureDescription = new CharacterString_PropertyType
-                                        {
-                                            CharacterString = "The maximum time in which a typical request to the Spatial Data Service can be carried out in a off-peak load situation"
-                                        },
-                                        result = new DQ_Result_PropertyType[]
-                                        {
-                                            new DQ_Result_PropertyType
-                                            {
-                                                AbstractDQ_Result = new DQ_QuantitativeResult_Type
-                                                {
-                                                    valueUnit = new UnitOfMeasure_PropertyType{ href = "http://www.opengis.net/def/uom/SI/second" } ,
-                                                    value = new Record_PropertyType[]
-                                                    {
-                                                        new Record_PropertyType
-                                                        {
-                                                            Record = Convert.ToDouble(expectedInteroperabelQuantitativeResultPerformance)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                },
-                                new DQ_Element_PropertyType
-                                {
-                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
-                                    {
-                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.FAIR_NAME_OF_MEASURE } } },
-                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Angir fullstendighet i forhold til krav fra FAIR-prinsippene (The FAIR Guiding Principles for scientific data management and stewardship)" },
-                                            result = new []
-                                            {
-                                                new DQ_Result_PropertyType
-                                                {
-                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
-                                                    {
-
-                                                        valueUnit = new UnitOfMeasure_PropertyType
-                                                        {
-                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
-                                                        },
-                                                        value = new Record_PropertyType[]
-                                                        {
-                                                           new Record_PropertyType
-                                                           {
-                                                               Record = new Integer_PropertyType
-                                                               {
-                                                                   Integer = expectedCompletenessOmmissionResult
-                                                               }
-                                                           }
-                                                        }
-
-
-                                                    }
-                                                }
-                                            }
-                                    }
-                                },
-                                new DQ_Element_PropertyType
-                                {
-                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
-                                    {
-                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.COVERAGE_NAME_OF_MEASURE } } },
-                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Datasettets faktiske kartlagte areal i forhold til datasettets spesifiserte utstrekning" },
-                                            result = new []
-                                            {
-                                                new DQ_Result_PropertyType
-                                                {
-                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
-                                                    {
-
-                                                        valueUnit = new UnitOfMeasure_PropertyType
-                                                        {
-                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
-                                                        },
-                                                        value = new Record_PropertyType[]
-                                                        {
-                                                           new Record_PropertyType
-                                                           {
-                                                               Record = new Integer_PropertyType
-                                                               {
-                                                                   Integer = expectedCompletenessOmmissionCoverageResult
-                                                               }
-                                                           }
-                                                        }
-
-
-                                                    }
-                                                }
-                                            }
-                                    }
-                                }
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_ConceptualConsistency_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[]
+                                        {
+                                            new Measure_Type
+                                            {
+                                                type = new Anchor_Type{  href = "http://inspire.ec.europa.eu/metadata-codelist/QualityOfServiceCriteriaCode/performance",  Value = "performance" }
+                                            }
+                                        },
+                                        measureDescription = new CharacterString_PropertyType
+                                        {
+                                            CharacterString = "The maximum time in which a typical request to the Spatial Data Service can be carried out in a off-peak load situation"
+                                        },
+                                        result = new DQ_Result_PropertyType[]
+                                        {
+                                            new DQ_Result_PropertyType
+                                            {
+                                                AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                {
+                                                    valueUnit = new UnitOfMeasure_PropertyType{ href = "http://www.opengis.net/def/uom/SI/second" } ,
+                                                    value = new Record_PropertyType[]
+                                                    {
+                                                        new Record_PropertyType
+                                                        {
+                                                            Record = Convert.ToDouble(expectedInteroperabelQuantitativeResultPerformance)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.FAIR_NAME_OF_MEASURE } } },
+                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Angir fullstendighet i forhold til krav fra FAIR-prinsippene (The FAIR Guiding Principles for scientific data management and stewardship)" },
+                                            result = new []
+                                            {
+                                                new DQ_Result_PropertyType
+                                                {
+                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                    {
+
+                                                        valueUnit = new UnitOfMeasure_PropertyType
+                                                        {
+                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                                        },
+                                                        value = new Record_PropertyType[]
+                                                        {
+                                                           new Record_PropertyType
+                                                           {
+                                                               Record = new Integer_PropertyType
+                                                               {
+                                                                   Integer = expectedCompletenessOmmissionResult
+                                                               }
+                                                           }
+                                                        }
+
+
+                                                    }
+                                                }
+                                            }
+                                    }
+                                },
+                                new DQ_Element_PropertyType
+                                {
+                                    AbstractDQ_Element = new DQ_CompletenessOmission_Type
+                                    {
+                                        nameOfMeasure = new Measure_Type[] { new Measure_Type {  type = new Anchor_Type { Value = SimpleMetadata.COVERAGE_NAME_OF_MEASURE } } },
+                                        measureDescription =  new CharacterString_PropertyType { CharacterString = "Datasettets faktiske kartlagte areal i forhold til datasettets spesifiserte utstrekning" },
+                                            result = new []
+                                            {
+                                                new DQ_Result_PropertyType
+                                                {
+                                                    AbstractDQ_Result = new DQ_QuantitativeResult_Type
+                                                    {
+
+                                                        valueUnit = new UnitOfMeasure_PropertyType
+                                                        {
+                                                           href = "http://dd.eionet.europa.eu/vocabulary/eurostat/percent",
+                                                        },
+                                                        value = new Record_PropertyType[]
+                                                        {
+                                                           new Record_PropertyType
+                                                           {
+                                                               Record = new Integer_PropertyType
+                                                               {
+                                                                   Integer = expectedCompletenessOmmissionCoverageResult
+                                                               }
+                                                           }
+                                                        }
+
+
+                                                    }
+                                                }
+                                            }
+                                    }
+                                }
                         }
                     }
                 }
@@ -2030,9 +2030,9 @@ namespace GeoNorgeAPI.Tests
             string expectedExplanation2 = "explained";
             string expectedEnglishExplanation2 = "explained english";
             bool expectedResult2 = false;
-            string expectedResponsible2 = "Inspire";
-
-            string expectedSpecificationLink3 = "http://inspire.ec.europa.eu/id/citation/ir/reg-976-2009";
+            string expectedResponsible2 = "Inspire";
+
+            string expectedSpecificationLink3 = "http://inspire.ec.europa.eu/id/citation/ir/reg-976-2009";
             string expectedTitle3 = "title3";
             string expectedTitleLink3 = "http://inspire.ec.europa.eu/id/ats/metadata/2.0/sds-invocable";
             string expectedTitleLinkDescription3 = "INSPIRE Invocable Spatial Data Services metadata";
@@ -2041,14 +2041,14 @@ namespace GeoNorgeAPI.Tests
             string expectedExplanation3 = "explained";
             string expectedEnglishExplanation3 = "explained english";
             bool expectedResult3 = false;
-            string expectedResponsible3 = "OtherSpec";
+            string expectedResponsible3 = "OtherSpec";
 
             string expectedResponsibleInteroperabelPerformance = "sds-performance";
-            string expectedInteroperabelQuantitativeResultPerformance = "1,56";
-
+            string expectedInteroperabelQuantitativeResultPerformance = "1,56";
+
             string expectedResponsibleInteroperabelAvailability = "sds-availability";
-            string expectedInteroperabelQuantitativeResultAvailability = "98,9";
-
+            string expectedInteroperabelQuantitativeResultAvailability = "98,9";
+
             string expectedResponsibleInteroperabelCapacity = "sds-capacity";
             string expectedInteroperabelQuantitativeResultCapacity = "1000";
 
@@ -2076,8 +2076,8 @@ namespace GeoNorgeAPI.Tests
                 EnglishExplanation = expectedEnglishExplanation2,
                 Result = expectedResult2,
                 Responsible = expectedResponsible2
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 SpecificationLink = expectedSpecificationLink3,
@@ -2090,32 +2090,32 @@ namespace GeoNorgeAPI.Tests
                 EnglishExplanation = expectedEnglishExplanation3,
                 Result = expectedResult3,
                 Responsible = expectedResponsible3
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 Responsible = expectedResponsibleInteroperabelPerformance,
                 QuantitativeResult = expectedInteroperabelQuantitativeResultPerformance
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 Responsible = expectedResponsibleInteroperabelAvailability,
                 QuantitativeResult = expectedInteroperabelQuantitativeResultAvailability
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 Responsible = expectedResponsibleInteroperabelCapacity,
                 QuantitativeResult = expectedInteroperabelQuantitativeResultCapacity
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 Title = SimpleMetadata.FAIR_NAME_OF_MEASURE,
                 QuantitativeResult = expectedCompletenessOmmissionResult
-            });
-
+            });
+
             QualityList.Add(new SimpleQualitySpecification
             {
                 Title = SimpleMetadata.COVERAGE_NAME_OF_MEASURE,
@@ -2142,7 +2142,7 @@ namespace GeoNorgeAPI.Tests
             var title = conformanceResult.specification.CI_Citation.title.item as CharacterString_PropertyType;
             var responsible = conformanceResult.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
             var title2 = conformanceResult2.specification.CI_Citation.title.item as CharacterString_PropertyType;
-            var responsible2 = conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
+            var responsible2 = conformanceResult2.specification.CI_Citation.identifier[0].MD_Identifier.authority.CI_Citation.title.item as CharacterString_PropertyType;
 
             Assert.AreEqual(expectedTitle, title.CharacterString);
             Assert.AreEqual(expectedDate, (string)conformanceResult.specification.CI_Citation.date[0].CI_Date.date.Item);
@@ -2158,10 +2158,10 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedExplanation2, conformanceResult2.explanation.CharacterString);
             Assert.AreEqual(expectedEnglishExplanation2, explanation2.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
             Assert.AreEqual(expectedResult2, conformanceResult2.pass.Boolean);
-            Assert.AreEqual(expectedResponsible2, responsible2.CharacterString);
-
-            var anchorTitle3 = conformanceResult3.specification.CI_Citation.title.item as Anchor_Type;
-            Assert.AreEqual(expectedTitle3, anchorTitle3.Value);
+            Assert.AreEqual(expectedResponsible2, responsible2.CharacterString);
+
+            var anchorTitle3 = conformanceResult3.specification.CI_Citation.title.item as Anchor_Type;
+            Assert.AreEqual(expectedTitle3, anchorTitle3.Value);
             Assert.AreEqual(expectedSpecificationLink3, conformanceResult3.specification.href);
             Assert.AreEqual(expectedTitleLink3, anchorTitle3.href);
             Assert.AreEqual(expectedTitleLinkDescription3, anchorTitle3.title);
@@ -2356,9 +2356,9 @@ namespace GeoNorgeAPI.Tests
             _md.DateCreated = date;
 
             Assert.AreEqual(defaultDate, (string)GetCitationDateWithType("creation"));
-        }
-
-        [Test]
+        }
+
+        [Test]
         public void ShouldReturnEmptyCreatedDateWhenDefault()
         {
             string defaultDate = "0001-01-01";
@@ -2718,8 +2718,8 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldReturnConstraints()
         {
-            SimpleConstraints constraints = _md.Constraints;
-
+            SimpleConstraints constraints = _md.Constraints;
+
             Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
 
             Assert.AreEqual("Gratis å benytte til alle formål.", constraints.UseLimitations);
@@ -2732,8 +2732,8 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Text that describes why it is not freely open", constraints.SecurityConstraintsNote);
             Assert.AreEqual("norway digital restricted", constraints.AccessConstraints);
             Assert.AreEqual("otherRestrictions", constraints.UseConstraints);
-            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
-            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.OtherConstraintsAccess);
+            Assert.AreEqual("http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d", constraints.AccessConstraintsLink);
             Assert.AreEqual("Free of charge", constraints.EnglishUseLimitations);
             Assert.AreEqual("No restrictions", constraints.EnglishOtherConstraints);
         }
@@ -2741,19 +2741,19 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldUpdateConstraints()
         {
-            string expectedUseLimitations = "ingen bruksbegrensninger";
-            string expectedEnglishUseLimitations = "no use limitations";
-
+            string expectedUseLimitations = "ingen bruksbegrensninger";
+            string expectedEnglishUseLimitations = "no use limitations";
+
             string expectedAccessConstraints = "Økonomiske- eller forretningsmessige forhold";
-            string expectedOtherConstraintsAccess = "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
-
+            string expectedOtherConstraintsAccess = "http://inspire.ec.europa.eu/metadata-codelist/LimitationsOnPublicAccess/INSPIRE_Directive_Article13_1d";
+
             string expectedUseConstraints = "otherRestrictions";
             string expectedOtherConstraintsLink = "https://creativecommons.org/licenses/by/4.0/";
-            string expectedOtherConstraintsLinkText = "Creative Commons BY 4.0 (CC BY 4.0)";
-
-            string expectedOtherConstraints = "ingen andre begrensninger";
-            string expectedEnglishOtherConstraints = "no limitations";
-
+            string expectedOtherConstraintsLinkText = "Creative Commons BY 4.0 (CC BY 4.0)";
+
+            string expectedOtherConstraints = "ingen andre begrensninger";
+            string expectedEnglishOtherConstraints = "no limitations";
+
             string expectedSecurityConstraints = "restricted";
             string expectedSecurityConstraintsNote = "Text that describes why it is not freely open";
 
@@ -2792,7 +2792,7 @@ namespace GeoNorgeAPI.Tests
 
             foreach (var constraint in identification.resourceConstraints)
             {
-                MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
+                MD_SecurityConstraints_Type securityConstraint = constraint.MD_Constraints as MD_SecurityConstraints_Type;
                 MD_LegalConstraints_Type legalConstraint = constraint.MD_Constraints as MD_LegalConstraints_Type;
 
                 if (securityConstraint != null)
@@ -2800,36 +2800,36 @@ namespace GeoNorgeAPI.Tests
                     actualSecurityConstraint = securityConstraint.classification.MD_ClassificationCode.codeListValue;
                     actualSecurityConstraintNote = securityConstraint.userNote.CharacterString;
                 }
-                else if (legalConstraint?.useConstraints != null)
-                {
-                    actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
-                    var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
-                    actualOtherConstraintLinkText = useConstraintsType.Value;
-                    actualOtherConstraintLink = useConstraintsType.href;
-
-                }
-                else if (constraint?.MD_Constraints?.useLimitation != null)
-                {
-                    var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
-                    actualUseLimitation = useLimit.CharacterString;
-                    actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
-                }
-                else if (legalConstraint?.accessConstraints != null)
-                {
-                    var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
-                    actualAccessConstraint = actualAccessConstraintType.Value;
-                    actualOtherConstraintsAccess = actualAccessConstraintType.href;
-                }
-                else if (legalConstraint?.otherConstraints != null)
-                {
-                    var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
-                    if (otherConstraintString != null)
-                        actualOtherConstraint = otherConstraintString.CharacterString;
-
-                    var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
-                    if (englishOtherConstraint != null)
-                        actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
-                }
+                else if (legalConstraint?.useConstraints != null)
+                {
+                    actualUseConstraint = legalConstraint.useConstraints[0].MD_RestrictionCode.codeListValue;
+                    var useConstraintsType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualOtherConstraintLinkText = useConstraintsType.Value;
+                    actualOtherConstraintLink = useConstraintsType.href;
+
+                }
+                else if (constraint?.MD_Constraints?.useLimitation != null)
+                {
+                    var useLimit = constraint.MD_Constraints.useLimitation[0] as PT_FreeText_PropertyType;
+                    actualUseLimitation = useLimit.CharacterString;
+                    actualEnglishUseLimitation = _md.GetEnglishValueFromFreeText(useLimit);
+                }
+                else if (legalConstraint?.accessConstraints != null)
+                {
+                    var actualAccessConstraintType = legalConstraint.otherConstraints[0].MD_RestrictionOther as Anchor_Type;
+                    actualAccessConstraint = actualAccessConstraintType.Value;
+                    actualOtherConstraintsAccess = actualAccessConstraintType.href;
+                }
+                else if (legalConstraint?.otherConstraints != null)
+                {
+                    var otherConstraintString = legalConstraint.otherConstraints[0].MD_RestrictionOther as CharacterString_PropertyType;
+                    if (otherConstraintString != null)
+                        actualOtherConstraint = otherConstraintString.CharacterString;
+
+                    var englishOtherConstraint = legalConstraint.otherConstraints[0].MD_RestrictionOther as PT_FreeText_PropertyType;
+                    if (englishOtherConstraint != null)
+                        actualEnglishOtherConstraints = _md.GetEnglishValueFromFreeText(englishOtherConstraint);
+                }
             }
 
             Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
@@ -2906,46 +2906,46 @@ namespace GeoNorgeAPI.Tests
             List<string> operatesOn = _md.OperatesOn;
             Assert.True(operatesOn.Contains(uuid1));
             Assert.True(operatesOn.Contains(uuid2));
-        }
-
+        }
+
         [Test]
         public void ShouldReturnCrossReference()
         {
             string uuid1 = "dddbb667-1303-4ac5-8640-7ec04c0e3918";
             string uuid2 = "595e47d9-d201-479c-a77d-cbc1f573a76b";
-            _md.HierarchyLevel = "software";
+            _md.HierarchyLevel = "software";
             MD_DataIdentification_Type identification = _md.GetMetadata().identificationInfo[0].AbstractMD_Identification as MD_DataIdentification_Type;
 
-            identification.aggregationInfo = new MD_AggregateInformation_PropertyType[]
-            {
-              new MD_AggregateInformation_PropertyType
-              {
-                  MD_AggregateInformation = new MD_AggregateInformation_Type
-                  {
-                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
-                      {
-                          MD_Identifier = new MD_Identifier_Type
-                          {
-                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid1 }  } ,
-                          }
-                      }
-                  }
-              },
-              new MD_AggregateInformation_PropertyType
-              {
-                  MD_AggregateInformation = new MD_AggregateInformation_Type
-                  {
-                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
-                      {
-                          MD_Identifier = new MD_Identifier_Type
-                          {
-                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid2 }  }
-                          }
-                      }
-                  }
-              }
-            };
-
+            identification.aggregationInfo = new MD_AggregateInformation_PropertyType[]
+            {
+              new MD_AggregateInformation_PropertyType
+              {
+                  MD_AggregateInformation = new MD_AggregateInformation_Type
+                  {
+                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
+                      {
+                          MD_Identifier = new MD_Identifier_Type
+                          {
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid1 }  } ,
+                          }
+                      }
+                  }
+              },
+              new MD_AggregateInformation_PropertyType
+              {
+                  MD_AggregateInformation = new MD_AggregateInformation_Type
+                  {
+                      aggregateDataSetIdentifier = new MD_Identifier_PropertyType
+                      {
+                          MD_Identifier = new MD_Identifier_Type
+                          {
+                              code = new Anchor_PropertyType{ anchor = new CharacterString_PropertyType { CharacterString = uuid2 }  }
+                          }
+                      }
+                  }
+              }
+            };
+
             List<string> references = _md.CrossReference;
             Assert.True(references.Contains(uuid1));
             Assert.True(references.Contains(uuid2));
@@ -3118,8 +3118,8 @@ namespace GeoNorgeAPI.Tests
             string actual = metadata.GetMetadata().identificationInfo[0].AbstractMD_Identification.resourceSpecificUsage[0].MD_Usage.specificUsage.CharacterString;
 
             Assert.AreEqual(expected, actual);
-        }
-
+        }
+
         [Test]
         public void ShouldUpdateSpecificUsageService()
         {
@@ -3388,12 +3388,12 @@ namespace GeoNorgeAPI.Tests
             //simpleMetadata.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
 
             //Assert.Null(simpleMetadata.ValidTimePeriod.ValidFrom);
-            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
-
-            _md.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
-
-            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
-
+            //Assert.Null(simpleMetadata.ValidTimePeriod.ValidTo);
+
+            _md.ValidTimePeriod = new SimpleValidTimePeriod { ValidFrom = null, ValidTo = null };
+
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+
         }
 
         [Test]
@@ -3555,7 +3555,7 @@ namespace GeoNorgeAPI.Tests
             _md.GetMetadata().metadataExtensionInfo = new MD_MetadataExtensionInformation_PropertyType[] {
                 new MD_MetadataExtensionInformation_PropertyType {
                 MD_MetadataExtensionInformation = new MD_MetadataExtensionInformation_Type{
-                    extensionOnLineResource = new CI_OnlineResource_PropertyType{
+                    extensionOnLineResource = new CI_OnlineResource_PropertyType{
                         CI_OnlineResource = new CI_OnlineResource_Type{
                             linkage = new URL_PropertyType{ URL = expectedURL},
                             applicationProfile = new CharacterString_PropertyType{ CharacterString = "hjelp"}
@@ -3591,28 +3591,28 @@ namespace GeoNorgeAPI.Tests
         public void ShouldUpdateCoverageUrls()
         {
             string expectedCovarageGridMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:dsb_brannstasjon";
-            string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
-            string expectedCovarageCellMapURL = "https://wms.geonorge.no/test.json";
-            string expectedSurveyAreaMapUrl = "https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/GeoJSON/Dekning_Grus_Pukk.geojson";
+            string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
+            string expectedCovarageCellMapURL = "https://wms.geonorge.no/test.json";
+            string expectedSurveyAreaMapUrl = "https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/GeoJSON/Dekning_Grus_Pukk.geojson";
             SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
-            simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
+            simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
             simpleMetadata.CoverageUrl = expectedCovarageMapURL;
-            simpleMetadata.CoverageCellUrl = expectedCovarageCellMapURL;
+            simpleMetadata.CoverageCellUrl = expectedCovarageCellMapURL;
             simpleMetadata.SurveyAreaMapUrl = expectedSurveyAreaMapUrl;
 
             var gridMap = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var map = simpleMetadata.GetMetadata().metadataExtensionInfo[1].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
-            var cell = simpleMetadata.GetMetadata().metadataExtensionInfo[2].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+            var cell = simpleMetadata.GetMetadata().metadataExtensionInfo[2].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var surveyArea = simpleMetadata.GetMetadata().metadataExtensionInfo[3].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
 
-            string actualCovarageGridMapURL = gridMap.linkage.URL;
+            string actualCovarageGridMapURL = gridMap.linkage.URL;
             string actualCovarageMapURL = map.linkage.URL;
-            string actualCovarageCellMapURL = cell.linkage.URL;
+            string actualCovarageCellMapURL = cell.linkage.URL;
             string actualsurveyAreaURL = surveyArea.linkage.URL;
 
             Assert.AreEqual(expectedCovarageGridMapURL, actualCovarageGridMapURL);
             Assert.AreEqual(expectedCovarageMapURL, actualCovarageMapURL);
-            Assert.AreEqual(expectedCovarageCellMapURL, actualCovarageCellMapURL);
+            Assert.AreEqual(expectedCovarageCellMapURL, actualCovarageCellMapURL);
             Assert.AreEqual(expectedSurveyAreaMapUrl, actualsurveyAreaURL);
         }
 
@@ -3641,8 +3641,8 @@ namespace GeoNorgeAPI.Tests
             metadata.ApplicationSchema = applicationSchema;
 
             Assert.AreEqual(applicationSchema, metadata.ApplicationSchema);
-        }
-
+        }
+
         [Test]
         public void ShouldSetDefaultValuesInApplicationSchemaInformation()
         {
@@ -3652,8 +3652,8 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(DateTime.Now.ToString("yyyy-MM-dd"), metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.name.CI_Citation.date[0].CI_Date.date.Item);
             Assert.AreEqual("UML", metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.schemaLanguage.CharacterString);
             Assert.AreEqual("OCL", metadata.GetMetadata().applicationSchemaInfo[0].MD_ApplicationSchemaInformation.constraintLanguage.CharacterString);
-        }
-
+        }
+
         [Test]
         public void ShouldReturnNullIfApplicationSchemaIsNotSet()
         {
@@ -3665,7 +3665,7 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ShouldRemoveApplicationSchemaIfSetToNull()
         {
-            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
             metadata.ApplicationSchema = "application schema";
 
             metadata.ApplicationSchema = null;
@@ -3674,15 +3674,15 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
-        public void ShouldRemoveApplicationSchemaIfSetToEmptyString()
-        {
-            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
+        public void ShouldRemoveApplicationSchemaIfSetToEmptyString()
+        {
+            SimpleMetadata metadata = SimpleMetadata.CreateDataset();
             metadata.ApplicationSchema = "application schema";
 
             metadata.ApplicationSchema = "";
 
             Assert.IsNull(metadata.GetMetadata().applicationSchemaInfo);
-        }
+        }
 
 
         [Test]
@@ -3696,82 +3696,82 @@ namespace GeoNorgeAPI.Tests
             string expectedResourceName = "navn";
             string expectedUnitsOfDistribution = "unit1";
             string expectedEnglishUnitsOfDistribution = "unit1eng";
-            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new[]
-                    {
-                        new MD_Format_PropertyType
-                        {
-                            MD_Format = new MD_Format_Type
-                            {
-                                name = new CharacterString_PropertyType { CharacterString = expectedName },
-                                version = new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString =  expectedVersion } },
-                                formatDistributor = new MD_Distributor_PropertyType[]
-                                {
-                                   new MD_Distributor_PropertyType
-                                   {
-                                       MD_Distributor = new MD_Distributor_Type
-                                       {
-                                           distributorContact = new CI_ResponsibleParty_PropertyType
-                                           {
-                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
-                                               {
-                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
-                                                   role = new CI_RoleCode_PropertyType
-                                                   {
-                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
-                                                   }
-                                               }
-                                           },
-                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
-                                           {
-                                               new MD_DigitalTransferOptions_PropertyType
-                                               {
-                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
-                                                   {
-                                                       unitsOfDistribution = new PT_FreeText_PropertyType
-                                                        {
-                                                            CharacterString = expectedUnitsOfDistribution,
-                                                            PT_FreeText = new PT_FreeText_Type
-                                                            {
-                                                                textGroup = new LocalisedCharacterString_PropertyType[]
-                                                                {
-                                                                    new LocalisedCharacterString_PropertyType
-                                                                    {
-                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
-                                                                        {
-                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
-                                                                        Value = expectedEnglishUnitsOfDistribution
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                       onLine = new CI_OnlineResource_PropertyType[]
-                                                       {
-                                                           new CI_OnlineResource_PropertyType
-                                                           {
-                                                               CI_OnlineResource = new CI_OnlineResource_Type
-                                                               {
-                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
-                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
-                                                                   linkage = new URL_PropertyType
-                                                                   {
-                                                                       URL = expectedURL
-                                                                   }
-                                                               }
-                                                           }
-                                                       }
-                                                   }
-                                               }
-                                           }
-                                       }
-                                   }
-                                }
-                            }
-                        }
+                    distributionFormat = new[]
+                    {
+                        new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString =  expectedVersion } },
+                                formatDistributor = new MD_Distributor_PropertyType[]
+                                {
+                                   new MD_Distributor_PropertyType
+                                   {
+                                       MD_Distributor = new MD_Distributor_Type
+                                       {
+                                           distributorContact = new CI_ResponsibleParty_PropertyType
+                                           {
+                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                               {
+                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
+                                                   role = new CI_RoleCode_PropertyType
+                                                   {
+                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
+                                                   }
+                                               }
+                                           },
+                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                                           {
+                                               new MD_DigitalTransferOptions_PropertyType
+                                               {
+                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                   {
+                                                       unitsOfDistribution = new PT_FreeText_PropertyType
+                                                        {
+                                                            CharacterString = expectedUnitsOfDistribution,
+                                                            PT_FreeText = new PT_FreeText_Type
+                                                            {
+                                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                                                {
+                                                                    new LocalisedCharacterString_PropertyType
+                                                                    {
+                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                        {
+                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                        Value = expectedEnglishUnitsOfDistribution
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                       onLine = new CI_OnlineResource_PropertyType[]
+                                                       {
+                                                           new CI_OnlineResource_PropertyType
+                                                           {
+                                                               CI_OnlineResource = new CI_OnlineResource_Type
+                                                               {
+                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
+                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
+                                                                   linkage = new URL_PropertyType
+                                                                   {
+                                                                       URL = expectedURL
+                                                                   }
+                                                               }
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+                                   }
+                                }
+                            }
+                        }
                     }
                 }
             };
@@ -3802,82 +3802,82 @@ namespace GeoNorgeAPI.Tests
             string expectedResourceName = "navn";
             string expectedUnitsOfDistribution = "unit1";
             string expectedEnglishUnitsOfDistribution = "unit1eng";
-            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
+            _md.GetMetadata().distributionInfo = new MD_Distribution_PropertyType
             {
                 MD_Distribution = new MD_Distribution_Type
                 {
-                    distributionFormat = new[]
-                    {
-                        new MD_Format_PropertyType
-                        {
-                            MD_Format = new MD_Format_Type
-                            {
-                                name = new CharacterString_PropertyType { CharacterString = expectedName },
-                                version = !string.IsNullOrEmpty(expectedVersion) ? new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString = expectedVersion } } : new MD_Format_Type_Version(),
-                                formatDistributor = new MD_Distributor_PropertyType[]
-                                {
-                                   new MD_Distributor_PropertyType
-                                   {
-                                       MD_Distributor = new MD_Distributor_Type
-                                       {
-                                           distributorContact = new CI_ResponsibleParty_PropertyType
-                                           {
-                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
-                                               {
-                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
-                                                   role = new CI_RoleCode_PropertyType
-                                                   {
-                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
-                                                   }
-                                               }
-                                           },
-                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
-                                           {
-                                               new MD_DigitalTransferOptions_PropertyType
-                                               {
-                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
-                                                   {
-                                                       unitsOfDistribution = new PT_FreeText_PropertyType
-                                                        {
-                                                            CharacterString = expectedUnitsOfDistribution,
-                                                            PT_FreeText = new PT_FreeText_Type
-                                                            {
-                                                                textGroup = new LocalisedCharacterString_PropertyType[]
-                                                                {
-                                                                    new LocalisedCharacterString_PropertyType
-                                                                    {
-                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
-                                                                        {
-                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
-                                                                        Value = expectedEnglishUnitsOfDistribution
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        },
-                                                       onLine = new CI_OnlineResource_PropertyType[]
-                                                       {
-                                                           new CI_OnlineResource_PropertyType
-                                                           {
-                                                               CI_OnlineResource = new CI_OnlineResource_Type
-                                                               {
-                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
-                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
-                                                                   linkage = new URL_PropertyType
-                                                                   {
-                                                                       URL = expectedURL
-                                                                   }
-                                                               }
-                                                           }
-                                                       }
-                                                   }
-                                               }
-                                           }
-                                       }
-                                   }
-                                }
-                            }
-                        }
+                    distributionFormat = new[]
+                    {
+                        new MD_Format_PropertyType
+                        {
+                            MD_Format = new MD_Format_Type
+                            {
+                                name = new CharacterString_PropertyType { CharacterString = expectedName },
+                                version = !string.IsNullOrEmpty(expectedVersion) ? new MD_Format_Type_Version { item = new CharacterString_PropertyType{ CharacterString = expectedVersion } } : new MD_Format_Type_Version(),
+                                formatDistributor = new MD_Distributor_PropertyType[]
+                                {
+                                   new MD_Distributor_PropertyType
+                                   {
+                                       MD_Distributor = new MD_Distributor_Type
+                                       {
+                                           distributorContact = new CI_ResponsibleParty_PropertyType
+                                           {
+                                               CI_ResponsibleParty = new CI_ResponsibleParty_Type
+                                               {
+                                                   organisationName = new CharacterString_PropertyType { CharacterString = expectedOrganization },
+                                                   role = new CI_RoleCode_PropertyType
+                                                   {
+                                                       CI_RoleCode = new CodeListValue_Type { codeListValue = "distributor" }
+                                                   }
+                                               }
+                                           },
+                                           distributorTransferOptions = new MD_DigitalTransferOptions_PropertyType[]
+                                           {
+                                               new MD_DigitalTransferOptions_PropertyType
+                                               {
+                                                   MD_DigitalTransferOptions = new MD_DigitalTransferOptions_Type
+                                                   {
+                                                       unitsOfDistribution = new PT_FreeText_PropertyType
+                                                        {
+                                                            CharacterString = expectedUnitsOfDistribution,
+                                                            PT_FreeText = new PT_FreeText_Type
+                                                            {
+                                                                textGroup = new LocalisedCharacterString_PropertyType[]
+                                                                {
+                                                                    new LocalisedCharacterString_PropertyType
+                                                                    {
+                                                                    LocalisedCharacterString = new LocalisedCharacterString_Type
+                                                                        {
+                                                                        locale = SimpleMetadata.LOCALE_LINK_ENG,
+                                                                        Value = expectedEnglishUnitsOfDistribution
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        },
+                                                       onLine = new CI_OnlineResource_PropertyType[]
+                                                       {
+                                                           new CI_OnlineResource_PropertyType
+                                                           {
+                                                               CI_OnlineResource = new CI_OnlineResource_Type
+                                                               {
+                                                                   protocol = new CharacterString_PropertyType { CharacterString = expectedProtocol },
+                                                                   name = new CharacterString_PropertyType { CharacterString = expectedResourceName },
+                                                                   linkage = new URL_PropertyType
+                                                                   {
+                                                                       URL = expectedURL
+                                                                   }
+                                                               }
+                                                           }
+                                                       }
+                                                   }
+                                               }
+                                           }
+                                       }
+                                   }
+                                }
+                            }
+                        }
                     }
                 }
             };
@@ -3910,7 +3910,7 @@ namespace GeoNorgeAPI.Tests
             string expectedUnitsOfDistribution = "unit1";
             string expectedEnglishUnitsOfDistribution = "unit1eng";
 
-            var formats = new List<SimpleDistribution>();
+            var formats = new List<SimpleDistribution>();
             var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
             formats.Add(format);
             _md.DistributionsFormats = formats;
@@ -3920,15 +3920,15 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
             var version = mdFormat?.version?.item as CharacterString_PropertyType;
             Assert.AreEqual(expectedVersion, version.CharacterString);
-            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
-            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
+            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
+            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
             Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
             Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
-            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
-            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
-            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
-        }
-
+            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+        }
+
         [Test]
         public void ShouldUpdateDistributionsFormatsWhenVersionIsEmpty()
         {
@@ -3941,7 +3941,7 @@ namespace GeoNorgeAPI.Tests
             string expectedUnitsOfDistribution = "unit1";
             string expectedEnglishUnitsOfDistribution = "unit1eng";
 
-            var formats = new List<SimpleDistribution>();
+            var formats = new List<SimpleDistribution>();
             var format = new SimpleDistribution { FormatName = expectedName, FormatVersion = expectedVersion, Organization = expectedOrganization, Protocol = expectedProtocol, URL = expectedURL, Name = expectedResourceName, UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = expectedEnglishUnitsOfDistribution };
             formats.Add(format);
             _md.DistributionsFormats = formats;
@@ -3950,38 +3950,38 @@ namespace GeoNorgeAPI.Tests
             var actualEnglishUnitsOfDistribution = mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution as PT_FreeText_PropertyType;
             Assert.AreEqual(expectedName, mdFormat.name.CharacterString);
             Assert.AreEqual(expectedVersion, mdFormat.version.item);
-            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
-            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
+            Assert.AreEqual(expectedOrganization, mdFormat.formatDistributor[0].MD_Distributor.distributorContact.CI_ResponsibleParty.organisationName.CharacterString);
+            Assert.AreEqual(expectedURL, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.linkage.URL);
             Assert.AreEqual(expectedProtocol, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.protocol.CharacterString);
             Assert.AreEqual(expectedResourceName, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.onLine[0].CI_OnlineResource.name.CharacterString);
-            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
-            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
-            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
-        }
-
+            Assert.AreEqual(expectedUnitsOfDistribution, mdFormat.formatDistributor[0].MD_Distributor.distributorTransferOptions[0].MD_DigitalTransferOptions.unitsOfDistribution.CharacterString);
+            Assert.AreEqual(expectedEnglishUnitsOfDistribution, actualEnglishUnitsOfDistribution.PT_FreeText.textGroup[0].LocalisedCharacterString.Value);
+            Trace.WriteLine(SerializeUtil.SerializeToString(_md.GetMetadata()));
+        }
+
         [Test]
         public void ShouldRemoveUnnecessaryElements()
-        {
+        {
             string xml = File.ReadAllText("xml/unnecessary.xml");
-            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
-            metadata.RemoveUnnecessaryElements();
-            MD_Metadata_Type metadataUpdated = metadata.GetMetadata();
-            var citation = metadataUpdated.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation;
-            Assert.IsNull(citation.citedResponsibleParty);
-            Assert.IsNull(citation.edition);
-            Assert.IsNull(citation.presentationForm);
-        }
-
+            var metadata = new SimpleMetadata(SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml));
+            metadata.RemoveUnnecessaryElements();
+            MD_Metadata_Type metadataUpdated = metadata.GetMetadata();
+            var citation = metadataUpdated.identificationInfo[0].AbstractMD_Identification.citation.CI_Citation;
+            Assert.IsNull(citation.citedResponsibleParty);
+            Assert.IsNull(citation.edition);
+            Assert.IsNull(citation.presentationForm);
+        }
+
         [Test]
         public void ShouldCheckProtocolSpatialDataServices()
-        {
-            Assert.True(SimpleMetadata.IsAccessPoint("W3C:REST"));
-            Assert.False(SimpleMetadata.IsAccessPoint("OGC:WFS"));
-            Assert.True(SimpleMetadata.IsNetworkService("OGC:WFS"));
-            Assert.False(SimpleMetadata.IsNetworkService("W3C:REST"));
-        }
-
-        [Test]
+        {
+            Assert.True(SimpleMetadata.IsAccessPoint("W3C:REST"));
+            Assert.False(SimpleMetadata.IsAccessPoint("OGC:WFS"));
+            Assert.True(SimpleMetadata.IsNetworkService("OGC:WFS"));
+            Assert.False(SimpleMetadata.IsNetworkService("W3C:REST"));
+        }
+
+        [Test]
         public void ShouldReturnSimpleOperationsForService()
         {
             _md.GetMetadata().identificationInfo = new MD_Identification_PropertyType[]
@@ -3990,12 +3990,12 @@ namespace GeoNorgeAPI.Tests
                     {
                         AbstractMD_Identification = new SV_ServiceIdentification_Type
                         {
-                            containsOperations = new SV_OperationMetadata_PropertyType[]{ new SV_OperationMetadata_PropertyType { SV_OperationMetadata = new SV_OperationMetadata_Type
-                            {
-                                operationName = new CharacterString_PropertyType { CharacterString = "Operation1" },
-                                operationDescription = new CharacterString_PropertyType{ CharacterString = "Description1" },
-                                DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type { codeListValue = "Platform1" } } },
-                                connectPoint = new CI_OnlineResource_PropertyType[]{ new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = "http://service1.geonorge.no" } } } }
+                            containsOperations = new SV_OperationMetadata_PropertyType[]{ new SV_OperationMetadata_PropertyType { SV_OperationMetadata = new SV_OperationMetadata_Type
+                            {
+                                operationName = new CharacterString_PropertyType { CharacterString = "Operation1" },
+                                operationDescription = new CharacterString_PropertyType{ CharacterString = "Description1" },
+                                DCP = new DCPList_PropertyType[]{ new DCPList_PropertyType { DCPList = new CodeListValue_Type { codeListValue = "Platform1" } } },
+                                connectPoint = new CI_OnlineResource_PropertyType[]{ new CI_OnlineResource_PropertyType { CI_OnlineResource = new CI_OnlineResource_Type { linkage = new URL_PropertyType { URL = "http://service1.geonorge.no" } } } }
                             } } }
                         }
                     }
@@ -4010,8 +4010,8 @@ namespace GeoNorgeAPI.Tests
             Assert.AreEqual("Description1", operations[0].Description);
             Assert.AreEqual("Platform1", operations[0].Platform);
             Assert.AreEqual("http://service1.geonorge.no", operations[0].URL);
-        }
-        [Test]
+        }
+        [Test]
         public void ShouldUpdateSimpleOperationsForService()
         {
             _md.GetMetadata().hierarchyLevel = new MD_ScopeCode_PropertyType[] { new MD_ScopeCode_PropertyType { MD_ScopeCode = new CodeListValue_Type { codeListValue = "service" } } };
@@ -4071,20 +4071,20 @@ namespace GeoNorgeAPI.Tests
         private CharacterString_PropertyType toCharString(string input)
         {
             return new CharacterString_PropertyType { CharacterString = input };
-        }
-
-        private CharacterString_PropertyType toCharString(object input)
-        {
-
-            Anchor_Type titleObject = input as Anchor_Type;
-            PT_FreeText_PropertyType freeText = input as PT_FreeText_PropertyType;
-            if (titleObject != null)
-                return new CharacterString_PropertyType { CharacterString = titleObject.Value };
-            else if (freeText != null)
-                return new CharacterString_PropertyType { CharacterString = freeText.CharacterString};
-            else
-                return new CharacterString_PropertyType { CharacterString = input.ToString() };
-
+        }
+
+        private CharacterString_PropertyType toCharString(object input)
+        {
+
+            Anchor_Type titleObject = input as Anchor_Type;
+            PT_FreeText_PropertyType freeText = input as PT_FreeText_PropertyType;
+            if (titleObject != null)
+                return new CharacterString_PropertyType { CharacterString = titleObject.Value };
+            else if (freeText != null)
+                return new CharacterString_PropertyType { CharacterString = freeText.CharacterString};
+            else
+                return new CharacterString_PropertyType { CharacterString = input.ToString() };
+
         }
     }
 }
