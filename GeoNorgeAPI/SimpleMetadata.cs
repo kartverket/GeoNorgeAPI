@@ -892,6 +892,42 @@ namespace GeoNorgeAPI
             set { CreateOrUpdateContactWithRole("owner", value); }
         }
 
+        public List<SimpleContact> ContactOwners
+        {
+            get
+            {
+                List<SimpleContact> contacts = new List<SimpleContact>();
+                var identification = GetIdentification();
+                if (identification != null && identification.pointOfContact != null)
+                {
+                    foreach (var responsibleParty in identification.pointOfContact)
+                    {
+                        if (responsibleParty.CI_ResponsibleParty != null)
+                        {
+                            if (responsibleParty.CI_ResponsibleParty.role != null && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode != null
+                                                               && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue != null
+                                                                                              && responsibleParty.CI_ResponsibleParty.role.CI_RoleCode.codeListValue.ToLower() == "owner")
+                            {
+                                contacts.Add(ParseResponsiblePartyToSimpleContact(responsibleParty.CI_ResponsibleParty));
+                            }
+                        }
+                    }
+                }
+                return contacts;
+            }
+            set
+            {
+                //todo check
+                //if (value != null)
+                //{
+                //    foreach (var contact in value)
+                //    {
+                //        CreateOrUpdateContactWithRole("owner", contact);
+                //    }
+                //}
+            }
+        }
+
         public SimpleContact ContactCustodian
         {
             get { return GetContactWithRole("custodian"); }
