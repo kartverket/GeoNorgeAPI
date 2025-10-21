@@ -5119,7 +5119,7 @@ namespace GeoNorgeAPI
 
                         if (MetadataLanguage == LOCALE_ENG.ToLower())
                         {
-                            specificUsage = CreateFreeTextElementNorwegian("", value);
+                            specificUsage = CreateFreeTextElementNorwegian(" ", value);
                         }
 
                         identification.resourceSpecificUsage = new MD_Usage_PropertyType[]

@@ -849,5 +849,28 @@ namespace GeoNorgeAPI.Tests
             Assert.NotNull(record, "Record does not exist.");
         }
 
+        [Test]
+        public void ShouldReturnSpecificUsageForMetadata()
+        {
+            string xml = File.ReadAllText("xml/specific-usage.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var specificUsage = metadata.SpecificUsage;
+            Assert.AreEqual("Bruksområde norsk", specificUsage);
+        }
+
+        [Test]
+        public void ShouldUpdateNorwegianSpecificUsage()
+        {
+            string xml = File.ReadAllText("xml/specific-usage.xml");
+            MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
+            var metadata = new SimpleMetadata(data);
+            var expectedSpecificUsage = "Bruksområde norsk";
+            metadata.SpecificUsage = expectedSpecificUsage;
+            var actualSpecificUsage = metadata.SpecificUsage;
+            Assert.AreEqual(expectedSpecificUsage, actualSpecificUsage);
+        }
+
+
     }
 }
