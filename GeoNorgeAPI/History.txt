@@ -1,5 +1,6 @@
 Version History
 ---------------
+4.0.2: Fix english as default metadata language for SpecificUsage
 4.0.1: Add ContactOwners
 4.0.0: Converted to netstandard 2.0
 3.8.3: Upgrade nuget Arkitektum.GIS.Lib.MetadataCSW to 1.9.115
