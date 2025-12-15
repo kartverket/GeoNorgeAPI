@@ -1,5 +1,7 @@
 ﻿using Arkitektum.GIS.Lib.SerializeUtil;
 using GeoNorgeAPI;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using www.opengis.net;
 
 namespace GeoNorgeAPI.Tests
 {
-    
+
     public class CswTests
     {
         GeoNorge _geonorge;
@@ -28,12 +30,12 @@ namespace GeoNorgeAPI.Tests
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "A search on 'wms' should return records.");
         }
-        
+
         [Test]
         public void ShouldReturnSingleIsoRecord()
         {
             MD_Metadata_Type record = _geonorge.GetRecordByUuid("63c672fa-e180-4601-a176-6bf163e0929d"); // Matrikkelen WMS
-            
+
             Assert.NotNull(record, "Record does not exist.");
         }
 
@@ -66,7 +68,7 @@ namespace GeoNorgeAPI.Tests
         {
             var filters = new object[]
                 {
-                    
+
                     new BinaryLogicOpType()
                         {
                             Items = new object[]
@@ -90,10 +92,10 @@ namespace GeoNorgeAPI.Tests
                                 },
                                 ItemsElementName = new ItemsChoiceType22[]
                                     {
-                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike, 
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike,
                                     }
                         },
-                    
+
                 };
 
             var filterNames = new ItemsChoiceType23[]
@@ -186,7 +188,7 @@ namespace GeoNorgeAPI.Tests
 
         [Test]
         public void ShouldReturnMultipleOnlineElementsForMD_DigitalTransferOptionsAsDistributionsFormats()
-        {      
+        {
             string xml = File.ReadAllText("xml/multiple-online-transfer-options.xml");
             GetRecordByIdResponseType response = SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(xml);
             var data = (MD_Metadata_Type)response.Items[0];
@@ -232,6 +234,28 @@ namespace GeoNorgeAPI.Tests
         [Test]
         public void ReadDuplicate()
         {
+            var jsonPath = "json/duplicate.json";
+            var json = File.ReadAllText(jsonPath);
+            var jo = JObject.Parse(json);
+            var arr = (JArray)jo["duplicate"]?["title"];
+            Assert.NotNull(arr, "Missing duplicate.title array");
+
+            // title at i, count at i+1
+            for (int i = 0; i < arr.Count; i += 2)
+            {
+                var titleToken = arr[i];
+                var countToken = i + 1 < arr.Count ? arr[i + 1] : null;
+
+                // Skip malformed pairs
+                if (titleToken == null || titleToken.Type != JTokenType.String) continue;
+                if (countToken == null || (countToken.Type != JTokenType.Integer && countToken.Type != JTokenType.Float)) continue;
+
+                string title = titleToken.Value<string>();
+                int count = countToken.Value<int>();
+
+                // Do whatever you need per pair
+                System.Diagnostics.Debug.WriteLine($"[{i}] {title} => {count}");
+            }
         }
 
         private static void WriteMissingToFile(IList<string> missing, string outputPath)
@@ -254,7 +278,8 @@ namespace GeoNorgeAPI.Tests
 
             // Aggregate unique element names (namespace + local) for all datasets
             var okElementNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var ds in okDatasets) {
+            foreach (var ds in okDatasets)
+            {
                 var resourceUri = ds.Attribute(rdf + "resource")?.Value;
                 okElementNames.Add(resourceUri);
             }
@@ -276,62 +301,62 @@ namespace GeoNorgeAPI.Tests
         }
 
         // Optional: per dataset diff by identifier/about (if present)
-//        public static IDictionary<string, IList<string>> GetPerDatasetMissingElements(string okPath, string errorPath)
-//        {
-//            var okDoc = XDocument.Load(okPath);
-//            var errDoc = XDocument.Load(errorPath);
+        //        public static IDictionary<string, IList<string>> GetPerDatasetMissingElements(string okPath, string errorPath)
+        //        {
+        //            var okDoc = XDocument.Load(okPath);
+        //            var errDoc = XDocument.Load(errorPath);
 
-//            var okDatasets = okDoc.Descendants(Dcat + "Dataset").ToList();
-//            var errDatasets = errDoc.Descendants(Dcat + "Dataset").ToDictionary(GetDatasetId, d => d, StringComparer.OrdinalIgnoreCase);
+        //            var okDatasets = okDoc.Descendants(Dcat + "Dataset").ToList();
+        //            var errDatasets = errDoc.Descendants(Dcat + "Dataset").ToDictionary(GetDatasetId, d => d, StringComparer.OrdinalIgnoreCase);
 
-//            var result = new Dictionary<string, IList<string>>(StringComparer.OrdinalIgnoreCase);
+        //            var result = new Dictionary<string, IList<string>>(StringComparer.OrdinalIgnoreCase);
 
-//            foreach (var okDs in okDatasets)
-//            {
-//                var id = GetDatasetId(okDs);
-//                var okChildren = okDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        //            foreach (var okDs in okDatasets)
+        //            {
+        //                var id = GetDatasetId(okDs);
+        //                var okChildren = okDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
-//                if (!errDatasets.TryGetValue(id, out var errDs))
-//                {
-//                    // Entire dataset missing
-//                    result[id] = okChildren;
-//                    continue;
-//                }
+        //                if (!errDatasets.TryGetValue(id, out var errDs))
+        //                {
+        //                    // Entire dataset missing
+        //                    result[id] = okChildren;
+        //                    continue;
+        //                }
 
-//                var errChildren = errDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToHashSet(StringComparer.OrdinalIgnoreCase);
-//                var missingForThis = okChildren.Where(c => !errChildren.Contains(c)).OrderBy(c => c).ToList();
-//                if (missingForThis.Count > 0)
-//                    result[id] = missingForThis;
-//            }
+        //                var errChildren = errDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        //                var missingForThis = okChildren.Where(c => !errChildren.Contains(c)).OrderBy(c => c).ToList();
+        //                if (missingForThis.Count > 0)
+        //                    result[id] = missingForThis;
+        //            }
 
-//            return result;
-//        }
+        //            return result;
+        //        }
 
-//        private static string GetDatasetId(XElement dataset)
-//        {
-//            // Try rdf:about attribute
-//            var about = dataset.Attribute(Rdf + "about")?.Value;
-//            if (!string.IsNullOrWhiteSpace(about))
-//                return about;
+        //        private static string GetDatasetId(XElement dataset)
+        //        {
+        //            // Try rdf:about attribute
+        //            var about = dataset.Attribute(Rdf + "about")?.Value;
+        //            if (!string.IsNullOrWhiteSpace(about))
+        //                return about;
 
-//            // Try dct:identifier element
-//            var identifier = dataset.Elements(Dct + "identifier").FirstOrDefault()?.Value;
-//            if (!string.IsNullOrWhiteSpace(identifier))
-//                return identifier;
+        //            // Try dct:identifier element
+        //            var identifier = dataset.Elements(Dct + "identifier").FirstOrDefault()?.Value;
+        //            if (!string.IsNullOrWhiteSpace(identifier))
+        //                return identifier;
 
-//            // Fallback: generate a synthetic key
-//            return "UNKNOWN_" + Guid.NewGuid().ToString("N");
-//        }
+        //            // Fallback: generate a synthetic key
+        //            return "UNKNOWN_" + Guid.NewGuid().ToString("N");
+        //        }
 
         private static string FormatName(XName name)
         {
             // Produce a consistent prefix-like string: {namespace}localName
             return "{" + name.NamespaceName + "}" + name.LocalName;
         }
-    //}
-//}
+        //}
+        //}
 
-[Test]
+        [Test]
         public void ShouldUpdateNorwegianAbstractForEnglishMetadata()
         {
             string xml = File.ReadAllText("xml/english-main-language.xml");
@@ -640,7 +665,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var distributionsformats = metadata.DistributionsFormats;
-            Assert.AreEqual("kommunevis, fylkesvis, landsfiler, region, celle, kartblad", 
+            Assert.AreEqual("kommunevis, fylkesvis, landsfiler, region, celle, kartblad",
                 distributionsformats[0].UnitsOfDistribution);
         }
 
@@ -674,7 +699,7 @@ namespace GeoNorgeAPI.Tests
             MD_Metadata_Type data = SerializeUtil.DeserializeFromString<MD_Metadata_Type>(xml);
             var metadata = new SimpleMetadata(data);
             var expectedUnitsOfDistribution = "UnitsOfDistribution norsk";
-            metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = "UnitsOfDistribution engelsk", FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL= "https://nedlasting.test.geonorge.no/api/capabilities/" } };
+            metadata.DistributionsFormats = new List<SimpleDistribution> { new SimpleDistribution { UnitsOfDistribution = expectedUnitsOfDistribution, EnglishUnitsOfDistribution = "UnitsOfDistribution engelsk", FormatName = "GML", FormatVersion = "3.2.1", Organization = "Kartverket", Protocol = "GEONORGE:DOWNLOAD", URL = "https://nedlasting.test.geonorge.no/api/capabilities/" } };
             var actualUnitsOfDistribution = metadata.DistributionsFormats[0].UnitsOfDistribution;
             Assert.AreEqual(expectedUnitsOfDistribution, actualUnitsOfDistribution);
         }
@@ -879,7 +904,7 @@ namespace GeoNorgeAPI.Tests
                                         Literal = new LiteralType {Text = new[] { "no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e" }}
                                     },
                                     new BinaryComparisonOpType
-                                    {                                     
+                                    {
                                        expression = expressionTypesFromDate
                                     }
                                     ,
@@ -888,7 +913,7 @@ namespace GeoNorgeAPI.Tests
                                         expression = expressionTypesToDate
                                     }
                                 },
-      
+
                                 ItemsElementName = new ItemsChoiceType22[]
                                     {
                                         ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsGreaterThanOrEqualTo,ItemsChoiceType22.PropertyIsLessThanOrEqualTo
@@ -903,7 +928,7 @@ namespace GeoNorgeAPI.Tests
                 };
 
 
-            var result = _geonorge.SearchWithFilters(filters, filterNames,1,20,false, true);
+            var result = _geonorge.SearchWithFilters(filters, filterNames, 1, 20, false, true);
 
             Assert.Greater(int.Parse(result.numberOfRecordsMatched), 0, "Should have return more than zero datasets from Mets.");
         }
