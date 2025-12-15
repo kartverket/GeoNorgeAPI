@@ -240,6 +240,8 @@ namespace GeoNorgeAPI.Tests
             var arr = (JArray)jo["duplicate"]?["title"];
             Assert.NotNull(arr, "Missing duplicate.title array");
 
+            Dictionary<string, int> titleCounts = new Dictionary<string, int>();
+
             // title at i, count at i+1
             for (int i = 0; i < arr.Count; i += 2)
             {
@@ -255,6 +257,15 @@ namespace GeoNorgeAPI.Tests
 
                 // Do whatever you need per pair
                 System.Diagnostics.Debug.WriteLine($"[{i}] {title} => {count}");
+                titleCounts.Add(title, count);
+            }
+
+            Assert.IsTrue(titleCounts.Count > 0, "Expected at least one title/count pair in duplicate.json");
+
+            foreach (var kvp in titleCounts)
+            {
+                System.Diagnostics.Debug.WriteLine($"Title: {kvp.Key}, Count: {kvp.Value}");
+
             }
         }
 
