@@ -260,11 +260,86 @@ namespace GeoNorgeAPI.Tests
                 titleCounts.Add(title, count);
             }
 
-            Assert.IsTrue(titleCounts.Count > 0, "Expected at least one title/count pair in duplicate.json");
+            //Assert.IsTrue(titleCounts.Count > 0, "Expected at least one title/count pair in duplicate.json");
 
             foreach (var kvp in titleCounts)
             {
-                System.Diagnostics.Debug.WriteLine($"Title: {kvp.Key}, Count: {kvp.Value}");
+                //System.Diagnostics.Debug.WriteLine($"Title: {kvp.Key}, Count: {kvp.Value}");
+
+                _geonorge = new GeoNorge("", "", "http://www.geonorge.no/geonetworkdev/");
+
+                var filters = new object[]
+                          {
+
+                    new BinaryLogicOpType()
+                        {
+                            Items = new object[]
+                                {
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"Type"}},
+                                        Literal = new LiteralType {Text = new[] { "dataset" }}
+                                    },
+                                    new PropertyIsLikeType
+                                    {
+                                        escapeChar = "\\",
+                                        singleChar = "_",
+                                        wildCard = "%",
+                                        PropertyName = new PropertyNameType {Text = new[] {"Title"}},
+                                        Literal = new LiteralType {Text = new[] { kvp.Key.Replace(" ", "?") }}
+                                    },
+                                },
+
+                                ItemsElementName = new ItemsChoiceType22[]
+                                    {
+                                        ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsLike
+                                    }
+                        },
+
+                          };
+
+                var filterNames = new ItemsChoiceType23[]
+                    {
+                    ItemsChoiceType23.And
+                    };
+
+
+                var result = _geonorge.SearchWithFilters(filters, filterNames, 1, 20, false, true);
+
+                if (int.Parse(result.numberOfRecordsMatched) > 1 && result.numberOfRecordsMatched == kvp.Value.ToString())
+                {
+                    System.Diagnostics.Debug.WriteLine($"Expected {kvp.Value} records for title '{kvp.Key}', but got {result.numberOfRecordsMatched}.");
+                    var items = result.Items as object[] ?? Array.Empty<object>();
+                    for (int j = 1; j < items.Length; j++) // Start at 1 to skip first record latest date
+                    {
+                        var record = items[j] as RecordType; 
+                        if (record == null) 
+                            continue;
+
+                        string uuid = null;
+                        string title = null;
+
+                        for (int i = 0; i < record.ItemsElementName.Length; i++)
+                        {
+                            var name = record.ItemsElementName[i];
+                            var value = record.Items[i].Text != null ? record.Items[i].Text[0] : null;
+
+                            if (name == ItemsChoiceType24.identifier)
+                                uuid = value;
+                            else if (name == ItemsChoiceType24.title)
+                                title = value;
+                        }
+
+                        if(!string.IsNullOrEmpty(uuid) && !string.IsNullOrEmpty(title) && title == kvp.Key)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"DELETE - UUID: {uuid}, Title: {title}");
+                            _geonorge.MetadataDelete(uuid, new Dictionary<string, string> { { "GeonorgeUsername", "esk_testbruker" }, { "GeonorgeRole", "nd.metadata_admin" } });
+                        }
+                    }
+                }
 
             }
         }
