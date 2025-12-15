@@ -1,10 +1,12 @@
-﻿using NUnit.Framework;
-using www.opengis.net;
+﻿using Arkitektum.GIS.Lib.SerializeUtil;
 using GeoNorgeAPI;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Arkitektum.GIS.Lib.SerializeUtil;
+using System.Linq;
+using System.Xml.Linq;
+using www.opengis.net;
 
 namespace GeoNorgeAPI.Tests
 {
@@ -214,6 +216,122 @@ namespace GeoNorgeAPI.Tests
         }
 
         [Test]
+        public void DiffDcat()
+        {
+            string xml_ok = File.ReadAllText("xml/dcat_ok.xml"); string xml_error = File.ReadAllText("xml/dcat_error.xml");
+            // Use file paths directly with helper
+            var missing = GetMissingDatasetElementNames("xml/dcat_ok.xml", "xml/dcat_error.xml");
+            //System.Diagnostics.Debug.WriteLine("Missing dataset element names (overall): " + string.Join(", ", missing));
+
+            // Write to file
+            WriteMissingToFile(missing, "xml/dcat-missing.txt");
+
+            Assert.IsTrue(missing.Count > 0, "Expected at least one missing element between OK and ERROR DCAT files.");
+        }
+
+        [Test]
+        public void ReadDuplicate()
+        {
+        }
+
+        private static void WriteMissingToFile(IList<string> missing, string outputPath)
+        {
+            var dir = Path.GetDirectoryName(outputPath); if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            File.WriteAllLines(outputPath, missing ?? Array.Empty<string>());
+        }
+
+        public static IList<string> GetMissingDatasetElementNames(string okPath, string errorPath)
+        {
+            var okDoc = XDocument.Load(okPath);
+            var errDoc = XDocument.Load(errorPath);
+
+            var dcat = XNamespace.Get("http://www.w3.org/ns/dcat#");
+            var rdf = XNamespace.Get("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+
+            // Find all dcat:Dataset nodes anywhere (robust against different catalog layouts)
+            var okDatasets = okDoc.Descendants(dcat + "Catalog").Descendants(dcat + "dataset").ToList();
+            var errDatasets = errDoc.Descendants(dcat + "Catalog").Descendants(dcat + "dataset").ToList();
+
+            // Aggregate unique element names (namespace + local) for all datasets
+            var okElementNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var ds in okDatasets) {
+                var resourceUri = ds.Attribute(rdf + "resource")?.Value;
+                okElementNames.Add(resourceUri);
+            }
+
+            var errElementNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var ds in errDatasets)
+            {
+                var resourceUri = ds.Attribute(rdf + "resource")?.Value;
+                errElementNames.Add(resourceUri);
+            }
+
+            // Elements present in OK but missing in ERROR
+            var missing = okElementNames
+                .Where(n => !errElementNames.Contains(n))
+                .OrderBy(n => n)
+                .ToList();
+
+            return missing;
+        }
+
+        // Optional: per dataset diff by identifier/about (if present)
+//        public static IDictionary<string, IList<string>> GetPerDatasetMissingElements(string okPath, string errorPath)
+//        {
+//            var okDoc = XDocument.Load(okPath);
+//            var errDoc = XDocument.Load(errorPath);
+
+//            var okDatasets = okDoc.Descendants(Dcat + "Dataset").ToList();
+//            var errDatasets = errDoc.Descendants(Dcat + "Dataset").ToDictionary(GetDatasetId, d => d, StringComparer.OrdinalIgnoreCase);
+
+//            var result = new Dictionary<string, IList<string>>(StringComparer.OrdinalIgnoreCase);
+
+//            foreach (var okDs in okDatasets)
+//            {
+//                var id = GetDatasetId(okDs);
+//                var okChildren = okDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+
+//                if (!errDatasets.TryGetValue(id, out var errDs))
+//                {
+//                    // Entire dataset missing
+//                    result[id] = okChildren;
+//                    continue;
+//                }
+
+//                var errChildren = errDs.Elements().Select(e => FormatName(e.Name)).Distinct(StringComparer.OrdinalIgnoreCase).ToHashSet(StringComparer.OrdinalIgnoreCase);
+//                var missingForThis = okChildren.Where(c => !errChildren.Contains(c)).OrderBy(c => c).ToList();
+//                if (missingForThis.Count > 0)
+//                    result[id] = missingForThis;
+//            }
+
+//            return result;
+//        }
+
+//        private static string GetDatasetId(XElement dataset)
+//        {
+//            // Try rdf:about attribute
+//            var about = dataset.Attribute(Rdf + "about")?.Value;
+//            if (!string.IsNullOrWhiteSpace(about))
+//                return about;
+
+//            // Try dct:identifier element
+//            var identifier = dataset.Elements(Dct + "identifier").FirstOrDefault()?.Value;
+//            if (!string.IsNullOrWhiteSpace(identifier))
+//                return identifier;
+
+//            // Fallback: generate a synthetic key
+//            return "UNKNOWN_" + Guid.NewGuid().ToString("N");
+//        }
+
+        private static string FormatName(XName name)
+        {
+            // Produce a consistent prefix-like string: {namespace}localName
+            return "{" + name.NamespaceName + "}" + name.LocalName;
+        }
+    //}
+//}
+
+[Test]
         public void ShouldUpdateNorwegianAbstractForEnglishMetadata()
         {
             string xml = File.ReadAllText("xml/english-main-language.xml");
