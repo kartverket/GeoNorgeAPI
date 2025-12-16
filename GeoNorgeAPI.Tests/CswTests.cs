@@ -231,8 +231,10 @@ namespace GeoNorgeAPI.Tests
             Assert.IsTrue(missing.Count > 0, "Expected at least one missing element between OK and ERROR DCAT files.");
         }
 
+        private static readonly string DeleteLogPath = Path.Combine("TestResults", "delete.log");
+
         [Test]
-        public void ReadDuplicate()
+        public void DeleteDuplicate()
         {
             var jsonPath = "json/duplicate.json";
             var json = File.ReadAllText(jsonPath);
@@ -266,7 +268,7 @@ namespace GeoNorgeAPI.Tests
             {
                 //System.Diagnostics.Debug.WriteLine($"Title: {kvp.Key}, Count: {kvp.Value}");
 
-                _geonorge = new GeoNorge("", "", "http://www.geonorge.no/geonetworkdev/");
+                _geonorge = new GeoNorge("admin", "xxx", "http://www.geonorge.no/geonetwork/");
 
                 var filters = new object[]
                           {
@@ -335,13 +337,22 @@ namespace GeoNorgeAPI.Tests
 
                         if(!string.IsNullOrEmpty(uuid) && !string.IsNullOrEmpty(title) && title == kvp.Key)
                         {
-                            System.Diagnostics.Debug.WriteLine($"DELETE - UUID: {uuid}, Title: {title}");
-                            _geonorge.MetadataDelete(uuid, new Dictionary<string, string> { { "GeonorgeUsername", "esk_testbruker" }, { "GeonorgeRole", "nd.metadata_admin" } });
+                            var line = $"DELETE - UUID: {uuid}, Title: {title}";
+                            System.Diagnostics.Debug.WriteLine(line);
+                            AppendDeleteLog(line);
+                            var trans = _geonorge.MetadataDelete(uuid, new Dictionary<string, string> { { "GeonorgeUsername", "xxx" }, { "GeonorgeRole", "nd.metadata_admin" } });
                         }
                     }
                 }
 
             }
+        }
+
+        private static void AppendDeleteLog(string message)
+        {
+            var dir = Path.GetDirectoryName(DeleteLogPath); if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            using (var sw = new StreamWriter(DeleteLogPath, append: true))
+                sw.WriteLine($"{message}");
         }
 
         private static void WriteMissingToFile(IList<string> missing, string outputPath)
