@@ -3593,27 +3593,31 @@ namespace GeoNorgeAPI.Tests
             string expectedCovarageGridMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/skwms/wms.geonorge_dekningskart?@LAYER:dsb_brannstasjon";
             string expectedCovarageMapURL = "TYPE:GEONORGE-WMS@PATH:https://wms.geonorge.no/wms?@LAYER:dsb_brannstasjon";
             string expectedCovarageCellMapURL = "https://wms.geonorge.no/test.json";
-            string expectedSurveyAreaMapUrl = "https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/GeoJSON/Dekning_Grus_Pukk.geojson";
+            string expectedSurveyAreaMapUrl = "https://testnedlasting.geonorge.no/geonorge/Basisdata/DOKFullstendighetsdekningskart/GeoJSON/Dekning_Grus_Pukk.geojson";            string expectedSurveyAreaMapUrlWms = "TYPE:WMS@PATH:https://wms.geonorge.no/wms?@LAYER:kv_adminomr_kommune";
             SimpleMetadata simpleMetadata = SimpleMetadata.CreateDataset();
             simpleMetadata.CoverageGridUrl = expectedCovarageGridMapURL;
             simpleMetadata.CoverageUrl = expectedCovarageMapURL;
             simpleMetadata.CoverageCellUrl = expectedCovarageCellMapURL;
             simpleMetadata.SurveyAreaMapUrl = expectedSurveyAreaMapUrl;
+            simpleMetadata.SurveyAreaMapUrlWms = expectedSurveyAreaMapUrlWms;
 
             var gridMap = simpleMetadata.GetMetadata().metadataExtensionInfo[0].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var map = simpleMetadata.GetMetadata().metadataExtensionInfo[1].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var cell = simpleMetadata.GetMetadata().metadataExtensionInfo[2].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
             var surveyArea = simpleMetadata.GetMetadata().metadataExtensionInfo[3].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
+            var surveyAreaWms = simpleMetadata.GetMetadata().metadataExtensionInfo[4].MD_MetadataExtensionInformation.extensionOnLineResource.CI_OnlineResource;
 
             string actualCovarageGridMapURL = gridMap.linkage.URL;
             string actualCovarageMapURL = map.linkage.URL;
             string actualCovarageCellMapURL = cell.linkage.URL;
             string actualsurveyAreaURL = surveyArea.linkage.URL;
+            string actualsurveyAreaWmsURL = surveyAreaWms.linkage.URL;
 
             Assert.AreEqual(expectedCovarageGridMapURL, actualCovarageGridMapURL);
             Assert.AreEqual(expectedCovarageMapURL, actualCovarageMapURL);
             Assert.AreEqual(expectedCovarageCellMapURL, actualCovarageCellMapURL);
             Assert.AreEqual(expectedSurveyAreaMapUrl, actualsurveyAreaURL);
+            Assert.AreEqual(expectedSurveyAreaMapUrlWms, actualsurveyAreaWmsURL);
         }
 
 
