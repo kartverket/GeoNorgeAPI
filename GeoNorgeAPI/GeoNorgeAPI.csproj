@@ -25,12 +25,12 @@
 		<Title>Geonorge API</Title>
 		<Authors>Statens kartverk</Authors>
 		<PackageId>$(AssemblyName)</PackageId>
-		<PackageVersion>4.0.2</PackageVersion>
+		<PackageVersion>4.0.3</PackageVersion>
 		<PackageDescription>API for communicating with the CSW-service running at www.geonorge.no</PackageDescription>
 		<PackageTags>geonorge gis metadata api csw</PackageTags>
 		<PackageLicenseExpression>BSD-2-Clause</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-		<PackageReleaseNotes>Fix english as default metadata language for SpecificUsage</PackageReleaseNotes>
+		<PackageReleaseNotes>Add SurveyAreaMapUrl wms</PackageReleaseNotes>
 		<RepositoryType>git</RepositoryType>
 		<PackageProjectUrl>https://github.com/kartverket/GeoNorgeAPI</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/kartverket/GeoNorgeAPI</RepositoryUrl>
