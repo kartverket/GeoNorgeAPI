@@ -249,7 +249,7 @@ namespace GeoNorgeAPI
 
         private string GetUrlForCswService()
         {
-            if(_geonetworkEndpoint.Contains("pycsw.nina.no"))
+            if(_geonetworkEndpoint.Contains("csw.nina.no"))
                 return _geonetworkEndpoint;
             else
                 return _geonetworkEndpoint + "srv/nor/csw";
