@@ -1,5 +1,6 @@
 Version History
 ---------------
+4.0.4: Fix csw nina endpoint
 4.0.3: Add SurveyAreaMapUrl wms
 4.0.2: Fix english as default metadata language for SpecificUsage
 4.0.1: Add ContactOwners
