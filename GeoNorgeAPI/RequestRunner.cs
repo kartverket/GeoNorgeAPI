@@ -83,9 +83,11 @@ namespace GeoNorgeAPI
 
         private string FixRequest(string requestBody)
         {
+            // Fix abstract expression elements for all endpoints
+            requestBody = FixAbstractExpressionElements(requestBody);
+
             if (_geonetworkEndpoint.Contains("met.no"))
             {
-                requestBody = FixAbstractExpressionElements(requestBody);
                 requestBody = requestBody.Replace(@"outputSchema=""csw:Record""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
                 requestBody = requestBody.Replace(@"outputSchema=""csw:IsoRecord""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
             }
