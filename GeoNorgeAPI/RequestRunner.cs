@@ -3,6 +3,8 @@ using Arkitektum.GIS.Lib.SerializeUtil;
 using www.opengis.net;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using System.Xml;
 
 namespace GeoNorgeAPI
 {
@@ -52,6 +54,14 @@ namespace GeoNorgeAPI
             OnLogEventDebug(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
+
+            // Check if the response is an ExceptionReport before trying to deserialize
+            if (IsExceptionReport(responseBody))
+            {
+                var exceptionMessage = ExtractExceptionMessage(responseBody);
+                throw new InvalidOperationException($"CSW service returned an error: {exceptionMessage}");
+            }
+
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
         }
 
@@ -60,6 +70,14 @@ namespace GeoNorgeAPI
             var response = _httpRequestExecutor.FullGetRequest(GetUrlForCswService(), "application/xml", ContentTypeXml);
             var responseBody = new System.IO.StreamReader(response.GetResponseStream()).ReadToEnd();
             responseBody = FixInvalidXml(responseBody);
+
+            // Check if the response is an ExceptionReport before trying to deserialize
+            if (IsExceptionReport(responseBody))
+            {
+                var exceptionMessage = ExtractExceptionMessage(responseBody);
+                throw new InvalidOperationException($"CSW service returned an error: {exceptionMessage}");
+            }
+
             return SerializeUtil.DeserializeFromString<GetRecordsResponseType>(responseBody);
         }
 
@@ -67,7 +85,6 @@ namespace GeoNorgeAPI
         {
             if (_geonetworkEndpoint.Contains("met.no"))
             {
-                // Fix abstract expression elements for all endpoints
                 requestBody = FixAbstractExpressionElements(requestBody);
                 requestBody = requestBody.Replace(@"outputSchema=""csw:Record""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
                 requestBody = requestBody.Replace(@"outputSchema=""csw:IsoRecord""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
@@ -78,23 +95,147 @@ namespace GeoNorgeAPI
 
         private string FixAbstractExpressionElements(string requestBody)
         {
+            try
+            {
+                var doc = XDocument.Parse(requestBody);
+                var xsiNs = XNamespace.Get("http://www.w3.org/2001/XMLSchema-instance");
+                var ogcNs = XNamespace.Get("http://www.opengis.net/ogc");
+
+                // Find all expression elements - both with and without namespaces
+                var expressionElements = doc.Descendants()
+                    .Where(e => e.Name.LocalName == "expression")
+                    .ToList();
+
+                foreach (var element in expressionElements)
+                {
+                    var typeAttr = element.Attribute(xsiNs + "type");
+
+                    // Handle elements with xsi:type attributes
+                    if (typeAttr != null)
+                    {
+                        if (typeAttr.Value == "PropertyNameType" || typeAttr.Value.EndsWith(":PropertyNameType"))
+                        {
+                            var newElement = new XElement(ogcNs + "PropertyName", element.Value);
+                            CopyAttributesExceptType(element, newElement, xsiNs);
+                            element.ReplaceWith(newElement);
+                        }
+                        else if (typeAttr.Value == "LiteralType" || typeAttr.Value.EndsWith(":LiteralType"))
+                        {
+                            var newElement = new XElement(ogcNs + "Literal", element.Value);
+                            CopyAttributesExceptType(element, newElement, xsiNs);
+                            element.ReplaceWith(newElement);
+                        }
+                    }
+                    else
+                    {
+                        // Handle abstract expression elements without xsi:type
+                        // Try to determine the type from context or content
+                        var parent = element.Parent;
+                        if (parent?.Name.LocalName == "PropertyIsGreaterThanOrEqualTo" || 
+                            parent?.Name.LocalName == "PropertyIsLessThanOrEqualTo" ||
+                            parent?.Name.LocalName == "PropertyIsEqualTo" ||
+                            parent?.Name.LocalName == "PropertyIsNotEqualTo" ||
+                            parent?.Name.LocalName == "PropertyIsLike")
+                        {
+                            // In binary comparison operations, first expression is usually PropertyName, second is Literal
+                            var siblings = parent.Elements().Where(e => e.Name.LocalName == "expression").ToList();
+                            var index = siblings.IndexOf(element);
+
+                            if (index == 0)
+                            {
+                                // First expression is typically PropertyName
+                                var newElement = new XElement("PropertyName", element.Value);
+                                CopyAttributesExceptType(element, newElement, xsiNs);
+                                element.ReplaceWith(newElement);
+                            }
+                            else if (index == 1)
+                            {
+                                // Second expression is typically Literal
+                                var newElement = new XElement("Literal", element.Value);
+                                CopyAttributesExceptType(element, newElement, xsiNs);
+                                element.ReplaceWith(newElement);
+                            }
+                        }
+                    }
+                }
+
+                return doc.ToString();
+            }
+            catch (XmlException)
+            {
+                // Fallback to string replacement if XML parsing fails
+                return FixAbstractExpressionElementsLegacy(requestBody);
+            }
+        }
+
+        private void CopyAttributesExceptType(XElement source, XElement target, XNamespace xsiNs)
+        {
+            foreach (var attr in source.Attributes().Where(a => a.Name != xsiNs + "type"))
+            {
+                target.SetAttributeValue(attr.Name, attr.Value);
+            }
+        }
+
+        private string FixAbstractExpressionElementsLegacy(string requestBody)
+        {
+            // Legacy string-based approach for fallback
             // Fix PropertyName expressions - specific cases first
             requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_begin</expression>", "<PropertyName>apiso:TempExtent_begin</PropertyName>");
             requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_end</expression>", "<PropertyName>apiso:TempExtent_end</PropertyName>");
 
-            // Generic fix for any remaining PropertyName expressions
+            // Generic fix for any remaining PropertyName expressions with xsi:type
             requestBody = System.Text.RegularExpressions.Regex.Replace(
                 requestBody,
-                @"<expression xsi:type=""PropertyNameType"">([^<]+)</expression>",
+                @"<expression xsi:type=""[^""]*PropertyNameType[^""]*"">([^<]+)</expression>",
                 "<PropertyName>$1</PropertyName>");
 
-            // Generic fix for Literal expressions - match complete opening and closing tags
+            // Generic fix for Literal expressions with xsi:type
             requestBody = System.Text.RegularExpressions.Regex.Replace(
                 requestBody,
-                @"<expression xsi:type=""LiteralType"">([^<]*)</expression>",
+                @"<expression xsi:type=""[^""]*LiteralType[^""]*"">([^<]*)</expression>",
                 "<Literal>$1</Literal>");
 
+            // Handle abstract expression elements without xsi:type - more aggressive approach
+            // This pattern looks for expression elements within comparison operators
+            requestBody = System.Text.RegularExpressions.Regex.Replace(
+                requestBody,
+                @"(<(PropertyIs[^>]*|BinaryComparison[^>]*)>[^<]*)<expression>([^<]+)</expression>",
+                "$1<PropertyName>$3</PropertyName>");
+
+            requestBody = System.Text.RegularExpressions.Regex.Replace(
+                requestBody,
+                @"(<PropertyName>[^<]+</PropertyName>[^<]*)<expression>([^<]*)</expression>",
+                "$1<Literal>$2</Literal>");
+
             return requestBody;
+        }
+
+        private bool IsExceptionReport(string responseBody)
+        {
+            return responseBody.Contains("<ows:ExceptionReport") || responseBody.Contains(":ExceptionReport");
+        }
+
+        private string ExtractExceptionMessage(string responseBody)
+        {
+            try
+            {
+                var doc = XDocument.Parse(responseBody);
+                var owsNs = XNamespace.Get("http://www.opengis.net/ows");
+
+                var exceptionText = doc.Descendants(owsNs + "ExceptionText").FirstOrDefault()?.Value;
+                if (exceptionText != null)
+                {
+                    return exceptionText;
+                }
+
+                // Fallback: look for ExceptionText without namespace
+                exceptionText = doc.Descendants().Where(e => e.Name.LocalName == "ExceptionText").FirstOrDefault()?.Value;
+                return exceptionText ?? "Unknown CSW service error";
+            }
+            catch
+            {
+                return "Error parsing exception response";
+            }
         }
 
         private string FixInvalidXml(string input)
@@ -144,6 +285,14 @@ namespace GeoNorgeAPI
             requestBody = FixRequest(requestBody);
             string responseBody = _httpRequestExecutor.PostRequest(GetUrlForCswService(), ContentTypeXml, ContentTypeXml, requestBody);
             responseBody = FixInvalidXml(responseBody);
+
+            // Check if the response is an ExceptionReport before trying to deserialize
+            if (IsExceptionReport(responseBody))
+            {
+                var exceptionMessage = ExtractExceptionMessage(responseBody);
+                throw new InvalidOperationException($"CSW service returned an error: {exceptionMessage}");
+            }
+
             GetRecordByIdResponseType response =  SerializeUtil.DeserializeFromString<GetRecordByIdResponseType>(responseBody);
 
             MD_Metadata_Type metadataRecord = null;
@@ -151,7 +300,6 @@ namespace GeoNorgeAPI
             {
                 metadataRecord = response.Items[0] as MD_Metadata_Type;
             }
-
 
             return metadataRecord;
         }
