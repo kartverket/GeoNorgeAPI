@@ -67,13 +67,32 @@ namespace GeoNorgeAPI
         {
             if (_geonetworkEndpoint.Contains("met.no"))
             {
+                // Fix abstract expression elements for all endpoints
+                requestBody = FixAbstractExpressionElements(requestBody);
                 requestBody = requestBody.Replace(@"outputSchema=""csw:Record""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
                 requestBody = requestBody.Replace(@"outputSchema=""csw:IsoRecord""", @"outputSchema=""http://www.isotc211.org/2005/gmd""");
-                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_begin</expression>", "<PropertyName>apiso:TempExtent_begin</PropertyName>");
-                requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_end</expression>", "<PropertyName>apiso:TempExtent_end</PropertyName>");
-                requestBody = requestBody.Replace(@"<expression xsi:type=""LiteralType"">", "<Literal>");
-                requestBody = requestBody.Replace(@"</expression>", "</Literal>");
             }
+
+            return requestBody;
+        }
+
+        private string FixAbstractExpressionElements(string requestBody)
+        {
+            // Fix PropertyName expressions - specific cases first
+            requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_begin</expression>", "<PropertyName>apiso:TempExtent_begin</PropertyName>");
+            requestBody = requestBody.Replace(@"<expression xsi:type=""PropertyNameType"">apiso:TempExtent_end</expression>", "<PropertyName>apiso:TempExtent_end</PropertyName>");
+
+            // Generic fix for any remaining PropertyName expressions
+            requestBody = System.Text.RegularExpressions.Regex.Replace(
+                requestBody,
+                @"<expression xsi:type=""PropertyNameType"">([^<]+)</expression>",
+                "<PropertyName>$1</PropertyName>");
+
+            // Generic fix for Literal expressions - match complete opening and closing tags
+            requestBody = System.Text.RegularExpressions.Regex.Replace(
+                requestBody,
+                @"<expression xsi:type=""LiteralType"">([^<]*)</expression>",
+                "<Literal>$1</Literal>");
 
             return requestBody;
         }

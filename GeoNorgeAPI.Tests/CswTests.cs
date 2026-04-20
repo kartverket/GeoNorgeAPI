@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using www.opengis.net;
 using GeoNorgeAPI;
 using System;
@@ -737,16 +737,32 @@ namespace GeoNorgeAPI.Tests
         {
             _geonorge = new GeoNorge("", "", "https://data.csw.met.no/?");
 
-            ExpressionType[] expressionTypesFromDate = new ExpressionType[2];
-            expressionTypesFromDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_begin" } };
-            expressionTypesFromDate[1] = new LiteralType { Text = new[] { "2023-05-01" } };
+            DateTime DateFrom = DateTime.Now.AddYears(-120);
+            DateTime DateTo = DateTime.Now;
 
-            ExpressionType[] expressionTypesToDate = new ExpressionType[2];
-            expressionTypesToDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_end" } };
-            expressionTypesToDate[1] = new LiteralType { Text = new[] { "2023-05-31" } };
+            string dateFrom = DateFrom.ToString("yyyy-MM-dd");
+            string dateTo = DateTo.ToString("yyyy-MM-dd");
 
-            var filters = new object[]
-                      {
+
+                ExpressionType[] expressionTypesFromDate = new ExpressionType[2];
+                expressionTypesFromDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_begin" } };
+                expressionTypesFromDate[1] = new LiteralType { Text = new[] { dateFrom } };
+
+                ExpressionType[] expressionTypesToDate = new ExpressionType[2];
+                expressionTypesToDate[0] = new PropertyNameType { Text = new[] { "apiso:TempExtent_end" } };
+                expressionTypesToDate[1] = new LiteralType { Text = new[] { dateTo } };
+
+                BinaryComparisonOpType compareOperationToDate = null;
+
+
+                    compareOperationToDate = new BinaryComparisonOpType
+                    {
+                        expression = expressionTypesToDate
+                    };
+                
+
+                var filters = new object[]
+                          {
 
                     new BinaryLogicOpType()
                         {
@@ -761,28 +777,25 @@ namespace GeoNorgeAPI.Tests
                                         Literal = new LiteralType {Text = new[] { "no.met:64db6102-14ce-41e9-b93b-61dbb2cb8b4e" }}
                                     },
                                     new BinaryComparisonOpType
-                                    {                                     
+                                    {
                                        expression = expressionTypesFromDate
                                     }
                                     ,
-                                    new BinaryComparisonOpType
-                                    {
-                                        expression = expressionTypesToDate
-                                    }
+                                    compareOperationToDate
                                 },
-      
+
                                 ItemsElementName = new ItemsChoiceType22[]
                                     {
                                         ItemsChoiceType22.PropertyIsLike, ItemsChoiceType22.PropertyIsGreaterThanOrEqualTo,ItemsChoiceType22.PropertyIsLessThanOrEqualTo
                                     }
                         },
 
-                      };
+                          };
 
-            var filterNames = new ItemsChoiceType23[]
-                {
+                var filterNames = new ItemsChoiceType23[]
+                    {
                     ItemsChoiceType23.And
-                };
+                    };
 
 
             var result = _geonorge.SearchWithFilters(filters, filterNames,1,20,false, true);
