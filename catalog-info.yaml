@@ -1,12 +1,11 @@
-# nonk8s
-apiVersion: "backstage.io/v1alpha1"
-kind: "Component"
+apiVersion: backstage.io/v1alpha1
+kind: Component
 metadata:
-  name: "GeoNorgeAPI"
+  name: GeoNorgeAPI
   tags:
-  - "public"
+    - public
 spec:
-  type: "library"
-  lifecycle: "production"
-  owner: "datadeling_og_distribusjon"
-  system: "geonorge"
+  type: library
+  lifecycle: production
+  owner: group:default/geonorge
+  system: system:default/geonorge
